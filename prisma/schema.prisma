@@ -1,0 +1,714 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model agendamentos {
+  id                                                   BigInt                        @id @default(autoincrement()) @db.UnsignedBigInt
+  paciente_id                                          BigInt                        @db.UnsignedBigInt
+  medico_id                                            BigInt                        @db.UnsignedBigInt
+  sala_id                                              BigInt?                       @db.UnsignedBigInt
+  tipo_agendamento                                     agendamentos_tipo_agendamento
+  especialidade                                        agendamentos_especialidade?
+  data_agendamento                                     DateTime                      @db.Date
+  hora_inicio                                          DateTime                      @db.Time(0)
+  hora_fim                                             DateTime?                     @db.Time(0)
+  duracao_minutos                                      Int                           @default(30)
+  status                                               agendamentos_status           @default(Agendado)
+  prioridade                                           agendamentos_prioridade?
+  motivo_consulta                                      String?                       @db.Text
+  observacoes                                          String?                       @db.Text
+  hora_chegada_paciente                                DateTime?                     @db.Timestamp(0)
+  hora_inicio_atendimento                              DateTime?                     @db.Timestamp(0)
+  hora_fim_atendimento                                 DateTime?                     @db.Timestamp(0)
+  diagnostico                                          String?                       @db.Text
+  prescricao_medica                                    String?                       @db.Text
+  exames_solicitados                                   String?                       @db.Text
+  requer_retorno                                       Boolean                       @default(false)
+  data_retorno_sugerida                                DateTime?                     @db.Date
+  agendamento_origem_id                                BigInt?                       @db.UnsignedBigInt
+  valor_consulta                                       Decimal                       @default(0.00) @db.Decimal(10, 2)
+  pago                                                 Boolean                       @default(false)
+  numero_recibo                                        String?                       @db.VarChar(30)
+  agendado_por                                         BigInt                        @db.UnsignedBigInt
+  atendido_por                                         BigInt?                       @db.UnsignedBigInt
+  ip_agendamento                                       String?                       @db.VarChar(45)
+  created_at                                           DateTime?                     @db.Timestamp(0)
+  updated_at                                           DateTime?                     @db.Timestamp(0)
+  deleted_at                                           DateTime?                     @db.Timestamp(0)
+  utilizadores_agendamentos_agendado_porToutilizadores utilizadores                  @relation("agendamentos_agendado_porToutilizadores", fields: [agendado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "agendamentos_agendado_por_foreign")
+  agendamentos                                         agendamentos?                 @relation("agendamentosToagendamentos", fields: [agendamento_origem_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "agendamentos_agendamento_origem_id_foreign")
+  other_agendamentos                                   agendamentos[]                @relation("agendamentosToagendamentos")
+  utilizadores_agendamentos_atendido_porToutilizadores utilizadores?                 @relation("agendamentos_atendido_porToutilizadores", fields: [atendido_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "agendamentos_atendido_por_foreign")
+  utilizadores_agendamentos_medico_idToutilizadores    utilizadores                  @relation("agendamentos_medico_idToutilizadores", fields: [medico_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "agendamentos_medico_id_foreign")
+  pacientes                                            pacientes                     @relation(fields: [paciente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "agendamentos_paciente_id_foreign")
+  salas_consultorio                                    salas_consultorio?            @relation(fields: [sala_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "agendamentos_sala_id_foreign")
+  consultas                                            consultas[]
+  movimentos_stock                                     movimentos_stock[]
+
+  @@unique([medico_id, data_agendamento, hora_inicio], map: "unique_medico_horario")
+  @@index([agendado_por], map: "agendamentos_agendado_por_foreign")
+  @@index([agendamento_origem_id], map: "agendamentos_agendamento_origem_id_foreign")
+  @@index([atendido_por], map: "agendamentos_atendido_por_foreign")
+  @@index([data_agendamento, status], map: "agendamentos_data_agendamento_status_index")
+  @@index([medico_id, data_agendamento, hora_inicio], map: "agendamentos_medico_id_data_agendamento_hora_inicio_index")
+  @@index([paciente_id], map: "agendamentos_paciente_id_index")
+  @@index([sala_id, data_agendamento], map: "agendamentos_sala_id_data_agendamento_index")
+  @@index([status], map: "agendamentos_status_index")
+}
+
+model anamneses {
+  id                            BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  consulta_id                   BigInt    @db.UnsignedBigInt
+  paciente_id                   BigInt    @db.UnsignedBigInt
+  queixa_principal              String?   @db.Text
+  historia_doenca_atual         String?   @db.Text
+  revisao_sistemas              Json?
+  historia_patologica_pregressa String?   @db.Text
+  historia_cirurgica            String?   @db.Text
+  historia_traumatica           String?   @db.Text
+  historia_alergica             String?   @db.Text
+  historia_familiar             String?   @db.Text
+  habitos_vida                  Json?
+  medicacoes_uso                String?   @db.Text
+  gestacoes                     Int?
+  partos                        Int?
+  cesarianas                    Int?
+  abortos                       Int?
+  data_ultima_menstruacao       DateTime? @db.Date
+  idade_menarca                 Int?
+  idade_menopausa               Int?
+  profissao_atual               String?   @db.VarChar(255)
+  exposicao_ocupacional         String?   @db.Text
+  observacoes                   String?   @db.Text
+  created_at                    DateTime? @db.Timestamp(0)
+  updated_at                    DateTime? @db.Timestamp(0)
+  consultas                     consultas @relation(fields: [consulta_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "anamneses_consulta_id_foreign")
+  pacientes                     pacientes @relation(fields: [paciente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "anamneses_paciente_id_foreign")
+
+  @@index([consulta_id], map: "anamneses_consulta_id_index")
+  @@index([paciente_id], map: "anamneses_paciente_id_index")
+}
+
+model artigos_stock {
+  id                      BigInt                          @id @default(autoincrement()) @db.UnsignedBigInt
+  codigo_artigo           String                          @unique(map: "artigos_stock_codigo_artigo_unique") @db.VarChar(30)
+  nome_artigo             String                          @db.VarChar(200)
+  descricao               String?                         @db.Text
+  categoria               artigos_stock_categoria
+  tipo_medicamento        artigos_stock_tipo_medicamento?
+  localizacao_stock       artigos_stock_localizacao_stock
+  prateleira              String?                         @db.VarChar(50)
+  lote_atual              String?                         @db.VarChar(50)
+  data_validade           DateTime?                       @db.Date
+  quantidade_stock        Decimal                         @default(0.00) @db.Decimal(10, 2)
+  unidade_medida          artigos_stock_unidade_medida    @default(Unidade)
+  stock_minimo            Decimal                         @default(10.00) @db.Decimal(10, 2)
+  stock_maximo            Decimal                         @default(1000.00) @db.Decimal(10, 2)
+  preco_compra            Decimal                         @default(0.00) @db.Decimal(10, 2)
+  preco_venda             Decimal                         @default(0.00) @db.Decimal(10, 2)
+  valor_total_stock       Decimal?                        @db.Decimal(12, 2)
+  fornecedor_principal    String?                         @db.VarChar(150)
+  codigo_fornecedor       String?                         @db.VarChar(50)
+  requer_receita_medica   Boolean                         @default(false)
+  controlado_anvisa       Boolean                         @default(false)
+  refrigeracao_necessaria Boolean                         @default(false)
+  activo                  Boolean                         @default(true)
+  total_entradas          Int                             @default(0)
+  total_saidas            Int                             @default(0)
+  data_ultima_entrada     DateTime?                       @db.Date
+  data_ultima_saida       DateTime?                       @db.Date
+  registado_por           BigInt                          @db.UnsignedBigInt
+  created_at              DateTime?                       @db.Timestamp(0)
+  updated_at              DateTime?                       @db.Timestamp(0)
+  deleted_at              DateTime?                       @db.Timestamp(0)
+  utilizadores            utilizadores                    @relation(fields: [registado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artigos_stock_registado_por_foreign")
+  itens_prescricao        itens_prescricao[]
+  movimentos_stock        movimentos_stock[]
+
+  @@index([categoria], map: "artigos_stock_categoria_index")
+  @@index([codigo_artigo], map: "artigos_stock_codigo_artigo_index")
+  @@index([data_validade], map: "artigos_stock_data_validade_index")
+  @@index([localizacao_stock], map: "artigos_stock_localizacao_stock_index")
+  @@index([registado_por], map: "artigos_stock_registado_por_foreign")
+  @@fulltext([nome_artigo], map: "artigos_stock_nome_artigo_fulltext")
+}
+
+model cache {
+  key        String @id @db.VarChar(255)
+  value      String @db.MediumText
+  expiration Int
+}
+
+model cache_locks {
+  key        String @id @db.VarChar(255)
+  owner      String @db.VarChar(255)
+  expiration Int
+}
+
+model consultas {
+  id                                                  BigInt                  @id @default(autoincrement()) @db.UnsignedBigInt
+  agendamento_id                                      BigInt                  @db.UnsignedBigInt
+  paciente_id                                         BigInt                  @db.UnsignedBigInt
+  medico_id                                           BigInt                  @db.UnsignedBigInt
+  numero_consulta                                     String                  @unique(map: "consultas_numero_consulta_unique") @db.VarChar(50)
+  data_consulta                                       DateTime                @db.Date
+  hora_inicio                                         DateTime                @db.Time(0)
+  hora_fim                                            DateTime?               @db.Time(0)
+  tipo_consulta                                       consultas_tipo_consulta @default(Primeira_Consulta)
+  status                                              consultas_status        @default(Em_Andamento)
+  motivo_consulta                                     String?                 @db.Text
+  observacoes_gerais                                  String?                 @db.Text
+  conduta_medica                                      String?                 @db.Text
+  orientacoes_paciente                                String?                 @db.Text
+  retorno_necessario                                  Boolean                 @default(false)
+  data_retorno_sugerida                               DateTime?               @db.Date
+  motivo_retorno                                      String?                 @db.Text
+  criado_por                                          BigInt                  @db.UnsignedBigInt
+  atualizado_por                                      BigInt?                 @db.UnsignedBigInt
+  created_at                                          DateTime?               @db.Timestamp(0)
+  updated_at                                          DateTime?               @db.Timestamp(0)
+  deleted_at                                          DateTime?               @db.Timestamp(0)
+  anamneses                                           anamneses[]
+  agendamentos                                        agendamentos            @relation(fields: [agendamento_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "consultas_agendamento_id_foreign")
+  utilizadores_consultas_atualizado_porToutilizadores utilizadores?           @relation("consultas_atualizado_porToutilizadores", fields: [atualizado_por], references: [id], onUpdate: NoAction, map: "consultas_atualizado_por_foreign")
+  utilizadores_consultas_criado_porToutilizadores     utilizadores            @relation("consultas_criado_porToutilizadores", fields: [criado_por], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "consultas_criado_por_foreign")
+  utilizadores_consultas_medico_idToutilizadores     utilizadores            @relation("consultas_medico_idToutilizadores", fields: [medico_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "consultas_medico_id_foreign")
+  pacientes                                           pacientes               @relation(fields: [paciente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "consultas_paciente_id_foreign")
+  diagnosticos                                        diagnosticos[]
+  exames_fisicos                                      exames_fisicos[]
+  exames_solicitados                                  exames_solicitados[]
+  prescricoes                                         prescricoes[]
+
+  @@index([agendamento_id], map: "consultas_agendamento_id_foreign")
+  @@index([atualizado_por], map: "consultas_atualizado_por_foreign")
+  @@index([criado_por], map: "consultas_criado_por_foreign")
+  @@index([data_consulta, status], map: "consultas_data_consulta_status_index")
+  @@index([medico_id], map: "consultas_medico_id_index")
+  @@index([numero_consulta], map: "consultas_numero_consulta_index")
+  @@index([paciente_id, data_consulta], map: "consultas_paciente_id_data_consulta_index")
+}
+
+model diagnosticos {
+  id                       BigInt                        @id @default(autoincrement()) @db.UnsignedBigInt
+  consulta_id              BigInt                        @db.UnsignedBigInt
+  paciente_id              BigInt                        @db.UnsignedBigInt
+  cid10_codigo             String                        @db.VarChar(10)
+  cid10_descricao          String                        @db.VarChar(500)
+  cid10_categoria          String?                       @db.VarChar(10)
+  tipo_diagnostico         diagnosticos_tipo_diagnostico @default(Principal)
+  gravidade                diagnosticos_gravidade?
+  doenca_cronica           Boolean                       @default(false)
+  doenca_infectocontagiosa Boolean                       @default(false)
+  notificacao_compulsoria  Boolean                       @default(false)
+  observacoes              String?                       @db.Text
+  justificativa            String?                       @db.Text
+  data_diagnostico         DateTime                      @db.Date
+  created_at               DateTime?                     @db.Timestamp(0)
+  updated_at               DateTime?                     @db.Timestamp(0)
+  consultas                consultas                     @relation(fields: [consulta_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "diagnosticos_consulta_id_foreign")
+  pacientes                pacientes                     @relation(fields: [paciente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "diagnosticos_paciente_id_foreign")
+
+  @@index([cid10_codigo], map: "diagnosticos_cid10_codigo_index")
+  @@index([consulta_id], map: "diagnosticos_consulta_id_index")
+  @@index([paciente_id, cid10_codigo], map: "diagnosticos_paciente_id_cid10_codigo_index")
+  @@index([paciente_id], map: "diagnosticos_paciente_id_index")
+}
+
+model exames_fisicos {
+  id                      BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  consulta_id             BigInt    @db.UnsignedBigInt
+  paciente_id             BigInt    @db.UnsignedBigInt
+  peso                    Decimal?  @db.Decimal(5, 2)
+  altura                  Decimal?  @db.Decimal(3, 2)
+  imc                     Decimal?  @db.Decimal(4, 2)
+  classificacao_imc       String?   @db.VarChar(50)
+  pressao_arterial        String?   @db.VarChar(20)
+  frequencia_cardiaca     Int?
+  frequencia_respiratoria Int?
+  temperatura             Decimal?  @db.Decimal(3, 1)
+  saturacao_oxigenio      Int?
+  perimetro_abdominal     Decimal?  @db.Decimal(5, 2)
+  perimetro_cefalico      Decimal?  @db.Decimal(5, 2)
+  estado_geral            String?   @db.VarChar(100)
+  estado_consciencia      String?   @db.VarChar(100)
+  postura_atitude         String?   @db.Text
+  hidratacao              String?   @db.VarChar(50)
+  coloracao_pele          String?   @db.VarChar(50)
+  exame_segmentar         Json?
+  observacoes_exame       String?   @db.Text
+  created_at              DateTime? @db.Timestamp(0)
+  updated_at              DateTime? @db.Timestamp(0)
+  consultas               consultas @relation(fields: [consulta_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "exames_fisicos_consulta_id_foreign")
+  pacientes               pacientes @relation(fields: [paciente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "exames_fisicos_paciente_id_foreign")
+
+  @@index([consulta_id], map: "exames_fisicos_consulta_id_index")
+  @@index([paciente_id], map: "exames_fisicos_paciente_id_index")
+}
+
+model exames_solicitados {
+  id                                                                  BigInt                        @id @default(autoincrement()) @db.UnsignedBigInt
+  consulta_id                                                         BigInt                        @db.UnsignedBigInt
+  paciente_id                                                         BigInt                        @db.UnsignedBigInt
+  medico_solicitante_id                                               BigInt                        @db.UnsignedBigInt
+  numero_pedido                                                       String                        @unique(map: "exames_solicitados_numero_pedido_unique") @db.VarChar(50)
+  data_solicitacao                                                    DateTime                      @db.Date
+  tipo_exame                                                          String                        @db.VarChar(200)
+  categoria                                                           exames_solicitados_categoria
+  prioridade                                                          exames_solicitados_prioridade @default(Normal)
+  material_necessario                                                 String?                       @db.Text
+  preparo_paciente                                                    String?                       @db.Text
+  indicacao_clinica                                                   String                        @db.Text
+  informacoes_clinicas_relevantes                                     String?                       @db.Text
+  status                                                              exames_solicitados_status     @default(Pendente)
+  data_agendamento                                                    DateTime?                     @db.Date
+  data_realizacao                                                     DateTime?                     @db.Date
+  data_resultado                                                      DateTime?                     @db.Date
+  resultado_texto                                                     String?                       @db.Text
+  interpretacao                                                       String?                       @db.Text
+  arquivo_resultado                                                   String?                       @db.VarChar(255)
+  realizado_por                                                       BigInt?                       @db.UnsignedBigInt
+  laudado_por                                                         BigInt?                       @db.UnsignedBigInt
+  local_realizacao                                                    String?                       @db.VarChar(200)
+  observacoes                                                         String?                       @db.Text
+  motivo_cancelamento                                                 String?                       @db.Text
+  created_at                                                          DateTime?                     @db.Timestamp(0)
+  updated_at                                                          DateTime?                     @db.Timestamp(0)
+  deleted_at                                                          DateTime?                     @db.Timestamp(0)
+  consultas                                                           consultas                     @relation(fields: [consulta_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "exames_solicitados_consulta_id_foreign")
+  utilizadores_exames_solicitados_laudado_porToutilizadores           utilizadores?                 @relation("exames_solicitados_laudado_porToutilizadores", fields: [laudado_por], references: [id], onUpdate: NoAction, map: "exames_solicitados_laudado_por_foreign")
+  utilizadores_exames_solicitados_medico_solicitante_idToutilizadores utilizadores                  @relation("exames_solicitados_medico_solicitante_idToutilizadores", fields: [medico_solicitante_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "exames_solicitados_medico_solicitante_id_foreign")
+  pacientes                                                           pacientes                     @relation(fields: [paciente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "exames_solicitados_paciente_id_foreign")
+  utilizadores_exames_solicitados_realizado_porToutilizadores           utilizadores?                 @relation("exames_solicitados_realizado_porToutilizadores", fields: [realizado_por], references: [id], onUpdate: NoAction, map: "exames_solicitados_realizado_por_foreign")
+
+  @@index([categoria], map: "exames_solicitados_categoria_index")
+  @@index([consulta_id], map: "exames_solicitados_consulta_id_foreign")
+  @@index([laudado_por], map: "exames_solicitados_laudado_por_foreign")
+  @@index([medico_solicitante_id, data_solicitacao], map: "exames_solicitados_medico_solicitante_id_data_solicitacao_index")
+  @@index([numero_pedido], map: "exames_solicitados_numero_pedido_index")
+  @@index([paciente_id, status], map: "exames_solicitados_paciente_id_status_index")
+  @@index([prioridade], map: "exames_solicitados_prioridade_index")
+  @@index([realizado_por], map: "exames_solicitados_realizado_por_foreign")
+}
+
+model failed_jobs {
+  id         BigInt   @id @default(autoincrement()) @db.UnsignedBigInt
+  uuid       String   @unique(map: "failed_jobs_uuid_unique") @db.VarChar(255)
+  connection String   @db.Text
+  queue      String   @db.Text
+  payload    String   @db.LongText
+  exception  String   @db.LongText
+  failed_at  DateTime @default(now()) @db.Timestamp(0)
+}
+
+model itens_prescricao {
+  id                    BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  prescricao_id         BigInt         @db.UnsignedBigInt
+  artigo_stock_id       BigInt?        @db.UnsignedBigInt
+  nome_medicamento      String         @db.VarChar(200)
+  principio_ativo       String?        @db.VarChar(200)
+  concentracao          String?        @db.VarChar(100)
+  forma_farmaceutica    String?        @db.VarChar(100)
+  via_administracao     String?        @db.VarChar(100)
+  posologia             String         @db.Text
+  frequencia            String?        @db.VarChar(100)
+  duracao_tratamento    String?        @db.VarChar(100)
+  quantidade_prescrita  Decimal        @db.Decimal(8, 2)
+  unidade               String         @default("unidade") @db.VarChar(50)
+  instrucoes_uso        String?        @db.Text
+  uso_continuo          Boolean        @default(false)
+  observacoes           String?        @db.Text
+  quantidade_dispensada Decimal        @default(0.00) @db.Decimal(8, 2)
+  dispensado_completo   Boolean        @default(false)
+  tem_interacao         Boolean        @default(false)
+  descricao_interacao   String?        @db.Text
+  created_at            DateTime?      @db.Timestamp(0)
+  updated_at            DateTime?      @db.Timestamp(0)
+  artigos_stock         artigos_stock? @relation(fields: [artigo_stock_id], references: [id], onUpdate: NoAction, map: "itens_prescricao_artigo_stock_id_foreign")
+  prescricoes           prescricoes    @relation(fields: [prescricao_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "itens_prescricao_prescricao_id_foreign")
+
+  @@index([artigo_stock_id], map: "itens_prescricao_artigo_stock_id_index")
+  @@index([prescricao_id], map: "itens_prescricao_prescricao_id_index")
+}
+
+model job_batches {
+  id             String  @id @db.VarChar(255)
+  name           String  @db.VarChar(255)
+  total_jobs     Int
+  pending_jobs   Int
+  failed_jobs    Int
+  failed_job_ids String  @db.LongText
+  options        String? @db.MediumText
+  cancelled_at   Int?
+  created_at     Int
+  finished_at    Int?
+}
+
+model jobs {
+  id           BigInt @id @default(autoincrement()) @db.UnsignedBigInt
+  queue        String @db.VarChar(255)
+  payload      String @db.LongText
+  attempts     Int    @db.UnsignedTinyInt
+  reserved_at  Int?   @db.UnsignedInt
+  available_at Int    @db.UnsignedInt
+  created_at   Int    @db.UnsignedInt
+
+  @@index([queue], map: "jobs_queue_index")
+}
+
+model migrations {
+  id        Int    @id @default(autoincrement()) @db.UnsignedInt
+  migration String @db.VarChar(255)
+  batch     Int
+}
+
+model movimentos_stock {
+  id               BigInt                          @id @default(autoincrement()) @db.UnsignedBigInt
+  artigo_id        BigInt                          @db.UnsignedBigInt
+  tipo_movimento   movimentos_stock_tipo_movimento
+  quantidade       Decimal                         @db.Decimal(10, 2)
+  sentido          movimentos_stock_sentido
+  numero_documento String?                         @db.VarChar(50)
+  paciente_id      BigInt?                         @db.UnsignedBigInt
+  agendamento_id   BigInt?                         @db.UnsignedBigInt
+  origem_destino   String?                         @db.VarChar(150)
+  preco_unitario   Decimal                         @default(0.00) @db.Decimal(10, 2)
+  valor_total      Decimal?                        @db.Decimal(12, 2)
+  motivo           String?                         @db.Text
+  observacoes      String?                         @db.Text
+  registado_por    BigInt                          @db.UnsignedBigInt
+  data_movimento   DateTime                        @default(now()) @db.Timestamp(0)
+  created_at       DateTime?                       @db.Timestamp(0)
+  updated_at       DateTime?                       @db.Timestamp(0)
+  agendamentos     agendamentos?                   @relation(fields: [agendamento_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "movimentos_stock_agendamento_id_foreign")
+  artigos_stock    artigos_stock                   @relation(fields: [artigo_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "movimentos_stock_artigo_id_foreign")
+  pacientes        pacientes?                      @relation(fields: [paciente_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "movimentos_stock_paciente_id_foreign")
+  utilizadores     utilizadores                    @relation(fields: [registado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "movimentos_stock_registado_por_foreign")
+
+  @@index([agendamento_id], map: "movimentos_stock_agendamento_id_foreign")
+  @@index([artigo_id], map: "movimentos_stock_artigo_id_index")
+  @@index([data_movimento], map: "movimentos_stock_data_movimento_index")
+  @@index([paciente_id, data_movimento], map: "movimentos_stock_paciente_id_data_movimento_index")
+  @@index([registado_por], map: "movimentos_stock_registado_por_foreign")
+  @@index([tipo_movimento], map: "movimentos_stock_tipo_movimento_index")
+}
+
+model pacientes {
+  id                           BigInt                       @id @default(autoincrement()) @db.UnsignedBigInt
+  bi_numero                    String                       @unique(map: "pacientes_bi_numero_unique") @db.VarChar(14)
+  numero_processo              String                       @unique(map: "pacientes_numero_processo_unique") @db.VarChar(20)
+  nome_completo                String                       @db.VarChar(255)
+  data_nascimento              DateTime                     @db.Date
+  genero                       pacientes_genero
+  estado_civil                 pacientes_estado_civil?
+  telefone_principal           String                       @db.VarChar(20)
+  telefone_alternativo         String?                      @db.VarChar(20)
+  email                        String?                      @db.VarChar(255)
+  contacto_emergencia_nome     String                       @db.VarChar(100)
+  contacto_emergencia_telefone String                       @db.VarChar(20)
+  contacto_emergencia_relacao  String?                      @db.VarChar(50)
+  provincia                    pacientes_provincia
+  municipio                    String                       @db.VarChar(50)
+  bairro                       String?                      @db.VarChar(100)
+  endereco_completo            String?                      @db.Text
+  grupo_sanguineo              pacientes_grupo_sanguineo?
+  alergias                     String?                      @db.Text
+  doencas_cronicas             String?                      @db.Text
+  medicacoes_continuas         String?                      @db.Text
+  antecedentes_familiares      String?                      @db.Text
+  profissao                    String?                      @db.VarChar(100)
+  empresa_trabalho             String?                      @db.VarChar(100)
+  seguradora_nome              String?                      @db.VarChar(100)
+  seguradora_numero_cartao     String?                      @db.VarChar(50)
+  seguradora_plano             String?                      @db.VarChar(100)
+  observacoes_gerais           String?                      @db.Text
+  foto_perfil                  String?                      @db.VarChar(255)
+  registado_por                BigInt                       @db.UnsignedBigInt
+  created_at                   DateTime?                    @db.Timestamp(0)
+  updated_at                   DateTime?                    @db.Timestamp(0)
+  deleted_at                   DateTime?                    @db.Timestamp(0)
+  agendamentos                 agendamentos[]
+  anamneses                    anamneses[]
+  consultas                    consultas[]
+  diagnosticos                 diagnosticos[]
+  exames_fisicos               exames_fisicos[]
+  exames_solicitados           exames_solicitados[]
+  movimentos_stock             movimentos_stock[]
+  utilizadores                 utilizadores                 @relation(fields: [registado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pacientes_registado_por_foreign")
+  prescricoes                  prescricoes[]
+
+  @@index([bi_numero], map: "pacientes_bi_numero_index")
+  @@index([nome_completo], map: "pacientes_nome_completo_index")
+  @@index([numero_processo], map: "pacientes_numero_processo_index")
+  @@index([registado_por], map: "pacientes_registado_por_foreign")
+  @@fulltext([nome_completo], map: "pacientes_nome_completo_fulltext")
+}
+
+model password_reset_tokens {
+  email      String    @id @db.VarChar(255)
+  token      String    @db.VarChar(255)
+  created_at DateTime? @db.Timestamp(0)
+}
+
+model prescricoes {
+  id                                               BigInt             @id @default(autoincrement()) @db.UnsignedBigInt
+  consulta_id                                      BigInt             @db.UnsignedBigInt
+  paciente_id                                      BigInt             @db.UnsignedBigInt
+  medico_id                                        BigInt             @db.UnsignedBigInt
+  numero_prescricao                                String             @unique(map: "prescricoes_numero_prescricao_unique") @db.VarChar(50)
+  data_prescricao                                  DateTime           @db.Date
+  validade_dias                                    Int                @default(30)
+  status                                           prescricoes_status @default(Ativa)
+  tipo_receita                                     String             @default("Simples") @db.VarChar(50)
+  orientacoes_gerais                               String?            @db.Text
+  observacoes_restritas                            String?            @db.Text
+  receita_digital_url                              String?            @db.VarChar(255)
+  assinatura_digital_hash                          String?            @db.VarChar(255)
+  created_at                                       DateTime?          @db.Timestamp(0)
+  updated_at                                       DateTime?          @db.Timestamp(0)
+  deleted_at                                       DateTime?          @db.Timestamp(0)
+  itens_prescricao                                 itens_prescricao[]
+  consultas                                        consultas          @relation(fields: [consulta_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "prescricoes_consulta_id_foreign")
+  utilizadores_prescricoes_medico_idToutilizadores utilizadores       @relation("prescricoes_medico_idToutilizadores", fields: [medico_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "prescricoes_medico_id_foreign")
+  pacientes                                        pacientes          @relation(fields: [paciente_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "prescricoes_paciente_id_foreign")
+
+  @@index([consulta_id], map: "prescricoes_consulta_id_index")
+  @@index([medico_id, data_prescricao], map: "prescricoes_medico_id_data_prescricao_index")
+  @@index([numero_prescricao], map: "prescricoes_numero_prescricao_index")
+  @@index([paciente_id], map: "prescricoes_paciente_id_index")
+}
+
+model salas_consultorio {
+  id           BigInt         @id @default(autoincrement()) @db.UnsignedBigInt
+  nome_sala    String         @db.VarChar(100)
+  localizacao  String?        @db.VarChar(100)
+  tipo_sala    String         @db.VarChar(50)
+  capacidade   Int            @default(1)
+  equipamentos Json?
+  disponivel   Boolean        @default(true)
+  created_at   DateTime?      @db.Timestamp(0)
+  updated_at   DateTime?      @db.Timestamp(0)
+  agendamentos agendamentos[]
+}
+
+model sessions {
+  id            String  @id @db.VarChar(255)
+  user_id       BigInt? @db.UnsignedBigInt
+  ip_address    String? @db.VarChar(45)
+  user_agent    String? @db.Text
+  payload       String  @db.LongText
+  last_activity Int
+
+  @@index([last_activity], map: "sessions_last_activity_index")
+  @@index([user_id], map: "sessions_user_id_index")
+}
+
+model utilizadores {
+  id                                                                          BigInt               @id @default(autoincrement()) @db.UnsignedBigInt
+  name                                                                        String               @db.VarChar(255)
+  email                                                                       String               @unique(map: "utilizadores_email_unique") @db.VarChar(255)
+  email_verified_at                                                           DateTime?            @db.Timestamp(0)
+  password                                                                    String               @db.VarChar(255)
+  remember_token                                                              String?              @db.VarChar(100)
+  created_at                                                                  DateTime?            @db.Timestamp(0)
+  updated_at                                                                  DateTime?            @db.Timestamp(0)
+  agendamentos_agendamentos_agendado_porToutilizadores                        agendamentos[]       @relation("agendamentos_agendado_porToutilizadores")
+  agendamentos_agendamentos_atendido_porToutilizadores                        agendamentos[]       @relation("agendamentos_atendido_porToutilizadores")
+  agendamentos_agendamentos_medico_idToutilizadores                           agendamentos[]       @relation("agendamentos_medico_idToutilizadores")
+  artigos_stock                                                               artigos_stock[]
+  consultas_consultas_atualizado_porToutilizadores                            consultas[]          @relation("consultas_atualizado_porToutilizadores")
+  consultas_consultas_criado_porToutilizadores                                consultas[]          @relation("consultas_criado_porToutilizadores")
+  consultas_consultas_medico_idToutilizadores                                 consultas[]          @relation("consultas_medico_idToutilizadores")
+  exames_solicitados_exames_solicitados_laudado_porToutilizadores             exames_solicitados[] @relation("exames_solicitados_laudado_porToutilizadores")
+  exames_solicitados_exames_solicitados_medico_solicitante_idToutilizadores   exames_solicitados[] @relation("exames_solicitados_medico_solicitante_idToutilizadores")
+  exames_solicitados_exames_solicitados_realizado_porToutilizadores           exames_solicitados[] @relation("exames_solicitados_realizado_porToutilizadores")
+  movimentos_stock                                                            movimentos_stock[]
+  pacientes                                                                   pacientes[]
+  prescricoes_prescricoes_medico_idToutilizadores                             prescricoes[]        @relation("prescricoes_medico_idToutilizadores")
+}
+
+enum agendamentos_prioridade {
+  Normal
+  Urgente
+  Emergencia
+}
+
+enum agendamentos_status {
+  Agendado
+  Confirmado
+  Em_Espera
+  Em_Atendimento
+  Concluido
+  Cancelado
+  Nao_Compareceu
+}
+
+enum agendamentos_tipo_agendamento {
+  Consulta
+  Exame
+  Procedimento
+  Retorno
+}
+
+enum artigos_stock_categoria {
+  Medicamento
+  Material_Medico
+  Equipamento
+  Consumivel
+  Outro
+}
+
+enum artigos_stock_localizacao_stock {
+  Farmacia_Central
+  Almoxarifado
+  Posto_Enfermagem
+  Consultorio
+}
+
+enum artigos_stock_tipo_medicamento {
+  Referencia
+  Generico
+  Similar
+}
+
+enum artigos_stock_unidade_medida {
+  Unidade
+  Caixa
+  Frasco
+  Ampola
+  Comprimido
+  Mililitro
+  Gramas
+}
+
+enum consultas_status {
+  Agendado
+  Em_Andamento
+  Concluido
+  Cancelado
+}
+
+enum consultas_tipo_consulta {
+  Primeira_Consulta
+  Retorno
+  Urgencia
+  Check_up
+}
+
+enum diagnosticos_gravidade {
+  Leve
+  Moderada
+  Grave
+  Critica
+}
+
+enum diagnosticos_tipo_diagnostico {
+  Principal
+  Secundario
+  Diferencial
+  Provisorio
+}
+
+enum exames_solicitados_categoria {
+  Laboratorial
+  Imagem
+  Cardiologico
+  Neurologico
+  Outros
+}
+
+enum exames_solicitados_prioridade {
+  Normal
+  Urgente
+  Emergencia
+}
+
+enum exames_solicitados_status {
+  Pendente
+  Agendado
+  Realizado
+  Laudado
+  Entregue
+  Cancelado
+}
+
+enum movimentos_stock_sentido {
+  Entrada
+  Saida
+}
+
+enum movimentos_stock_tipo_movimento {
+  Compra
+  Venda
+  Uso_em_Consulta
+  Ajuste_Inventario
+  Devolucao
+  Perda_Validade
+}
+
+enum pacientes_estado_civil {
+  Solteiro
+  Casado
+  Divorciado
+  Viuvo
+  Uniao_Livre
+}
+
+enum pacientes_genero {
+  Masculino
+  Feminino
+  Outro
+}
+
+enum pacientes_grupo_sanguineo {
+  A_Pos   @map("A+")
+  A_Neg   @map("A-")
+  B_Pos   @map("B+")
+  B_Neg   @map("B-")
+  AB_Pos  @map("AB+")
+  AB_Neg  @map("AB-")
+  O_Pos   @map("O+")
+  O_Neg   @map("O-")
+}
+
+enum pacientes_provincia {
+  Bengo
+  Benguela
+  Bie
+  Cabinda
+  Cuando_Cubango
+  Cuanza_Norte
+  Cuanza_Sul
+  Cunene
+  Huambo
+  Huila
+  Luanda
+  Lunda_Norte
+  Lunda_Sul
+  Malanje
+  Moxico
+  Namibe
+  Uige
+  Zaire
+}
+
+enum prescricoes_status {
+  Ativa
+  Dispensada
+  Parcialmente_Dispensada
+  Cancelada
+  Vencida
+}
+
+enum agendamentos_especialidade {
+  Clinica_Geral
+  Pediatria
+  Ginecologia
+  Cardiologia
+  Dermatologia
+  Ortopedia
+}

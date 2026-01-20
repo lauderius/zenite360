@@ -1,0 +1,55 @@
+const API_BASE = '/api';
+
+// Função base para requisições
+async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
+  const token = typeof window !== 'undefined' 
+    ? localStorage.getItem('zenite360_token') 
+    : null;
+
+  const response = await fetch(`${API_BASE}${endpoint}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...options?.headers,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || 'Erro na requisição');
+  }
+
+  return data;
+}
+
+// API Client
+export const api = {
+  get: <T>(endpoint: string) => request<T>(endpoint),
+  
+  post: <T>(endpoint: string, body: any) => 
+    request<T>(endpoint, { 
+      method: 'POST', 
+      body: JSON.stringify(body) 
+    }),
+  
+  put: <T>(endpoint: string, body: any) => 
+    request<T>(endpoint, { 
+      method: 'PUT', 
+      body: JSON.stringify(body) 
+    }),
+  
+  patch: <T>(endpoint: string, body: any) => 
+    request<T>(endpoint, { 
+      method: 'PATCH', 
+      body: JSON.stringify(body) 
+    }),
+  
+  delete: <T>(endpoint: string) => 
+    request<T>(endpoint, { 
+      method: 'DELETE' 
+    }),
+};
+
+export default api;
