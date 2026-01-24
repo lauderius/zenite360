@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { toast } from '@/components/ui';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Input, Tabs } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 
 interface Medicamento {
   id: number;
@@ -29,33 +30,35 @@ interface Prescricao {
   itens: number;
 }
 
-const mockMedicamentos: Medicamento[] = [
-  { id: 1, codigo: 'MED-001', nome: 'Paracetamol', apresentacao: '500mg - Cx 20 comprimidos', tipo: 'Comprimido', estoque: 50, estoqueMinimo: 100, preco: 250, validade: new Date('2025-06-15'), controlado: false },
-  { id: 2, codigo: 'MED-002', nome: 'Amoxicilina', apresentacao: '250mg - Cx 21 cápsulas', tipo: 'Cápsula', estoque: 80, estoqueMinimo: 150, preco: 1200, validade: new Date('2025-03-20'), controlado: false },
-  { id: 3, codigo: 'MED-003', nome: 'Ibuprofeno', apresentacao: '400mg - Cx 20 comprimidos', tipo: 'Comprimido', estoque: 30, estoqueMinimo: 100, preco: 350, validade: new Date('2024-12-10'), controlado: false },
-  { id: 4, codigo: 'MED-004', nome: 'Omeprazol', apresentacao: '20mg - Cx 28 cápsulas', tipo: 'Cápsula', estoque: 120, estoqueMinimo: 200, preco: 800, validade: new Date('2025-08-25'), controlado: false },
-  { id: 5, codigo: 'MED-005', nome: 'Tramadol', apresentacao: '50mg - Cx 10 comprimidos', tipo: 'Comprimido', estoque: 25, estoqueMinimo: 50, preco: 1500, validade: new Date('2025-04-30'), controlado: true },
-];
-
-const mockPrescricoes: Prescricao[] = [
-  { id: 1, codigo: 'RX-2024-00001', paciente: 'Maria José Santos', medico: 'Dr. Paulo Sousa', data: new Date(), status: 'PENDENTE', itens: 3 },
-  { id: 2, codigo: 'RX-2024-00002', paciente: 'João Pedro Silva', medico: 'Dra. Ana Reis', data: new Date(), status: 'PARCIAL', itens: 5 },
-  { id: 3, codigo: 'RX-2024-00003', paciente: 'Ana Ferreira', medico: 'Dr. Paulo Sousa', data: new Date(), status: 'DISPENSADO', itens: 2 },
-];
+import { api } from '@/services/api';
 
 export default function FarmaciaPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [medicamentos, setMedicamentos] = useState<Medicamento[]>([]);
   const [prescricoes, setPrescricoes] = useState<Prescricao[]>([]);
+  const [isDeleting, setIsDeleting] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMedicamentos(mockMedicamentos);
-      setPrescricoes(mockPrescricoes);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchFarmacia() {
+      try {
+        const [medsResult, prescs] = await Promise.all([
+          api.get<{ data: Medicamento[] }>('/farmacia'),
+          api.get<Prescricao[]>('/farmacia/prescricoes'),
+        ]);
+        // A API retorna { data: [...] } ou diretamente o array
+        setMedicamentos(medsResult.data || medsResult || []);
+        setPrescricoes(prescs);
+      } catch (error) {
+        console.error('Erro ao carregar dados da farmácia:', error);
+        // Dados mock para desenvolvimento
+        setMedicamentos([]);
+        setPrescricoes([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchFarmacia();
   }, []);
 
   const medicamentosFiltrados = medicamentos.filter((m) =>

@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import type { StatusFatura, FormaPagamento } from '@/types';
 
 interface Fatura {
@@ -29,75 +29,9 @@ interface ResumoFinanceiro {
   ticketMedio: number;
 }
 
-const mockFaturas: Fatura[] = [
-  {
-    id: 1,
-    numero: 'FAT-2024-00001',
-    paciente: 'Maria José Santos',
-    tipo: 'Consulta',
-    dataEmissao: new Date(),
-    dataVencimento: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    total: 15000,
-    valorPago: 15000,
-    status: 'PAGA',
-    formaPagamento: 'MULTICAIXA',
-  },
-  {
-    id: 2,
-    numero: 'FAT-2024-00002',
-    paciente: 'João Pedro Silva',
-    tipo: 'Exames',
-    dataEmissao: new Date(),
-    dataVencimento: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    total: 45000,
-    valorPago: 20000,
-    status: 'PARCIALMENTE_PAGA',
-    formaPagamento: 'DINHEIRO',
-  },
-  {
-    id: 3,
-    numero: 'FAT-2024-00003',
-    paciente: 'Ana Luísa Ferreira',
-    tipo: 'Internamento',
-    dataEmissao: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
-    dataVencimento: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-    total: 250000,
-    valorPago: 0,
-    status: 'VENCIDA',
-  },
-  {
-    id: 4,
-    numero: 'FAT-2024-00004',
-    paciente: 'Carlos Manuel Costa',
-    tipo: 'Medicamentos',
-    dataEmissao: new Date(),
-    dataVencimento: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    total: 8500,
-    valorPago: 0,
-    status: 'EMITIDA',
-  },
-  {
-    id: 5,
-    numero: 'FAT-2024-00005',
-    paciente: 'Teresa Antónia',
-    tipo: 'Consulta + Exames',
-    dataEmissao: new Date(),
-    dataVencimento: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-    total: 35000,
-    valorPago: 35000,
-    status: 'PAGA',
-    formaPagamento: 'TRANSFERENCIA',
-  },
-];
+import { api } from '@/services/api';
 
-const mockResumo: ResumoFinanceiro = {
-  receitaHoje: 285000,
-  receitaMes: 4500000,
-  faturasEmitidas: 156,
-  faturasPendentes: 23,
-  faturasVencidas: 5,
-  ticketMedio: 28800,
-};
+
 
 const statusConfig: Record<StatusFatura, { label: string; variant: 'default' | 'primary' | 'success' | 'warning' | 'danger' }> = {
   RASCUNHO: { label: 'Rascunho', variant: 'default' },
@@ -124,15 +58,43 @@ export default function FinanceiroPage() {
   const [faturas, setFaturas] = useState<Fatura[]>([]);
   const [resumo, setResumo] = useState<ResumoFinanceiro | null>(null);
   const [filtroStatus, setFiltroStatus] = useState<string>('');
+  const [isDeleting, setIsDeleting] = useState<number | null>(null);
+
+  async function fetchFinanceiro() {
+    try {
+      const [fatsResult, res] = await Promise.all([
+        api.get<{ data: Fatura[] }>('/financeiro/faturas'),
+        api.get<ResumoFinanceiro>('/financeiro/resumo'),
+      ]);
+      // A API retorna { data: [...] } ou diretamente o array
+      setFaturas(fatsResult.data || fatsResult || []);
+      setResumo(res);
+    } catch (error) {
+      console.error('Erro ao carregar dados do financeiro:', error);
+      setFaturas([]);
+      setResumo(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setFaturas(mockFaturas);
-      setResumo(mockResumo);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    fetchFinanceiro();
   }, []);
+
+  async function handleDeleteFatura(id: number) {
+    if (!window.confirm('Tem certeza que deseja excluir esta fatura?')) return;
+    setIsDeleting(id);
+    try {
+      await api.delete(`/financeiro/faturas/${id}`);
+      toast.success('Fatura excluída com sucesso');
+      await fetchFinanceiro();
+    } catch (error) {
+      toast.error('Erro ao excluir fatura');
+    } finally {
+      setIsDeleting(null);
+    }
+  }
 
   const faturasFiltradas = filtroStatus
     ? faturas.filter((f) => f.status === filtroStatus)
@@ -337,6 +299,14 @@ export default function FinanceiroPage() {
                           <Button variant="ghost" size="icon" title="Imprimir">
                             <Icons.Printer size={16} />
                           </Button>
+                          <button
+                            className="text-red-600 hover:text-red-800 disabled:opacity-50 ml-2"
+                            title="Excluir"
+                            disabled={isDeleting === fatura.id}
+                            onClick={() => handleDeleteFatura(fatura.id)}
+                          >
+                            {isDeleting === fatura.id ? 'Excluindo...' : 'Excluir'}
+                          </button>
                         </div>
                       </td>
                     </tr>

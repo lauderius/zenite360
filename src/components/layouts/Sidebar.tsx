@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import { cn } from '@/components/ui';
 import { useAuth } from '@/contexts/AuthContext';
 import type { NivelAcesso } from '@/types';
@@ -14,91 +14,156 @@ interface MenuItem {
   icon: keyof typeof Icons;
   href: string;
   permissoes?: NivelAcesso[];
+  badge?: string | number;
 }
 
-const menuItems: MenuItem[] = [
-  { 
-    id: 'dashboard', 
-    label: 'Dashboard', 
-    icon: 'Dashboard', 
-    href: '/dashboard' 
+interface MenuGroup {
+  id: string;
+  label: string;
+  icon: keyof typeof Icons;
+  items: MenuItem[];
+  permissoes?: NivelAcesso[];
+}
+
+const menuGroups: MenuGroup[] = [
+  {
+    id: 'clinica',
+    label: 'Área Clínica',
+    icon: 'Heart',
+    items: [
+      {
+        id: 'dashboard',
+        label: 'Dashboard',
+        icon: 'Dashboard',
+        href: '/dashboard'
+      },
+      {
+        id: 'pacientes',
+        label: 'Pacientes',
+        icon: 'Users',
+        href: '/pacientes',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO', 'RECEPCAO', 'ADMINISTRATIVO']
+      },
+      {
+        id: 'agendamentos',
+        label: 'Agendamentos',
+        icon: 'Calendar',
+        href: '/agendamentos',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO', 'RECEPCAO', 'ADMINISTRATIVO']
+      },
+      {
+        id: 'triagem',
+        label: 'Triagem',
+        icon: 'Activity',
+        href: '/triagem',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO']
+      },
+      {
+        id: 'consultas',
+        label: 'Consultas',
+        icon: 'Stethoscope',
+        href: '/consultas',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO']
+      },
+      {
+        id: 'internamento',
+        label: 'Internamento',
+        icon: 'Bed',
+        href: '/internamento',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO']
+      },
+    ]
   },
-  { 
-    id: 'pacientes', 
-    label: 'Pacientes', 
-    icon: 'Users', 
-    href: '/pacientes', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO', 'RECEPCAO', 'ADMINISTRATIVO'] 
+  {
+    id: 'tecnica',
+    label: 'Área Técnica',
+    icon: 'TestTube',
+    items: [
+      {
+        id: 'farmacia',
+        label: 'Farmácia',
+        icon: 'Pill',
+        href: '/farmacia',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'FARMACEUTICO', 'MEDICO']
+      },
+      {
+        id: 'laboratorio',
+        label: 'Laboratório',
+        icon: 'TestTube',
+        href: '/laboratorio',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'TECNICO', 'MEDICO']
+      },
+      {
+        id: 'manutencao',
+        label: 'Manutenção',
+        icon: 'Wrench',
+        href: '/manutencao',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MANUTENCAO']
+      },
+      {
+        id: 'patrimonio',
+        label: 'Patrimônio',
+        icon: 'Building',
+        href: '/patrimonio',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'ADMINISTRATIVO']
+      },
+    ]
   },
-  { 
-    id: 'agendamentos', 
-    label: 'Agendamentos', 
-    icon: 'Calendar', 
-    href: '/agendamentos', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO', 'RECEPCAO', 'ADMINISTRATIVO'] 
+  {
+    id: 'administrativa',
+    label: 'Área Administrativa',
+    icon: 'Briefcase',
+    items: [
+      {
+        id: 'rh',
+        label: 'Recursos Humanos',
+        icon: 'Users',
+        href: '/rh',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'ADMINISTRATIVO']
+      },
+      {
+        id: 'financeiro',
+        label: 'Financeiro',
+        icon: 'DollarSign',
+        href: '/financeiro',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'FINANCEIRO']
+      },
+      {
+        id: 'secretaria',
+        label: 'Secretaria',
+        icon: 'FileText',
+        href: '/secretaria',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'ADMINISTRATIVO']
+      },
+      {
+        id: 'servicos-gerais',
+        label: 'Serviços Gerais',
+        icon: 'Wrench',
+        href: '/servicos-gerais',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'ADMINISTRATIVO']
+      },
+      {
+        id: 'casa-mortuaria',
+        label: 'Casa Mortuária',
+        icon: 'Activity',
+        href: '/casa-mortuaria',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'ADMINISTRATIVO']
+      },
+    ]
   },
-  { 
-    id: 'triagem', 
-    label: 'Triagem', 
-    icon: 'Activity', 
-    href: '/triagem', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO'] 
-  },
-  { 
-    id: 'consultas', 
-    label: 'Consultas', 
-    icon: 'Stethoscope', 
-    href: '/consultas', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO'] 
-  },
-  { 
-    id: 'internamento', 
-    label: 'Internamento', 
-    icon: 'Bed', 
-    href: '/internamento', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MEDICO', 'ENFERMEIRO'] 
-  },
-  { 
-    id: 'farmacia', 
-    label: 'Farmácia', 
-    icon: 'Pill', 
-    href: '/farmacia', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'FARMACEUTICO', 'MEDICO'] 
-  },
-  { 
-    id: 'laboratorio', 
-    label: 'Laboratório', 
-    icon: 'TestTube', 
-    href: '/laboratorio', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'TECNICO', 'MEDICO'] 
-  },
-  { 
-    id: 'manutencao', 
-    label: 'Manutenção', 
-    icon: 'Wrench', 
-    href: '/manutencao', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'MANUTENCAO'] 
-  },
-  { 
-    id: 'rh', 
-    label: 'Recursos Humanos', 
-    icon: 'Building', 
-    href: '/rh', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'ADMINISTRATIVO'] 
-  },
-  { 
-    id: 'financeiro', 
-    label: 'Financeiro', 
-    icon: 'DollarSign', 
-    href: '/financeiro', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO', 'GESTOR', 'FINANCEIRO'] 
-  },
-  { 
-    id: 'configuracoes', 
-    label: 'Configurações', 
-    icon: 'Settings', 
-    href: '/configuracoes', 
-    permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO'] 
+  {
+    id: 'sistema',
+    label: 'Sistema',
+    icon: 'Settings',
+    items: [
+      {
+        id: 'configuracoes',
+        label: 'Configurações',
+        icon: 'Settings',
+        href: '/configuracoes',
+        permissoes: ['SUPER_ADMIN', 'ADMIN_DEPARTAMENTO']
+      },
+    ]
   },
 ];
 
@@ -110,11 +175,12 @@ interface SidebarProps {
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const { funcionario, checkPermission } = useAuth();
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(['clinica']); // Dashboard sempre expandido por padrão
 
-  // Filtrar itens de menu com base nas permissões
-  const filteredMenuItems = menuItems.filter((item) => {
-    if (!item.permissoes) return true;
-    return checkPermission(item.permissoes);
+  // Filtrar grupos de menu com base nas permissões
+  const filteredMenuGroups = menuGroups.filter((group) => {
+    if (!group.permissoes) return true;
+    return checkPermission(group.permissoes);
   });
 
   // Verificar se um item está ativo
@@ -123,6 +189,23 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       return pathname === '/dashboard';
     }
     return pathname.startsWith(href);
+  };
+
+  // Verificar se um grupo deve estar expandido
+  const isGroupExpanded = (groupId: string) => expandedGroups.includes(groupId);
+
+  // Alternar expansão de grupo
+  const toggleGroup = (groupId: string) => {
+    setExpandedGroups(prev =>
+      prev.includes(groupId)
+        ? prev.filter(id => id !== groupId)
+        : [...prev, groupId]
+    );
+  };
+
+  // Verificar se um grupo tem algum item ativo
+  const hasActiveItem = (group: MenuGroup) => {
+    return group.items.some(item => isActive(item.href));
   };
 
   return (

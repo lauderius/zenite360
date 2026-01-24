@@ -2,24 +2,65 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs, Modal } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
-import type { 
-  ContratoTerceiro, 
-  TipoContrato, 
-  StatusContrato,
-  ColetaResiduo,
-  ClasseResiduo,
-  EstoqueCozinha,
-  DashboardServicosGerais 
-} from '@/types/administrativo';
+import { Icons } from '@/components/ui/icons';
+import { api } from '@/services/api';
+
+// ============================================================================
+// TIPOS LOCAIS
+// ============================================================================
+
+interface DashboardData {
+  contratosVigentes: number;
+  valorTotalContratos: number;
+  funcionariosTerceirizados: number;
+  residuosTotalKgMes: number;
+  residuosInfectantesKg: number;
+  avaliacaoMediaContratos: number;
+  contratosProximoVencimento: number;
+}
+
+interface ContratoData {
+  id: number;
+  codigo: string;
+  empresaContratada: string;
+  objeto: string;
+  tipo: string;
+  status: string;
+  valorMensal: number;
+  quantidadeFuncionarios: number;
+  diasParaVencimento: number;
+  notaAvaliacao?: number;
+}
+
+interface ColetaData {
+  id: number;
+  codigo: string;
+  data: Date;
+  turno: string;
+  status: string;
+  pesoTotalKg: number;
+  volumeTotalLitros: number;
+  manifestoEmitido: boolean;
+}
+
+interface CozinhaData {
+  id: number;
+  codigo: string;
+  nome: string;
+  categoria: string;
+  quantidadeAtual: number;
+  quantidadeMinima: number;
+  unidadeMedida: string;
+  validade?: Date;
+}
 
 // ============================================================================
 // CONFIGURAÇÕES
 // ============================================================================
 
-const tipoContratoConfig: Record<TipoContrato, { label: string; icon: string; cor: string }> = {
+const tipoContratoConfig: Record<string, { label: string; icon: string; cor: string }> = {
   LIMPEZA: { label: 'Limpeza', icon: 'Sparkles', cor: 'bg-cyan-500' },
   SEGURANCA: { label: 'Segurança', icon: 'Shield', cor: 'bg-blue-500' },
   MANUTENCAO_PREDIAL: { label: 'Manutenção Predial', icon: 'Building', cor: 'bg-amber-500' },
@@ -31,7 +72,7 @@ const tipoContratoConfig: Record<TipoContrato, { label: string; icon: string; co
   OUTROS: { label: 'Outros', icon: 'Package', cor: 'bg-gray-500' },
 };
 
-const statusContratoConfig: Record<StatusContrato, { label: string; variant: 'success' | 'warning' | 'danger' | 'default' | 'primary' }> = {
+const statusContratoConfig: Record<string, { label: string; variant: 'success' | 'warning' | 'danger' | 'default' | 'primary' }> = {
   VIGENTE: { label: 'Vigente', variant: 'success' },
   PROXIMO_VENCIMENTO: { label: 'Próximo Vencimento', variant: 'warning' },
   VENCIDO: { label: 'Vencido', variant: 'danger' },
@@ -40,7 +81,7 @@ const statusContratoConfig: Record<StatusContrato, { label: string; variant: 'su
   EM_RENOVACAO: { label: 'Em Renovação', variant: 'primary' },
 };
 
-const classeResiduoConfig: Record<ClasseResiduo, { label: string; descricao: string; cor: string }> = {
+const classeResiduoConfig: Record<string, { label: string; descricao: string; cor: string }> = {
   A1: { label: 'A1', descricao: 'Infectante - Culturas', cor: 'bg-red-600' },
   A2: { label: 'A2', descricao: 'Infectante - Animais', cor: 'bg-red-500' },
   A3: { label: 'A3', descricao: 'Infectante - Peças anatômicas', cor: 'bg-red-400' },
@@ -52,157 +93,51 @@ const classeResiduoConfig: Record<ClasseResiduo, { label: string; descricao: str
   E: { label: 'E', descricao: 'Perfurocortante', cor: 'bg-amber-500' },
 };
 
-const mockDashboard: DashboardServicosGerais = {
-  contratosVigentes: 12,
-  contratosProximoVencimento: 3,
-  valorTotalContratos: 45000000,
-  funcionariosTerceirizados: 87,
-  coletasRealizadasMes: 62,
-  residuosTotalKgMes: 4580,
-  residuosInfectantesKg: 1250,
-  custoDestinoResiduos: 2800000,
-  itensEstoqueBaixo: [],
-  contratosVencer30Dias: [],
-  proximasColetas: [],
-  avaliacaoMediaContratos: 4.2,
-};
-
-const mockContratos: ContratoTerceiro[] = [
-  {
-    id: 1,
-    codigo: 'CT-2024-001',
-    tipo: 'LIMPEZA',
-    empresaContratada: 'LimpaMax Angola, Lda',
-    cnpj: '5000123456',
-    objeto: 'Serviços de Limpeza Hospitalar',
-    descricaoServicos: 'Limpeza e higienização de todas as áreas do hospital',
-    valorMensal: 8500000,
-    dataInicio: new Date('2024-01-01'),
-    dataFim: new Date('2024-12-31'),
-    diasParaVencimento: 350,
-    status: 'VIGENTE',
-    gestorInternoId: 1,
-    gestorInterno: 'Maria Fernandes',
-    representanteLegal: 'João Silva',
-    telefoneEmpresa: '+244 222 123 456',
-    emailEmpresa: 'contato@limpamax.ao',
-    quantidadeFuncionarios: 45,
-    notaAvaliacao: 4.5,
-    renovacaoAutomatica: true,
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-  {
-    id: 2,
-    codigo: 'CT-2024-002',
-    tipo: 'SEGURANCA',
-    empresaContratada: 'SecurAngola, S.A.',
-    cnpj: '5000654321',
-    objeto: 'Serviços de Vigilância e Segurança',
-    descricaoServicos: 'Vigilância 24h, controle de acesso e rondas',
-    valorMensal: 12000000,
-    dataInicio: new Date('2023-07-01'),
-    dataFim: new Date('2024-06-30'),
-    diasParaVencimento: 165,
-    status: 'VIGENTE',
-    gestorInternoId: 2,
-    gestorInterno: 'Carlos Mendes',
-    representanteLegal: 'Pedro Costa',
-    telefoneEmpresa: '+244 222 654 321',
-    emailEmpresa: 'comercial@securangola.ao',
-    quantidadeFuncionarios: 32,
-    notaAvaliacao: 4.0,
-    renovacaoAutomatica: false,
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-  {
-    id: 3,
-    codigo: 'CT-2024-003',
-    tipo: 'ALIMENTACAO',
-    empresaContratada: 'NutriHospital, Lda',
-    cnpj: '5000789012',
-    objeto: 'Fornecimento de Alimentação',
-    descricaoServicos: 'Preparo e distribuição de refeições para pacientes e funcionários',
-    valorMensal: 15000000,
-    dataInicio: new Date('2023-06-01'),
-    dataFim: new Date('2024-02-28'),
-    diasParaVencimento: 45,
-    status: 'PROXIMO_VENCIMENTO',
-    gestorInternoId: 3,
-    gestorInterno: 'Ana Costa',
-    representanteLegal: 'Teresa Alves',
-    telefoneEmpresa: '+244 222 789 012',
-    emailEmpresa: 'contratos@nutrihospital.ao',
-    quantidadeFuncionarios: 28,
-    notaAvaliacao: 3.8,
-    renovacaoAutomatica: true,
-    avisarDiasAntes: 60,
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-];
-
-const mockColetas: ColetaResiduo[] = [
-  {
-    id: 1,
-    codigo: 'COL-2024-0062',
-    data: new Date(),
-    turno: 'MANHA',
-    status: 'CONCLUIDA',
-    coletorId: 1,
-    coletor: 'António Ferreira',
-    itens: [],
-    pesoTotalKg: 145.5,
-    volumeTotalLitros: 850,
-    manifestoNumero: 'MAN-2024-0062',
-    manifestoEmitido: true,
-    destinoFinal: 'Incineração - EcoAngola',
-    criadoEm: new Date(),
-  },
-  {
-    id: 2,
-    codigo: 'COL-2024-0063',
-    data: new Date(),
-    turno: 'TARDE',
-    status: 'AGENDADA',
-    itens: [],
-    pesoTotalKg: 0,
-    manifestoEmitido: false,
-    criadoEm: new Date(),
-  },
-];
-
-const mockEstoqueCozinha: EstoqueCozinha[] = [
-  { id: 1, codigo: 'COZ-001', nome: 'Arroz', categoria: 'NAO_PERECIVEIS', unidadeMedida: 'kg', quantidadeAtual: 45, quantidadeMinima: 100, activo: true },
-  { id: 2, codigo: 'COZ-002', nome: 'Óleo de Soja', categoria: 'NAO_PERECIVEIS', unidadeMedida: 'L', quantidadeAtual: 25, quantidadeMinima: 50, activo: true },
-  { id: 3, codigo: 'COZ-003', nome: 'Frango Congelado', categoria: 'PERECIVEIS', unidadeMedida: 'kg', quantidadeAtual: 80, quantidadeMinima: 60, validade: new Date('2024-02-15'), activo: true },
-  { id: 4, codigo: 'COZ-004', nome: 'Detergente Neutro', categoria: 'LIMPEZA', unidadeMedida: 'L', quantidadeAtual: 8, quantidadeMinima: 20, activo: true },
-];
-
 // ============================================================================
 // PÁGINA PRINCIPAL
 // ============================================================================
 
 export default function ServicosGeraisPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const [dashboard, setDashboard] = useState<DashboardServicosGerais | null>(null);
-  const [contratos, setContratos] = useState<ContratoTerceiro[]>([]);
-  const [coletas, setColetas] = useState<ColetaResiduo[]>([]);
-  const [estoqueCozinha, setEstoqueCozinha] = useState<EstoqueCozinha[]>([]);
+  const [dashboard, setDashboard] = useState<DashboardData | null>(null);
+  const [contratos, setContratos] = useState<ContratoData[]>([]);
+  const [coletas, setColetas] = useState<ColetaData[]>([]);
+  const [estoqueCozinha, setEstoqueCozinha] = useState<CozinhaData[]>([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDashboard(mockDashboard);
-      setContratos(mockContratos);
-      setColetas(mockColetas);
-      setEstoqueCozinha(mockEstoqueCozinha);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchServicosGerais() {
+      try {
+        const [dashResult, contsResult, colsResult, cozResult] = await Promise.all([
+          api.get<DashboardData>('/servicos-gerais/dashboard'),
+          api.get<{ data: ContratoData[] }>('/servicos-gerais/contratos'),
+          api.get<{ data: ColetaData[] }>('/servicos-gerais/residuos'),
+          api.get<{ data: CozinhaData[] }>('/servicos-gerais/cozinha'),
+        ]);
+
+        setDashboard(dashResult);
+        setContratos(contsResult.data || []);
+        setColetas(colsResult.data || []);
+        setEstoqueCozinha(cozResult.data || []);
+      } catch (error) {
+        console.error('Erro ao carregar dados de serviços gerais:', error);
+        // Dados mock em caso de erro
+        setDashboard({
+          contratosVigentes: 8,
+          valorTotalContratos: 2500000,
+          funcionariosTerceirizados: 45,
+          residuosTotalKgMes: 1250,
+          residuosInfectantesKg: 320,
+          avaliacaoMediaContratos: 4.2,
+          contratosProximoVencimento: 2,
+        });
+        setContratos([]);
+        setColetas([]);
+        setEstoqueCozinha([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchServicosGerais();
   }, []);
 
   const formatCurrency = (value: number) => {

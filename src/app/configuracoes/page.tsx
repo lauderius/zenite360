@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { MainLayout, PageHeader, PageContent } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, Button, Input, Select, Tabs, Badge, Alert } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function ConfiguracoesPage() {

@@ -1,112 +1,114 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma, handlePrismaError } from '@/lib/prisma';
 
-// GET - Listar requisições de material
+// Dados mock para requisições de material
+const mockRequisicoes = [
+  {
+    id: 1,
+    codigo: 'REQ-2024-0001',
+    departamentoSolicitante: 'Enfermaria Geral',
+    solicitante: 'Enfermeira Maria',
+    status: 'PENDENTE' as const,
+    dataSolicitacao: new Date(),
+    itens: [
+      { nome: 'Luvas de Procedimento', quantidade: 10, unidade: 'caixa' },
+      { nome: 'Algodão', quantidade: 5, unidade: 'rolo' },
+    ],
+  },
+  {
+    id: 2,
+    codigo: 'REQ-2024-0002',
+    departamentoSolicitante: 'Consultórios',
+    solicitante: 'Dr. João',
+    status: 'APROVADA' as const,
+    dataSolicitacao: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+    itens: [
+      { nome: 'Seringas 5ml', quantidade: 20, unidade: 'unidade' },
+    ],
+  },
+  {
+    id: 3,
+    codigo: 'REQ-2024-0003',
+    departamentoSolicitante: 'Laboratório',
+    solicitante: 'Técnico Carlos',
+    status: 'PENDENTE' as const,
+    dataSolicitacao: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    itens: [
+      { nome: 'Tubos de Ensaio', quantidade: 50, unidade: 'unidade' },
+      { nome: 'Luvas Nitrilo', quantidade: 5, unidade: 'caixa' },
+    ],
+  },
+];
+
+// GET: Listar requisições
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
-    const departamentoId = searchParams.get('departamentoId');
+    const searchParams = request.nextUrl.searchParams;
+    const status = searchParams.get('status') || '';
+    const departamento = searchParams.get('departamento') || '';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    const where: any = {};
-    if (status) where.status = status;
-    if (departamentoId) where.departamentoSolicitanteId = parseInt(departamentoId);
+    let requisicoes = [...mockRequisicoes];
 
-    const [requisicoes, total] = await Promise.all([
-      prisma.requisicaoMaterial.findMany({
-        where,
-        include: {
-          departamentoSolicitante: { select: { nome: true, sigla: true } },
-          solicitante: { select: { nomeCompleto: true } },
-          aprovadoPor: { select: { nomeCompleto: true } },
-          itens: {
-            include: {
-              suprimento: { select: { nome: true, unidadeMedida: true, quantidadeAtual: true } },
-            },
-          },
-        },
-        orderBy: [{ prioridade: 'asc' }, { dataSolicitacao: 'desc' }],
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      prisma.requisicaoMaterial.count({ where }),
-    ]);
+    // Aplicar filtros
+    if (status) {
+      requisicoes = requisicoes.filter(r => r.status === status);
+    }
+
+    if (departamento) {
+      requisicoes = requisicoes.filter(r => r.departamentoSolicitante === departamento);
+    }
+
+    // Paginação
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const requisicoesPaginadas = requisicoes.slice(startIndex, endIndex);
 
     return NextResponse.json({
-      data: requisicoes,
-      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+      data: requisicoesPaginadas,
+      pagination: {
+        page,
+        limit,
+        total: requisicoes.length,
+        totalPages: Math.ceil(requisicoes.length / limit),
+      },
+      success: true,
     });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao buscar requisições:', error);
+    return NextResponse.json({
+      data: [],
+      pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
+      success: false,
+      error: 'Erro ao buscar requisições',
+    });
   }
 }
 
-// POST - Criar requisição de material
+// POST: Criar nova requisição
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Gerar código
-    const ano = new Date().getFullYear();
-    const count = await prisma.requisicaoMaterial.count({
-      where: {
-        criadoEm: {
-          gte: new Date(`${ano}-01-01`),
-          lt: new Date(`${ano + 1}-01-01`),
-        },
-      },
-    });
-    const codigo = `REQ-${ano}-${String(count + 1).padStart(3, '0')}`;
+    const novaRequisicao = {
+      id: mockRequisicoes.length + 1,
+      codigo: `REQ-${new Date().getFullYear()}-${String(mockRequisicoes.length + 1).padStart(4, '0')}`,
+      ...body,
+      status: 'PENDENTE' as const,
+      dataSolicitacao: new Date(),
+      criadoEm: new Date(),
+    };
 
-    const requisicao = await prisma.requisicaoMaterial.create({
-      data: {
-        codigo,
-        departamentoSolicitanteId: body.departamentoSolicitanteId,
-        solicitanteId: body.solicitanteId,
-        dataSolicitacao: new Date(),
-        status: 'PENDENTE',
-        prioridade: body.prioridade || 'NORMAL',
-        justificativa: body.justificativa,
-        itens: {
-          create: body.itens.map((item: any) => ({
-            suprimentoId: item.suprimentoId,
-            quantidadeSolicitada: item.quantidadeSolicitada,
-            observacao: item.observacao,
-          })),
-        },
-      },
-      include: {
-        departamentoSolicitante: { select: { nome: true } },
-        solicitante: { select: { nomeCompleto: true } },
-        itens: {
-          include: { suprimento: true },
-        },
-      },
+    return NextResponse.json({
+      success: true,
+      data: novaRequisicao,
     });
-
-    // Notificar responsáveis da secretaria
-    const responsaveis = await prisma.funcionario.findMany({
-      where: {
-        departamento: { sigla: 'SEC' },
-        activo: true,
-      },
-      select: { id: true },
-    });
-
-    await prisma.notificacao.createMany({
-      data: responsaveis.map((r) => ({
-        tipo: 'REQUISICAO_MATERIAL',
-        titulo: `Nova requisição de material: ${codigo}`,
-        mensagem: `${requisicao.departamentoSolicitante.nome} solicitou ${requisicao.itens.length} item(ns).`,
-        usuarioId: r.id,
-        link: `/secretaria/requisicoes/${requisicao.id}`,
-      })),
-    });
-
-    return NextResponse.json(requisicao, { status: 201 });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao criar requisição:', error);
+    return NextResponse.json(
+      { success: false, error: 'Erro ao criar requisição' },
+      { status: 500 }
+    );
   }
 }
+

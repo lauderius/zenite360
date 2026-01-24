@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs, Avatar } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 
 interface Exame {
   id: number;
@@ -29,76 +29,7 @@ interface TipoExame {
   preco: number;
 }
 
-const mockExames: Exame[] = [
-  {
-    id: 1,
-    codigo: 'EX-2024-00001',
-    paciente: 'Maria José Santos',
-    tipoExame: 'Hemograma Completo',
-    categoria: 'Hematologia',
-    dataSolicitacao: new Date(),
-    solicitante: 'Dr. Paulo Sousa',
-    status: 'SOLICITADO',
-    urgente: true,
-  },
-  {
-    id: 2,
-    codigo: 'EX-2024-00002',
-    paciente: 'João Pedro Silva',
-    tipoExame: 'Glicemia em Jejum',
-    categoria: 'Bioquímica',
-    dataSolicitacao: new Date(),
-    dataColeta: new Date(),
-    solicitante: 'Dra. Ana Reis',
-    status: 'EM_ANALISE',
-    urgente: false,
-  },
-  {
-    id: 3,
-    codigo: 'EX-2024-00003',
-    paciente: 'Ana Luísa Ferreira',
-    tipoExame: 'Urina Tipo I',
-    categoria: 'Uroanálise',
-    dataSolicitacao: new Date(),
-    dataColeta: new Date(),
-    dataResultado: new Date(),
-    solicitante: 'Dr. Paulo Sousa',
-    status: 'CONCLUIDO',
-    urgente: false,
-  },
-  {
-    id: 4,
-    codigo: 'EX-2024-00004',
-    paciente: 'Carlos Manuel Costa',
-    tipoExame: 'Perfil Lipídico',
-    categoria: 'Bioquímica',
-    dataSolicitacao: new Date(),
-    solicitante: 'Dra. Ana Reis',
-    status: 'COLETADO',
-    urgente: false,
-  },
-  {
-    id: 5,
-    codigo: 'EX-2024-00005',
-    paciente: 'Teresa Antónia',
-    tipoExame: 'TSH e T4 Livre',
-    categoria: 'Hormonal',
-    dataSolicitacao: new Date(),
-    solicitante: 'Dr. João Santos',
-    status: 'SOLICITADO',
-    urgente: true,
-  },
-];
 
-const mockTiposExame: TipoExame[] = [
-  { id: 1, codigo: 'HEM-001', nome: 'Hemograma Completo', categoria: 'Hematologia', prazo: '4 horas', preco: 2500 },
-  { id: 2, codigo: 'BIO-001', nome: 'Glicemia em Jejum', categoria: 'Bioquímica', prazo: '2 horas', preco: 1500 },
-  { id: 3, codigo: 'BIO-002', nome: 'Perfil Lipídico', categoria: 'Bioquímica', prazo: '6 horas', preco: 4500 },
-  { id: 4, codigo: 'URO-001', nome: 'Urina Tipo I', categoria: 'Uroanálise', prazo: '3 horas', preco: 1200 },
-  { id: 5, codigo: 'HOR-001', nome: 'TSH e T4 Livre', categoria: 'Hormonal', prazo: '24 horas', preco: 6000 },
-  { id: 6, codigo: 'SOR-001', nome: 'HIV 1 e 2', categoria: 'Sorologia', prazo: '24 horas', preco: 3500 },
-  { id: 7, codigo: 'MIC-001', nome: 'Cultura de Urina', categoria: 'Microbiologia', prazo: '72 horas', preco: 5000 },
-];
 
 const statusConfig = {
   SOLICITADO: { label: 'Solicitado', variant: 'default' as const, cor: 'bg-slate-500' },
@@ -118,12 +49,20 @@ export default function LaboratorioPage() {
   const [filtroCategoria, setFiltroCategoria] = useState<string>('');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setExames(mockExames);
-      setTiposExame(mockTiposExame);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchLaboratorio() {
+      try {
+        const response = await api.get('/laboratorio');
+        setExames(response.data || []);
+        // TODO: Implementar endpoint para tipos de exame
+        setTiposExame([]);
+      } catch (error) {
+        setExames([]);
+        setTiposExame([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchLaboratorio();
   }, []);
 
   const examesFiltrados = exames.filter((e) => {

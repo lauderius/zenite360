@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs, Avatar } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import type { StatusFuncionario, NivelAcesso } from '@/types';
 
 interface Funcionario {
@@ -31,121 +31,8 @@ interface Departamento {
   activo: boolean;
 }
 
-const mockFuncionarios: Funcionario[] = [
-  {
-    id: 1,
-    numeroMecanografico: 'F-00001',
-    nomeCompleto: 'Dr. Paulo Roberto Sousa',
-    cargo: 'Médico',
-    departamento: 'Clínica Geral',
-    especialidade: 'Clínica Médica',
-    nivelAcesso: 'MEDICO',
-    status: 'ACTIVO',
-    dataAdmissao: new Date('2020-03-15'),
-    telefone: '+244 923 456 789',
-    email: 'paulo.sousa@hospital.co.ao',
-  },
-  {
-    id: 2,
-    numeroMecanografico: 'F-00002',
-    nomeCompleto: 'Dra. Ana Maria Reis',
-    cargo: 'Médica',
-    departamento: 'Cardiologia',
-    especialidade: 'Cardiologia',
-    nivelAcesso: 'MEDICO',
-    status: 'ACTIVO',
-    dataAdmissao: new Date('2019-07-01'),
-    telefone: '+244 912 345 678',
-    email: 'ana.reis@hospital.co.ao',
-  },
-  {
-    id: 3,
-    numeroMecanografico: 'F-00003',
-    nomeCompleto: 'Maria Teresa Fernandes',
-    cargo: 'Enfermeira Chefe',
-    departamento: 'Enfermaria Geral',
-    nivelAcesso: 'ENFERMEIRO',
-    status: 'ACTIVO',
-    dataAdmissao: new Date('2018-02-20'),
-    telefone: '+244 934 567 890',
-    email: 'maria.fernandes@hospital.co.ao',
-  },
-  {
-    id: 4,
-    numeroMecanografico: 'F-00004',
-    nomeCompleto: 'João Carlos Silva',
-    cargo: 'Técnico de Laboratório',
-    departamento: 'Laboratório',
-    nivelAcesso: 'TECNICO',
-    status: 'ACTIVO',
-    dataAdmissao: new Date('2021-05-10'),
-    telefone: '+244 945 678 901',
-    email: 'joao.silva@hospital.co.ao',
-  },
-  {
-    id: 5,
-    numeroMecanografico: 'F-00005',
-    nomeCompleto: 'António Manuel Costa',
-    cargo: 'Recepcionista',
-    departamento: 'Recepção',
-    nivelAcesso: 'RECEPCAO',
-    status: 'FERIAS',
-    dataAdmissao: new Date('2022-01-15'),
-    telefone: '+244 956 789 012',
-    email: 'antonio.costa@hospital.co.ao',
-  },
-  {
-    id: 6,
-    numeroMecanografico: 'F-00006',
-    nomeCompleto: 'Beatriz Lopes Mendes',
-    cargo: 'Farmacêutica',
-    departamento: 'Farmácia',
-    nivelAcesso: 'FARMACEUTICO',
-    status: 'ACTIVO',
-    dataAdmissao: new Date('2020-09-01'),
-    telefone: '+244 967 890 123',
-    email: 'beatriz.mendes@hospital.co.ao',
-  },
-  {
-    id: 7,
-    numeroMecanografico: 'F-00007',
-    nomeCompleto: 'Carlos Eduardo Martins',
-    cargo: 'Técnico de Manutenção',
-    departamento: 'Manutenção',
-    nivelAcesso: 'MANUTENCAO',
-    status: 'LICENCA',
-    dataAdmissao: new Date('2019-03-15'),
-    telefone: '+244 978 901 234',
-    email: 'carlos.martins@hospital.co.ao',
-  },
-  {
-    id: 8,
-    numeroMecanografico: 'F-00008',
-    nomeCompleto: 'Diana Cristina Santos',
-    cargo: 'Assistente Financeira',
-    departamento: 'Financeiro',
-    nivelAcesso: 'FINANCEIRO',
-    status: 'ACTIVO',
-    dataAdmissao: new Date('2021-11-20'),
-    telefone: '+244 989 012 345',
-    email: 'diana.santos@hospital.co.ao',
-  },
-];
+import { api } from '@/services/api';
 
-const mockDepartamentos: Departamento[] = [
-  { id: 1, nome: 'Direcção Geral', sigla: 'DG', responsavel: 'Dr. Manuel Alves', totalFuncionarios: 5, activo: true },
-  { id: 2, nome: 'Clínica Geral', sigla: 'CG', responsavel: 'Dr. Paulo Sousa', totalFuncionarios: 12, activo: true },
-  { id: 3, nome: 'Cardiologia', sigla: 'CAR', responsavel: 'Dra. Ana Reis', totalFuncionarios: 8, activo: true },
-  { id: 4, nome: 'UTI', sigla: 'UTI', responsavel: 'Dr. Carlos Mendes', totalFuncionarios: 15, activo: true },
-  { id: 5, nome: 'Laboratório', sigla: 'LAB', responsavel: 'Dr. João Santos', totalFuncionarios: 10, activo: true },
-  { id: 6, nome: 'Enfermaria Geral', sigla: 'ENF', responsavel: 'Maria Fernandes', totalFuncionarios: 25, activo: true },
-  { id: 7, nome: 'Farmácia', sigla: 'FAR', responsavel: 'Beatriz Mendes', totalFuncionarios: 6, activo: true },
-  { id: 8, nome: 'Radiologia', sigla: 'RAD', responsavel: 'Dr. Pedro Nunes', totalFuncionarios: 7, activo: true },
-  { id: 9, nome: 'Urgência', sigla: 'URG', responsavel: 'Dr. Luís Ferreira', totalFuncionarios: 20, activo: true },
-  { id: 10, nome: 'Financeiro', sigla: 'FIN', responsavel: 'Ana Costa', totalFuncionarios: 8, activo: true },
-  { id: 11, nome: 'Recursos Humanos', sigla: 'RH', responsavel: 'Teresa Oliveira', totalFuncionarios: 4, activo: true },
-  { id: 12, nome: 'Manutenção', sigla: 'MAN', responsavel: 'José Silva', totalFuncionarios: 10, activo: true },
-];
 
 const statusConfig: Record<StatusFuncionario, { label: string; variant: 'default' | 'success' | 'warning' | 'danger' | 'primary' }> = {
   ACTIVO: { label: 'Activo', variant: 'success' },
@@ -181,12 +68,23 @@ export default function RHPage() {
   const [filterDepartamento, setFilterDepartamento] = useState<string>('');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setFuncionarios(mockFuncionarios);
-      setDepartamentos(mockDepartamentos);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchRH() {
+      try {
+        const [funcs, depts] = await Promise.all([
+          api.get<Funcionario[]>('/rh/funcionarios'),
+          api.get<Departamento[]>('/rh/departamentos'),
+        ]);
+        setFuncionarios(funcs);
+        setDepartamentos(depts);
+      } catch (error) {
+        // TODO: adicionar feedback de erro
+        setFuncionarios([]);
+        setDepartamentos([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchRH();
   }, []);
 
   // Filtrar funcionários

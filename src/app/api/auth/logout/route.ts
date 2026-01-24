@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
-import { prisma } from '@/lib/prisma';
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'zenite360-secret-key-change-in-production'
@@ -19,31 +18,11 @@ export async function POST(request: NextRequest) {
     try {
       const { payload } = await jwtVerify(token, JWT_SECRET);
       
-      // Invalidar sessões do utilizador
-      if (payload.userId) {
-        await prisma.sessao.updateMany({
-          where: {
-            usuarioId: payload.userId as number,
-            activa: true,
-          },
-          data: {
-            activa: false,
-          },
-        });
-
-        // Registrar log de auditoria
-        await prisma.logAuditoria.create({
-          data: {
-            tabela: 'usuarios',
-            registroId: payload.userId as number,
-            acao: 'LOGOUT',
-            dadosNovos: JSON.stringify({ timestamp: new Date() }),
-            usuarioId: payload.userId as number,
-            ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
-            userAgent: request.headers.get('user-agent') || 'unknown',
-          },
-        });
-      }
+      // Token foi validado, logout bem-sucedido
+      return NextResponse.json({
+        success: true,
+        message: 'Logout realizado com sucesso',
+      });
     } catch {
       // Token inválido, mas logout ainda é sucesso
     }

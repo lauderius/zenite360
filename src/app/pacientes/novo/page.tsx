@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Select, Textarea, Alert } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import { PROVINCIAS_ANGOLA } from '@/types';
 import type { Genero, TipoDocumento, GrupoSanguineo, EstadoCivil } from '@/types';
 

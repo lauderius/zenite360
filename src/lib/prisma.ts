@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { NextResponse } from 'next/server';
 
 /**
  * Para evitar que o Next.js crie múltiplas instâncias do Prisma Client 
@@ -38,24 +39,42 @@ export function isPrismaError(error: unknown): error is { code: string; meta?: R
 /**
  * Formata erros do Prisma para respostas amigáveis da API.
  */
-export function handlePrismaError(error: unknown): { message: string; status: number } {
+export function handlePrismaError(error: unknown) {
   if (!isPrismaError(error)) {
-    return { message: 'Erro inesperado no servidor', status: 500 };
+    return NextResponse.json(
+      { message: 'Erro inesperado no servidor' },
+      { status: 500 }
+    );
   }
 
   // Mapeamento de códigos de erro comuns do Prisma
   // Referência: https://www.prisma.io/docs/reference/api-reference/error-reference
   switch (error.code) {
     case 'P2002':
-      return { message: 'Conflito: Já existe um registro com estes dados únicos.', status: 409 };
+      return NextResponse.json(
+        { message: 'Conflito: Já existe um registro com estes dados únicos.' },
+        { status: 409 }
+      );
     case 'P2025':
-      return { message: 'Não encontrado: O registro solicitado não existe.', status: 404 };
+      return NextResponse.json(
+        { message: 'Não encontrado: O registro solicitado não existe.' },
+        { status: 404 }
+      );
     case 'P2003':
-      return { message: 'Erro de relação: Este registro possui dependências em outras tabelas.', status: 400 };
+      return NextResponse.json(
+        { message: 'Erro de relação: Este registro possui dependências em outras tabelas.' },
+        { status: 400 }
+      );
     case 'P2014':
-      return { message: 'Erro de integridade: A alteração violaria uma relação obrigatória.', status: 400 };
+      return NextResponse.json(
+        { message: 'Erro de integridade: A alteração violaria uma relação obrigatória.' },
+        { status: 400 }
+      );
     default:
-      return { message: `Erro no banco de dados (Código: ${error.code})`, status: 500 };
+      return NextResponse.json(
+        { message: `Erro no banco de dados (Código: ${error.code})` },
+        { status: 500 }
+      );
   }
 }
 

@@ -1,114 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma, handlePrismaError } from '@/lib/prisma';
-import { gerarRelatorioManutencaoPDF } from '@/services/pdf/relatorioManutencao';
+import { mockGetById } from '@/lib/mockData';
 
-// POST - Concluir ordem de manutenção
-export async function POST(
+export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  try {
-    const id = parseInt(params.id);
-    const body = await request.json();
+  const { id: idString } = await params;
+  const id = parseInt(idString);
+  return mockGetById(id, 'Ordem de Manutenção');
+}
 
-    const ordem = await prisma.ordemManutencao.findUnique({
-      where: { id },
-      include: { ativo: true },
-    });
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id: idString } = await params;
+  const id = parseInt(idString);
+  const body = await request.json();
+  return NextResponse.json({ id, ...body, success: true, _status: 'mock' });
+}
 
-    if (!ordem) {
-      return NextResponse.json(
-        { error: 'Ordem de manutenção não encontrada' },
-        { status: 404 }
-      );
-    }
-
-    // Calcular tempo de parada
-    const dataInicio = ordem.dataInicio || ordem.dataAbertura;
-    const dataConclusao = new Date();
-    const tempoParadaHoras = Math.round(
-      (dataConclusao.getTime() - dataInicio.getTime()) / (1000 * 60 * 60)
-    );
-
-    // Calcular custos
-    const custoPecas = body.pecasUtilizadas?.reduce(
-      (acc: number, peca: any) => acc + peca.valorTotal,
-      0
-    ) || 0;
-    const custoMaoObra = body.custoMaoObra || 0;
-    const custoTotal = custoPecas + custoMaoObra;
-
-    // Atualizar ordem
-    const ordemAtualizada = await prisma.ordemManutencao.update({
-      where: { id },
-      data: {
-        status: 'CONCLUIDA',
-        dataConclusao,
-        tempoParadaHoras,
-        diagnostico: body.diagnostico,
-        solucaoAplicada: body.solucaoAplicada,
-        relatorioTecnico: body.relatorioTecnico,
-        custoMaoObra,
-        custoPecas,
-        custoTotal,
-        atualizadoEm: new Date(),
-      },
-      include: {
-        ativo: true,
-        tecnico: { select: { nomeCompleto: true } },
-        solicitante: { select: { nomeCompleto: true } },
-      },
-    });
-
-    // Registrar peças utilizadas
-    if (body.pecasUtilizadas?.length > 0) {
-      await prisma.pecaUtilizada.createMany({
-        data: body.pecasUtilizadas.map((peca: any) => ({
-          ordemId: id,
-          ...peca,
-        })),
-      });
-    }
-
-    // Atualizar ativo
-    await prisma.ativo.update({
-      where: { id: ordem.ativoId },
-      data: {
-        status: 'OPERACIONAL',
-        ultimaManutencao: dataConclusao,
-        proximaManutencao: body.proximaManutencao
-          ? new Date(body.proximaManutencao)
-          : new Date(Date.now() + ordem.ativo.intervaloManutencaoDias! * 24 * 60 * 60 * 1000),
-      },
-    });
-
-    // Gerar PDF do relatório
-    const pdfBuffer = await gerarRelatorioManutencaoPDF(ordemAtualizada);
-    
-    // Salvar PDF
-    const pdfPath = `/documentos/manutencao/${ordemAtualizada.codigo}.pdf`;
-    // Implementar salvamento do arquivo...
-
-    // Registrar custo no financeiro (integração)
-    await prisma.lancamentoFinanceiro.create({
-      data: {
-        tipo: 'DESPESA',
-        categoria: 'MANUTENCAO_EQUIPAMENTOS',
-        descricao: `Manutenção ${ordemAtualizada.tipo} - ${ordem.ativo.nome} (${ordemAtualizada.codigo})`,
-        valor: custoTotal,
-        data: dataConclusao,
-        departamentoId: ordem.ativo.departamentoId,
-        documentoReferencia: ordemAtualizada.codigo,
-        status: 'PENDENTE',
-      },
-    });
-
-    return NextResponse.json({
-      ordem: ordemAtualizada,
-      pdfPath,
-      message: 'Manutenção concluída com sucesso',
-    });
-  } catch (error) {
-    return handlePrismaError(error);
-  }
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id: idString } = await params;
+  const id = parseInt(idString);
+  return NextResponse.json({ success: true, id, _status: 'mock' });
 }

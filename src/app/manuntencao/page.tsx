@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs, Select } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import type { StatusOrdemServico, PrioridadeOrdem } from '@/types';
 
 interface OrdemServico {
@@ -33,66 +33,7 @@ interface Equipamento {
   proximaManutencao?: Date;
 }
 
-const mockOrdens: OrdemServico[] = [
-  {
-    id: 1,
-    codigo: 'OS-2024-00001',
-    titulo: 'Monitor cardíaco com falha no display',
-    equipamento: 'Monitor Cardíaco MC-500',
-    departamento: 'UTI',
-    tipo: 'CORRETIVA',
-    prioridade: 'CRITICA',
-    status: 'EM_EXECUCAO',
-    dataAbertura: new Date('2024-01-14'),
-    dataPrevisao: new Date('2024-01-15'),
-    responsavel: 'João Técnico',
-    descricao: 'Display apresentando falhas intermitentes, paciente em risco.',
-  },
-  {
-    id: 2,
-    codigo: 'OS-2024-00002',
-    titulo: 'Ar condicionado com vazamento',
-    departamento: 'Enfermaria Geral',
-    tipo: 'CORRETIVA',
-    prioridade: 'ALTA',
-    status: 'ABERTA',
-    dataAbertura: new Date('2024-01-14'),
-    descricao: 'Ar condicionado da enfermaria 3 com vazamento de água.',
-  },
-  {
-    id: 3,
-    codigo: 'OS-2024-00003',
-    titulo: 'Manutenção preventiva - Autoclave',
-    equipamento: 'Autoclave AC-200',
-    departamento: 'Central de Esterilização',
-    tipo: 'PREVENTIVA',
-    prioridade: 'MEDIA',
-    status: 'APROVADA',
-    dataAbertura: new Date('2024-01-13'),
-    dataPrevisao: new Date('2024-01-20'),
-    descricao: 'Manutenção preventiva trimestral conforme calendário.',
-  },
-  {
-    id: 4,
-    codigo: 'OS-2024-00004',
-    titulo: 'Troca de lâmpadas - Consultório 5',
-    departamento: 'Consultas Externas',
-    tipo: 'CORRETIVA',
-    prioridade: 'BAIXA',
-    status: 'CONCLUIDA',
-    dataAbertura: new Date('2024-01-12'),
-    responsavel: 'Pedro Eletricista',
-    descricao: 'Lâmpadas queimadas no consultório.',
-  },
-];
 
-const mockEquipamentos: Equipamento[] = [
-  { id: 1, codigo: 'EQP-001', nome: 'Monitor Cardíaco MC-500', categoria: 'Monitorização', departamento: 'UTI', status: 'EM_MANUTENCAO', ultimaManutencao: new Date('2024-01-01') },
-  { id: 2, codigo: 'EQP-002', nome: 'Ventilador Pulmonar VP-300', categoria: 'Respiratório', departamento: 'UTI', status: 'OPERACIONAL', ultimaManutencao: new Date('2023-12-15'), proximaManutencao: new Date('2024-03-15') },
-  { id: 3, codigo: 'EQP-003', nome: 'Autoclave AC-200', categoria: 'Esterilização', departamento: 'Central de Esterilização', status: 'OPERACIONAL', proximaManutencao: new Date('2024-01-20') },
-  { id: 4, codigo: 'EQP-004', nome: 'Raio-X Digital RX-100', categoria: 'Imagem', departamento: 'Radiologia', status: 'OPERACIONAL', ultimaManutencao: new Date('2023-11-20') },
-  { id: 5, codigo: 'EQP-005', nome: 'Desfibrilador DF-50', categoria: 'Emergência', departamento: 'Urgência', status: 'OPERACIONAL' },
-];
 
 const statusConfig: Record<StatusOrdemServico, { label: string; variant: 'default' | 'primary' | 'warning' | 'success' | 'danger' }> = {
   ABERTA: { label: 'Aberta', variant: 'default' },
@@ -124,12 +65,8 @@ export default function ManutencaoPage() {
   const [equipamentos, setEquipamentos] = useState<Equipamento[]>([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setOrdens(mockOrdens);
-      setEquipamentos(mockEquipamentos);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    // TODO: Integrar com API real de ordens e equipamentos
+    setIsLoading(false);
   }, []);
 
   // Estatísticas

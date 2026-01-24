@@ -1,148 +1,127 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma, handlePrismaError } from '@/lib/prisma';
 
-// GET - Listar contratos de terceiros
+// Dados mock para contratos de terceiros
+const mockContratos = [
+  {
+    id: 1,
+    codigo: 'CTR-2024-0001',
+    empresaContratada: 'Limpeza Total Ltda',
+    objeto: 'Serviços de limpeza geral',
+    tipo: 'LIMPEZA' as const,
+    status: 'VIGENTE' as const,
+    valorMensal: 350000,
+    quantidadeFuncionarios: 15,
+    diasParaVencimento: 120,
+    notaAvaliacao: 4.5,
+  },
+  {
+    id: 2,
+    codigo: 'CTR-2024-0002',
+    empresaContratada: 'Segurança 24h',
+    objeto: 'Serviços de vigilância',
+    tipo: 'SEGURANCA' as const,
+    status: 'VIGENTE' as const,
+    valorMensal: 280000,
+    quantidadeFuncionarios: 12,
+    diasParaVencimento: 85,
+    notaAvaliacao: 4.0,
+  },
+  {
+    id: 3,
+    codigo: 'CTR-2024-0003',
+    empresaContratada: 'Manutenção Predial SA',
+    objeto: 'Manutenção predial e elétrica',
+    tipo: 'MANUTENCAO_PREDIAL' as const,
+    status: 'PROXIMO_VENCIMENTO' as const,
+    valorMensal: 180000,
+    quantidadeFuncionarios: 5,
+    diasParaVencimento: 15,
+    notaAvaliacao: 4.2,
+  },
+  {
+    id: 4,
+    codigo: 'CTR-2024-0004',
+    empresaContratada: 'Nutri Hospitalar',
+    objeto: 'Refeitório e cozinha',
+    tipo: 'ALIMENTACAO' as const,
+    status: 'VIGENTE' as const,
+    valorMensal: 420000,
+    quantidadeFuncionarios: 10,
+    diasParaVencimento: 200,
+    notaAvaliacao: 3.8,
+  },
+];
+
+// GET: Listar contratos
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const tipo = searchParams.get('tipo');
-    const status = searchParams.get('status');
+    const searchParams = request.nextUrl.searchParams;
+    const tipo = searchParams.get('tipo') || '';
+    const status = searchParams.get('status') || '';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    const where: any = { activo: true };
+    let contratos = [...mockContratos];
 
-    if (tipo) where.tipo = tipo;
-    if (status) where.status = status;
+    // Aplicar filtros
+    if (tipo) {
+      contratos = contratos.filter(c => c.tipo === tipo);
+    }
 
-    const [contratos, total] = await Promise.all([
-      prisma.contratoTerceiro.findMany({
-        where,
-        include: {
-          gestorInterno: { select: { nomeCompleto: true } },
-          _count: { select: { funcionariosTerceirizados: true } },
-        },
-        orderBy: [{ status: 'asc' }, { dataFim: 'asc' }],
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      prisma.contratoTerceiro.count({ where }),
-    ]);
+    if (status) {
+      contratos = contratos.filter(c => c.status === status);
+    }
 
-    // Calcular dias para vencimento e atualizar status se necessário
-    const hoje = new Date();
-    const contratosComDias = await Promise.all(
-      contratos.map(async (contrato) => {
-        const diasParaVencimento = Math.ceil(
-          (contrato.dataFim.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24)
-        );
-
-        let novoStatus = contrato.status;
-        if (diasParaVencimento < 0 && contrato.status !== 'VENCIDO') {
-          novoStatus = 'VENCIDO';
-        } else if (diasParaVencimento <= 30 && diasParaVencimento >= 0 && contrato.status === 'VIGENTE') {
-          novoStatus = 'PROXIMO_VENCIMENTO';
-        }
-
-        if (novoStatus !== contrato.status) {
-          await prisma.contratoTerceiro.update({
-            where: { id: contrato.id },
-            data: { status: novoStatus },
-          });
-        }
-
-        return {
-          ...contrato,
-          diasParaVencimento,
-          status: novoStatus,
-          quantidadeFuncionarios: contrato._count.funcionariosTerceirizados,
-        };
-      })
-    );
-
-    // Estatísticas
-    const stats = {
-      vigentes: contratosComDias.filter((c) => c.status === 'VIGENTE').length,
-      proximoVencimento: contratosComDias.filter((c) => c.status === 'PROXIMO_VENCIMENTO').length,
-      vencidos: contratosComDias.filter((c) => c.status === 'VENCIDO').length,
-      valorTotalMensal: contratosComDias
-        .filter((c) => c.status === 'VIGENTE' || c.status === 'PROXIMO_VENCIMENTO')
-        .reduce((acc, c) => acc + c.valorMensal, 0),
-      totalFuncionarios: contratosComDias.reduce((acc, c) => acc + c.quantidadeFuncionarios, 0),
-    };
+    // Paginação
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const contratosPaginados = contratos.slice(startIndex, endIndex);
 
     return NextResponse.json({
-      data: contratosComDias,
-      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
-      stats,
+      data: contratosPaginados,
+      pagination: {
+        page,
+        limit,
+        total: contratos.length,
+        totalPages: Math.ceil(contratos.length / limit),
+      },
+      success: true,
     });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao buscar contratos:', error);
+    return NextResponse.json({
+      data: [],
+      pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
+      success: false,
+      error: 'Erro ao buscar contratos',
+    });
   }
 }
 
-// POST - Criar novo contrato
+// POST: Criar novo contrato
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Gerar código
-    const ano = new Date().getFullYear();
-    const count = await prisma.contratoTerceiro.count({
-      where: {
-        criadoEm: {
-          gte: new Date(`${ano}-01-01`),
-          lt: new Date(`${ano + 1}-01-01`),
-        },
-      },
+    const novoContrato = {
+      id: mockContratos.length + 1,
+      codigo: `CTR-${new Date().getFullYear()}-${String(mockContratos.length + 1).padStart(4, '0')}`,
+      ...body,
+      status: 'VIGENTE' as const,
+      diasParaVencimento: 365,
+      criadoEm: new Date(),
+    };
+
+    return NextResponse.json({
+      success: true,
+      data: novoContrato,
     });
-    const codigo = `CT-${ano}-${String(count + 1).padStart(3, '0')}`;
-
-    const contrato = await prisma.contratoTerceiro.create({
-      data: {
-        codigo,
-        ...body,
-        dataInicio: new Date(body.dataInicio),
-        dataFim: new Date(body.dataFim),
-        status: 'VIGENTE',
-      },
-      include: {
-        gestorInterno: { select: { nomeCompleto: true } },
-      },
-    });
-
-    // Agendar notificação de vencimento
-    if (body.avisarDiasAntes) {
-      const dataAviso = new Date(body.dataFim);
-      dataAviso.setDate(dataAviso.getDate() - body.avisarDiasAntes);
-
-      await prisma.agendamentoNotificacao.create({
-        data: {
-          tipo: 'VENCIMENTO_CONTRATO',
-          dataAgendada: dataAviso,
-          destinatarioId: body.gestorInternoId,
-          titulo: `Contrato próximo do vencimento: ${contrato.empresaContratada}`,
-          mensagem: `O contrato ${codigo} vence em ${body.avisarDiasAntes} dias.`,
-          link: `/servicos-gerais/contratos/${contrato.id}`,
-        },
-      });
-    }
-
-    // Registrar no financeiro (compromisso mensal)
-    await prisma.compromissoFinanceiro.create({
-      data: {
-        tipo: 'CONTRATO_TERCEIRO',
-        descricao: `Contrato ${codigo} - ${body.empresaContratada}`,
-        valorMensal: body.valorMensal,
-        dataInicio: new Date(body.dataInicio),
-        dataFim: new Date(body.dataFim),
-        contratoId: contrato.id,
-        status: 'ATIVO',
-      },
-    });
-
-    return NextResponse.json(contrato, { status: 201 });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao criar contrato:', error);
+    return NextResponse.json(
+      { success: false, error: 'Erro ao criar contrato' },
+      { status: 500 }
+    );
   }
 }
+

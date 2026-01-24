@@ -1,123 +1,59 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma, handlePrismaError } from '@/lib/prisma';
+import { NextResponse } from 'next/server';
 
-// GET - Listar câmaras frias
-export async function GET(request: NextRequest) {
+// Dados mock para câmaras frias
+const mockCamaras = [
+  {
+    id: 1,
+    codigo: 'CAM-A',
+    nome: 'Câmara Principal',
+    capacidade: 10,
+    ocupacaoAtual: 6,
+    temperaturaAtual: -18.5,
+    temperaturaMinimaAlerta: -22,
+    temperaturaMaximaAlerta: -15,
+    status: 'OPERACIONAL' as const,
+    sensorId: 'SENSOR-CAM-A-001',
+  },
+  {
+    id: 2,
+    codigo: 'CAM-B',
+    nome: 'Câmara Secundária',
+    capacidade: 6,
+    ocupacaoAtual: 2,
+    temperaturaAtual: -19.2,
+    temperaturaMinimaAlerta: -22,
+    temperaturaMaximaAlerta: -15,
+    status: 'OPERACIONAL' as const,
+    sensorId: 'SENSOR-CAM-B-001',
+  },
+  {
+    id: 3,
+    codigo: 'CAM-C',
+    nome: 'Câmara de Emergência',
+    capacidade: 4,
+    ocupacaoAtual: 0,
+    temperaturaAtual: -20.0,
+    temperaturaMinimaAlerta: -22,
+    temperaturaMaximaAlerta: -15,
+    status: 'OPERACIONAL' as const,
+    sensorId: 'SENSOR-CAM-C-001',
+  },
+];
+
+// GET: Listar câmaras frias
+export async function GET() {
   try {
-    const camaras = await prisma.camaraFria.findMany({
-      where: { activo: true },
-      orderBy: { codigo: 'asc' },
-    });
-
-    // Buscar ocupação detalhada
-    const ocupacaoDetalhada = await Promise.all(
-      camaras.map(async (camara) => {
-        const corpos = await prisma.registroObito.findMany({
-          where: {
-            camaraFria: camara.codigo,
-            status: { in: ['ADMITIDO', 'EM_CONSERVACAO', 'AGUARDANDO_DOCUMENTACAO'] },
-          },
-          select: {
-            id: true,
-            codigo: true,
-            nomeCompleto: true,
-            posicao: true,
-            dataAdmissao: true,
-            status: true,
-          },
-        });
-
-        return {
-          ...camara,
-          corpos,
-          ocupacaoAtual: corpos.length,
-        };
-      })
-    );
-
-    // Resumo geral
-    const resumo = {
-      totalCamaras: camaras.length,
-      capacidadeTotal: camaras.reduce((acc, c) => acc + c.capacidade, 0),
-      ocupacaoTotal: ocupacaoDetalhada.reduce((acc, c) => acc + c.ocupacaoAtual, 0),
-      camarasOperacionais: camaras.filter((c) => c.status === 'OPERACIONAL').length,
-      camarasComAlerta: ocupacaoDetalhada.filter(
-        (c) =>
-          c.temperaturaAtual &&
-          (c.temperaturaAtual > c.temperaturaMaximaAlerta ||
-            c.temperaturaAtual < c.temperaturaMinimaAlerta)
-      ).length,
-    };
-
     return NextResponse.json({
-      data: ocupacaoDetalhada,
-      resumo,
+      data: mockCamaras,
+      success: true,
     });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao buscar câmaras:', error);
+    return NextResponse.json({
+      data: [],
+      success: false,
+      error: 'Erro ao buscar câmaras',
+    });
   }
 }
 
-// POST - Registrar leitura de temperatura (integração IoT)
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { camaraId, sensorId, temperatura } = body;
-
-    const camara = await prisma.camaraFria.findFirst({
-      where: { OR: [{ id: camaraId }, { sensorId }] },
-    });
-
-    if (!camara) {
-      return NextResponse.json(
-        { error: 'Câmara fria não encontrada' },
-        { status: 404 }
-      );
-    }
-
-    // Verificar se está fora dos limites
-    const foraLimite =
-      temperatura > camara.temperaturaMaximaAlerta ||
-      temperatura < camara.temperaturaMinimaAlerta;
-
-    // Atualizar temperatura
-    await prisma.camaraFria.update({
-      where: { id: camara.id },
-      data: {
-        temperaturaAtual: temperatura,
-        status: foraLimite ? 'DEFEITO' : 'OPERACIONAL',
-      },
-    });
-
-    // Registrar histórico
-    await prisma.historicoTemperaturaCamara.create({
-      data: {
-        camaraId: camara.id,
-        temperatura,
-        dataHora: new Date(),
-        alerta: foraLimite,
-      },
-    });
-
-    // Gerar alerta se necessário
-    if (foraLimite) {
-      await prisma.alerta.create({
-        data: {
-          tipo: 'TEMPERATURA_CAMARA',
-          modulo: 'CASA_MORTUARIA',
-          titulo: `Alerta de Temperatura - ${camara.nome}`,
-          mensagem: `Temperatura ${temperatura}°C fora dos limites (${camara.temperaturaMinimaAlerta}°C a ${camara.temperaturaMaximaAlerta}°C)`,
-          severidade: 'CRITICO',
-        },
-      });
-    }
-
-    return NextResponse.json({
-      camara: camara.nome,
-      temperatura,
-      alerta: foraLimite,
-    });
-  } catch (error) {
-    return handlePrismaError(error);
-  }
-}

@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Modal } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
+import { Card, CardContent, Button, Badge, Spinner, Modal } from '@/components/ui';
+import { Icons } from '@/components/ui/icons';
 import type { PrioridadeTriagem, StatusTriagem } from '@/types';
 import { CORES_TRIAGEM } from '@/types';
+import { api } from '@/services/api';
 
 interface TriagemFila {
   id: number;
@@ -28,72 +29,6 @@ interface TriagemFila {
   };
 }
 
-const mockFilaTriagem: TriagemFila[] = [
-  {
-    id: 1,
-    codigo: 'TR-2024-00001',
-    paciente: 'António Mendes',
-    idade: 45,
-    genero: 'M',
-    horaChegada: '07:30',
-    tempoEspera: 5,
-    prioridade: 'EMERGENCIA',
-    status: 'TRIADO',
-    queixaPrincipal: 'Dor torácica intensa, sudorese, dispneia',
-    sinaisVitais: { pressao: '180/110', fc: 120, fr: 28, temp: 36.8, spo2: 92 },
-  },
-  {
-    id: 2,
-    codigo: 'TR-2024-00002',
-    paciente: 'Joana Ferreira',
-    idade: 32,
-    genero: 'F',
-    horaChegada: '07:45',
-    tempoEspera: 12,
-    prioridade: 'MUITO_URGENTE',
-    status: 'TRIADO',
-    queixaPrincipal: 'Cefaleia intensa há 3 horas, vómitos',
-    sinaisVitais: { pressao: '150/95', fc: 98, fr: 20, temp: 37.2, spo2: 98 },
-  },
-  {
-    id: 3,
-    codigo: 'TR-2024-00003',
-    paciente: 'Carlos Silva',
-    idade: 28,
-    genero: 'M',
-    horaChegada: '08:00',
-    tempoEspera: 35,
-    prioridade: 'URGENTE',
-    status: 'TRIADO',
-    queixaPrincipal: 'Dor abdominal, febre há 2 dias',
-    sinaisVitais: { pressao: '120/80', fc: 88, fr: 18, temp: 38.5, spo2: 99 },
-  },
-  {
-    id: 4,
-    codigo: 'TR-2024-00004',
-    paciente: 'Maria Santos',
-    idade: 55,
-    genero: 'F',
-    horaChegada: '08:15',
-    tempoEspera: 50,
-    prioridade: 'POUCO_URGENTE',
-    status: 'AGUARDANDO_TRIAGEM',
-    queixaPrincipal: 'Dor lombar crónica, piora há 1 semana',
-  },
-  {
-    id: 5,
-    codigo: 'TR-2024-00005',
-    paciente: 'Pedro Costa',
-    idade: 22,
-    genero: 'M',
-    horaChegada: '08:30',
-    tempoEspera: 65,
-    prioridade: 'NAO_URGENTE',
-    status: 'AGUARDANDO_TRIAGEM',
-    queixaPrincipal: 'Resfriado, tosse há 3 dias',
-  },
-];
-
 const prioridadeConfig: Record<PrioridadeTriagem, { cor: string; bg: string; border: string }> = {
   EMERGENCIA: { cor: 'text-white', bg: 'bg-red-600', border: 'border-red-600' },
   MUITO_URGENTE: { cor: 'text-white', bg: 'bg-orange-500', border: 'border-orange-500' },
@@ -102,71 +37,48 @@ const prioridadeConfig: Record<PrioridadeTriagem, { cor: string; bg: string; bor
   NAO_URGENTE: { cor: 'text-white', bg: 'bg-blue-500', border: 'border-blue-500' },
 };
 
-// Card de Paciente na Fila
-function PacienteTriagemCard({ paciente, onClick }: { paciente: TriagemFila; onClick: () => void }) {
-  const config = prioridadeConfig[paciente.prioridade];
-  const triagem = CORES_TRIAGEM[paciente.prioridade];
+// --- ListaTriagem ---
+function ListaTriagem({ pacientes, onSelect }: { pacientes: TriagemFila[]; onSelect: (p: TriagemFila) => void }) {
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [error, setError] = useState("");
+  const [items, setItems] = useState(pacientes);
+
+  React.useEffect(() => { setItems(pacientes); }, [pacientes]);
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("Deseja realmente excluir esta triagem?")) return;
+    setDeletingId(id);
+    setError("");
+    try {
+      await api.delete(`/triagem/${id}`);
+      setItems((prev) => prev.filter((p) => p.id !== id));
+    } catch (err: any) {
+      setError(err.message || "Erro ao excluir triagem");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   return (
-    <div
-      onClick={onClick}
-      className={`relative p-4 bg-white dark:bg-slate-800 border-l-4 ${config.border} rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer`}
-    >
-      {/* Badge de Prioridade */}
-      <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold ${config.bg} ${config.cor}`}>
-        {triagem.nome}
-      </div>
-
-      {/* Info do Paciente */}
-      <div className="pr-24">
-        <h3 className="font-semibold text-slate-700 dark:text-slate-200">{paciente.paciente}</h3>
-        <p className="text-sm text-slate-500">
-          {paciente.idade} anos • {paciente.genero === 'M' ? 'Masculino' : 'Feminino'}
-        </p>
-      </div>
-
-      {/* Queixa Principal */}
-      <p className="mt-2 text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
-        {paciente.queixaPrincipal}
-      </p>
-
-      {/* Tempo e Status */}
-      <div className="mt-3 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-1 text-slate-500">
-          <Icons.Clock size={14} />
-          <span>Chegada: {paciente.horaChegada}</span>
-        </div>
-        <div className={`flex items-center gap-1 ${paciente.tempoEspera > 30 ? 'text-amber-600' : 'text-slate-500'}`}>
-          <span className="font-medium">{paciente.tempoEspera} min</span>
-          <span>de espera</span>
-        </div>
-      </div>
-
-      {/* Sinais Vitais (se triado) */}
-      {paciente.sinaisVitais && (
-        <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700 grid grid-cols-5 gap-2 text-xs">
-          <div className="text-center">
-            <p className="text-slate-500">PA</p>
-            <p className="font-medium text-slate-700 dark:text-slate-200">{paciente.sinaisVitais.pressao}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-slate-500">FC</p>
-            <p className="font-medium text-slate-700 dark:text-slate-200">{paciente.sinaisVitais.fc}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-slate-500">FR</p>
-            <p className="font-medium text-slate-700 dark:text-slate-200">{paciente.sinaisVitais.fr}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-slate-500">T°</p>
-            <p className="font-medium text-slate-700 dark:text-slate-200">{paciente.sinaisVitais.temp}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-slate-500">SpO2</p>
-            <p className="font-medium text-slate-700 dark:text-slate-200">{paciente.sinaisVitais.spo2}%</p>
-          </div>
-        </div>
-      )}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {error && <div className="text-red-600 text-sm col-span-full">{error}</div>}
+      {items.map((paciente) => (
+        <Card key={paciente.id} className="hover:shadow-md transition-shadow">
+          <CardContent className="flex items-center justify-between p-4">
+            <div onClick={() => onSelect(paciente)} className="flex-1 cursor-pointer">
+              <p className="font-semibold text-slate-700 dark:text-slate-200">{paciente.paciente}</p>
+              <p className="text-xs text-slate-500">{paciente.idade} anos • {paciente.genero === 'M' ? 'Masculino' : 'Feminino'}</p>
+              <p className="text-xs text-slate-400">{paciente.queixaPrincipal}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="primary">{paciente.prioridade}</Badge>
+              <Button variant="destructive" size="sm" onClick={() => handleDelete(paciente.id)} disabled={deletingId === paciente.id}>
+                {deletingId === paciente.id ? <Spinner size="sm" /> : "Excluir"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }
@@ -178,14 +90,19 @@ export default function TriagemPage() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setFila(mockFilaTriagem);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchFilaTriagem() {
+      try {
+        const data = await api.get<TriagemFila[]>('/triagem');
+        setFila(data);
+      } catch (error) {
+        setFila([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchFilaTriagem();
   }, []);
 
-  // Agrupar por prioridade
   const filaAgrupada = {
     EMERGENCIA: fila.filter((p) => p.prioridade === 'EMERGENCIA'),
     MUITO_URGENTE: fila.filter((p) => p.prioridade === 'MUITO_URGENTE'),
@@ -256,15 +173,7 @@ export default function TriagemPage() {
                   ></span>
                   {value.nome} ({pacientes.length})
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {pacientes.map((paciente) => (
-                    <PacienteTriagemCard
-                      key={paciente.id}
-                      paciente={paciente}
-                      onClick={() => handleSelectPaciente(paciente)}
-                    />
-                  ))}
-                </div>
+                <ListaTriagem pacientes={pacientes} onSelect={handleSelectPaciente} />
               </div>
             );
           })}
@@ -308,35 +217,30 @@ export default function TriagemPage() {
                       <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {selectedPaciente.sinaisVitais.pressao}
                       </p>
-                      <p className="text-xs text-slate-400">mmHg</p>
                     </div>
                     <div className="text-center p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                       <p className="text-xs text-slate-500">FC</p>
                       <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {selectedPaciente.sinaisVitais.fc}
                       </p>
-                      <p className="text-xs text-slate-400">bpm</p>
                     </div>
                     <div className="text-center p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                       <p className="text-xs text-slate-500">FR</p>
                       <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {selectedPaciente.sinaisVitais.fr}
                       </p>
-                      <p className="text-xs text-slate-400">rpm</p>
                     </div>
                     <div className="text-center p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                       <p className="text-xs text-slate-500">Temp</p>
                       <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {selectedPaciente.sinaisVitais.temp}
                       </p>
-                      <p className="text-xs text-slate-400">°C</p>
                     </div>
                     <div className="text-center p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
                       <p className="text-xs text-slate-500">SpO2</p>
                       <p className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {selectedPaciente.sinaisVitais.spo2}%
                       </p>
-                      <p className="text-xs text-slate-400">sat</p>
                     </div>
                   </div>
                 </div>

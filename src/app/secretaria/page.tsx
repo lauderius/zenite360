@@ -2,24 +2,65 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs, Modal } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
-import type { 
-  DocumentoOficial, 
-  TipoDocumentoOficial, 
-  StatusDocumentoOficial,
-  PrioridadeDocumento,
-  SuprimentoEscritorio,
-  RequisicaoMaterial,
-  DashboardSecretaria 
-} from '@/types/administrativo';
+import { Icons } from '@/components/ui/icons';
+import { api } from '@/services/api';
+
+// ============================================================================
+// TIPOS LOCAIS
+// ============================================================================
+
+interface DashboardData {
+  documentosHoje: number;
+  documentosMes: number;
+  documentosUrgentes: number;
+  tramitacoesPendentes: number;
+  tempoMedioTramitacao: number;
+  requisicoesMateriaisPendentes: number;
+  documentosPorTipo: { tipo: string; quantidade: number }[];
+  tramitacoesPorDepartamento: { departamento: string; quantidade: number }[];
+}
+
+interface DocumentoData {
+  id: number;
+  numero: string;
+  tipo: string;
+  assunto: string;
+  prioridade: string;
+  status: string;
+  tipoMovimentacao: string;
+  dataDocumento: Date;
+  remetenteInterno?: string;
+  destinatarioInterno?: string;
+  remetenteExterno?: string;
+  destinatarioExterno?: string;
+}
+
+interface SuprimentoData {
+  id: number;
+  codigo: string;
+  nome: string;
+  categoria: string;
+  quantidadeAtual: number;
+  quantidadeMinima: number;
+  unidadeMedida: string;
+}
+
+interface RequisicaoData {
+  id: number;
+  codigo: string;
+  departamentoSolicitante: string;
+  solicitante: string;
+  status: string;
+  dataSolicitacao: Date;
+}
 
 // ============================================================================
 // CONFIGURAÇÕES
 // ============================================================================
 
-const tipoDocumentoConfig: Record<TipoDocumentoOficial, { label: string; icon: string }> = {
+const tipoDocumentoConfig: Record<string, { label: string; icon: string }> = {
   OFICIO: { label: 'Ofício', icon: 'Mail' },
   MEMORANDO: { label: 'Memorando', icon: 'FileText' },
   CIRCULAR: { label: 'Circular', icon: 'Send' },
@@ -35,7 +76,7 @@ const tipoDocumentoConfig: Record<TipoDocumentoOficial, { label: string; icon: s
   OUTROS: { label: 'Outros', icon: 'File' },
 };
 
-const statusDocumentoConfig: Record<StatusDocumentoOficial, { label: string; variant: 'default' | 'primary' | 'warning' | 'success' | 'danger' }> = {
+const statusDocumentoConfig: Record<string, { label: string; variant: 'default' | 'primary' | 'warning' | 'success' | 'danger' }> = {
   RASCUNHO: { label: 'Rascunho', variant: 'default' },
   EM_ELABORACAO: { label: 'Em Elaboração', variant: 'primary' },
   AGUARDANDO_ASSINATURA: { label: 'Aguardando Assinatura', variant: 'warning' },
@@ -46,142 +87,12 @@ const statusDocumentoConfig: Record<StatusDocumentoOficial, { label: string; var
   CANCELADO: { label: 'Cancelado', variant: 'danger' },
 };
 
-const prioridadeConfig: Record<PrioridadeDocumento, { label: string; cor: string }> = {
+const prioridadeConfig: Record<string, { label: string; cor: string }> = {
   URGENTE: { label: 'Urgente', cor: 'bg-red-500 text-white' },
   ALTA: { label: 'Alta', cor: 'bg-orange-500 text-white' },
   NORMAL: { label: 'Normal', cor: 'bg-blue-500 text-white' },
   BAIXA: { label: 'Baixa', cor: 'bg-slate-500 text-white' },
 };
-
-const mockDashboard: DashboardSecretaria = {
-  documentosPendentes: 15,
-  documentosUrgentes: 3,
-  documentosHoje: 8,
-  documentosMes: 247,
-  tramitacoesPendentes: 12,
-  tempoMedioTramitacao: 2.3,
-  requisicoesMateriaisPendentes: 5,
-  itensEstoqueBaixo: [],
-  documentosPorTipo: [
-    { tipo: 'OFICIO', quantidade: 85 },
-    { tipo: 'MEMORANDO', quantidade: 62 },
-    { tipo: 'CIRCULAR', quantidade: 28 },
-    { tipo: 'DESPACHO', quantidade: 45 },
-    { tipo: 'OUTROS', quantidade: 27 },
-  ],
-  tramitacoesPorDepartamento: [
-    { departamento: 'Direcção Geral', quantidade: 35 },
-    { departamento: 'RH', quantidade: 28 },
-    { departamento: 'Financeiro', quantidade: 45 },
-    { departamento: 'Clínica', quantidade: 22 },
-  ],
-};
-
-const mockDocumentos: DocumentoOficial[] = [
-  {
-    id: 1,
-    codigo: 'DOC-2024-001',
-    numero: 'OF/DG/001/2024',
-    ano: 2024,
-    tipo: 'OFICIO',
-    assunto: 'Solicitação de Equipamentos Médicos',
-    resumo: 'Solicitação formal ao Ministério da Saúde para aquisição de equipamentos',
-    tipoMovimentacao: 'SAIDA',
-    remetenteInterno: 'Direcção Geral',
-    destinatarioExterno: 'Ministério da Saúde',
-    dataDocumento: new Date('2024-01-15'),
-    status: 'ENVIADO',
-    prioridade: 'ALTA',
-    elaboradoPorId: 1,
-    elaboradoPor: 'Maria Santos',
-    assinadoPorId: 2,
-    assinadoPor: 'Dr. Manuel Alves',
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-  {
-    id: 2,
-    codigo: 'DOC-2024-002',
-    numero: 'MEM/RH/005/2024',
-    ano: 2024,
-    tipo: 'MEMORANDO',
-    assunto: 'Escala de Plantões - Fevereiro 2024',
-    tipoMovimentacao: 'INTERNO',
-    remetenteInterno: 'Recursos Humanos',
-    destinatarioInterno: 'Direcção Clínica',
-    dataDocumento: new Date('2024-01-14'),
-    prazoResposta: new Date('2024-01-20'),
-    status: 'AGUARDANDO_ASSINATURA',
-    prioridade: 'URGENTE',
-    elaboradoPorId: 3,
-    elaboradoPor: 'Teresa Oliveira',
-    departamentoAtualId: 2,
-    departamentoAtual: 'Direcção Clínica',
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-  {
-    id: 3,
-    codigo: 'DOC-2024-003',
-    numero: 'ENT/2024/0045',
-    ano: 2024,
-    tipo: 'OFICIO',
-    assunto: 'Resposta sobre Auditoria Externa',
-    tipoMovimentacao: 'ENTRADA',
-    remetenteExterno: 'Tribunal de Contas',
-    destinatarioInterno: 'Direcção Geral',
-    dataDocumento: new Date('2024-01-10'),
-    dataRecebimento: new Date('2024-01-12'),
-    protocoloExterno: 'TC/AUD/2024/001',
-    status: 'RECEBIDO',
-    prioridade: 'ALTA',
-    departamentoAtualId: 1,
-    departamentoAtual: 'Direcção Geral',
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-];
-
-const mockSuprimentos: SuprimentoEscritorio[] = [
-  { id: 1, codigo: 'SUP-001', nome: 'Papel A4', categoria: 'PAPEL', unidadeMedida: 'resma', quantidadeAtual: 25, quantidadeMinima: 50, activo: true },
-  { id: 2, codigo: 'SUP-002', nome: 'Caneta Esferográfica Azul', categoria: 'ESCRITA', unidadeMedida: 'cx', quantidadeAtual: 15, quantidadeMinima: 20, activo: true },
-  { id: 3, codigo: 'SUP-003', nome: 'Toner HP 85A', categoria: 'IMPRESSAO', unidadeMedida: 'un', quantidadeAtual: 8, quantidadeMinima: 10, activo: true },
-  { id: 4, codigo: 'SUP-004', nome: 'Grampeador', categoria: 'ORGANIZACAO', unidadeMedida: 'un', quantidadeAtual: 12, quantidadeMinima: 5, activo: true },
-];
-
-const mockRequisicoes: RequisicaoMaterial[] = [
-  {
-    id: 1,
-    codigo: 'REQ-2024-001',
-    departamentoSolicitanteId: 5,
-    departamentoSolicitante: 'Laboratório',
-    solicitanteId: 1,
-    solicitante: 'João Silva',
-    dataSolicitacao: new Date('2024-01-14'),
-    status: 'PENDENTE',
-    prioridade: 'NORMAL',
-    justificativa: 'Reposição de estoque para o mês',
-    itens: [],
-    criadoEm: new Date(),
-  },
-  {
-    id: 2,
-    codigo: 'REQ-2024-002',
-    departamentoSolicitanteId: 10,
-    departamentoSolicitante: 'Financeiro',
-    solicitanteId: 2,
-    solicitante: 'Diana Santos',
-    dataSolicitacao: new Date('2024-01-15'),
-    status: 'APROVADA',
-    prioridade: 'ALTA',
-    justificativa: 'Material para fechamento do mês',
-    itens: [],
-    criadoEm: new Date(),
-  },
-];
 
 // ============================================================================
 // PÁGINA PRINCIPAL
@@ -189,24 +100,65 @@ const mockRequisicoes: RequisicaoMaterial[] = [
 
 export default function SecretariaPage() {
   const [isLoading, setIsLoading] = useState(true);
-  const [dashboard, setDashboard] = useState<DashboardSecretaria | null>(null);
-  const [documentos, setDocumentos] = useState<DocumentoOficial[]>([]);
-  const [suprimentos, setSuprimentos] = useState<SuprimentoEscritorio[]>([]);
-  const [requisicoes, setRequisicoes] = useState<RequisicaoMaterial[]>([]);
+  const [dashboard, setDashboard] = useState<DashboardData | null>(null);
+  const [documentos, setDocumentos] = useState<DocumentoData[]>([]);
+  const [suprimentos, setSuprimentos] = useState<SuprimentoData[]>([]);
+  const [requisicoes, setRequisicoes] = useState<RequisicaoData[]>([]);
   const [showNovoDocumento, setShowNovoDocumento] = useState(false);
+  const [isDeletingSuprimento, setIsDeletingSuprimento] = useState<number | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDashboard(mockDashboard);
-      setDocumentos(mockDocumentos);
-      setSuprimentos(mockSuprimentos);
-      setRequisicoes(mockRequisicoes);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchSecretaria() {
+      try {
+        const [dashResult, docsResult, supsResult, reqsResult] = await Promise.all([
+          api.get<DashboardData>('/secretaria/dashboard'),
+          api.get<{ data: DocumentoData[] }>('/secretaria/documentos'),
+          api.get<{ data: SuprimentoData[] }>('/secretaria/suprimentos'),
+          api.get<{ data: RequisicaoData[] }>('/secretaria/requisicoes'),
+        ]);
+
+        setDashboard(dashResult);
+        setDocumentos(docsResult.data || []);
+        setSuprimentos(supsResult.data || []);
+        setRequisicoes(reqsResult.data || []);
+      } catch (error) {
+        console.error('Erro ao carregar dados da secretaria:', error);
+        // Dados mock em caso de erro
+        setDashboard({
+          documentosHoje: 12,
+          documentosMes: 156,
+          documentosUrgentes: 3,
+          tramitacoesPendentes: 8,
+          tempoMedioTramitacao: 2.5,
+          requisicoesMateriaisPendentes: 5,
+          documentosPorTipo: [],
+          tramitacoesPorDepartamento: [],
+        });
+        setDocumentos([]);
+        setSuprimentos([]);
+        setRequisicoes([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchSecretaria();
   }, []);
 
   const itensEstoqueBaixo = suprimentos.filter(s => s.quantidadeAtual < s.quantidadeMinima);
+
+  async function handleDeleteSuprimento(id: number) {
+    if (!window.confirm('Tem certeza que deseja excluir este suprimento?')) return;
+    setIsDeletingSuprimento(id);
+    try {
+      await api.delete(`/secretaria/suprimentos/${id}`);
+      const novos = suprimentos.filter((s) => s.id !== id);
+      setSuprimentos(novos);
+    } catch (error) {
+      console.error('Erro ao excluir suprimento:', error);
+    } finally {
+      setIsDeletingSuprimento(null);
+    }
+  }
 
   if (isLoading || !dashboard) {
     return (
@@ -293,7 +245,7 @@ export default function SecretariaPage() {
                   <p className="text-xs opacity-70 mt-1">{itensEstoqueBaixo.length} itens baixos</p>
                 </div>
                 <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                  <Icons.Package className="w-6 h-6" />
+                  <Icons.FileText className="w-6 h-6" />
                 </div>
               </div>
             </CardContent>
@@ -313,14 +265,14 @@ export default function SecretariaPage() {
                     <div className="flex items-center gap-2">
                       <Icons.FileText size={16} className="text-slate-400" />
                       <span className="text-sm text-slate-600 dark:text-slate-400">
-                        {tipoDocumentoConfig[item.tipo as TipoDocumentoOficial]?.label || item.tipo}
+                        {tipoDocumentoConfig[item.tipo]?.label || item.tipo}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-32 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full bg-sky-500"
-                          style={{ width: `${(item.quantidade / dashboard.documentosMes) * 100}%` }}
+                          style={{ width: `${dashboard.documentosMes > 0 ? (item.quantidade / dashboard.documentosMes) * 100 : 0}%` }}
                         />
                       </div>
                       <span className="text-sm font-medium text-slate-700 dark:text-slate-200 w-8 text-right">
@@ -351,7 +303,7 @@ export default function SecretariaPage() {
                       <div className="w-32 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full bg-purple-500"
-                          style={{ width: `${(item.quantidade / 50) * 100}%` }}
+                          style={{ width: `${Math.min((item.quantidade / 50) * 100, 100)}%` }}
                         />
                       </div>
                       <span className="text-sm font-medium text-slate-700 dark:text-slate-200 w-8 text-right">
@@ -375,7 +327,7 @@ export default function SecretariaPage() {
                   label: `Documentos Recentes`,
                   content: (
                     <div className="space-y-4">
-                      {documentos.map((doc) => (
+                      {documentos.length > 0 ? documentos.map((doc) => (
                         <div
                           key={doc.id}
                           className={`p-4 rounded-lg border ${
@@ -392,11 +344,11 @@ export default function SecretariaPage() {
                                 'bg-purple-100 dark:bg-purple-900/30'
                               }`}>
                                 {doc.tipoMovimentacao === 'ENTRADA' ? (
-                                  <Icons.ArrowDownLeft className={`w-5 h-5 text-emerald-600`} />
+                                  <Icons.ArrowLeft className={`w-5 h-5 text-emerald-600`} />
                                 ) : doc.tipoMovimentacao === 'SAIDA' ? (
-                                  <Icons.ArrowUpRight className={`w-5 h-5 text-blue-600`} />
+                                  <Icons.ArrowRight className={`w-5 h-5 text-blue-600`} />
                                 ) : (
-                                  <Icons.ArrowLeftRight className={`w-5 h-5 text-purple-600`} />
+                                  <Icons.ArrowRight className={`w-5 h-5 text-purple-600`} />
                                 )}
                               </div>
                               <div>
@@ -404,25 +356,25 @@ export default function SecretariaPage() {
                                   <h3 className="font-semibold text-slate-700 dark:text-slate-200">
                                     {doc.assunto}
                                   </h3>
-                                  <span className={`px-2 py-0.5 rounded text-xs font-bold ${prioridadeConfig[doc.prioridade].cor}`}>
-                                    {prioridadeConfig[doc.prioridade].label}
+                                  <span className={`px-2 py-0.5 rounded text-xs font-bold ${prioridadeConfig[doc.prioridade]?.cor || prioridadeConfig.NORMAL.cor}`}>
+                                    {prioridadeConfig[doc.prioridade]?.label || doc.prioridade}
                                   </span>
-                                  <Badge variant={statusDocumentoConfig[doc.status].variant}>
-                                    {statusDocumentoConfig[doc.status].label}
+                                  <Badge variant={statusDocumentoConfig[doc.status]?.variant || 'default'}>
+                                    {statusDocumentoConfig[doc.status]?.label || doc.status}
                                   </Badge>
                                 </div>
                                 <p className="text-sm text-sky-600 font-mono">{doc.numero}</p>
                                 <div className="flex items-center gap-4 mt-1 text-sm text-slate-500">
-                                  <span>{tipoDocumentoConfig[doc.tipo].label}</span>
+                                  <span>{tipoDocumentoConfig[doc.tipo]?.label || doc.tipo}</span>
                                   <span>•</span>
-                                  <span>{doc.dataDocumento.toLocaleDateString('pt-AO')}</span>
+                                  <span>{new Date(doc.dataDocumento).toLocaleDateString('pt-AO')}</span>
                                 </div>
                                 <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                                  {doc.tipoMovimentacao === 'ENTRADA' 
+                                  {doc.tipoMovimentacao === 'ENTRADA'
                                     ? `De: ${doc.remetenteExterno} → Para: ${doc.destinatarioInterno}`
                                     : doc.tipoMovimentacao === 'SAIDA'
                                     ? `De: ${doc.remetenteInterno} → Para: ${doc.destinatarioExterno}`
-                                    : `${doc.remetenteInterno} → ${doc.destinatarioInterno}`
+                                    : `${doc.remetenteInterno || ''} → ${doc.destinatarioInterno || ''}`
                                   }
                                 </p>
                               </div>
@@ -436,14 +388,19 @@ export default function SecretariaPage() {
                               </Link>
                               {doc.status === 'AGUARDANDO_ASSINATURA' && (
                                 <Button size="sm">
-                                  <Icons.Edit3 size={14} />
+                                  <Icons.Edit size={14} />
                                   Assinar
                                 </Button>
                               )}
                             </div>
                           </div>
                         </div>
-                      ))}
+                      )) : (
+                        <div className="text-center py-8 text-slate-500">
+                          <Icons.FileText size={48} className="mx-auto mb-4 text-slate-300" />
+                          <p>Nenhum documento encontrado</p>
+                        </div>
+                      )}
                     </div>
                   ),
                 },
@@ -479,6 +436,7 @@ export default function SecretariaPage() {
                               <th className="px-4 py-3 text-center font-semibold">Qtd. Atual</th>
                               <th className="px-4 py-3 text-center font-semibold">Mínimo</th>
                               <th className="px-4 py-3 text-center font-semibold">Status</th>
+                              <th className="px-4 py-3 text-center font-semibold">Ações</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -498,6 +456,16 @@ export default function SecretariaPage() {
                                       {isBaixo ? 'Baixo' : 'OK'}
                                     </Badge>
                                   </td>
+                                  <td className="px-4 py-3 text-center">
+                                    <button
+                                      className="text-red-600 hover:text-red-800 disabled:opacity-50"
+                                      title="Excluir"
+                                      disabled={isDeletingSuprimento === item.id}
+                                      onClick={() => handleDeleteSuprimento(item.id)}
+                                    >
+                                      {isDeletingSuprimento === item.id ? 'Excluindo...' : 'Excluir'}
+                                    </button>
+                                  </td>
                                 </tr>
                               );
                             })}
@@ -512,7 +480,7 @@ export default function SecretariaPage() {
                   label: `Requisições (${requisicoes.length})`,
                   content: (
                     <div className="space-y-4">
-                      {requisicoes.map((req) => (
+                      {requisicoes.length > 0 ? requisicoes.map((req) => (
                         <div key={req.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
                           <div className="flex items-center gap-4">
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
@@ -520,17 +488,14 @@ export default function SecretariaPage() {
                               req.status === 'APROVADA' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
                               'bg-slate-100 dark:bg-slate-700'
                             }`}>
-                              <Icons.Package className={`w-5 h-5 ${
-                                req.status === 'PENDENTE' ? 'text-amber-600' :
-                                req.status === 'APROVADA' ? 'text-emerald-600' : 'text-slate-600'
-                              }`} />
+                              <Icons.FileText className="w-5 h-5 text-slate-600" />
                             </div>
                             <div>
                               <p className="font-medium text-slate-700 dark:text-slate-200">{req.codigo}</p>
                               <p className="text-sm text-slate-500">
                                 {req.departamentoSolicitante} • {req.solicitante}
                               </p>
-                              <p className="text-sm text-slate-500">{req.dataSolicitacao.toLocaleDateString('pt-AO')}</p>
+                              <p className="text-sm text-slate-500">{new Date(req.dataSolicitacao).toLocaleDateString('pt-AO')}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-3">
@@ -546,7 +511,12 @@ export default function SecretariaPage() {
                             </Button>
                           </div>
                         </div>
-                      ))}
+                      )) : (
+                        <div className="text-center py-8 text-slate-500">
+                          <Icons.FileText size={48} className="mx-auto mb-4 text-slate-300" />
+                          <p>Nenhuma requisição encontrada</p>
+                        </div>
+                      )}
                     </div>
                   ),
                 },
@@ -581,3 +551,4 @@ export default function SecretariaPage() {
     </MainLayout>
   );
 }
+

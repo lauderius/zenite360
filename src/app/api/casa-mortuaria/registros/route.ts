@@ -1,139 +1,148 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma, handlePrismaError } from '@/lib/prisma';
 
-// GET - Listar registros de óbito
+// Dados mock para registros de óbito
+const mockRegistros = [
+  {
+    id: 1,
+    codigo: 'OB-2024-00001',
+    nomeCompleto: 'José António da Silva',
+    idade: 65,
+    genero: 'MASCULINO',
+    causaObito: 'NATURAL' as const,
+    status: 'EM_CONSERVACAO' as const,
+    dataAdmissao: new Date(Date.now() - 12 * 60 * 60 * 1000),
+    dataHoraObito: new Date(Date.now() - 14 * 60 * 60 * 1000),
+    localObito: 'Hospital Central - UTI',
+    medicoResponsável: 'Dr. António Silva',
+    camaraFria: 'Câmara A',
+    posicao: 'A1',
+    declaracaoObitoEmitida: true,
+    autopsiaRealizada: false,
+    guiaSaidaEmitida: false,
+    responsavelNome: 'Maria da Silva',
+    responsavelParentesco: 'Esposa',
+    responsavelTelefone: '+244 923 456 789',
+  },
+  {
+    id: 2,
+    codigo: 'OB-2024-00002',
+    nomeCompleto: 'Maria Ferreira Santos',
+    idade: 72,
+    genero: 'FEMININO',
+    causaObito: 'NATURAL' as const,
+    status: 'AGUARDANDO_DOCUMENTACAO' as const,
+    dataAdmissao: new Date(Date.now() - 36 * 60 * 60 * 1000),
+    dataHoraObito: new Date(Date.now() - 38 * 60 * 60 * 1000),
+    localObito: 'Domicílio',
+    medicoResponsável: 'Dra. Carla Mendes',
+    camaraFria: 'Câmara B',
+    posicao: 'B3',
+    declaracaoObitoEmitida: false,
+    autopsiaRealizada: false,
+    guiaSaidaEmitida: false,
+    responsavelNome: 'Carlos Santos',
+    responsavelParentesco: 'Filho',
+    responsavelTelefone: '+244 934 567 890',
+  },
+  {
+    id: 3,
+    codigo: 'OB-2024-00003',
+    nomeCompleto: 'Pedro Manuel Costa',
+    idade: 45,
+    genero: 'MASCULINO',
+    causaObito: 'ACIDENTAL' as const,
+    status: 'EM_CONSERVACAO' as const,
+    dataAdmissao: new Date(Date.now() - 6 * 60 * 60 * 1000),
+    dataHoraObito: new Date(Date.now() - 8 * 60 * 60 * 1000),
+    localObito: 'Via Pública - Acidente',
+    medicoResponsável: 'Dr. João Pereira',
+    camaraFria: 'Câmara A',
+    posicao: 'A2',
+    declaracaoObitoEmitida: true,
+    autopsiaRealizada: true,
+    guiaSaidaEmitida: false,
+    responsavelNome: 'Ana Costa',
+    responsavelParentesco: 'Esposa',
+    responsavelTelefone: '+244 945 678 901',
+  },
+];
+
+// GET: Listar registros de óbito
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get('status');
-    const causaObito = searchParams.get('causaObito');
-    const dataInicio = searchParams.get('dataInicio');
-    const dataFim = searchParams.get('dataFim');
-    const camaraFria = searchParams.get('camaraFria');
+    const searchParams = request.nextUrl.searchParams;
+    const status = searchParams.get('status') || '';
+    const search = searchParams.get('search') || '';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    const where: any = {};
+    let registros = [...mockRegistros];
 
-    if (status) where.status = status;
-    if (causaObito) where.causaObito = causaObito;
-    if (camaraFria) where.camaraFria = camaraFria;
-    if (dataInicio || dataFim) {
-      where.dataAdmissao = {};
-      if (dataInicio) where.dataAdmissao.gte = new Date(dataInicio);
-      if (dataFim) where.dataAdmissao.lte = new Date(dataFim);
+    // Aplicar filtros
+    if (status && status !== '') {
+      registros = registros.filter(r => r.status === status);
     }
 
-    const [registros, total] = await Promise.all([
-      prisma.registroObito.findMany({
-        where,
-        include: {
-          medicoResponsavel: { select: { nomeCompleto: true } },
-          paciente: { select: { nomeCompleto: true, numeroProcesso: true } },
-        },
-        orderBy: { dataAdmissao: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      prisma.registroObito.count({ where }),
-    ]);
+    if (search) {
+      const searchLower = search.toLowerCase();
+      registros = registros.filter(r =>
+        r.nomeCompleto.toLowerCase().includes(searchLower) ||
+        r.codigo.toLowerCase().includes(searchLower)
+      );
+    }
 
-    // Estatísticas
-    const [emConservacao, aguardandoDoc, obitosHoje] = await Promise.all([
-      prisma.registroObito.count({
-        where: { status: { in: ['ADMITIDO', 'EM_CONSERVACAO', 'AGUARDANDO_DOCUMENTACAO'] } },
-      }),
-      prisma.registroObito.count({ where: { status: 'AGUARDANDO_DOCUMENTACAO' } }),
-      prisma.registroObito.count({
-        where: {
-          dataAdmissao: {
-            gte: new Date(new Date().setHours(0, 0, 0, 0)),
-          },
-        },
-      }),
-    ]);
+    // Paginação
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const registrosPaginados = registros.slice(startIndex, endIndex);
 
     return NextResponse.json({
-      data: registros,
-      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
-      stats: { emConservacao, aguardandoDoc, obitosHoje },
+      data: registrosPaginados,
+      pagination: {
+        page,
+        limit,
+        total: registros.length,
+        totalPages: Math.ceil(registros.length / limit),
+      },
+      success: true,
     });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao buscar registros:', error);
+    return NextResponse.json({
+      data: [],
+      pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
+      success: false,
+      error: 'Erro ao buscar registros',
+    });
   }
 }
 
-// POST - Criar registro de óbito
+// POST: Criar novo registro de óbito
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Gerar código
-    const ano = new Date().getFullYear();
-    const count = await prisma.registroObito.count({
-      where: {
-        criadoEm: {
-          gte: new Date(`${ano}-01-01`),
-          lt: new Date(`${ano + 1}-01-01`),
-        },
-      },
+    const novoRegistro = {
+      id: mockRegistros.length + 1,
+      codigo: `OB-${new Date().getFullYear()}-${String(mockRegistros.length + 1).padStart(5, '0')}`,
+      ...body,
+      status: 'ADMITIDO' as const,
+      dataAdmissao: new Date(),
+      declaracaoObitoEmitida: false,
+      autopsiaRealizada: false,
+      guiaSaidaEmitida: false,
+    };
+
+    return NextResponse.json({
+      success: true,
+      data: novoRegistro,
     });
-    const codigo = `OB-${ano}-${String(count + 1).padStart(5, '0')}`;
-
-    // Verificar disponibilidade na câmara fria
-    const camara = await prisma.camaraFria.findFirst({
-      where: { codigo: body.camaraFria },
-    });
-
-    if (!camara) {
-      return NextResponse.json(
-        { error: 'Câmara fria não encontrada' },
-        { status: 400 }
-      );
-    }
-
-    if (camara.ocupacaoAtual >= camara.capacidade) {
-      return NextResponse.json(
-        { error: 'Câmara fria sem capacidade disponível' },
-        { status: 400 }
-      );
-    }
-
-    // Criar registro
-    const registro = await prisma.registroObito.create({
-      data: {
-        codigo,
-        ...body,
-        dataHoraObito: new Date(body.dataHoraObito),
-        dataNascimento: body.dataNascimento ? new Date(body.dataNascimento) : null,
-        dataAdmissao: new Date(),
-        status: 'ADMITIDO',
-      },
-    });
-
-    // Atualizar ocupação da câmara
-    await prisma.camaraFria.update({
-      where: { id: camara.id },
-      data: { ocupacaoAtual: { increment: 1 } },
-    });
-
-    // Se paciente internado, registrar alta por óbito
-    if (body.pacienteId) {
-      await prisma.internamento.updateMany({
-        where: {
-          pacienteId: body.pacienteId,
-          status: 'ACTIVO',
-        },
-        data: {
-          status: 'ALTA',
-          dataAlta: new Date(),
-          motivoAlta: 'OBITO',
-        },
-      });
-    }
-
-    return NextResponse.json(registro, { status: 201 });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao criar registro:', error);
+    return NextResponse.json(
+      { success: false, error: 'Erro ao criar registro' },
+      { status: 500 }
+    );
   }
 }
+

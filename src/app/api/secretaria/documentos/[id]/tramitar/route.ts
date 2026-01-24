@@ -1,72 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma, handlePrismaError } from '@/lib/prisma';
+import { mockGetById } from '@/lib/mockData';
 
-// POST - Tramitar documento
-export async function POST(
+export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  try {
-    const id = parseInt(params.id);
-    const body = await request.json();
+  const { id: idString } = await params;
+  const id = parseInt(idString);
+  return mockGetById(id, 'Documento Oficial');
+}
 
-    const documento = await prisma.documentoOficial.findUnique({
-      where: { id },
-    });
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id: idString } = await params;
+  const id = parseInt(idString);
+  const body = await request.json();
+  return NextResponse.json({ id, ...body, success: true, _status: 'mock' });
+}
 
-    if (!documento) {
-      return NextResponse.json(
-        { error: 'Documento não encontrado' },
-        { status: 404 }
-      );
-    }
-
-    // Criar tramitação
-    const tramitacao = await prisma.tramitacaoDocumento.create({
-      data: {
-        documentoId: id,
-        despacho: body.despacho,
-        departamentoOrigemId: documento.departamentoAtualId!,
-        departamentoDestinoId: body.departamentoDestinoId,
-        responsavelOrigemId: body.responsavelOrigemId,
-        responsavelDestinoId: body.responsavelDestinoId,
-        dataEnvio: new Date(),
-        status: 'ENVIADO',
-        observacoes: body.observacoes,
-      },
-      include: {
-        departamentoOrigem: { select: { nome: true, sigla: true } },
-        departamentoDestino: { select: { nome: true, sigla: true } },
-        responsavelOrigem: { select: { nomeCompleto: true } },
-        responsavelDestino: { select: { nomeCompleto: true } },
-      },
-    });
-
-    // Atualizar documento
-    await prisma.documentoOficial.update({
-      where: { id },
-      data: {
-        departamentoAtualId: body.departamentoDestinoId,
-        atualizadoEm: new Date(),
-      },
-    });
-
-    // Notificar destinatário
-    if (body.responsavelDestinoId) {
-      await prisma.notificacao.create({
-        data: {
-          tipo: 'DOCUMENTO_RECEBIDO',
-          titulo: `Novo documento recebido: ${documento.numero}`,
-          mensagem: `Você recebeu o documento "${documento.assunto}" para análise.`,
-          usuarioId: body.responsavelDestinoId,
-          link: `/secretaria/documentos/${id}`,
-          prioridade: documento.prioridade === 'URGENTE' ? 'ALTA' : 'MEDIA',
-        },
-      });
-    }
-
-    return NextResponse.json(tramitacao, { status: 201 });
-  } catch (error) {
-    return handlePrismaError(error);
-  }
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id: idString } = await params;
+  const id = parseInt(idString);
+  return NextResponse.json({ success: true, id, _status: 'mock' });
 }

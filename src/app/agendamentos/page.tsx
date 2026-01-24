@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import type { StatusAgendamento, TipoAtendimento } from '@/types';
 
 interface Agendamento {
@@ -20,68 +20,7 @@ interface Agendamento {
   status: StatusAgendamento;
 }
 
-const mockAgendamentos: Agendamento[] = [
-  {
-    id: 1,
-    codigo: 'AG-2024-00001',
-    paciente: 'Maria José Santos',
-    tipoAtendimento: 'CONSULTA_EXTERNA',
-    dataAgendamento: new Date(),
-    horaInicio: '08:00',
-    horaFim: '08:30',
-    medico: 'Dr. Paulo Sousa',
-    departamento: 'Clínica Geral',
-    status: 'ATENDIDO',
-  },
-  {
-    id: 2,
-    codigo: 'AG-2024-00002',
-    paciente: 'João Pedro Silva',
-    tipoAtendimento: 'RETORNO',
-    dataAgendamento: new Date(),
-    horaInicio: '08:30',
-    horaFim: '09:00',
-    medico: 'Dra. Ana Reis',
-    departamento: 'Cardiologia',
-    status: 'EM_ATENDIMENTO',
-  },
-  {
-    id: 3,
-    codigo: 'AG-2024-00003',
-    paciente: 'Ana Luísa Ferreira',
-    tipoAtendimento: 'CONSULTA_EXTERNA',
-    dataAgendamento: new Date(),
-    horaInicio: '09:00',
-    horaFim: '09:30',
-    medico: 'Dr. Paulo Sousa',
-    departamento: 'Clínica Geral',
-    status: 'CONFIRMADO',
-  },
-  {
-    id: 4,
-    codigo: 'AG-2024-00004',
-    paciente: 'Carlos Manuel Costa',
-    tipoAtendimento: 'EXAME',
-    dataAgendamento: new Date(),
-    horaInicio: '09:30',
-    horaFim: '10:00',
-    medico: 'Dr. João Santos',
-    departamento: 'Laboratório',
-    status: 'AGENDADO',
-  },
-  {
-    id: 5,
-    codigo: 'AG-2024-00005',
-    paciente: 'Teresa Antónia',
-    tipoAtendimento: 'CONSULTA_EXTERNA',
-    dataAgendamento: new Date(),
-    horaInicio: '10:00',
-    horaFim: '10:30',
-    medico: 'Dra. Ana Reis',
-    departamento: 'Cardiologia',
-    status: 'AGENDADO',
-  },
-];
+import { api } from '@/services/api';
 
 const statusConfig: Record<StatusAgendamento, { label: string; variant: 'default' | 'primary' | 'success' | 'warning' | 'danger' }> = {
   AGENDADO: { label: 'Agendado', variant: 'default' },
@@ -224,12 +163,20 @@ export default function AgendamentosPage() {
   const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
   const [dataAtual, setDataAtual] = useState(new Date());
 
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setAgendamentos(mockAgendamentos);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchAgendamentos() {
+      try {
+        const data = await api.get<Agendamento[]>('/agendamentos');
+        setAgendamentos(data);
+      } catch (error) {
+        // TODO: adicionar feedback de erro
+        setAgendamentos([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchAgendamentos();
   }, []);
 
   const navegarData = (direcao: 'anterior' | 'proximo') => {

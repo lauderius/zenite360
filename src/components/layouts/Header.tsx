@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import { Avatar, cn } from '@/components/ui';
 import { useAuth } from '@/contexts/AuthContext';
 

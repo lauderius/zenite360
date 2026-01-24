@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Avatar } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import type { StatusInternamento } from '@/types';
 
 interface Internamento {
@@ -20,78 +20,13 @@ interface Internamento {
   diasInternado: number;
 }
 
-const mockInternamentos: Internamento[] = [
-  {
-    id: 1,
-    codigo: 'INT-2024-00001',
-    paciente: 'António Mendes',
-    leito: 'E-101',
-    setor: 'Enfermaria Geral',
-    medicoResponsavel: 'Dr. Paulo Sousa',
-    dataAdmissao: new Date('2024-01-10'),
-    diagnostico: 'Pneumonia Comunitária',
-    status: 'EM_TRATAMENTO',
-    diasInternado: 5,
-  },
-  {
-    id: 2,
-    codigo: 'INT-2024-00002',
-    paciente: 'Maria Santos',
-    leito: 'UTI-02',
-    setor: 'UTI',
-    medicoResponsavel: 'Dra. Ana Reis',
-    dataAdmissao: new Date('2024-01-12'),
-    diagnostico: 'Infarto Agudo do Miocárdio',
-    status: 'EM_TRATAMENTO',
-    diasInternado: 3,
-  },
-  {
-    id: 3,
-    codigo: 'INT-2024-00003',
-    paciente: 'João Silva',
-    leito: 'C-205',
-    setor: 'Cirurgia',
-    medicoResponsavel: 'Dr. Carlos Mendes',
-    dataAdmissao: new Date('2024-01-14'),
-    diagnostico: 'Pós-operatório Apendicectomia',
-    status: 'ALTA_MEDICA',
-    diasInternado: 1,
-  },
-];
+import { api } from '@/services/api';
 
-// Mapa de leitos (visualização)
-const setores = [
-  {
-    nome: 'Enfermaria Geral',
-    leitos: [
-      { codigo: 'E-101', ocupado: true, paciente: 'António M.' },
-      { codigo: 'E-102', ocupado: false },
-      { codigo: 'E-103', ocupado: true, paciente: 'José F.' },
-      { codigo: 'E-104', ocupado: false },
-      { codigo: 'E-105', ocupado: true, paciente: 'Ana P.' },
-      { codigo: 'E-106', ocupado: false },
-    ],
-  },
-  {
-    nome: 'UTI',
-    leitos: [
-      { codigo: 'UTI-01', ocupado: true, paciente: 'Carlos S.', critico: true },
-      { codigo: 'UTI-02', ocupado: true, paciente: 'Maria S.', critico: true },
-      { codigo: 'UTI-03', ocupado: false },
-      { codigo: 'UTI-04', ocupado: false },
-    ],
-  },
-  {
-    nome: 'Cirurgia',
-    leitos: [
-      { codigo: 'C-201', ocupado: false },
-      { codigo: 'C-202', ocupado: true, paciente: 'Pedro L.' },
-      { codigo: 'C-203', ocupado: false },
-      { codigo: 'C-204', ocupado: false },
-      { codigo: 'C-205', ocupado: true, paciente: 'João S.' },
-      { codigo: 'C-206', ocupado: false },
-    ],
-  },
+// Mapa de leitos (dados dinâmicos baseados nos internamentos)
+const setoresFixos = [
+  { nome: 'Enfermaria Geral', prefixo: 'E-', totalLeitos: 6 },
+  { nome: 'UTI', prefixo: 'UTI-', totalLeitos: 4 },
+  { nome: 'Cirurgia', prefixo: 'C-', totalLeitos: 6 },
 ];
 
 const statusConfig: Record<StatusInternamento, { label: string; variant: 'default' | 'warning' | 'success' | 'danger' | 'primary' }> = {
@@ -104,18 +39,129 @@ const statusConfig: Record<StatusInternamento, { label: string; variant: 'defaul
   EVASAO: { label: 'Evasão', variant: 'danger' },
 };
 
+// Componente ListaInternamentos
+function ListaInternamentos({ internamentos }: { internamentos: Internamento[] }) {
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [error, setError] = useState("");
+  const [items, setItems] = useState(internamentos);
+
+  React.useEffect(() => { setItems(internamentos); }, [internamentos]);
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("Deseja realmente excluir este internamento?")) return;
+    setDeletingId(id);
+    setError("");
+    try {
+      await api.delete(`/internamento/${id}`);
+      setItems((prev) => prev.filter((i) => i.id !== id));
+    } catch (err: any) {
+      setError(err.message || "Erro ao excluir internamento");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {items.map((int) => (
+        <Card key={int.id} className="hover:shadow-md transition-shadow">
+          <CardContent className="p-4">
+            <div className="flex items-start justify-between">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                  <Icons.Bed size={24} className="text-purple-600" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-slate-700 dark:text-slate-200">
+                      {int.paciente}
+                    </h3>
+                    <Badge variant={statusConfig[int.status].variant}>
+                      {statusConfig[int.status].label}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-sky-600 font-mono">{int.codigo}</p>
+                  <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
+                    <span className="flex items-center gap-1">
+                      <Icons.Bed size={14} />
+                      Leito: {int.leito}
+                    </span>
+                    <span>{int.setor}</span>
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                    <span className="font-medium">Diagnóstico:</span> {int.diagnostico}
+                  </p>
+                  <p className="text-sm text-slate-500 mt-1">
+                    Médico: {int.medicoResponsavel}
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-slate-500">
+                  {new Date(int.dataAdmissao).toLocaleDateString('pt-AO')}
+                </p>
+                <p className="text-lg font-bold text-purple-600 mt-1">
+                  {int.diasInternado} dias
+                </p>
+                <div className="flex gap-2 mt-2">
+                  <Link href={`/internamento/${int.id}`}>
+                    <Button variant="outline" size="sm">
+                      <Icons.Eye size={14} />
+                      Ver
+                    </Button>
+                  </Link>
+                  <Button variant="destructive" size="sm" onClick={() => handleDelete(int.id)} disabled={deletingId === int.id}>
+                    {deletingId === int.id ? <Spinner size="sm" /> : "Excluir"}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
 export default function InternamentoPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [internamentos, setInternamentos] = useState<Internamento[]>([]);
   const [viewMode, setViewMode] = useState<'lista' | 'mapa'>('lista');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setInternamentos(mockInternamentos);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchInternamentos() {
+      try {
+        const data = await api.get<Internamento[]>('/internamento');
+        setInternamentos(data);
+      } catch (error) {
+        // TODO: adicionar feedback de erro
+        setInternamentos([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchInternamentos();
   }, []);
+
+  // Gerar mapa dinâmico de leitos baseado nos internamentos
+  const setores = setoresFixos.map((setorFixo) => {
+    const leitos = [];
+    for (let i = 1; i <= setorFixo.totalLeitos; i++) {
+      const codigo = `${setorFixo.prefixo}${String(i).padStart(3, '0')}`;
+      const internamentoNoLeito = internamentos.find(int => int.leito === codigo);
+      leitos.push({
+        codigo,
+        ocupado: !!internamentoNoLeito,
+        paciente: internamentoNoLeito?.paciente || '',
+        critico: setorFixo.nome === 'UTI' && internamentoNoLeito?.status === 'EM_TRATAMENTO',
+      });
+    }
+    return {
+      nome: setorFixo.nome,
+      leitos,
+    };
+  });
 
   // Estatísticas
   const totalLeitos = setores.reduce((acc, s) => acc + s.leitos.length, 0);
@@ -262,61 +308,92 @@ export default function InternamentoPage() {
             </div>
           ) : (
             // Lista de Internamentos
-            <div className="space-y-4">
-              {internamentos.map((int) => (
-                <Card key={int.id} className="hover:shadow-md transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                          <Icons.Bed size={24} className="text-purple-600" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-semibold text-slate-700 dark:text-slate-200">
-                              {int.paciente}
-                            </h3>
-                            <Badge variant={statusConfig[int.status].variant}>
-                              {statusConfig[int.status].label}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-sky-600 font-mono">{int.codigo}</p>
-                          <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
-                            <span className="flex items-center gap-1">
-                              <Icons.Bed size={14} />
-                              Leito: {int.leito}
-                            </span>
-                            <span>{int.setor}</span>
-                          </div>
-                          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                            <span className="font-medium">Diagnóstico:</span> {int.diagnostico}
-                          </p>
-                          <p className="text-sm text-slate-500 mt-1">
-                            Médico: {int.medicoResponsavel}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm text-slate-500">
-                          Admissão: {int.dataAdmissao.toLocaleDateString('pt-AO')}
-                        </p>
-                        <p className="text-lg font-bold text-purple-600 mt-1">
-                          {int.diasInternado} dias
-                        </p>
-                        <div className="flex gap-2 mt-2">
-                          <Link href={`/internamento/${int.id}`}>
-                            <Button variant="outline" size="sm">
-                              <Icons.Eye size={14} />
-                              Ver
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <ListaInternamentos internamentos={internamentos} />
+
+// --- ListaInternamentos ---
+function ListaInternamentos({ internamentos }: { internamentos: Internamento[] }) {
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [error, setError] = useState("");
+  const [items, setItems] = useState(internamentos);
+
+  React.useEffect(() => { setItems(internamentos); }, [internamentos]);
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("Deseja realmente excluir este internamento?")) return;
+    setDeletingId(id);
+    setError("");
+    try {
+      await api.delete(`/internamento/${id}`);
+      setItems((prev) => prev.filter((i) => i.id !== id));
+    } catch (err: any) {
+      setError(err.message || "Erro ao excluir internamento");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {error && <div className="text-red-600 text-sm">{error}</div>}
+      {items.map((int) => (
+        <Card key={int.id} className="hover:shadow-md transition-shadow">
+          <CardContent className="p-4">
+            <div className="flex items-start justify-between">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                  <Icons.Bed size={24} className="text-purple-600" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-slate-700 dark:text-slate-200">
+                      {int.paciente}
+                    </h3>
+                    <Badge variant={statusConfig[int.status].variant}>
+                      {statusConfig[int.status].label}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-sky-600 font-mono">{int.codigo}</p>
+                  <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
+                    <span className="flex items-center gap-1">
+                      <Icons.Bed size={14} />
+                      Leito: {int.leito}
+                    </span>
+                    <span>{int.setor}</span>
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                    <span className="font-medium">Diagnóstico:</span> {int.diagnostico}
+                  </p>
+                  <p className="text-sm text-slate-500 mt-1">
+                    Médico: {int.medicoResponsavel}
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-slate-500">
+                  {new Date(int.dataAdmissao).toLocaleDateString('pt-AO')}
+                </p>
+                <p className="text-lg font-bold text-purple-600 mt-1">
+                  {int.diasInternado} dias
+                </p>
+                <div className="flex gap-2 mt-2">
+                  <Link href={`/internamento/${int.id}`}>
+                    <Button variant="outline" size="sm">
+                      <Icons.Eye size={14} />
+                      Ver
+                    </Button>
+                  </Link>
+                  <Button variant="destructive" size="sm" onClick={() => handleDelete(int.id)} disabled={deletingId === int.id}>
+                    {deletingId === int.id ? <Spinner size="sm" /> : "Excluir"}
+                  </Button>
+                </div>
+              </div>
             </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
           )}
         </div>
       </PageContent>

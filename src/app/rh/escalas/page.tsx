@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Select } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 
 interface Escala {
   id: number;
@@ -17,13 +17,6 @@ interface Escala {
   dias: number[];
 }
 
-const mockEscalas: Escala[] = [
-  { id: 1, funcionario: 'Dr. Paulo Sousa', cargo: 'Médico', departamento: 'Clínica Geral', turno: 'MANHA', horaInicio: '07:00', horaFim: '13:00', dias: [1, 2, 3, 4, 5] },
-  { id: 2, funcionario: 'Dra. Ana Reis', cargo: 'Médica', departamento: 'Cardiologia', turno: 'TARDE', horaInicio: '13:00', horaFim: '19:00', dias: [1, 2, 3, 4, 5] },
-  { id: 3, funcionario: 'Maria Fernandes', cargo: 'Enfermeira', departamento: 'UTI', turno: 'NOITE', horaInicio: '19:00', horaFim: '07:00', dias: [1, 3, 5] },
-  { id: 4, funcionario: 'João Silva', cargo: 'Técnico', departamento: 'Laboratório', turno: 'MANHA', horaInicio: '07:00', horaFim: '13:00', dias: [1, 2, 3, 4, 5, 6] },
-  { id: 5, funcionario: 'Dr. Carlos Mendes', cargo: 'Médico', departamento: 'Urgência', turno: 'PLANTAO_24', horaInicio: '07:00', horaFim: '07:00', dias: [6, 0] },
-];
 
 const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const diasSemanaCompleto = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -43,11 +36,8 @@ export default function EscalasPage() {
   const [departamentoFilter, setDepartamentoFilter] = useState('');
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setEscalas(mockEscalas);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    // TODO: Integrar com API real de escalas
+    setIsLoading(false);
   }, []);
 
   // Gerar dias da semana atual

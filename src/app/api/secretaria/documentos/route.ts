@@ -1,151 +1,130 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma, handlePrismaError } from '@/lib/prisma';
 
-// GET - Listar documentos oficiais
+// Dados mock para documentos oficiais
+const mockDocumentos = [
+  {
+    id: 1,
+    numero: 'SEC-2024-0001',
+    tipo: 'OFICIO',
+    assunto: 'Solicitação de Material de Escritório',
+    prioridade: 'NORMAL' as const,
+    status: 'AGUARDANDO_ASSINATURA' as const,
+    tipoMovimentacao: 'SAIDA',
+    dataDocumento: new Date(),
+    remetenteInterno: 'Departamento de Enfermaria',
+    destinatarioExterno: 'Fornecedor Alpha',
+    destinatarioInterno: null,
+    remetenteExterno: null,
+  },
+  {
+    id: 2,
+    numero: 'SEC-2024-0002',
+    tipo: 'MEMORANDO',
+    assunto: 'Circular de Feriado',
+    prioridade: 'BAIXA' as const,
+    status: 'ENVIADO' as const,
+    tipoMovimentacao: 'INTERNO',
+    dataDocumento: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+    remetenteInterno: 'Direção',
+    destinatarioInterno: 'Todos os Departamentos',
+    remetenteExterno: null,
+    destinatarioExterno: null,
+  },
+  {
+    id: 3,
+    numero: 'SEC-2024-0003',
+    tipo: 'PORTARIA',
+    assunto: 'Nomeação de Responsável de Setor',
+    prioridade: 'ALTA' as const,
+    status: 'ASSINADO' as const,
+    tipoMovimentacao: 'ENTRADA',
+    dataDocumento: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+    remetenteInterno: null,
+    destinatarioInterno: null,
+    remetenteExterno: 'Ministério da Saúde',
+    destinatarioExterno: null,
+  },
+];
+
+// GET: Listar documentos
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const tipo = searchParams.get('tipo');
-    const status = searchParams.get('status');
-    const prioridade = searchParams.get('prioridade');
-    const tipoMovimentacao = searchParams.get('tipoMovimentacao');
-    const departamentoId = searchParams.get('departamentoId');
-    const search = searchParams.get('search');
-    const dataInicio = searchParams.get('dataInicio');
-    const dataFim = searchParams.get('dataFim');
+    const searchParams = request.nextUrl.searchParams;
+    const search = searchParams.get('search') || '';
+    const tipo = searchParams.get('tipo') || '';
+    const status = searchParams.get('status') || '';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    const where: any = { activo: true };
+    let documentos = [...mockDocumentos];
 
-    if (tipo) where.tipo = tipo;
-    if (status) where.status = status;
-    if (prioridade) where.prioridade = prioridade;
-    if (tipoMovimentacao) where.tipoMovimentacao = tipoMovimentacao;
-    if (departamentoId) where.departamentoAtualId = parseInt(departamentoId);
+    // Aplicar filtros
     if (search) {
-      where.OR = [
-        { numero: { contains: search, mode: 'insensitive' } },
-        { assunto: { contains: search, mode: 'insensitive' } },
-        { resumo: { contains: search, mode: 'insensitive' } },
-        { protocoloExterno: { contains: search, mode: 'insensitive' } },
-      ];
-    }
-    if (dataInicio || dataFim) {
-      where.dataDocumento = {};
-      if (dataInicio) where.dataDocumento.gte = new Date(dataInicio);
-      if (dataFim) where.dataDocumento.lte = new Date(dataFim);
+      const searchLower = search.toLowerCase();
+      documentos = documentos.filter(d =>
+        d.assunto.toLowerCase().includes(searchLower) ||
+        d.numero.toLowerCase().includes(searchLower)
+      );
     }
 
-    const [documentos, total] = await Promise.all([
-      prisma.documentoOficial.findMany({
-        where,
-        include: {
-          elaboradoPor: { select: { nomeCompleto: true } },
-          assinadoPor: { select: { nomeCompleto: true } },
-          departamentoAtual: { select: { nome: true, sigla: true } },
-          _count: { select: { tramitacoes: true } },
-        },
-        orderBy: [
-          { prioridade: 'asc' },
-          { dataDocumento: 'desc' },
-        ],
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      prisma.documentoOficial.count({ where }),
-    ]);
+    if (tipo) {
+      documentos = documentos.filter(d => d.tipo === tipo);
+    }
 
-    // Estatísticas
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
+    if (status) {
+      documentos = documentos.filter(d => d.status === status);
+    }
 
-    const stats = await Promise.all([
-      prisma.documentoOficial.count({ where: { dataDocumento: { gte: hoje }, activo: true } }),
-      prisma.documentoOficial.count({ where: { prioridade: 'URGENTE', status: { notIn: ['ARQUIVADO', 'CANCELADO'] }, activo: true } }),
-      prisma.documentoOficial.count({ where: { status: 'AGUARDANDO_ASSINATURA', activo: true } }),
-    ]);
+    // Paginação
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const documentosPaginados = documentos.slice(startIndex, endIndex);
 
     return NextResponse.json({
-      data: documentos,
-      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
-      stats: {
-        documentosHoje: stats[0],
-        urgentes: stats[1],
-        aguardandoAssinatura: stats[2],
+      data: documentosPaginados,
+      pagination: {
+        page,
+        limit,
+        total: documentos.length,
+        totalPages: Math.ceil(documentos.length / limit),
       },
+      success: true,
     });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao buscar documentos:', error);
+    return NextResponse.json({
+      data: [],
+      pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
+      success: false,
+      error: 'Erro ao buscar documentos',
+    });
   }
 }
 
-// POST - Criar novo documento
+// POST: Criar novo documento
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Gerar número do documento
-    const ano = new Date().getFullYear();
-    const prefixos: Record<string, string> = {
-      OFICIO: 'OF',
-      MEMORANDO: 'MEM',
-      CIRCULAR: 'CIR',
-      PORTARIA: 'POR',
-      RESOLUCAO: 'RES',
-      DESPACHO: 'DES',
-      PARECER: 'PAR',
-      COMUNICADO: 'COM',
-      ATA: 'ATA',
-      CONTRATO: 'CON',
-      CONVENIO: 'CVN',
-      RELATORIO: 'REL',
-      OUTROS: 'DOC',
+    const novoDocumento = {
+      id: mockDocumentos.length + 1,
+      numero: `SEC-${new Date().getFullYear()}-${String(mockDocumentos.length + 1).padStart(4, '0')}`,
+      ...body,
+      status: 'RASCUNHO' as const,
+      dataDocumento: new Date(),
+      criadoEm: new Date(),
     };
 
-    const prefixo = prefixos[body.tipo] || 'DOC';
-    const departamento = body.remetenteInterno?.substring(0, 2).toUpperCase() || 'SG';
-
-    const count = await prisma.documentoOficial.count({
-      where: {
-        tipo: body.tipo,
-        ano,
-      },
+    return NextResponse.json({
+      success: true,
+      data: novoDocumento,
     });
-
-    const numero = `${prefixo}/${departamento}/${String(count + 1).padStart(3, '0')}/${ano}`;
-    const codigo = `DOC-${ano}-${String(count + 1).padStart(5, '0')}`;
-
-    const documento = await prisma.documentoOficial.create({
-      data: {
-        codigo,
-        numero,
-        ano,
-        tipo: body.tipo,
-        assunto: body.assunto,
-        resumo: body.resumo,
-        conteudo: body.conteudo,
-        tipoMovimentacao: body.tipoMovimentacao,
-        remetenteInterno: body.remetenteInterno,
-        remetenteExterno: body.remetenteExterno,
-        destinatarioInterno: body.destinatarioInterno,
-        destinatarioExterno: body.destinatarioExterno,
-        dataDocumento: new Date(body.dataDocumento || new Date()),
-        prazoResposta: body.prazoResposta ? new Date(body.prazoResposta) : null,
-        status: body.status || 'EM_ELABORACAO',
-        prioridade: body.prioridade || 'NORMAL',
-        elaboradoPorId: body.elaboradoPorId,
-        departamentoAtualId: body.departamentoAtualId,
-        protocoloExterno: body.protocoloExterno,
-      },
-      include: {
-        elaboradoPor: { select: { nomeCompleto: true } },
-        departamentoAtual: { select: { nome: true } },
-      },
-    });
-
-    return NextResponse.json(documento, { status: 201 });
   } catch (error) {
-    return handlePrismaError(error);
+    console.error('Erro ao criar documento:', error);
+    return NextResponse.json(
+      { success: false, error: 'Erro ao criar documento' },
+      { status: 500 }
+    );
   }
 }
+

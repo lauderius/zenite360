@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts';
 import { Card, CardHeader, CardTitle, CardContent, Badge, Button, Spinner } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import { useAuth } from '@/contexts/AuthContext';
 import type { PrioridadeTriagem } from '@/types';
 

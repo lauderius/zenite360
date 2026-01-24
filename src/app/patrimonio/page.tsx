@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs, Modal, Input, Select } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import type { 
   Ativo, 
   CategoriaAtivo, 
@@ -42,171 +42,10 @@ const statusConfig: Record<StatusAtivo, { label: string; variant: 'success' | 'w
   ABATIDO: { label: 'Abatido', variant: 'default' },
 };
 
-const mockDashboard: DashboardPatrimonio = {
-  totalAtivos: 1247,
-  ativosOperacionais: 1089,
-  ativosEmManutencao: 87,
-  ativosInoperantes: 23,
-  valorTotalPatrimonio: 2850000000,
-  manutencoesAbertasHoje: 12,
-  manutencoesCriticas: 3,
-  manutencoesPreventivas30Dias: 45,
-  custosManutencaoMes: 15600000,
-  tempoMedioReparo: 4.5,
-  taxaDisponibilidade: 94.2,
-  alertasGases: 2,
-  niveisGasesCriticos: [],
-  ativosGarantiaVencer: [],
-  calibracoesVencer: [],
-};
+import { api } from '@/services/api';
 
-const mockAtivos: Ativo[] = [
-  {
-    id: 1,
-    codigo: 'EQP-001',
-    numeroPatrimonio: 'PAT-2024-00001',
-    nome: 'Monitor Multiparamétrico',
-    categoria: 'ELECTROMEDICINA',
-    marca: 'Philips',
-    modelo: 'IntelliVue MX800',
-    numeroSerie: 'SN123456789',
-    dataAquisicao: new Date('2023-06-15'),
-    valorAquisicao: 85000000,
-    localizacao: 'UTI - Sala 1',
-    departamentoId: 4,
-    departamento: 'UTI',
-    status: 'OPERACIONAL',
-    proximaManutencao: new Date('2024-02-15'),
-    ultimaManutencao: new Date('2023-12-15'),
-    garantiaAte: new Date('2026-06-15'),
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-  {
-    id: 2,
-    codigo: 'EQP-002',
-    numeroPatrimonio: 'PAT-2024-00002',
-    nome: 'Ventilador Pulmonar',
-    categoria: 'ELECTROMEDICINA',
-    marca: 'Dräger',
-    modelo: 'Evita V500',
-    numeroSerie: 'SN987654321',
-    dataAquisicao: new Date('2022-03-20'),
-    valorAquisicao: 120000000,
-    localizacao: 'UTI - Sala 2',
-    departamentoId: 4,
-    departamento: 'UTI',
-    status: 'EM_MANUTENCAO',
-    proximaManutencao: new Date('2024-01-20'),
-    ultimaManutencao: new Date('2023-10-20'),
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-  {
-    id: 3,
-    codigo: 'EQP-003',
-    numeroPatrimonio: 'PAT-2024-00003',
-    nome: 'Tomógrafo Computadorizado',
-    categoria: 'IMAGEM_DIAGNOSTICO',
-    marca: 'Siemens',
-    modelo: 'SOMATOM go.Top',
-    numeroSerie: 'CT2024001',
-    dataAquisicao: new Date('2024-01-10'),
-    valorAquisicao: 950000000,
-    localizacao: 'Radiologia - Sala TC',
-    departamentoId: 8,
-    departamento: 'Radiologia',
-    status: 'OPERACIONAL',
-    validadeCalibracao: new Date('2024-07-10'),
-    activo: true,
-    criadoEm: new Date(),
-    atualizadoEm: new Date(),
-  },
-];
 
-const mockCentraisGases: CentralGases[] = [
-  {
-    id: 1,
-    nome: 'Central de Oxigénio - Principal',
-    localizacao: 'Casa de Gases - Bloco A',
-    tipoGas: 'OXIGENIO',
-    capacidadeTotal: 10000,
-    nivelAtualPercentual: 72,
-    pressaoAtualBar: 150,
-    pressaoMinimaAlerta: 50,
-    nivelMinimoAlerta: 30,
-    status: 'NORMAL',
-    ultimaRecarga: new Date('2024-01-10'),
-    activo: true,
-  },
-  {
-    id: 2,
-    nome: 'Central de Ar Comprimido',
-    localizacao: 'Casa de Gases - Bloco A',
-    tipoGas: 'AR_COMPRIMIDO',
-    capacidadeTotal: 5000,
-    nivelAtualPercentual: 45,
-    pressaoAtualBar: 120,
-    pressaoMinimaAlerta: 60,
-    nivelMinimoAlerta: 25,
-    status: 'ALERTA',
-    ultimaRecarga: new Date('2024-01-05'),
-    activo: true,
-  },
-  {
-    id: 3,
-    nome: 'Central de Vácuo',
-    localizacao: 'Casa de Gases - Bloco A',
-    tipoGas: 'VACUO',
-    capacidadeTotal: 3000,
-    nivelAtualPercentual: 85,
-    pressaoAtualBar: 0.8,
-    pressaoMinimaAlerta: 0.3,
-    nivelMinimoAlerta: 20,
-    status: 'NORMAL',
-    activo: true,
-  },
-  {
-    id: 4,
-    nome: 'Central de Óxido Nitroso',
-    localizacao: 'Centro Cirúrgico',
-    tipoGas: 'OXIDO_NITROSO',
-    capacidadeTotal: 2000,
-    nivelAtualPercentual: 18,
-    pressaoAtualBar: 40,
-    pressaoMinimaAlerta: 30,
-    nivelMinimoAlerta: 20,
-    status: 'CRITICO',
-    activo: true,
-  },
-];
 
-const mockAlertas: AlertaGas[] = [
-  {
-    id: 1,
-    centralId: 4,
-    tipoAlerta: 'NIVEL_BAIXO',
-    severidade: 'CRITICO',
-    mensagem: 'Nível crítico de Óxido Nitroso - 18%. Solicitar recarga urgente!',
-    dataHora: new Date(),
-    reconhecido: false,
-    resolvido: false,
-  },
-  {
-    id: 2,
-    centralId: 2,
-    tipoAlerta: 'NIVEL_BAIXO',
-    severidade: 'AVISO',
-    mensagem: 'Nível de Ar Comprimido em 45%. Programar recarga.',
-    dataHora: new Date(Date.now() - 3600000),
-    reconhecido: true,
-    reconhecidoPor: 'João Técnico',
-    dataReconhecimento: new Date(Date.now() - 1800000),
-    resolvido: false,
-  },
-];
 
 // ============================================================================
 // COMPONENTES
@@ -319,14 +158,29 @@ export default function PatrimonioPage() {
   const [showAlertModal, setShowAlertModal] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDashboard(mockDashboard);
-      setAtivos(mockAtivos);
-      setCentraisGases(mockCentraisGases);
-      setAlertas(mockAlertas);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchPatrimonio() {
+      try {
+        const [dash, ats, centrais, alts] = await Promise.all([
+          api.get<DashboardPatrimonio>('/patrimonio/dashboard'),
+          api.get<{ data: Ativo[] }>('/patrimonio/ativos').then(res => res.data),
+          api.get<{ data: CentralGases[] }>('/patrimonio/gases').then(res => res.data),
+          api.get<{ data: AlertaGas[] }>('/patrimonio/gases/alertas').then(res => res.data),
+        ]);
+        setDashboard(dash);
+        setAtivos(ats);
+        setCentraisGases(centrais);
+        setAlertas(alts);
+      } catch (error) {
+        console.error('Erro ao buscar dados do património:', error);
+        setDashboard(null);
+        setAtivos([]);
+        setCentraisGases([]);
+        setAlertas([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPatrimonio();
   }, []);
 
   const formatCurrency = (value: number) => {

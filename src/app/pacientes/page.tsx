@@ -3,101 +3,17 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { MainLayout, PageHeader, PageContent } from '@/components/layout/MainLayout';
+import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
 import { 
   Card, CardHeader, CardTitle, CardContent, 
   Button, Input, Select, Badge, Table, Modal, 
   Spinner, EmptyState, Pagination, Avatar 
 } from '@/components/ui';
-import { Icons } from '@/components/ui/Icons';
+import { Icons } from '@/components/ui/icons';
 import type { Paciente, Genero, GrupoSanguineo } from '@/types';
 import { LABELS_GENERO, LABELS_GRUPO_SANGUINEO } from '@/types';
+import { api } from '@/services/api';
 
-// Mock de pacientes
-const mockPacientes: Paciente[] = [
-  {
-    id: 1,
-    numeroProcesso: 'P-2024-000001',
-    nomeCompleto: 'Maria José Santos',
-    dataNascimento: new Date('1985-03-15'),
-    genero: 'FEMININO',
-    nacionalidade: 'Angolana',
-    tipoDocumento: 'BI',
-    numeroDocumento: '000123456LA042',
-    telefone1: '+244 923 456 789',
-    email: 'maria.santos@email.com',
-    grupoSanguineo: 'A_POSITIVO',
-    possuiConvenio: true,
-    convenioNome: 'ENSA Seguros',
-    activo: true,
-    criadoEm: new Date('2024-01-15'),
-  },
-  {
-    id: 2,
-    numeroProcesso: 'P-2024-000002',
-    nomeCompleto: 'João Pedro Silva',
-    dataNascimento: new Date('1978-07-22'),
-    genero: 'MASCULINO',
-    nacionalidade: 'Angolana',
-    tipoDocumento: 'BI',
-    numeroDocumento: '000987654LA041',
-    telefone1: '+244 912 345 678',
-    grupoSanguineo: 'O_POSITIVO',
-    possuiConvenio: false,
-    activo: true,
-    criadoEm: new Date('2024-01-20'),
-  },
-  {
-    id: 3,
-    numeroProcesso: 'P-2024-000003',
-    nomeCompleto: 'Ana Luísa Ferreira',
-    dataNascimento: new Date('1992-11-08'),
-    genero: 'FEMININO',
-    nacionalidade: 'Angolana',
-    tipoDocumento: 'BI',
-    numeroDocumento: '000456789LA043',
-    telefone1: '+244 934 567 890',
-    email: 'ana.ferreira@email.com',
-    grupoSanguineo: 'B_NEGATIVO',
-    possuiConvenio: true,
-    convenioNome: 'AAA Seguros',
-    activo: true,
-    criadoEm: new Date('2024-02-05'),
-  },
-  {
-    id: 4,
-    numeroProcesso: 'P-2024-000004',
-    nomeCompleto: 'Carlos Manuel Costa',
-    dataNascimento: new Date('1965-04-30'),
-    genero: 'MASCULINO',
-    nacionalidade: 'Angolana',
-    tipoDocumento: 'BI',
-    numeroDocumento: '000111222LA040',
-    telefone1: '+244 945 678 901',
-    grupoSanguineo: 'AB_POSITIVO',
-    alergias: 'Penicilina',
-    doencasCronicas: 'Hipertensão, Diabetes Tipo 2',
-    possuiConvenio: false,
-    activo: true,
-    criadoEm: new Date('2024-02-10'),
-  },
-  {
-    id: 5,
-    numeroProcesso: 'P-2024-000005',
-    nomeCompleto: 'Teresa Antónia Mendes',
-    dataNascimento: new Date('2000-09-12'),
-    genero: 'FEMININO',
-    nacionalidade: 'Angolana',
-    tipoDocumento: 'BI',
-    numeroDocumento: '000333444LA044',
-    telefone1: '+244 956 789 012',
-    grupoSanguineo: 'O_NEGATIVO',
-    possuiConvenio: true,
-    convenioNome: 'Nossa Seguros',
-    activo: true,
-    criadoEm: new Date('2024-02-15'),
-  },
-];
 
 // Calcular idade
 function calcularIdade(dataNascimento: Date): number {
@@ -131,13 +47,20 @@ export default function PacientesPage() {
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    // Simular carregamento
-    const timer = setTimeout(() => {
-      setPacientes(mockPacientes);
-      setFilteredPacientes(mockPacientes);
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    async function fetchPacientes() {
+      setIsLoading(true);
+      try {
+        const data = await api.get<Paciente[]>('/pacientes');
+        setPacientes(data);
+        setFilteredPacientes(data);
+      } catch (err) {
+        setPacientes([]);
+        setFilteredPacientes([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPacientes();
   }, []);
 
   // Aplicar filtros
