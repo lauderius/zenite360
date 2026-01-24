@@ -69,7 +69,7 @@ function StatCard({
 function TriagemBadge({ prioridade }: { prioridade: PrioridadeTriagem }) {
   const config = {
     EMERGENCIA: { label: 'Emergência', class: 'badge-emergencia' },
-    MUITO_URGENTE: { label: 'Muito Urgente', class: 'badge-muito-urgente' },
+    MUITO_URGENTE: { label: 'Muito Urggirente', class: 'badge-muito-urgente' },
     URGENTE: { label: 'Urgente', class: 'badge-urgente' },
     POUCO_URGENTE: { label: 'Pouco Urgente', class: 'badge-pouco-urgente' },
     NAO_URGENTE: { label: 'Não Urgente', class: 'badge-nao-urgente' },
