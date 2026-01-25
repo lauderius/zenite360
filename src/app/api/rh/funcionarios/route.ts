@@ -11,40 +11,38 @@ export async function GET(request: NextRequest) {
     const departamento = searchParams.get('departamento') || '';
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
-
-    let funcionarios = [...mockFuncionarios];
-
-    // Aplicar filtros
+    // Construir filtro para consulta ao banco
+    const where: any = {};
     if (search) {
-      const searchLower = search.toLowerCase();
-      funcionarios = funcionarios.filter(f =>
-        f.nomeCompleto.toLowerCase().includes(searchLower) ||
-        f.numeroMecanografico.toLowerCase().includes(searchLower) ||
-        f.cargo.toLowerCase().includes(searchLower) ||
-        f.email.toLowerCase().includes(searchLower)
-      );
+      where.OR = [
+        { nomeCompleto: { contains: search, mode: 'insensitive' } },
+        { numeroMecanografico: { contains: search, mode: 'insensitive' } },
+        { cargo: { contains: search, mode: 'insensitive' } },
+        { emailInstitucional: { contains: search, mode: 'insensitive' } },
+      ];
     }
-
     if (status) {
-      funcionarios = funcionarios.filter(f => f.status === status);
+      where.status = status;
     }
-
     if (departamento) {
-      funcionarios = funcionarios.filter(f => f.departamento === departamento);
+      where.departamentoId = parseInt(departamento);
     }
 
-    // Paginação
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const funcionariosPaginados = funcionarios.slice(startIndex, endIndex);
+    const total = await prisma.funcionarios.count({ where });
+    const funcionariosPaginados = await prisma.funcionarios.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { id: 'asc' },
+    });
 
     return NextResponse.json({
       data: funcionariosPaginados,
       pagination: {
         page,
         limit,
-        total: funcionariosFiltrados.length,
-        totalPages: Math.ceil(funcionariosFiltrados.length / limit),
+        total,
+        totalPages: Math.ceil(total / limit),
       },
       success: true,
     });
@@ -65,32 +63,30 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Criar usuário no banco de dados
-    const novoUsuario = await prisma.utilizadores.create({
+    // Criar registro de usuario e funcionario
+    const passwordHash = body.passwordHash || null;
+    const usuario = await prisma.usuarios.create({
       data: {
-        name: body.nomeCompleto,
-        email: body.email,
-        password: body.password || '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // senha padrão
+        username: body.username || (body.email ? body.email.split('@')[0] : `user${Date.now()}`),
+        email: body.email || null,
+        password_hash: passwordHash,
       },
     });
 
-    const novoFuncionario = {
-      id: Number(novoUsuario.id),
-      numeroMecanografico: `F-${String(novoUsuario.id).padStart(5, '0')}`,
-      nomeCompleto: novoUsuario.name,
-      cargo: body.cargo || 'Funcionário',
-      departamento: body.departamento || 'Administrativo',
-      especialidade: body.especialidade,
-      nivelAcesso: body.nivelAcesso || 'VISUALIZADOR',
-      status: 'ACTIVO',
-      dataAdmissao: new Date(),
-      telefone: body.telefone || '',
-      email: novoUsuario.email,
-      fotoUrl: null,
-    };
+    const novoFuncionario = await prisma.funcionarios.create({
+      data: {
+        nomeCompleto: body.nomeCompleto,
+        cargo: body.cargo || 'Funcionário',
+        nivelAcesso: body.nivelAcesso || 'VISUALIZADOR',
+        departamentoId: body.departamentoId ? Number(body.departamentoId) : null,
+        dataNascimento: body.dataNascimento ? new Date(body.dataNascimento) : null,
+        emailInstitucional: body.email || null,
+      },
+    });
 
     return NextResponse.json({
       success: true,
-      data: novoFuncionario,
+      data: { ...novoFuncionario, usuarioId: usuario.id },
     });
   } catch (error) {
     console.error('Erro ao criar funcionário:', error);

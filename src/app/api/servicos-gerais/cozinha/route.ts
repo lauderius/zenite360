@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
-// Dados mock para estoque da cozinha
-const mockEstoqueCozinha = [
-  { id: 1, codigo: 'COZ-001', nome: 'Arroz (5kg)', categoria: 'Grãos', quantidadeAtual: 12, quantidadeMinima: 5, unidadeMedida: 'saco', validade: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
-  { id: 2, codigo: 'COZ-002', nome: 'Feijão (1kg)', categoria: 'Grãos', quantidadeAtual: 8, quantidadeMinima: 5, unidadeMedida: 'kg', validade: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000) },
-  { id: 3, codigo: 'COZ-003', nome: 'Óleo de Cozinha', categoria: 'Óleos', quantidadeAtual: 3, quantidadeMinima: 5, unidadeMedida: 'litro', validade: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000) },
-  { id: 4, codigo: 'COZ-004', nome: 'Sal (1kg)', categoria: 'Condimentos', quantidadeAtual: 15, quantidadeMinima: 5, unidadeMedida: 'kg', validade: null },
-  { id: 5, codigo: 'COZ-005', nome: 'Frango Congelado', categoria: 'Carnes', quantidadeAtual: 10, quantidadeMinima: 15, unidadeMedida: 'kg', validade: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000) },
-  { id: 6, codigo: 'COZ-006', nome: 'Legumes Mistos', categoria: 'Verduras', quantidadeAtual: 5, quantidadeMinima: 8, unidadeMedida: 'kg', validade: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) },
-];
-
-// GET: Listar estoque da cozinha
+// GET: Listar estoque da cozinha (usa artigos_stock quando disponível)
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -19,33 +10,45 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
 
-    let estoque = [...mockEstoqueCozinha];
-
-    // Aplicar filtros
+    const where: any = { activo: true };
     if (search) {
-      const searchLower = search.toLowerCase();
-      estoque = estoque.filter(e =>
-        e.nome.toLowerCase().includes(searchLower) ||
-        e.codigo.toLowerCase().includes(searchLower)
-      );
+      where.OR = [
+        { nome_artigo: { contains: search } },
+        { codigo_artigo: { contains: search } },
+      ];
     }
-
     if (categoria) {
-      estoque = estoque.filter(e => e.categoria === categoria);
+      where.categoria = categoria;
     }
 
-    // Paginação
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const estoquePaginado = estoque.slice(startIndex, endIndex);
+    const [artigos, total] = await Promise.all([
+      prisma.artigos_stock.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { nome_artigo: 'asc' },
+      }).catch(() => []),
+      prisma.artigos_stock.count({ where }).catch(() => 0),
+    ]);
+
+    const data = (artigos || []).map((a: any) => ({
+      id: Number(a.id),
+      codigo: a.codigo_artigo || `ART-${a.id}`,
+      nome: a.nome_artigo || a.nome || 'Item',
+      categoria: a.categoria || 'Geral',
+      quantidadeAtual: Number(a.quantidade_stock || 0),
+      quantidadeMinima: Number(a.stock_minimo || 0),
+      unidadeMedida: a.unidade_medida || 'un',
+      validade: a.data_validade || null,
+    }));
 
     return NextResponse.json({
-      data: estoquePaginado,
+      data,
       pagination: {
         page,
         limit,
-        total: estoque.length,
-        totalPages: Math.ceil(estoque.length / limit),
+        total,
+        totalPages: Math.ceil((total || 0) / limit),
       },
       success: true,
     });

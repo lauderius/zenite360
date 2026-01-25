@@ -1,32 +1,31 @@
 import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
 // GET: Dashboard da Secretaria
 export async function GET() {
   try {
-    // Dados mock para o dashboard da secretaria
+    const [docHoje, docMes, reqPendentes] = await Promise.all([
+      prisma.documentos.count({
+        where: { dataDocumento: { gte: new Date(new Date().setHours(0,0,0,0)) } }
+      }).catch(() => 0),
+      prisma.documentos.count({
+        where: { created_at: { gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) } }
+      }).catch(() => 0),
+      prisma.requisicoes ? prisma.requisicoes.count({ where: { status: 'PENDENTE' } }).catch(() => 0) : Promise.resolve(0),
+    ]);
+
+    const documentosPorTipo = []; // requires specific aggregation - fallback empty
+    const tramitacoesPorDepartamento = []; // fallback empty
+
     const dashboard = {
-      documentosHoje: 12,
-      documentosMes: 156,
-      documentosUrgentes: 3,
-      tramitacoesPendentes: 8,
-      tempoMedioTramitacao: 2.5,
-      requisicoesMateriaisPendentes: 5,
-      documentosPorTipo: [
-        { tipo: 'OFICIO', quantidade: 45 },
-        { tipo: 'MEMORANDO', quantidade: 38 },
-        { tipo: 'CIRCULAR', quantidade: 25 },
-        { tipo: 'PORTARIA', quantidade: 18 },
-        { tipo: 'DESPACHO', quantidade: 15 },
-        { tipo: 'OUTROS', quantidade: 15 },
-      ],
-      tramitacoesPorDepartamento: [
-        { departamento: 'Administração', quantidade: 35 },
-        { departamento: 'Financeiro', quantidade: 28 },
-        { departamento: 'RH', quantidade: 22 },
-        { departamento: 'Farmácia', quantidade: 18 },
-        { departamento: 'Enfermaria', quantidade: 15 },
-        { departamento: 'Outros', quantidade: 38 },
-      ],
+      documentosHoje: docHoje || 0,
+      documentosMes: docMes || 0,
+      documentosUrgentes: 0,
+      tramitacoesPendentes: 0,
+      tempoMedioTramitacao: 0,
+      requisicoesMateriaisPendentes: reqPendentes || 0,
+      documentosPorTipo,
+      tramitacoesPorDepartamento,
     };
 
     return NextResponse.json(dashboard);

@@ -1,26 +1,23 @@
 import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
 // GET: Dashboard da Casa Mortuária
 export async function GET() {
   try {
-    // Dados mock para o dashboard da casa mortuária
+    const client: any = prisma as any;
+    // Tentativa de usar possíveis tabelas relacionadas
+    const obitosHoje = await (client.obitos ? client.obitos.count({ where: { data: { gte: new Date(new Date().setHours(0,0,0,0)) } } }) : Promise.resolve(0)).catch(() => 0);
+    const obitosMes = await (client.obitos ? client.obitos.count({ where: { created_at: { gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1) } } }) : Promise.resolve(0)).catch(() => 0);
+
     const dashboard = {
-      corposEmConservacao: 8,
-      capacidadeTotalCamaras: 20,
-      aguardandoDocumentacao: 2,
-      obitosHoje: 1,
-      obitosMes: 15,
-      tempoMedioConservacao: 24,
-      distribuicaoPorCausa: [
-        { causa: 'NATURAL', quantidade: 8 },
-        { causa: 'ACIDENTAL', quantidade: 3 },
-        { causa: 'VIOLENTA', quantidade: 2 },
-        { causa: 'INDETERMINADA', quantidade: 2 },
-      ],
-      distribuicaoPorGenero: [
-        { genero: 'MASCULINO', quantidade: 9 },
-        { genero: 'FEMININO', quantidade: 6 },
-      ],
+      corposEmConservacao: 0,
+      capacidadeTotalCamaras: 0,
+      aguardandoDocumentacao: 0,
+      obitosHoje: obitosHoje || 0,
+      obitosMes: obitosMes || 0,
+      tempoMedioConservacao: 0,
+      distribuicaoPorCausa: [],
+      distribuicaoPorGenero: [],
       success: true,
     };
 

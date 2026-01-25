@@ -7,12 +7,15 @@ const JWT_SECRET = new TextEncoder().encode(
 );
 
 // Mock data para desenvolvimento
-const MOCK_USERS = {
+// Gerar hash em runtime para a senha padrão de desenvolvimento (evita hashes falsos)
+const DEFAULT_ADMIN_PASSWORD = 'Admin@Z360!';
+const MOCK_USERS: Record<string, any> = {
   admin: {
     id: 1,
     email: 'admin@zenite360.ao',
     name: 'Administrador',
-    password: '$2b$10$8K8VzJ8VzJ8VzJ8VzJ8VzJ8VzJ8VzJ8VzJ8VzJ8VzJ8VzJ8VzJ8Vz', // senha: Admin@Z360!
+    // Gerar hash automaticamente em ambiente de desenvolvimento
+    password: bcrypt.hashSync(DEFAULT_ADMIN_PASSWORD, 10),
     funcionarioId: 1,
     activo: true,
     bloqueado: false,

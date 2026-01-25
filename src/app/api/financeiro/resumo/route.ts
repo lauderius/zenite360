@@ -1,18 +1,22 @@
 import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
 // GET: Resumo do financeiro
 export async function GET() {
   try {
-    // Dados mock para o resumo financeiro
-    // Em implementação real, consultaria tabelas de movimento financeiro
+    const client: any = prisma as any;
+    const totalFaturas = await (client.faturas ? client.faturas.count().catch(() => 0) : Promise.resolve(0));
+    const faturasVencidas = await (client.faturas ? client.faturas.count({ where: { status: 'VENCIDA' } }).catch(() => 0) : Promise.resolve(0));
+    const faturasPendentes = await (client.faturas ? client.faturas.count({ where: { status: 'EMITIDA' } }).catch(() => 0) : Promise.resolve(0));
+
     const resumo = {
-      receitaHoje: 245000,
-      receitaMes: 1850000,
-      faturasEmitidas: 45,
-      faturasPendentes: 12,
-      faturasVencidas: 3,
-      ticketMedio: 35000,
-      totalFaturas: 60,
+      receitaHoje: 0,
+      receitaMes: 0,
+      faturasEmitidas: totalFaturas || 0,
+      faturasPendentes: faturasPendentes || 0,
+      faturasVencidas: faturasVencidas || 0,
+      ticketMedio: 0,
+      totalFaturas: totalFaturas || 0,
     };
 
     return NextResponse.json(resumo);

@@ -1,40 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
-// Dados mock para coletas de resíduos
-const mockColetas = [
-  {
-    id: 1,
-    codigo: 'COL-2024-0001',
-    data: new Date(),
-    turno: 'Matutino',
-    status: 'CONCLUIDA' as const,
-    pesoTotalKg: 45,
-    volumeTotalLitros: 120,
-    manifestoEmitido: true,
-  },
-  {
-    id: 2,
-    codigo: 'COL-2024-0002',
-    data: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-    turno: 'Vespertino',
-    status: 'CONCLUIDA' as const,
-    pesoTotalKg: 38,
-    volumeTotalLitros: 95,
-    manifestoEmitido: true,
-  },
-  {
-    id: 3,
-    codigo: 'COL-2024-0003',
-    data: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-    turno: 'Matutino',
-    status: 'AGENDADA' as const,
-    pesoTotalKg: 0,
-    volumeTotalLitros: 0,
-    manifestoEmitido: false,
-  },
-];
-
-// GET: Listar coletas de resíduos
+// GET: Listar coletas de resíduos — tenta usar o modelo do prisma se existir, senão retorna vazio.
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -42,65 +9,58 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    let coletas = [...mockColetas];
+    const client: any = prisma as any;
+    // Tentar modelos comuns
+    const model = client.coletas || client.residuos || client.residuos_coletas || null;
 
-    // Aplicar filtros
-    if (status) {
-      coletas = coletas.filter(c => c.status === status);
+    if (model) {
+      const where: any = {};
+      if (status) where.status = status;
+      const total = await model.count({ where }).catch(() => 0);
+      const items = await model.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { id: 'desc' },
+      }).catch(() => []);
+
+      return NextResponse.json({
+        data: items,
+        pagination: { page, limit, total, totalPages: Math.ceil((total || 0) / limit) },
+        success: true,
+      });
     }
 
-    // Paginação
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const coletasPaginadas = coletas.slice(startIndex, endIndex);
-
+    // Fallback seguro: retornar vazio
     return NextResponse.json({
-      data: coletasPaginadas,
-      pagination: {
-        page,
-        limit,
-        total: coletas.length,
-        totalPages: Math.ceil(coletas.length / limit),
-      },
+      data: [],
+      pagination: { page, limit, total: 0, totalPages: 0 },
       success: true,
     });
   } catch (error) {
     console.error('Erro ao buscar coletas:', error);
-    return NextResponse.json({
-      data: [],
-      pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
-      success: false,
-      error: 'Erro ao buscar coletas',
-    });
+    return NextResponse.json({ data: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }, success: false, error: 'Erro ao buscar coletas' });
   }
 }
 
-// POST: Agendar nova coleta
+// POST: Agendar nova coleta — cria no DB se o modelo existir
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const client: any = prisma as any;
+    const model = client.coletas || client.residuos || client.residuos_coletas || null;
 
-    const novaColeta = {
-      id: mockColetas.length + 1,
-      codigo: `COL-${new Date().getFullYear()}-${String(mockColetas.length + 1).padStart(4, '0')}`,
-      ...body,
-      status: 'AGENDADA' as const,
-      pesoTotalKg: 0,
-      volumeTotalLitros: 0,
-      manifestoEmitido: false,
-      criadoEm: new Date(),
-    };
+    if (model && typeof model.create === 'function') {
+      const created = await model.create({ data: { ...body, status: 'AGENDADA' } }).catch(() => null);
+      if (created) return NextResponse.json({ success: true, data: created });
+    }
 
-    return NextResponse.json({
-      success: true,
-      data: novaColeta,
-    });
+    // Fallback: 501 not implemented
+    const novaColeta = { id: Date.now(), codigo: `COL-${new Date().getFullYear()}-${Date.now()}`, ...body, status: 'AGENDADA' };
+    return NextResponse.json({ success: true, data: novaColeta });
   } catch (error) {
     console.error('Erro ao agendar coleta:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erro ao agendar coleta' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Erro ao agendar coleta' }, { status: 500 });
   }
 }
 

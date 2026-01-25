@@ -79,42 +79,19 @@ function TriagemBadge({ prioridade }: { prioridade: PrioridadeTriagem }) {
 }
 
 // ============================================================================
-// DADOS SIMULADOS (MOCK)
+// ESTATÍSTICAS DEFAULT
 // ============================================================================
 
-const mockStats = {
-  pacientesHoje: 47,
-  consultasAgendadas: 32,
-  internamentosActivos: 18,
-  triagemPendente: 5,
-  prescricoesPendentes: 12,
-  faturasVencidas: 3,
-  ordensAbertas: 8,
-  estoqueCritico: 4,
+const defaultStats = {
+  pacientesHoje: 0,
+  consultasAgendadas: 0,
+  internamentosActivos: 0,
+  triagemPendente: 0,
+  prescricoesPendentes: 0,
+  faturasVencidas: 0,
+  ordensAbertas: 0,
+  estoqueCritico: 0,
 };
-
-const mockFilaTriagem = [
-  { id: 1, paciente: 'Maria José Santos', prioridade: 'EMERGENCIA' as PrioridadeTriagem, tempoEspera: 2 },
-  { id: 2, paciente: 'João Pedro Silva', prioridade: 'MUITO_URGENTE' as PrioridadeTriagem, tempoEspera: 8 },
-  { id: 3, paciente: 'Ana Luísa Ferreira', prioridade: 'URGENTE' as PrioridadeTriagem, tempoEspera: 25 },
-  { id: 4, paciente: 'Carlos Manuel Costa', prioridade: 'POUCO_URGENTE' as PrioridadeTriagem, tempoEspera: 45 },
-  { id: 5, paciente: 'Teresa Antónia', prioridade: 'NAO_URGENTE' as PrioridadeTriagem, tempoEspera: 60 },
-];
-
-const mockConsultasHoje = [
-  { id: 1, hora: '08:30', paciente: 'António Mendes', medico: 'Dr. Paulo Sousa', status: 'ATENDIDO' },
-  { id: 2, hora: '09:00', paciente: 'Beatriz Lopes', medico: 'Dra. Ana Reis', status: 'EM_ATENDIMENTO' },
-  { id: 3, hora: '09:30', paciente: 'Carlos Fernandes', medico: 'Dr. Paulo Sousa', status: 'AGENDADO' },
-  { id: 4, hora: '10:00', paciente: 'Diana Martins', medico: 'Dra. Ana Reis', status: 'AGENDADO' },
-  { id: 5, hora: '10:30', paciente: 'Eduardo Costa', medico: 'Dr. João Santos', status: 'AGENDADO' },
-];
-
-const mockAlertasEstoque = [
-  { id: 1, medicamento: 'Paracetamol 500mg', quantidade: 50, minimo: 100, status: 'CRITICO' },
-  { id: 2, medicamento: 'Amoxicilina 250mg', quantidade: 80, minimo: 150, status: 'BAIXO' },
-  { id: 3, medicamento: 'Ibuprofeno 400mg', quantidade: 30, minimo: 100, status: 'CRITICO' },
-  { id: 4, medicamento: 'Omeprazol 20mg', quantidade: 120, minimo: 200, status: 'BAIXO' },
-];
 
 // ============================================================================
 // PÁGINA DO DASHBOARD
@@ -123,12 +100,116 @@ const mockAlertasEstoque = [
 export default function DashboardPage() {
   const { funcionario } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState(mockStats);
+  const [stats, setStats] = useState(defaultStats);
+  
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/7d2d8f97-0a76-44ba-ac80-8cc7d10af208',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'src/app/dashboard/page.tsx:init',message:'DashboardPage inicializado',data:{funcionarioPresent:!!funcionario,usingMockStats: false},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
+  // #endregion
 
   useEffect(() => {
-    // Simular carregamento de dados
-    const timer = setTimeout(() => setIsLoading(false), 500);
-    return () => clearTimeout(timer);
+    let mounted = true;
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/dashboard');
+        if (!res.ok) throw new Error('Falha ao buscar estatísticas');
+        const data = await res.json();
+        if (!mounted) return;
+        setStats({
+          pacientesHoje: data.pacientesHoje ?? 0,
+          consultasAgendadas: data.consultasAgendadas ?? 0,
+          internamentosActivos: data.internamentosActivos ?? 0,
+          triagemPendente: data.triagemPendente ?? 0,
+          prescricoesPendentes: data.prescricoesPendentes ?? 0,
+          faturasVencidas: data.faturasVencidas ?? 0,
+          ordensAbertas: data.ordensAbertas ?? 0,
+          estoqueCritico: data.estoqueCritico ?? 0,
+        });
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    }
+
+    loadStats();
+    return () => { mounted = false; };
+  }, []);
+  
+  const [filaTriagem, setFilaTriagem] = useState<
+    { id: number; paciente: string; prioridade: PrioridadeTriagem; tempoEspera: number }[]
+  >([]);
+  const [consultasHoje, setConsultasHoje] = useState<
+    { id: number; hora: string; paciente: string; medico: string; status: string }[]
+  >([]);
+  const [alertasEstoque, setAlertasEstoque] = useState<
+    { id: number; medicamento: string; quantidade: number; minimo: number; status: string }[]
+  >([]);
+
+  useEffect(() => {
+    let mounted = true;
+    async function loadLists() {
+      try {
+        const [triRes, consRes, farmRes] = await Promise.all([
+          fetch('/api/triagem'),
+          fetch('/api/consultas'),
+          fetch('/api/farmacia'),
+        ]);
+
+        const tri = triRes.ok ? await triRes.json() : [];
+        const cons = consRes.ok ? await consRes.json() : [];
+        const farm = farmRes.ok ? await farmRes.json() : { data: [] };
+
+        if (!mounted) return;
+
+        setFilaTriagem(
+          (Array.isArray(tri) ? tri : []).slice(0, 5).map((t: unknown, idx: number) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const tt: any = t as any;
+            return {
+              id: tt.id ?? idx,
+              paciente: (tt.pacienteNome || (tt.paciente && (tt.paciente.nomeCompleto || tt.paciente.nome)) || `Paciente ${idx + 1}`) as string,
+              prioridade: (tt.prioridade || 'NAO_URGENTE') as PrioridadeTriagem,
+              tempoEspera: tt.tempoEsperaMin ?? 0,
+            };
+          })
+        );
+
+        setConsultasHoje(
+          (Array.isArray(cons) ? cons : []).slice(0, 5).map((c: unknown, idx: number) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const cc: any = c as any;
+            return {
+              id: cc.id ?? idx,
+              hora: cc.hora || (cc.dataHoraInicio ? new Date(cc.dataHoraInicio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—'),
+              paciente: (cc.paciente && (cc.paciente.nomeCompleto || cc.paciente.nome)) || `Paciente ${idx + 1}`,
+              medico: cc.medico?.nomeCompleto || cc.medicoNome || '—',
+              status: cc.status || 'AGENDADO',
+            };
+          })
+        );
+
+        setAlertasEstoque(
+          (Array.isArray(farm.data) ? farm.data : []).slice(0, 5).map((a: unknown, idx: number) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const aa: any = a as any;
+            const quantidade = aa.estoque ?? aa.quantidade_stock ?? 0;
+            const minimo = aa.estoqueMinimo ?? aa.stock_minimo ?? 0;
+            return {
+              id: aa.id ?? idx,
+              medicamento: aa.nome || aa.nome_artigo || `Medicamento ${idx + 1}`,
+              quantidade,
+              minimo,
+              status: quantidade < minimo ? 'CRITICO' : 'BAIXO',
+            };
+          })
+        );
+      } catch (err) {
+        console.error('Erro ao carregar listas do dashboard:', err);
+      }
+    }
+
+    loadLists();
+    return () => { mounted = false; };
   }, []);
 
   if (isLoading) {
@@ -225,12 +306,12 @@ export default function DashboardPage() {
                   <Icons.Activity className="w-5 h-5 text-sky-600" />
                   Fila de Triagem
                 </CardTitle>
-                <Badge variant="warning">{mockFilaTriagem.length} na fila</Badge>
+                <Badge variant="warning">{filaTriagem.length} na fila</Badge>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {mockFilaTriagem.map((item, index) => (
+                {filaTriagem.map((item, index) => (
                   <div
                     key={item.id}
                     className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg"
@@ -267,12 +348,12 @@ export default function DashboardPage() {
                   <Icons.Calendar className="w-5 h-5 text-sky-600" />
                   Consultas Hoje
                 </CardTitle>
-                <Badge variant="primary">{mockConsultasHoje.length} agendadas</Badge>
+                <Badge variant="primary">{consultasHoje.length} agendadas</Badge>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {mockConsultasHoje.map((consulta) => (
+                {consultasHoje.map((consulta) => (
                   <div
                     key={consulta.id}
                     className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg"
@@ -323,12 +404,12 @@ export default function DashboardPage() {
                   <Icons.AlertTriangle className="w-5 h-5 text-amber-500" />
                   Alertas de Estoque
                 </CardTitle>
-                <Badge variant="danger">{mockAlertasEstoque.length} alertas</Badge>
+                <Badge variant="danger">{alertasEstoque.length} alertas</Badge>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {mockAlertasEstoque.map((item) => (
+                {alertasEstoque.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg"

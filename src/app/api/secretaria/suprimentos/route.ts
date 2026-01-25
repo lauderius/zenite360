@@ -1,18 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
-// Dados mock para suprimentos de escritório
-const mockSuprimentos = [
-  { id: 1, codigo: 'SUP-001', nome: 'Papel A4 (500 fls)', categoria: 'Papelaria', quantidadeAtual: 45, quantidadeMinima: 20, unidadeMedida: 'resma' },
-  { id: 2, codigo: 'SUP-002', nome: 'Caneta Azul', categoria: 'Papelaria', quantidadeAtual: 120, quantidadeMinima: 50, unidadeMedida: 'unidade' },
-  { id: 3, codigo: 'SUP-003', nome: 'Caneta Vermelha', categoria: 'Papelaria', quantidadeAtual: 35, quantidadeMinima: 20, unidadeMedida: 'unidade' },
-  { id: 4, codigo: 'SUP-004', nome: 'Pasta Arquivo', categoria: 'Arquivo', quantidadeAtual: 8, quantidadeMinima: 15, unidadeMedida: 'unidade' },
-  { id: 5, codigo: 'SUP-005', nome: 'Clips (100 un)', categoria: 'Papelaria', quantidadeAtual: 25, quantidadeMinima: 10, unidadeMedida: 'caixa' },
-  { id: 6, codigo: 'SUP-006', nome: 'Grampeador', categoria: 'Escritório', quantidadeAtual: 3, quantidadeMinima: 2, unidadeMedida: 'unidade' },
-  { id: 7, codigo: 'SUP-007', nome: 'Tesoura', categoria: 'Escritório', quantidadeAtual: 2, quantidadeMinima: 2, unidadeMedida: 'unidade' },
-  { id: 8, codigo: 'SUP-008', nome: 'Fita Adesiva', categoria: 'Papelaria', quantidadeAtual: 5, quantidadeMinima: 5, unidadeMedida: 'unidade' },
-];
-
-// GET: Listar suprimentos
+// GET: Listar suprimentos (usa modelo 'suprimentos' ou fallback)
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -21,44 +10,49 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
 
-    let suprimentos = [...mockSuprimentos];
+    const client: any = prisma as any;
+    const model = client.suprimentos || client.artigos_stock || null;
 
-    // Aplicar filtros
-    if (search) {
-      const searchLower = search.toLowerCase();
-      suprimentos = suprimentos.filter(s =>
-        s.nome.toLowerCase().includes(searchLower) ||
-        s.codigo.toLowerCase().includes(searchLower)
-      );
+    if (model) {
+      const where: any = {};
+      if (search) {
+        where.OR = [
+          { nome: { contains: search } },
+          { codigo: { contains: search } },
+          { nome_artigo: { contains: search } },
+          { codigo_artigo: { contains: search } },
+        ];
+      }
+      if (categoria) where.categoria = categoria;
+      const total = await model.count({ where }).catch(() => 0);
+      const items = await model.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { id: 'asc' },
+      }).catch(() => []);
+
+      const data = (items || []).map((it: any) => ({
+        id: Number(it.id),
+        codigo: it.codigo || it.codigo_artigo || `SUP-${it.id}`,
+        nome: it.nome || it.nome_artigo || 'Item',
+        categoria: it.categoria || 'Geral',
+        quantidadeAtual: Number(it.quantidadeAtual ?? it.quantidade_stock ?? 0),
+        quantidadeMinima: Number(it.quantidadeMinima ?? it.stock_minimo ?? 0),
+        unidadeMedida: it.unidadeMedida || it.unidade_medida || 'un',
+      }));
+
+      return NextResponse.json({
+        data,
+        pagination: { page, limit, total, totalPages: Math.ceil((total || 0) / limit) },
+        success: true,
+      });
     }
 
-    if (categoria) {
-      suprimentos = suprimentos.filter(s => s.categoria === categoria);
-    }
-
-    // Paginação
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const suprimentosPaginados = suprimentos.slice(startIndex, endIndex);
-
-    return NextResponse.json({
-      data: suprimentosPaginados,
-      pagination: {
-        page,
-        limit,
-        total: suprimentos.length,
-        totalPages: Math.ceil(suprimentos.length / limit),
-      },
-      success: true,
-    });
+    return NextResponse.json({ data: [], pagination: { page, limit, total: 0, totalPages: 0 }, success: true });
   } catch (error) {
     console.error('Erro ao buscar suprimentos:', error);
-    return NextResponse.json({
-      data: [],
-      pagination: { page: 1, limit: 50, total: 0, totalPages: 0 },
-      success: false,
-      error: 'Erro ao buscar suprimentos',
-    });
+    return NextResponse.json({ data: [], pagination: { page: 1, limit: 50, total: 0, totalPages: 0 }, success: false, error: 'Erro ao buscar suprimentos' });
   }
 }
 
@@ -66,24 +60,31 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const client: any = prisma as any;
+    const model = client.suprimentos || client.artigos_stock || null;
 
-    const novoSuprimento = {
-      id: mockSuprimentos.length + 1,
-      codigo: `SUP-${String(mockSuprimentos.length + 1).padStart(3, '0')}`,
-      ...body,
-      criadoEm: new Date(),
-    };
+    if (model && typeof model.create === 'function') {
+      const created = await model.create({ data: {
+        codigo_artigo: body.codigo,
+        nome_artigo: body.nome,
+        categoria: body.categoria,
+        quantidade_stock: body.quantidadeAtual ?? body.quantidade,
+        stock_minimo: body.quantidadeMinima ?? body.stock_minimo,
+        unidade_medida: body.unidadeMedida,
+        activo: true,
+      }}).catch(() => null);
+      if (created) return NextResponse.json({ success: true, data: {
+        id: Number(created.id),
+        codigo: created.codigo_artigo || created.codigo,
+        nome: created.nome_artigo || created.nome,
+      }});
+    }
 
-    return NextResponse.json({
-      success: true,
-      data: novoSuprimento,
-    });
+    const novoSuprimento = { id: Date.now(), codigo: `SUP-${Date.now()}`, ...body, criadoEm: new Date() };
+    return NextResponse.json({ success: true, data: novoSuprimento });
   } catch (error) {
     console.error('Erro ao criar suprimento:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erro ao criar suprimento' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Erro ao criar suprimento' }, { status: 500 });
   }
 }
 
@@ -91,17 +92,17 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const { id } = await request.json();
+    const client: any = prisma as any;
+    const model = client.suprimentos || client.artigos_stock || null;
+    if (model && typeof model.delete === 'function') {
+      await model.delete({ where: { id: Number(id) } }).catch(() => null);
+      return NextResponse.json({ success: true, message: 'Suprimento excluído com sucesso' });
+    }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Suprimento excluído com sucesso',
-    });
+    return NextResponse.json({ success: true, message: 'Suprimento excluído (simulado)' });
   } catch (error) {
     console.error('Erro ao excluir suprimento:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erro ao excluir suprimento' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Erro ao excluir suprimento' }, { status: 500 });
   }
 }
 

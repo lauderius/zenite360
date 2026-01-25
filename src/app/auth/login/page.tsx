@@ -29,13 +29,25 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const success = await login(formData.username, formData.password);
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/7d2d8f97-0a76-44ba-ac80-8cc7d10af208',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'src/app/auth/login/page.tsx:handleSubmit:before',message:'login submit',data:{usernameLength:formData.username?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+      // #endregion
+      const success = await login({ username: formData.username, password: formData.password } as any);
       if (success) {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/7d2d8f97-0a76-44ba-ac80-8cc7d10af208',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'src/app/auth/login/page.tsx:handleSubmit:success',message:'login success',data:{usernameLength:formData.username?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+        // #endregion
         router.push('/dashboard');
       } else {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/7d2d8f97-0a76-44ba-ac80-8cc7d10af208',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'src/app/auth/login/page.tsx:handleSubmit:failed',message:'login returned falsy',data:{usernameLength:formData.username?.length||0},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+        // #endregion
         setError('Credenciais inválidas');
       }
     } catch (err) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/7d2d8f97-0a76-44ba-ac80-8cc7d10af208',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'src/app/auth/login/page.tsx:handleSubmit:error',message:'login exception',data:{error:String(err)},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H1'})}).catch(()=>{});
+      // #endregion
       setError('Erro ao fazer login. Tente novamente.');
       console.error('Login error:', err);
     } finally {

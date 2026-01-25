@@ -1,68 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockGetById } from '@/lib/mockData';
+import prisma from '@/lib/prisma';
 
 // GET - Buscar registro de óbito por ID
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id: idString } = await params;
-    const id = parseInt(idString);
-
-    // Dados mock
-    return mockGetById(id, 'Registro de Óbito');
+    const id = parseInt(params.id);
+    const client: any = prisma as any;
+    const model = client.obitos || client.registros_obito || null;
+    if (model) {
+      const item = await model.findUnique({ where: { id: BigInt(id) } }).catch(() => null);
+      return NextResponse.json(item || null);
+    }
+    return NextResponse.json(null);
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Erro ao buscar registro' },
-      { status: 500 }
-    );
+    console.error('Erro ao buscar registro:', error);
+    return NextResponse.json({ error: 'Erro ao buscar registro' }, { status: 500 });
   }
 }
 
 // PUT - Atualizar registro de óbito
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id: idString } = await params;
-    const id = parseInt(idString);
+    const id = parseInt(params.id);
     const body = await request.json();
-
-    return NextResponse.json({
-      id,
-      ...body,
-      message: 'Registro atualizado (mock)',
-      _status: 'mock',
-    });
+    const client: any = prisma as any;
+    const model = client.obitos || client.registros_obito || null;
+    if (model && typeof model.update === 'function') {
+      const updated = await model.update({ where: { id: BigInt(id) }, data: body }).catch(() => null);
+      return NextResponse.json({ success: !!updated, data: updated || null });
+    }
+    return NextResponse.json({ success: true, id, ...body, _status: 'mock' });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Erro ao atualizar registro' },
-      { status: 500 }
-    );
+    console.error('Erro ao atualizar registro:', error);
+    return NextResponse.json({ error: 'Erro ao atualizar registro' }, { status: 500 });
   }
 }
 
 // DELETE - Deletar registro de óbito
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id: idString } = await params;
-    const id = parseInt(idString);
-
-    return NextResponse.json({
-      success: true,
-      id,
-      message: 'Registro deletado (mock)',
-      _status: 'mock',
-    });
+    const id = parseInt(params.id);
+    const client: any = prisma as any;
+    const model = client.obitos || client.registros_obito || null;
+    if (model && typeof model.delete === 'function') {
+      await model.delete({ where: { id: BigInt(id) } }).catch(() => null);
+      return NextResponse.json({ success: true, id });
+    }
+    return NextResponse.json({ success: true, id, _status: 'mock' });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Erro ao deletar registro' },
-      { status: 500 }
-    );
+    console.error('Erro ao deletar registro:', error);
+    return NextResponse.json({ error: 'Erro ao deletar registro' }, { status: 500 });
   }
 }

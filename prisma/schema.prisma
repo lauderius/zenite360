@@ -3,6 +3,81 @@ generator client {
 }
 
 datasource db {
+  // Usar MySQL em produção/desenvolvimento conforme pedido pelo utilizador.
+  // Define DATABASE_URL no arquivo .env com a string de conexão MySQL.
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Models (named to match existing prisma client usage like prisma.pacientes)
+model pacientes {
+  id         Int      @id @default(autoincrement())
+  nome       String?
+  created_at DateTime @default(now())
+  deleted_at DateTime?
+}
+
+model agendamentos {
+  id              Int      @id @default(autoincrement())
+  pacienteId      Int?
+  departamentoId  Int?
+  data_agendamento DateTime?
+  deleted_at      DateTime?
+}
+
+model consultas {
+  id           Int      @id @default(autoincrement())
+  pacienteId   Int?
+  medicoId     Int?
+  departamentoId Int?
+  data_consulta DateTime?
+  deleted_at   DateTime?
+}
+
+model prescricoes {
+  id         Int      @id @default(autoincrement())
+  pacienteId Int?
+  status     String?
+  deleted_at DateTime?
+}
+
+model artigos_stock {
+  id               Int     @id @default(autoincrement())
+  nome             String?
+  activo           Boolean @default(true)
+  quantidade_stock Int     @default(0)
+  stock_minimo     Int     @default(0)
+}
+
+model exames_solicitados {
+  id        Int      @id @default(autoincrement())
+  status    String?
+  created_at DateTime @default(now())
+}
+
+model usuarios {
+  id            Int      @id @default(autoincrement())
+  username      String   @unique
+  email         String?
+  password_hash String?
+  criado_em     DateTime @default(now())
+}
+
+model funcionarios {
+  id                 Int      @id @default(autoincrement())
+  nomeCompleto       String?
+  cargo              String?
+  nivelAcesso        String?
+  departamentoId     Int?
+  dataNascimento     DateTime?
+  emailInstitucional String?
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
   provider = "mysql"
 }
 

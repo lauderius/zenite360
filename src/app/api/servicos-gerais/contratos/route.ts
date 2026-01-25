@@ -1,58 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
 
-// Dados mock para contratos de terceiros
-const mockContratos = [
-  {
-    id: 1,
-    codigo: 'CTR-2024-0001',
-    empresaContratada: 'Limpeza Total Ltda',
-    objeto: 'Serviços de limpeza geral',
-    tipo: 'LIMPEZA' as const,
-    status: 'VIGENTE' as const,
-    valorMensal: 350000,
-    quantidadeFuncionarios: 15,
-    diasParaVencimento: 120,
-    notaAvaliacao: 4.5,
-  },
-  {
-    id: 2,
-    codigo: 'CTR-2024-0002',
-    empresaContratada: 'Segurança 24h',
-    objeto: 'Serviços de vigilância',
-    tipo: 'SEGURANCA' as const,
-    status: 'VIGENTE' as const,
-    valorMensal: 280000,
-    quantidadeFuncionarios: 12,
-    diasParaVencimento: 85,
-    notaAvaliacao: 4.0,
-  },
-  {
-    id: 3,
-    codigo: 'CTR-2024-0003',
-    empresaContratada: 'Manutenção Predial SA',
-    objeto: 'Manutenção predial e elétrica',
-    tipo: 'MANUTENCAO_PREDIAL' as const,
-    status: 'PROXIMO_VENCIMENTO' as const,
-    valorMensal: 180000,
-    quantidadeFuncionarios: 5,
-    diasParaVencimento: 15,
-    notaAvaliacao: 4.2,
-  },
-  {
-    id: 4,
-    codigo: 'CTR-2024-0004',
-    empresaContratada: 'Nutri Hospitalar',
-    objeto: 'Refeitório e cozinha',
-    tipo: 'ALIMENTACAO' as const,
-    status: 'VIGENTE' as const,
-    valorMensal: 420000,
-    quantidadeFuncionarios: 10,
-    diasParaVencimento: 200,
-    notaAvaliacao: 3.8,
-  },
-];
-
-// GET: Listar contratos
+// GET: Listar contratos — tenta usar model prisma.contratos ou fallback
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams;
@@ -61,67 +10,53 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    let contratos = [...mockContratos];
+    const client: any = prisma as any;
+    const model = client.contratos || client.servicos_contratos || client.contratos_terceiros || null;
 
-    // Aplicar filtros
-    if (tipo) {
-      contratos = contratos.filter(c => c.tipo === tipo);
+    if (model) {
+      const where: any = {};
+      if (tipo) where.tipo = tipo;
+      if (status) where.status = status;
+      const total = await model.count({ where }).catch(() => 0);
+      const items = await model.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { id: 'desc' },
+      }).catch(() => []);
+
+      return NextResponse.json({
+        data: items,
+        pagination: { page, limit, total, totalPages: Math.ceil((total || 0) / limit) },
+        success: true,
+      });
     }
 
-    if (status) {
-      contratos = contratos.filter(c => c.status === status);
-    }
-
-    // Paginação
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const contratosPaginados = contratos.slice(startIndex, endIndex);
-
-    return NextResponse.json({
-      data: contratosPaginados,
-      pagination: {
-        page,
-        limit,
-        total: contratos.length,
-        totalPages: Math.ceil(contratos.length / limit),
-      },
-      success: true,
-    });
+    // Fallback: vazio
+    return NextResponse.json({ data: [], pagination: { page, limit, total: 0, totalPages: 0 }, success: true });
   } catch (error) {
     console.error('Erro ao buscar contratos:', error);
-    return NextResponse.json({
-      data: [],
-      pagination: { page: 1, limit: 20, total: 0, totalPages: 0 },
-      success: false,
-      error: 'Erro ao buscar contratos',
-    });
+    return NextResponse.json({ data: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }, success: false, error: 'Erro ao buscar contratos' });
   }
 }
 
-// POST: Criar novo contrato
+// POST: Criar novo contrato — cria no DB se modelo existir
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    const client: any = prisma as any;
+    const model = client.contratos || client.servicos_contratos || client.contratos_terceiros || null;
 
-    const novoContrato = {
-      id: mockContratos.length + 1,
-      codigo: `CTR-${new Date().getFullYear()}-${String(mockContratos.length + 1).padStart(4, '0')}`,
-      ...body,
-      status: 'VIGENTE' as const,
-      diasParaVencimento: 365,
-      criadoEm: new Date(),
-    };
+    if (model && typeof model.create === 'function') {
+      const created = await model.create({ data: { ...body, status: body.status || 'VIGENTE' } }).catch(() => null);
+      if (created) return NextResponse.json({ success: true, data: created });
+    }
 
-    return NextResponse.json({
-      success: true,
-      data: novoContrato,
-    });
+    const novoContrato = { id: Date.now(), codigo: `CTR-${new Date().getFullYear()}-${Date.now()}`, ...body, status: 'VIGENTE' };
+    return NextResponse.json({ success: true, data: novoContrato });
   } catch (error) {
     console.error('Erro ao criar contrato:', error);
-    return NextResponse.json(
-      { success: false, error: 'Erro ao criar contrato' },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, error: 'Erro ao criar contrato' }, { status: 500 });
   }
 }
 

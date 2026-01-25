@@ -43,7 +43,11 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      await login({ username, password });
+      const success = await login({ username, password });
+      if (!success) {
+        setError('Credenciais inválidas');
+        return;
+      }
     } catch (err: any) {
       setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
     } finally {

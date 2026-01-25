@@ -208,6 +208,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     return group.items.some(item => isActive(item.href));
   };
 
+  // Itens de menu filtrados (aplanar grupos e verificar permissões por item)
+  const filteredMenuItems: MenuItem[] = filteredMenuGroups.flatMap(group =>
+    group.items.filter(item => {
+      if (!item.permissoes) return true;
+      return checkPermission(item.permissoes);
+    })
+  );
+
   return (
     <>
       {/* Overlay para mobile */}
