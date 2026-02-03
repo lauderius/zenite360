@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Triagem Rápida Protocolo Manchester</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "manchester-red": "#FF0000",
+                        "manchester-orange": "#FF8C00",
+                        "manchester-yellow": "#FFFF00",
+                        "manchester-green": "#008000",
+                        "manchester-blue": "#0000FF",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #27303a;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#27303a] bg-primary px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 17.4264C16.7203 18.1174 20.2244 18.5217 24 18.5217C27.7756 18.5217 31.2797 18.1174 34.1739 17.4264C36.9144 16.7722 39.9967 15.2331 41.3563 14.1648L24.8486 40.6391C24.4571 41.267 23.5429 41.267 23.1514 40.6391L6.64374 14.1648C8.00331 15.2331 11.0856 16.7722 13.8261 17.4264Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 12.236C39.9944 12.2537 39.9875 12.2845 39.9748 12.3294C39.9436 12.4399 39.8949 12.5741 39.8346 12.7175C39.8168 12.7597 39.7989 12.8007 39.7813 12.8398C38.5103 13.7113 35.9788 14.9393 33.7095 15.4811C30.9875 16.131 27.6413 16.5217 24 16.5217C20.3587 16.5217 17.0125 16.131 14.2905 15.4811C12.0012 14.9346 9.44505 13.6897 8.18538 12.8168C8.17384 12.7925 8.16216 12.767 8.15052 12.7408C8.09919 12.6249 8.05721 12.5114 8.02977 12.411C8.00356 12.3152 8.00039 12.2667 8.00004 12.2612C8.00004 12.261 8 12.2607 8.00004 12.2612C8.00004 12.2359 8.0104 11.9233 8.68485 11.3686C9.34546 10.8254 10.4222 10.2469 11.9291 9.72276C14.9242 8.68098 19.1919 8 24 8C28.8081 8 33.0758 8.68098 36.0709 9.72276C37.5778 10.2469 38.6545 10.8254 39.3151 11.3686C39.9006 11.8501 39.9857 12.1489 39.998 12.236ZM4.95178 15.2312L21.4543 41.6973C22.6288 43.5809 25.3712 43.5809 26.5457 41.6973L43.0534 15.223C43.0709 15.1948 43.0878 15.1662 43.104 15.1371L41.3563 14.1648C43.104 15.1371 43.1038 15.1374 43.104 15.1371L43.1051 15.135L43.1065 15.1325L43.1101 15.1261L43.1199 15.1082C43.1276 15.094 43.1377 15.0754 43.1497 15.0527C43.1738 15.0075 43.2062 14.9455 43.244 14.8701C43.319 14.7208 43.4196 14.511 43.5217 14.2683C43.6901 13.8679 44 13.0689 44 12.2609C44 10.5573 43.003 9.22254 41.8558 8.2791C40.6947 7.32427 39.1354 6.55361 37.385 5.94477C33.8654 4.72057 29.133 4 24 4C18.867 4 14.1346 4.72057 10.615 5.94478C8.86463 6.55361 7.30529 7.32428 6.14419 8.27911C4.99695 9.22255 3.99999 10.5573 3.99999 12.2609C3.99999 13.1275 4.29264 13.9078 4.49321 14.3607C4.60375 14.6102 4.71348 14.8196 4.79687 14.9689C4.83898 15.0444 4.87547 15.1065 4.9035 15.1529C4.91754 15.1762 4.92954 15.1957 4.93916 15.2111L4.94662 15.223L4.95178 15.2312ZM35.9868 18.996L24 38.22L12.0131 18.996C12.4661 19.1391 12.9179 19.2658 13.3617 19.3718C16.4281 20.1039 20.0901 20.5227 24 20.5217C27.9099 20.5217 31.5719 20.1039 34.6383 19.3718C35.082 19.2658 35.5339 19.1391 35.9868 18.996Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-tight">Zênite360 <span class="font-normal text-xs uppercase tracking-widest ml-1 opacity-70">ERP Hospitalar</span></h2>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="flex items-center gap-9">
+<a class="text-white text-sm font-medium hover:text-blue-300 transition-colors" href="#">Dashboard</a>
+<a class="text-white text-sm font-medium hover:text-blue-300 transition-colors" href="#">Pacientes</a>
+<a class="text-white text-sm font-medium border-b-2 border-white pb-1" href="#">Triagem</a>
+<a class="text-white text-sm font-medium hover:text-blue-300 transition-colors" href="#">Consultas</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 w-10 bg-[#1b2b3a] text-white hover:bg-white/10 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-white/10">
+<div class="text-right">
+<p class="text-xs text-white font-bold">Enf. Manuel Silva</p>
+<p class="text-[10px] text-blue-200">Triagem Emergência</p>
+</div>
+<div class="size-10 rounded-full bg-blue-500 border-2 border-blue-400 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-white">person</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col p-6 max-w-[1600px] mx-auto w-full gap-6">
+<!-- Breadcrumbs & Heading -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-sm">
+<a class="text-[#9aaabc] hover:text-white" href="#">Início</a>
+<span class="text-[#9aaabc]">/</span>
+<a class="text-[#9aaabc] hover:text-white" href="#">Urgência</a>
+<span class="text-[#9aaabc]">/</span>
+<span class="text-white font-semibold">Triagem Manchester</span>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<h1 class="text-3xl font-black text-white tracking-tight">Triagem Rápida</h1>
+<p class="text-[#9aaabc]">Protocolo de Manchester • Unidade de Triagem Avançada</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-[#1b2128] text-white px-4 py-2 rounded-xl border border-[#27303a] flex items-center gap-2 font-semibold text-sm">
+<span class="material-symbols-outlined text-lg">history</span> Ver Histórico
+                    </button>
+<button class="bg-primary text-white px-4 py-2 rounded-xl border border-blue-800 flex items-center gap-2 font-bold text-sm">
+<span class="material-symbols-outlined text-lg">add_circle</span> Nova Admissão
+                    </button>
+</div>
+</div>
+</div>
+<div class="flex-1 grid grid-cols-12 gap-6 items-stretch">
+<!-- Left Column: Patient & Vitals -->
+<aside class="col-span-3 flex flex-col gap-6">
+<!-- Patient Card -->
+<div class="bg-primary border border-blue-900 rounded-xl p-5 shadow-xl">
+<div class="flex items-center gap-4 mb-4">
+<div class="size-16 rounded-xl bg-blue-800/50 flex items-center justify-center text-blue-200 overflow-hidden">
+<img alt="Foto do paciente para identificação" class="object-cover h-full w-full" data-alt="close up headshot of an elderly person for medical record" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvABHEeefM5sJc9E57X2hRR-Q_LoxBdcRZQI65M2UH7abL5t_V1WBZmQTGrEj31JoqFqVNZQzHQ8L8xMY5sH1uB07OFQKPd_h4mO5B1eFLFj3IRuZxWA-jat0Z_Y656oqiUfJrs8BaINBPfrduDUvP49yx71NY6DOPtkpTMNop4s75TVSOOWzXml2D3FnXhP_I5sNhk7aC3CBqsoCWBYzdNp2RLisvCdjGsjzwNvqzZyBE6TsC_3TPKux4hoHsLK5y8_uVtHfN79bM"/>
+</div>
+<div>
+<p class="text-[10px] uppercase tracking-widest text-blue-300 font-bold">Paciente em Triagem</p>
+<h3 class="text-lg font-bold leading-none">António João Bento</h3>
+<p class="text-sm text-blue-200/70 mt-1">64 Anos • Masculino</p>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-blue-800/50">
+<div class="flex flex-col">
+<span class="text-[10px] text-blue-300 uppercase font-bold">B.I. Angolano</span>
+<span class="text-sm font-mono tracking-wider">001234567LA041</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-blue-300 uppercase font-bold">Nº Processo</span>
+<span class="text-sm">ZN-2024/09821</span>
+</div>
+</div>
+</div>
+<!-- Vital Signs Form -->
+<div class="bg-[#1b2128] border border-[#27303a] rounded-xl p-5 flex-1">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-blue-400">vital_signs</span>
+<h3 class="font-bold text-white">Sinais Vitais</h3>
+</div>
+<div class="space-y-4">
+<div class="grid grid-cols-2 gap-3">
+<label class="flex flex-col gap-1">
+<span class="text-[10px] text-[#9aaabc] uppercase font-bold">Tensão Art. (PA)</span>
+<input class="bg-[#101418] border-[#27303a] rounded-lg text-white text-sm focus:ring-primary h-10 px-3" placeholder="120/80" type="text"/>
+</label>
+<label class="flex flex-col gap-1">
+<span class="text-[10px] text-[#9aaabc] uppercase font-bold">Freq. Card (FC)</span>
+<input class="bg-[#101418] border-[#27303a] rounded-lg text-white text-sm focus:ring-primary h-10 px-3" placeholder="72 bpm" type="number"/>
+</label>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<label class="flex flex-col gap-1">
+<span class="text-[10px] text-[#9aaabc] uppercase font-bold">Temp. (ºC)</span>
+<input class="bg-[#101418] border-[#27303a] rounded-lg text-white text-sm focus:ring-primary h-10 px-3 border-red-500/50" placeholder="36.5" type="text"/>
+</label>
+<label class="flex flex-col gap-1">
+<span class="text-[10px] text-[#9aaabc] uppercase font-bold">SpO2 (%)</span>
+<input class="bg-[#101418] border-[#27303a] rounded-lg text-white text-sm focus:ring-primary h-10 px-3" placeholder="98" type="number"/>
+</label>
+</div>
+<label class="flex flex-col gap-1">
+<span class="text-[10px] text-[#9aaabc] uppercase font-bold">Freq. Resp. (FR)</span>
+<input class="bg-[#101418] border-[#27303a] rounded-lg text-white text-sm focus:ring-primary h-10 px-3" placeholder="16 ipm" type="number"/>
+</label>
+<label class="flex flex-col gap-1">
+<span class="text-[10px] text-[#9aaabc] uppercase font-bold">Escala de Dor (0-10)</span>
+<input class="accent-primary h-2 bg-[#101418] rounded-lg appearance-none cursor-pointer" max="10" min="0" type="range"/>
+<div class="flex justify-between text-[10px] text-[#9aaabc] font-bold">
+<span>SEM DOR</span>
+<span>MODERADA</span>
+<span>INSUPORTÁVEL</span>
+</div>
+</label>
+</div>
+</div>
+</aside>
+<!-- Center Column: Manchester Selection -->
+<section class="col-span-5 flex flex-col gap-6">
+<div class="bg-[#1b2128] border border-[#27303a] rounded-xl p-5 flex-1 flex flex-col">
+<div class="mb-6">
+<h3 class="text-xl font-bold">Nível de Prioridade</h3>
+<p class="text-[#9aaabc] text-sm">Seleccione a categoria conforme a gravidade clínica</p>
+</div>
+<div class="flex-1 flex flex-col gap-3">
+<!-- EMERGENTE -->
+<button class="group flex items-center gap-6 p-5 rounded-xl bg-manchester-red/20 border-2 border-manchester-red hover:bg-manchester-red/30 transition-all text-left">
+<div class="size-14 rounded-full bg-manchester-red flex items-center justify-center text-white shadow-lg shadow-manchester-red/40 ring-4 ring-manchester-red/20">
+<span class="text-2xl font-black italic">!</span>
+</div>
+<div class="flex-1">
+<h4 class="text-xl font-black text-manchester-red uppercase leading-none">Emergente</h4>
+<p class="text-sm text-white/80 mt-1">Risco imediato de morte</p>
+</div>
+<div class="text-right">
+<span class="text-2xl font-black text-manchester-red italic">0 MIN</span>
+<p class="text-[10px] font-bold opacity-50 uppercase tracking-tighter">Atendimento Imediato</p>
+</div>
+</button>
+<!-- MUITO URGENTE -->
+<button class="group flex items-center gap-6 p-5 rounded-xl bg-manchester-orange/10 border border-manchester-orange/40 hover:border-manchester-orange hover:bg-manchester-orange/20 transition-all text-left">
+<div class="size-14 rounded-full bg-manchester-orange flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-3xl">timer</span>
+</div>
+<div class="flex-1">
+<h4 class="text-xl font-black text-manchester-orange uppercase leading-none">Muito Urgente</h4>
+<p class="text-sm text-[#9aaabc] mt-1">Grave risco de complicação</p>
+</div>
+<div class="text-right">
+<span class="text-2xl font-black text-manchester-orange">10 MIN</span>
+<p class="text-[10px] font-bold opacity-50 uppercase tracking-tighter">Tempo Alvo</p>
+</div>
+</button>
+<!-- URGENTE -->
+<button class="group flex items-center gap-6 p-5 rounded-xl bg-manchester-yellow/10 border border-manchester-yellow/40 hover:border-manchester-yellow hover:bg-manchester-yellow/20 transition-all text-left">
+<div class="size-14 rounded-full bg-manchester-yellow flex items-center justify-center text-black">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+</div>
+<div class="flex-1">
+<h4 class="text-xl font-black text-manchester-yellow uppercase leading-none">Urgente</h4>
+<p class="text-sm text-[#9aaabc] mt-1">Pode aguardar estabilização</p>
+</div>
+<div class="text-right">
+<span class="text-2xl font-black text-manchester-yellow">60 MIN</span>
+<p class="text-[10px] font-bold opacity-50 uppercase tracking-tighter">Tempo Alvo</p>
+</div>
+</button>
+<!-- POUCO URGENTE -->
+<button class="group flex items-center gap-6 p-5 rounded-xl bg-manchester-green/10 border border-manchester-green/40 hover:border-manchester-green hover:bg-manchester-green/20 transition-all text-left">
+<div class="size-14 rounded-full bg-manchester-green flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-3xl">check_circle</span>
+</div>
+<div class="flex-1">
+<h4 class="text-xl font-black text-manchester-green uppercase leading-none">Pouco Urgente</h4>
+<p class="text-sm text-[#9aaabc] mt-1">Caso de baixa complexidade</p>
+</div>
+<div class="text-right">
+<span class="text-2xl font-black text-manchester-green">120 MIN</span>
+<p class="text-[10px] font-bold opacity-50 uppercase tracking-tighter">Tempo Alvo</p>
+</div>
+</button>
+<!-- NÃO URGENTE -->
+<button class="group flex items-center gap-6 p-5 rounded-xl bg-manchester-blue/10 border border-manchester-blue/40 hover:border-manchester-blue hover:bg-manchester-blue/20 transition-all text-left">
+<div class="size-14 rounded-full bg-manchester-blue flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-3xl">person_search</span>
+</div>
+<div class="flex-1">
+<h4 class="text-xl font-black text-manchester-blue uppercase leading-none">Não Urgente</h4>
+<p class="text-sm text-[#9aaabc] mt-1">Encaminhamento ambulatorial</p>
+</div>
+<div class="text-right">
+<span class="text-2xl font-black text-manchester-blue">240 MIN</span>
+<p class="text-[10px] font-bold opacity-50 uppercase tracking-tighter">Tempo Alvo</p>
+</div>
+</button>
+</div>
+</div>
+</section>
+<!-- Right Column: Discriminators -->
+<section class="col-span-4 flex flex-col gap-6">
+<div class="bg-[#1b2128] border border-[#27303a] rounded-xl p-5 flex-1 flex flex-col">
+<div class="mb-4">
+<h3 class="text-lg font-bold">Discriminadores</h3>
+<p class="text-[#9aaabc] text-xs">Identifique os sintomas para validação</p>
+</div>
+<!-- Search -->
+<div class="relative mb-4">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9aaabc] text-xl">search</span>
+<input class="w-full bg-[#101418] border-[#27303a] rounded-xl pl-10 pr-4 py-2 text-sm text-white focus:ring-primary" placeholder="Pesquisar sintoma ou discriminador..." type="text"/>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-2">
+<!-- Group -->
+<div class="mb-2">
+<p class="text-[10px] font-bold text-primary bg-blue-100 rounded px-2 py-0.5 inline-block mb-2 uppercase tracking-wide">Geral / Adulto</p>
+<div class="space-y-1">
+<label class="flex items-center gap-3 p-3 rounded-lg bg-[#101418] border border-manchester-red/30 cursor-pointer hover:bg-red-950/20 transition-colors">
+<input checked="" class="w-5 h-5 rounded text-manchester-red focus:ring-manchester-red bg-[#101418] border-[#27303a]" type="checkbox"/>
+<span class="text-sm font-medium">Obstrução de Vias Aéreas</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-[#101418] border border-manchester-red/30 cursor-pointer hover:bg-red-950/20 transition-colors">
+<input class="w-5 h-5 rounded text-manchester-red focus:ring-manchester-red bg-[#101418] border-[#27303a]" type="checkbox"/>
+<span class="text-sm font-medium">Hemorragia Exanguinante</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-[#101418] border border-[#27303a] cursor-pointer hover:bg-white/5 transition-colors">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-[#101418] border-[#27303a]" type="checkbox"/>
+<span class="text-sm font-medium">Dor Torácica Intensa</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-[#101418] border border-[#27303a] cursor-pointer hover:bg-white/5 transition-colors">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-[#101418] border-[#27303a]" type="checkbox"/>
+<span class="text-sm font-medium">Alteração do Nível de Consciência</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-[#101418] border border-[#27303a] cursor-pointer hover:bg-white/5 transition-colors">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-[#101418] border-[#27303a]" type="checkbox"/>
+<span class="text-sm font-medium">Dispneia Aguda</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-[#101418] border border-[#27303a] cursor-pointer hover:bg-white/5 transition-colors">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-[#101418] border-[#27303a]" type="checkbox"/>
+<span class="text-sm font-medium">Cefaleia de Início Súbito</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-[#101418] border border-[#27303a] cursor-pointer hover:bg-white/5 transition-colors">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-[#101418] border-[#27303a]" type="checkbox"/>
+<span class="text-sm font-medium">Sinais de Choque</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-[#101418] border border-[#27303a] cursor-pointer hover:bg-white/5 transition-colors">
+<input class="w-5 h-5 rounded text-primary focus:ring-primary bg-[#101418] border-[#27303a]" type="checkbox"/>
+<span class="text-sm font-medium">Trauma Abdominal</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Note area -->
+<div class="mt-4 pt-4 border-t border-[#27303a]">
+<p class="text-[10px] text-[#9aaabc] font-bold uppercase mb-1">Notas do Triador</p>
+<textarea class="w-full bg-[#101418] border-[#27303a] rounded-xl text-sm min-h-[80px] focus:ring-primary" placeholder="Observações clínicas adicionais..."></textarea>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Fixed Action Bar -->
+<footer class="bg-primary/95 backdrop-blur-md border-t border-blue-800 p-4 sticky bottom-0">
+<div class="max-w-[1600px] mx-auto flex justify-between items-center">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-xs text-blue-300 font-bold uppercase leading-none mb-1">Decisão de Triagem</span>
+<div class="flex items-center gap-2">
+<div class="h-4 w-4 rounded-full bg-manchester-red animate-pulse"></div>
+<span class="font-black text-xl text-manchester-red italic">EMERGENTE</span>
+</div>
+</div>
+<div class="h-10 w-px bg-blue-800"></div>
+<div class="flex flex-col">
+<span class="text-xs text-blue-300 font-bold uppercase leading-none mb-1">Próxima Etapa</span>
+<span class="font-bold text-white uppercase tracking-tight">Sala de Reanimação (S1)</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="bg-[#1b2b3a] hover:bg-blue-900 text-white px-8 py-3 rounded-xl font-bold transition-all border border-blue-800 flex items-center gap-2">
+<span class="material-symbols-outlined">print</span> Imprimir Pulseira
+                </button>
+<button class="bg-manchester-red hover:bg-red-700 text-white px-10 py-3 rounded-xl font-black shadow-lg shadow-red-900/40 transition-all flex items-center gap-2">
+                    FINALIZAR TRIAGEM <span class="material-symbols-outlined">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+</footer>
+</body></html>

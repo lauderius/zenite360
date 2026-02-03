@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Visualizador de Documentos Zênite360</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147", 
+                        "primary-light": "#0b6cda",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101822",
+                        "surface-dark": "#1e293b",
+                        "border-dark": "#283039",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen flex flex-col overflow-hidden antialiased">
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-border-dark bg-white dark:bg-background-dark px-4 py-3 shadow-sm lg:px-6">
+<div class="flex items-center gap-3 text-slate-900 dark:text-white">
+<div class="size-8 text-primary dark:text-blue-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-[32px]">local_hospital</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Zênite360 <span class="text-slate-400 font-medium ml-2">| Visualizador de Documentos</span></h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3 pl-1 cursor-pointer">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold text-slate-900 dark:text-white">Dra. Ana Silva</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-wider">Clínica Geral</p>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 ring-2 ring-primary/20" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD35tBpKb0QgnGLRl5A2k377Vc0SX1HFs2mBWD8hloBsjRouKUsvXS3sWotSKM_dQ0RXbwx_nyvZMkTzWBdA_X0uBxa1a7LDVx7wGJUsEngOd9lHSbBdEokeG025JzdyJuUiiaUywwSM2LxnqpcJMB3v9TaP2vhuJV77ROhVtwW-nk9r5QxG1M-TEMecQWb2ic3OukdgRlokrHryPoy02wGSotH2jTD-hpJiIbhLSt8G2KsqcAyDwbkcK6cC-jucXNerbuar8-9YDbV");'></div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col lg:flex-row h-[calc(100vh-64px)] overflow-hidden">
+<div class="flex-1 bg-slate-200/80 dark:bg-[#0c1219] overflow-y-auto p-4 lg:p-8 flex justify-center relative scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
+<div class="fixed bottom-6 left-1/2 lg:left-[40%] -translate-x-1/2 flex items-center gap-2 bg-slate-900/90 text-white backdrop-blur px-3 py-1.5 rounded-full shadow-xl z-20 border border-white/10">
+<button class="hover:text-blue-400 transition-colors p-1"><span class="material-symbols-outlined text-sm">remove</span></button>
+<span class="text-xs font-mono font-medium min-w-[3ch] text-center">100%</span>
+<button class="hover:text-blue-400 transition-colors p-1"><span class="material-symbols-outlined text-sm">add</span></button>
+<div class="w-px h-3 bg-white/20 mx-1"></div>
+<button class="hover:text-blue-400 transition-colors p-1"><span class="material-symbols-outlined text-sm">fullscreen</span></button>
+</div>
+<div class="bg-white text-slate-900 w-full max-w-[21cm] min-h-[29.7cm] shadow-2xl rounded-sm p-[1.5cm] flex flex-col gap-8 relative origin-top transform transition-transform duration-200">
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] overflow-hidden">
+<span class="material-symbols-outlined text-[400px]">local_hospital</span>
+</div>
+<div class="flex justify-between items-start border-b-2 border-primary pb-6 relative z-10">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-4xl">local_hospital</span>
+<span class="font-black text-2xl tracking-tighter">Zênite360</span>
+</div>
+<p class="text-[10px] text-slate-500 font-medium max-w-[200px] leading-tight mt-1">
+                            Hospital Geral de Luanda<br/>
+                            Av. Deolinda Rodrigues, Luanda<br/>
+                            Tel: +244 923 000 000
+                        </p>
+</div>
+<div class="text-right">
+<h1 class="text-2xl font-black text-primary uppercase tracking-wide">Receita Médica</h1>
+<p class="text-sm font-mono text-slate-500 mt-1">REC-2024/05/8921</p>
+<div class="mt-2 inline-flex items-center gap-1 bg-green-50 text-green-700 px-2 py-0.5 rounded border border-green-200 text-xs font-bold uppercase">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+                            Válida
+                        </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-x-8 gap-y-4 text-sm bg-slate-50 p-4 rounded border border-slate-100 relative z-10">
+<div>
+<span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Nome do Paciente</span>
+<p class="font-bold text-slate-800 text-lg">João Manuel da Silva</p>
+</div>
+<div>
+<span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Bilhete de Identidade (AO)</span>
+<p class="font-mono font-medium text-slate-700">004829182LA042</p>
+</div>
+<div>
+<span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Data de Nascimento / Idade</span>
+<p class="text-slate-700">12/04/1985 (39 Anos)</p>
+</div>
+<div>
+<span class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Convénio / Seguro</span>
+<p class="text-slate-700">ENSA Seguros - Plano Gold</p>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-4 relative z-10">
+<h3 class="text-xs font-bold text-primary uppercase border-b border-slate-200 pb-2 mt-4">Prescrição Terapêutica</h3>
+<table class="w-full text-sm text-left">
+<thead class="bg-slate-100 text-slate-500 font-semibold text-xs uppercase">
+<tr>
+<th class="px-3 py-2 rounded-l w-5/12">Medicamento / Substância</th>
+<th class="px-3 py-2 w-2/12">Dosagem</th>
+<th class="px-3 py-2 w-1/12">Qtd.</th>
+<th class="px-3 py-2 rounded-r w-4/12">Instruções de Toma</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="py-2">
+<td class="px-3 py-3 font-bold text-slate-800">Paracetamol (Ben-u-ron)</td>
+<td class="px-3 py-3 text-slate-600">1000 mg</td>
+<td class="px-3 py-3 font-mono">2 cx</td>
+<td class="px-3 py-3 text-slate-600">Tomar 1 comprimido de 8 em 8 horas em caso de febre ou dor.</td>
+</tr>
+<tr class="py-2">
+<td class="px-3 py-3 font-bold text-slate-800">Amoxicilina + Ác. Clavulânico</td>
+<td class="px-3 py-3 text-slate-600">875 mg + 125 mg</td>
+<td class="px-3 py-3 font-mono">2 cx</td>
+<td class="px-3 py-3 text-slate-600">Tomar 1 comprimido de 12 em 12 horas, após as refeições, durante 7 dias.</td>
+</tr>
+<tr class="py-2">
+<td class="px-3 py-3 font-bold text-slate-800">Ibuprofeno</td>
+<td class="px-3 py-3 text-slate-600">400 mg</td>
+<td class="px-3 py-3 font-mono">1 cx</td>
+<td class="px-3 py-3 text-slate-600">Tomar 1 comprimido se dor intensa (SOS), máx 3 por dia.</td>
+</tr>
+</tbody>
+</table>
+<div class="mt-8 border border-slate-200 rounded p-4 bg-yellow-50/50">
+<h4 class="text-xs font-bold text-slate-500 uppercase mb-1">Observações Clínicas</h4>
+<p class="text-sm text-slate-700 leading-relaxed">Paciente com histórico de alergia a Dipirona. Recomendado repouso absoluto por 3 dias e hidratação oral vigorosa (min. 2L água/dia). Retornar em caso de persistência dos sintomas após 48h.</p>
+</div>
+</div>
+<div class="mt-auto pt-8 flex items-end justify-between gap-8 relative z-10">
+<div class="text-[10px] text-slate-400 max-w-[200px]">
+<p>Processado pelo sistema Zênite360 ERP Hospitalar.</p>
+<p>Data de Emissão: 24/05/2024 10:45:22</p>
+<p class="font-mono">Hash: 8a9f2...e3b1</p>
+</div>
+<div class="flex flex-col items-center gap-1">
+<div class="h-16 w-32 relative">
+<img alt="Assinatura" class="absolute inset-0 w-full h-full object-contain opacity-70 filter hue-rotate-180 brightness-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxLxUxKVHZrD9j7zUekoo0_6JHm1qPZQT4T6UaPCDqVMUtV3RBjuFXsm4wLLLXRhLcWDyBOzV5LEXX95zLL12Ro0vyI9DtaUU2n1CK1ItEY8huSHrxNBZFauTe8ltWpfNwCCX7eTXI1kJufPiM2dO-C_wkHOGS6afv8Rp1AsZCig43_ip0fSAlwRlBSnWFk-6XF6dGGQiKFH6BBnzzxJC5AaeAtWZ7clTD2jwb498Uw98dtFCyuaYueir-dvrOTDE39zNqX2o2PR2z"/>
+</div>
+<div class="h-px w-48 bg-slate-900"></div>
+<p class="font-bold text-sm text-slate-900">Dra. Ana Silva</p>
+<p class="text-xs text-slate-500">Médica de Clínica Geral - OMA 12938</p>
+</div>
+</div>
+</div>
+<div class="h-8 shrink-0"></div> 
+</div>
+<aside class="w-full lg:w-[320px] bg-white dark:bg-surface-dark border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-border-dark flex flex-col shadow-xl z-10 shrink-0">
+<div class="p-4 border-b border-slate-200 dark:border-border-dark flex items-center justify-between">
+<h3 class="font-bold text-slate-900 dark:text-white">Acções</h3>
+<button class="size-8 rounded hover:bg-slate-100 dark:hover:bg-background-dark flex items-center justify-center text-slate-500 transition-colors" title="Fechar">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-4 flex flex-col gap-3">
+<button class="flex items-center justify-center gap-2 w-full bg-primary hover:bg-blue-900 text-white h-12 rounded-lg font-bold shadow-lg shadow-blue-900/20 transition-all active:scale-95">
+<span class="material-symbols-outlined">print</span>
+<span>Imprimir</span>
+</button>
+<button class="flex items-center justify-center gap-2 w-full bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark hover:bg-slate-50 dark:hover:bg-background-dark text-slate-700 dark:text-slate-300 h-10 rounded-lg font-medium transition-colors">
+<span class="material-symbols-outlined">download</span>
+<span>Descarregar PDF</span>
+</button>
+<button class="flex items-center justify-center gap-2 w-full bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark hover:bg-slate-50 dark:hover:bg-background-dark text-slate-700 dark:text-slate-300 h-10 rounded-lg font-medium transition-colors">
+<span class="material-symbols-outlined">mail</span>
+<span>Enviar por E-mail</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 border-t border-slate-200 dark:border-border-dark scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
+<h4 class="text-xs font-bold text-slate-500 uppercase mb-4 tracking-wider">Detalhes do Documento</h4>
+<div class="space-y-4">
+<div class="flex flex-col gap-1">
+<span class="text-xs text-slate-400">Tipo de Documento</span>
+<div class="flex items-center gap-2 text-sm font-medium text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-primary dark:text-blue-400 text-base">prescriptions</span>
+                            Receita Médica
+                        </div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-slate-400">Estado</span>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Finalizado</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-slate-400">Criado por</span>
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-slate-200 bg-center bg-cover" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD35tBpKb0QgnGLRl5A2k377Vc0SX1HFs2mBWD8hloBsjRouKUsvXS3sWotSKM_dQ0RXbwx_nyvZMkTzWBdA_X0uBxa1a7LDVx7wGJUsEngOd9lHSbBdEokeG025JzdyJuUiiaUywwSM2LxnqpcJMB3v9TaP2vhuJV77ROhVtwW-nk9r5QxG1M-TEMecQWb2ic3OukdgRlokrHryPoy02wGSotH2jTD-hpJiIbhLSt8G2KsqcAyDwbkcK6cC-jucXNerbuar8-9YDbV");'></div>
+<span class="text-sm text-slate-700 dark:text-slate-300">Dra. Ana Silva</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-xs text-slate-400">Data de Criação</span>
+<span class="text-sm text-slate-700 dark:text-slate-300 font-mono">24 Mai 2024, 10:45</span>
+</div>
+<div class="h-px bg-slate-100 dark:bg-border-dark my-2"></div>
+<div class="bg-blue-50 dark:bg-primary/20 border border-blue-100 dark:border-blue-900/30 rounded-lg p-3 flex gap-3">
+<span class="material-symbols-outlined text-primary dark:text-blue-300 text-xl shrink-0">info</span>
+<p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Este documento possui assinatura digital qualificada e tem validade legal em todo território nacional (Angola).
+                        </p>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-slate-200 dark:border-border-dark bg-slate-50 dark:bg-background-dark/50">
+<button class="w-full text-red-600 dark:text-red-400 text-sm font-medium hover:underline flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-base">delete</span>
+                    Anular Documento
+                </button>
+</div>
+</aside>
+</main>
+
+</body></html>

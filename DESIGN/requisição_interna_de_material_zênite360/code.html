@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Requisição Interna de Material | Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "accent-blue": "#004085",
+                        "status-pending": "#EAB308",
+                        "status-approved": "#22C55E",
+                        "status-delivered": "#3B82F6",
+                        "status-rejected": "#EF4444"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .high-density-table td, .high-density-table th { padding: 0.75rem 1rem; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #27303a; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen font-display">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-[#101418] px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined">health_and_safety</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360 <span class="font-normal opacity-70">| Logística</span></h2>
+</div>
+<div class="hidden md:flex items-center gap-2">
+<label class="flex flex-col min-w-64 !h-10">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 flex border-none bg-slate-100 dark:bg-[#27303a] items-center justify-center pl-4 rounded-l-lg" data-icon="MagnifyingGlass">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-slate-100 dark:bg-[#27303a] h-full placeholder:text-slate-400 px-4 rounded-l-none pl-2 text-sm font-normal" placeholder="Pesquisar no sistema..."/>
+</div>
+</label>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary dark:hover:text-blue-400 transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium hover:text-primary dark:hover:text-blue-400 transition-colors border-b-2 border-primary dark:border-blue-400 pb-1" href="#">Requisições</a>
+<a class="text-sm font-medium hover:text-primary dark:hover:text-blue-400 transition-colors" href="#">Stock Geral</a>
+<a class="text-sm font-medium hover:text-primary dark:hover:text-blue-400 transition-colors" href="#">Relatórios</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-[#27303a] text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-[#27303a] text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-800">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold">Dr. Armando Costa</p>
+<p class="text-[10px] opacity-60">Director Clínico</p>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="Avatar of user Armando Costa" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuApcflp9_8Wrqnuxe1eYKI9vIhs9KAWSAclOJatSlvkrkJzbD-Jkw7VA0lcr4uyskPtawo_o8cgyrokBw5YbvRgGIvbFEZluA48OY-UTAPzlPdpOzfcPqsxsfoI5kmxdlzXxKkzb5GFb0SoMSreXSisb2gmotZeAFFH-_O-N1t5eEJFF5Xfxp9g5-3syrc2vb66XVP08A9fG5n4dft03SipWZVyv0eMSIP0atIHVfKNzC6IhiMLTIeXaYqlvgwsHi6MKBBqi1VXBcjK");'></div>
+</div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-6 py-8">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-6">
+<a class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium hover:underline" href="#">Logística</a>
+<span class="material-symbols-outlined text-slate-400 text-sm">chevron_right</span>
+<span class="text-slate-900 dark:text-white text-sm font-semibold">Requisição Interna de Material</span>
+</nav>
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-tight">Nova Requisição Interna</h1>
+<p class="text-slate-500 dark:text-[#9aaabc] text-base font-normal">Gestão de pedidos de material hospitalar ao Stock Geral (SGF)</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 px-5 bg-slate-100 dark:bg-[#27303a] text-slate-700 dark:text-white text-sm font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined mr-2 text-lg">history</span>
+                    Histórico Completo
+                </button>
+<button class="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all">
+<span class="material-symbols-outlined mr-2 text-lg">add</span>
+                    Nova Guia
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Form & Basket -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Step 1: Request Details -->
+<section class="bg-white dark:bg-[#1a212a] rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="bg-slate-50 dark:bg-[#212933] px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">assignment_turned_in</span>
+                            Dados do Requisitante
+                        </h2>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Passo 1 de 3</span>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+<label class="flex flex-col gap-2">
+<p class="text-slate-700 dark:text-white text-sm font-semibold">Sector Requisitante</p>
+<select class="form-select w-full rounded-lg text-slate-900 dark:text-white border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#27303a] h-12 px-4 text-sm focus:ring-primary">
+<option value="">Seleccionar Sector (DE, SBU, SF...)</option>
+<option>Departamento de Emergência (DE)</option>
+<option>Unidade de Cuidados Intensivos (SBU)</option>
+<option>Serviços Farmacêuticos (SF)</option>
+<option>Bloco Operatório (BO)</option>
+</select>
+</label>
+<label class="flex flex-col gap-2">
+<p class="text-slate-700 dark:text-white text-sm font-semibold">Prioridade do Pedido</p>
+<div class="flex gap-2 h-12">
+<button class="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#27303a] flex items-center justify-center gap-2 text-xs font-bold hover:bg-slate-50 dark:hover:bg-[#323d4a] transition-all">
+<span class="size-2 rounded-full bg-green-500"></span> Baixa
+                                </button>
+<button class="flex-1 rounded-lg border-2 border-primary/50 dark:border-blue-500/50 bg-primary/10 dark:bg-blue-500/10 flex items-center justify-center gap-2 text-xs font-bold">
+<span class="size-2 rounded-full bg-yellow-500"></span> Média
+                                </button>
+<button class="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-[#27303a] flex items-center justify-center gap-2 text-xs font-bold hover:bg-slate-50 dark:hover:bg-[#323d4a] transition-all">
+<span class="size-2 rounded-full bg-red-500"></span> Alta
+                                </button>
+</div>
+</label>
+</div>
+</section>
+<!-- Step 2: Item Selection -->
+<section class="bg-white dark:bg-[#1a212a] rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="bg-slate-50 dark:bg-[#212933] px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">inventory_2</span>
+                            Selecção de Artigos (SGF)
+                        </h2>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Passo 2 de 3</span>
+</div>
+<div class="p-6">
+<div class="flex flex-col md:flex-row gap-4 mb-6">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-12 pr-4 h-12 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#27303a] text-sm focus:ring-primary" placeholder="Pesquisar por nome do material ou código SKU..." type="text"/>
+</div>
+<div class="w-32">
+<input class="w-full h-12 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#27303a] text-sm focus:ring-primary text-center" placeholder="Qtd" type="number" value="1"/>
+</div>
+<button class="bg-primary hover:bg-opacity-90 text-white px-6 rounded-lg font-bold text-sm h-12 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+                                Adicionar
+                            </button>
+</div>
+<!-- Basket Table -->
+<div class="border border-slate-100 dark:border-slate-800 rounded-lg overflow-hidden">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-[#212933] text-slate-500 dark:text-slate-400 font-semibold uppercase text-[11px] tracking-wider">
+<tr>
+<th class="px-4 py-3">Artigo</th>
+<th class="px-4 py-3">Unidade</th>
+<th class="px-4 py-3">Stock Disponível</th>
+<th class="px-4 py-3 text-center">Pedido</th>
+<th class="px-4 py-3 text-right">Acções</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4">
+<p class="font-bold dark:text-white">Luvas de Exame Nitrilo M</p>
+<p class="text-[11px] opacity-60">SKU: MED-00421</p>
+</td>
+<td class="px-4 py-4 opacity-80">Caixa (100 un)</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-green-500/10 text-green-500 text-[11px] font-bold">
+<span class="size-1.5 rounded-full bg-green-500"></span> 1,240
+                                            </span>
+</td>
+<td class="px-4 py-4 text-center">
+<input class="w-16 h-8 bg-transparent border-slate-200 dark:border-slate-700 rounded text-center text-xs font-bold" type="number" value="10"/>
+</td>
+<td class="px-4 py-4 text-right">
+<button class="text-red-500 hover:bg-red-500/10 p-1.5 rounded transition-all">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-4 py-4">
+<p class="font-bold dark:text-white">Seringas 5ml Descartáveis</p>
+<p class="text-[11px] opacity-60">SKU: SURG-0911</p>
+</td>
+<td class="px-4 py-4 opacity-80">Pacote (50 un)</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-yellow-500/10 text-yellow-500 text-[11px] font-bold">
+<span class="size-1.5 rounded-full bg-yellow-500"></span> 45
+                                            </span>
+</td>
+<td class="px-4 py-4 text-center">
+<input class="w-16 h-8 bg-transparent border-slate-200 dark:border-slate-700 rounded text-center text-xs font-bold" type="number" value="5"/>
+</td>
+<td class="px-4 py-4 text-right">
+<button class="text-red-500 hover:bg-red-500/10 p-1.5 rounded transition-all">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Step 3: Signature & Submission -->
+<section class="bg-white dark:bg-[#1a212a] rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+<div class="bg-slate-50 dark:bg-[#212933] px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">draw</span>
+                            Validação e Assinatura
+                        </h2>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Passo 3 de 3</span>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+<div>
+<p class="text-sm font-semibold mb-3">Assinatura Digital do Requisitante</p>
+<div class="w-full h-32 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg flex flex-col items-center justify-center bg-slate-50/50 dark:bg-slate-900/50 group cursor-pointer hover:border-primary/40 transition-all">
+<span class="material-symbols-outlined text-slate-400 group-hover:scale-110 transition-transform mb-2">fingerprint</span>
+<p class="text-[10px] text-slate-400 font-medium">Toque para assinar com Certificado Digital</p>
+</div>
+</div>
+<div class="flex flex-col justify-end h-full pt-6">
+<div class="bg-primary/5 dark:bg-blue-500/5 border border-primary/20 dark:border-blue-500/20 rounded-lg p-4 mb-4">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs opacity-70">Total de Artigos:</span>
+<span class="text-xs font-bold">02 Tipos</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs opacity-70">Volume de Pedido:</span>
+<span class="text-xs font-bold">15 Unidades</span>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-opacity-90 text-white h-14 rounded-lg font-black text-lg tracking-wide shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-3">
+                                    SUBMETER PEDIDO
+                                    <span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Tracking & Recent Activity -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Status Stats -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-[#1a212a] p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Pendentes</p>
+<p class="text-2xl font-black text-yellow-500">12</p>
+</div>
+<div class="bg-white dark:bg-[#1a212a] p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Entregues</p>
+<p class="text-2xl font-black text-blue-500">84</p>
+</div>
+</div>
+<!-- Recent Requisitions Table (High Density) -->
+<section class="bg-white dark:bg-[#1a212a] rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm flex-1 flex flex-col">
+<div class="bg-slate-50 dark:bg-[#212933] px-5 py-4 border-b border-slate-200 dark:border-slate-800">
+<h2 class="text-slate-900 dark:text-white text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">list_alt</span>
+                            Minhas Requisições
+                        </h2>
+</div>
+<div class="overflow-y-auto max-h-[700px] custom-scrollbar">
+<table class="w-full text-left text-[13px] high-density-table">
+<thead class="bg-slate-50/50 dark:bg-slate-800/20 text-slate-400 font-medium uppercase text-[10px] sticky top-0 backdrop-blur-md">
+<tr>
+<th class="border-b border-slate-200 dark:border-slate-800">ID / Data</th>
+<th class="border-b border-slate-200 dark:border-slate-800">Estado</th>
+<th class="border-b border-slate-200 dark:border-slate-800 text-right">Acção</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Requisition Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="py-4">
+<div class="flex flex-col">
+<span class="font-bold text-primary dark:text-blue-400">#REQ-8821</span>
+<span class="text-[11px] opacity-60">Hoje, 09:42</span>
+<span class="text-[11px] mt-1 font-medium bg-red-500/10 text-red-500 px-1 rounded w-fit">ALTA</span>
+</div>
+</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-500 text-[10px] font-black uppercase tracking-tighter border border-yellow-500/20">
+                                            Pendente
+                                        </span>
+</td>
+<td class="text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">visibility</button>
+</td>
+</tr>
+<!-- Requisition Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="py-4">
+<div class="flex flex-col">
+<span class="font-bold text-primary dark:text-blue-400">#REQ-8790</span>
+<span class="text-[11px] opacity-60">Ontem, 16:15</span>
+<span class="text-[11px] mt-1 font-medium bg-slate-500/10 text-slate-500 px-1 rounded w-fit">MÉDIA</span>
+</div>
+</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-[10px] font-black uppercase tracking-tighter border border-green-500/20">
+                                            Aprovado
+                                        </span>
+</td>
+<td class="text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">visibility</button>
+</td>
+</tr>
+<!-- Requisition Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="py-4">
+<div class="flex flex-col">
+<span class="font-bold text-primary dark:text-blue-400">#REQ-8755</span>
+<span class="text-[11px] opacity-60">12 Out, 11:20</span>
+<span class="text-[11px] mt-1 font-medium bg-slate-500/10 text-slate-500 px-1 rounded w-fit">MÉDIA</span>
+</div>
+</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500 text-[10px] font-black uppercase tracking-tighter border border-blue-500/20">
+                                            Entregue
+                                        </span>
+</td>
+<td class="text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">visibility</button>
+</td>
+</tr>
+<!-- Requisition Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="py-4">
+<div class="flex flex-col">
+<span class="font-bold text-primary dark:text-blue-400">#REQ-8701</span>
+<span class="text-[11px] opacity-60">10 Out, 08:30</span>
+<span class="text-[11px] mt-1 font-medium bg-red-500/10 text-red-500 px-1 rounded w-fit">ALTA</span>
+</div>
+</td>
+<td>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-red-500/10 text-red-500 text-[10px] font-black uppercase tracking-tighter border border-red-500/20">
+                                            Rejeitado
+                                        </span>
+</td>
+<td class="text-right">
+<button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors">visibility</button>
+</td>
+</tr>
+<!-- Dummy Rows for high density feel -->
+<tr class="opacity-40">
+<td class="text-center py-8 text-xs font-medium" colspan="3">Ver mais 42 registos anteriores...</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-slate-50 dark:bg-[#212933] p-4 text-center border-t border-slate-200 dark:border-slate-800">
+<a class="text-primary dark:text-blue-400 text-[11px] font-black uppercase tracking-widest hover:underline" href="#">Exportar Relatório PDF</a>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer Meta -->
+<footer class="mt-auto px-6 py-6 border-t border-slate-200 dark:border-slate-800 text-[10px] text-slate-400 flex justify-between items-center opacity-60">
+<p>© 2024 Zênite360 Logística | Ministério da Saúde - República de Angola</p>
+<div class="flex gap-4">
+<p>ID da Estação: OPS-LUA-004</p>
+<p>IP: 192.168.10.42</p>
+</div>
+</footer>
+</body></html>

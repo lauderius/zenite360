@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestão de Ordens de Serviço Biomédica | Zênite360</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101418", 
+                        "surface-dark": "#1e2732",
+                        "surface-light": "#ffffff",
+                        "card-dark": "#27303a",
+                        "status-red": "#ef4444",
+                        "status-amber": "#f59e0b",
+                        "status-green": "#10b981",
+                        "status-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for kanban columns */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e2732; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4b5563; 
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white h-screen flex overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-primary dark:bg-[#0b1015] border-r border-[#27303a] hidden lg:flex flex-col z-20">
+<div class="p-5 flex items-center gap-3 border-b border-[#27303a]">
+<div class="size-8 rounded bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">medical_services</span>
+</div>
+<div>
+<h1 class="font-bold text-white leading-tight">Zênite360</h1>
+<p class="text-xs text-gray-400">Hospital Central Luanda</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#27303a] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard Geral</span>
+</a>
+<div class="pt-4 pb-2 px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Biomédica</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/40 text-white border-l-4 border-status-blue" href="#">
+<span class="material-symbols-outlined text-status-blue">engineering</span>
+<span class="text-sm font-medium">Ordens de Serviço</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#27303a] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="text-sm font-medium">Equipamentos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#27303a] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">event_repeat</span>
+<span class="text-sm font-medium">Preventivas</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#27303a] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-sm font-medium">Estoque de Peças</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-[#27303a] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Relatórios</span>
+</a>
+</nav>
+<div class="p-4 border-t border-[#27303a]">
+<div class="flex items-center gap-3">
+<img alt="Profile picture of a male doctor" class="size-9 rounded-full object-cover border border-gray-600" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_Owr7maSQem6UtkUKeZRISyDC3jqsZnm9eq2_b4SdhXwSIV4IMIS3Cq2XlwZBud5Xh0i8gkpkPgJl5Jk-ul3RWNYHHgLGGkmkTkcRyBFdpVy88uswkR2lM2nxbLPfOOtLRERmW5eSgjaPLh1qCv5NbSAUzIf5POjNTRylGtiynRFe3iHliY94k4fvOdMSnioo0vMKQjCj3_kNIQBfB0PXHBuhNP9nrE28mKBGGn2uWULr_h-p_UAB4De-Bmt5d0lT25vqOhMwSQ5N"/>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-white truncate">Eng. Carlos Silva</p>
+<p class="text-xs text-gray-400 truncate">Coord. Engenharia Clínica</p>
+</div>
+<button class="text-gray-400 hover:text-white">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background-light dark:bg-background-dark">
+<!-- Header -->
+<header class="h-16 border-b border-[#27303a] dark:bg-[#101418] flex items-center justify-between px-6 shrink-0 z-10">
+<div class="flex items-center gap-4">
+<button class="lg:hidden text-gray-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-lg font-bold text-slate-800 dark:text-white">Gestão de Ordens de Serviço</h2>
+<span class="px-2 py-0.5 rounded text-xs font-medium bg-[#27303a] text-gray-300 border border-gray-700">Setor: Biomédica</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-lg">search</span>
+<input class="h-9 pl-10 pr-4 rounded-lg bg-[#1e2732] border-none text-sm text-white placeholder-gray-500 w-64 focus:ring-1 focus:ring-primary" placeholder="Buscar O.S., TAG ou Equipamento..." type="text"/>
+</div>
+<button class="flex items-center justify-center size-9 rounded-lg bg-[#1e2732] hover:bg-[#27303a] text-gray-300 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-status-red rounded-full border-2 border-[#1e2732]"></span>
+</button>
+<button class="flex items-center gap-2 h-9 px-4 bg-primary hover:bg-primary-light text-white text-sm font-medium rounded-lg transition-colors shadow-lg shadow-blue-900/20">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>Nova O.S.</span>
+</button>
+</div>
+</header>
+<!-- KPI Stats -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-6 shrink-0">
+<div class="bg-white dark:bg-card-dark rounded-xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm flex items-start justify-between">
+<div>
+<p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Tempo Médio de Resposta</p>
+<div class="flex items-baseline gap-2 mt-1">
+<h3 class="text-2xl font-bold text-slate-900 dark:text-white">4h 12m</h3>
+<span class="text-xs font-medium text-status-green bg-green-900/20 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-[10px] mr-0.5">trending_down</span>
+                            -15%
+                        </span>
+</div>
+</div>
+<div class="p-2 bg-blue-500/10 rounded-lg">
+<span class="material-symbols-outlined text-status-blue">timer</span>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark rounded-xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm flex items-start justify-between relative overflow-hidden group">
+<div class="absolute inset-0 bg-red-500/5 dark:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative">
+<p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Pedidos Urgentes</p>
+<div class="flex items-baseline gap-2 mt-1">
+<h3 class="text-2xl font-bold text-slate-900 dark:text-white">3</h3>
+<span class="text-xs font-medium text-status-red bg-red-900/20 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-[10px] mr-0.5">trending_up</span>
+                            +1
+                        </span>
+</div>
+</div>
+<div class="p-2 bg-red-500/10 rounded-lg relative z-10">
+<span class="material-symbols-outlined text-status-red">warning</span>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark rounded-xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm flex items-start justify-between">
+<div>
+<p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Equipamentos Parados</p>
+<div class="flex items-baseline gap-2 mt-1">
+<h3 class="text-2xl font-bold text-slate-900 dark:text-white">5</h3>
+<span class="text-xs font-medium text-gray-500 bg-gray-700/20 px-1.5 py-0.5 rounded">
+                            Estável
+                        </span>
+</div>
+</div>
+<div class="p-2 bg-orange-500/10 rounded-lg">
+<span class="material-symbols-outlined text-status-amber">power_off</span>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark rounded-xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm flex items-start justify-between">
+<div>
+<p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Total O.S. Abertas</p>
+<div class="flex items-baseline gap-2 mt-1">
+<h3 class="text-2xl font-bold text-slate-900 dark:text-white">42</h3>
+<span class="text-xs font-medium text-status-green bg-green-900/20 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-[10px] mr-0.5">trending_up</span>
+                            +8%
+                        </span>
+</div>
+</div>
+<div class="p-2 bg-green-500/10 rounded-lg">
+<span class="material-symbols-outlined text-status-green">assignment</span>
+</div>
+</div>
+</div>
+<!-- Kanban Board Area -->
+<div class="flex-1 overflow-x-auto overflow-y-hidden px-6 pb-6">
+<div class="flex h-full gap-5 min-w-[1200px]">
+<!-- Column: Pendente -->
+<div class="flex flex-col w-80 shrink-0">
+<div class="flex items-center justify-between mb-3 px-1">
+<h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+<div class="size-2 rounded-full bg-status-red"></div>
+                            Pendente
+                        </h3>
+<span class="bg-gray-200 dark:bg-[#1e2732] text-gray-600 dark:text-gray-400 text-xs px-2 py-0.5 rounded-full font-medium">4</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3 pb-2">
+<!-- Card 1 -->
+<div class="bg-white dark:bg-card-dark rounded-lg p-3 border border-gray-200 dark:border-gray-700 shadow-sm hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-grab active:cursor-grabbing group">
+<div class="flex gap-3 mb-3">
+<div class="size-12 rounded-lg bg-gray-800 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Monitor multiparâmetro medical device screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0u0EVhuN3r3ylCQQcxPYgWPApsxIpyEvP1uW5q3a8VZKc-VbZwmqBv9xEpzukkCEIYnzMNo43W3iawF8sNniFDmv3kag6K_a6NCO33tNQJ2fwLF3-ZVXC7iow9CPirKgWvHZjIZ8MLsayqUc1LNBuOwrEQ--EI2B-9IgkqU87GMTQ0yPJ2uTRH7ZDOWHHvm3SqWYP9cT0MxoY53EDt6U56mLLpz4_-n5xD6xGLbTTYbPw18puKOlTBW819KdXk_r9A5xHdliwQiRe"/>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-status-red/20 text-status-red text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">Crítico</span>
+<span class="text-gray-500 text-[10px]">#OS-2938</span>
+</div>
+<h4 class="text-sm font-medium text-slate-900 dark:text-white leading-tight">Monitor Multiparâmetro</h4>
+<p class="text-xs text-gray-500 mt-0.5">TAG-092 • Bloco Operatório</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+<div class="flex -space-x-2">
+<div class="size-6 rounded-full bg-gray-600 flex items-center justify-center text-[10px] text-white border-2 border-white dark:border-card-dark">
+                                        ?
+                                    </div>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-400">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>2h atrás</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white dark:bg-card-dark rounded-lg p-3 border border-gray-200 dark:border-gray-700 shadow-sm hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-grab active:cursor-grabbing">
+<div class="flex gap-3 mb-3">
+<div class="size-12 rounded-lg bg-gray-800 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Electrocardiogram ECG machine" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD5MT9_ZN-IX9dCoQ7TbEMKSvy4Tti6AcXe1UInQ8DJ1r7cFsMUiwUDAcxfl6uEg7xmdxkYGy8wFP35t48_6hOizQvVuudvCqWjoe4xqmG1JZ-vzGkHPiF9SiN9NyELp7h541x5_fp7k-uh6hZv8aFdWMG1ur2dsXPx7m1m-dMPiaQSwa3LCFN6gwGVCQg1mARMtsj1KtOcIApatQ9TZiaBdW_0bPURcUUKZ_NPcFUiSwfgigGIe5BuyhjzE7zTrjjwYYTb9JvQFNc"/>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-status-amber/20 text-status-amber text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">Alta</span>
+<span class="text-gray-500 text-[10px]">#OS-2940</span>
+</div>
+<h4 class="text-sm font-medium text-slate-900 dark:text-white leading-tight">Eletrocardiógrafo</h4>
+<p class="text-xs text-gray-500 mt-0.5">TAG-115 • Triagem ER</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+<div class="flex -space-x-2">
+<div class="size-6 rounded-full bg-gray-600 flex items-center justify-center text-[10px] text-white border-2 border-white dark:border-card-dark">
+                                        ?
+                                    </div>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-400">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>45m atrás</span>
+</div>
+</div>
+</div>
+</div>
+<button class="mt-2 flex items-center justify-center gap-1 text-xs font-medium text-gray-500 hover:text-white py-2 rounded border border-transparent hover:border-gray-700 hover:bg-[#1e2732] transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Adicionar Cartão
+                    </button>
+</div>
+<!-- Column: Em Diagnóstico -->
+<div class="flex flex-col w-80 shrink-0">
+<div class="flex items-center justify-between mb-3 px-1">
+<h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+<div class="size-2 rounded-full bg-status-blue"></div>
+                            Em Diagnóstico
+                        </h3>
+<span class="bg-gray-200 dark:bg-[#1e2732] text-gray-600 dark:text-gray-400 text-xs px-2 py-0.5 rounded-full font-medium">2</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3 pb-2">
+<!-- Card 3 -->
+<div class="bg-white dark:bg-card-dark rounded-lg p-3 border border-gray-200 dark:border-gray-700 shadow-sm hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-grab active:cursor-grabbing border-l-4 border-l-status-blue">
+<div class="flex gap-3 mb-3">
+<div class="size-12 rounded-lg bg-gray-800 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Portable x-ray machine detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQsmEHa5cybT1mkxstQCzg5CGKXZ2R1H01sFV5eG1ZTMJWbODBvVUjMdG23JCrbvbVdN_fHY_C8sLxAHq-EqSmmYoBrk8h_Fx0uOs59lA4cmPRqGR3DT47OhmfJ6OA24jSgYzR7gnTKYzj8F9er9xghgc5vBXQznZPG0PGcceRbMdqteYFYiBmwsSKxflxkkg8SG3OoVoYwqnCvxB38dVaYxvji5rFd0hLy7Ezb90Kl_GKcvKAAogxLoYDT9b8LdAJaewq81iUz5Wj"/>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-status-amber/20 text-status-amber text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">Média</span>
+<span class="text-gray-500 text-[10px]">#OS-2921</span>
+</div>
+<h4 class="text-sm font-medium text-slate-900 dark:text-white leading-tight">Raio-X Portátil</h4>
+<p class="text-xs text-gray-500 mt-0.5">TAG-044 • Ortopedia</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+<div class="flex -space-x-2">
+<img class="size-6 rounded-full border-2 border-white dark:border-card-dark object-cover" data-alt="Technician portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPUgJa5d050uPqTsZA0jN9iQYvPiDhWS4asQa3BlOYWWYUbZnrf1DtiV-amOF1JgawSwcygfmdJo2ZIOQBwLqivoxnyTzl1oV6pWVi9vkJKhfbmsU2qYU74oMOtvpr4IFntVjmhrgNIhUWJnKMAzn6WsBM8MjEx2_ZMhdp3VEMlKZqQvfyea-tb6DxVgYWBzh8dkBlZ92uLYxEicggVNDby8x0BDEl4_YPpfPJ-Em6tZFj1M9TojdREBX5VDjTmnf0RcqoFN9ZcZN1"/>
+</div>
+<div class="flex items-center gap-1 text-xs text-status-blue font-medium">
+<span class="material-symbols-outlined text-sm animate-pulse">settings</span>
+<span>Em andamento</span>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white dark:bg-card-dark rounded-lg p-3 border border-gray-200 dark:border-gray-700 shadow-sm hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-grab active:cursor-grabbing">
+<div class="flex gap-3 mb-3">
+<div class="size-12 rounded-lg bg-gray-800 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Infusion pump medical device" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAM5AJnamrlwWZSIhwW7Fp1_jG2oNbguLVah8Avs7JDfiWbibrQtlfLWRpBzgDeH-5JtwWagug2Z2RQQ10g-7CfW4Z8WoZ_8vTts4J3iW1a8eCB-QNwupDSZmskylOff9m5uvcGg-nIJdvgLsX5Ej40bKqZ7n3tKn7UfsHH7ZUZetxuBpAmm95aV8-GznEfImSZIibhdB8RlMkt3RzUxBGXNs_2odGkO6OAaucGOI2CvKsh6jYGUjQaikQen1NIX7qbMgKQP5WpA-hr"/>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-blue-900/40 text-blue-300 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">Baixa</span>
+<span class="text-gray-500 text-[10px]">#OS-2935</span>
+</div>
+<h4 class="text-sm font-medium text-slate-900 dark:text-white leading-tight">Bomba de Infusão</h4>
+<p class="text-xs text-gray-500 mt-0.5">TAG-201 • Enfermaria 3</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+<div class="flex -space-x-2">
+<img class="size-6 rounded-full border-2 border-white dark:border-card-dark object-cover" data-alt="Technician portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQX7kqNJyplwIfqp2n-s8uiQmVm1oNi6dq4NG6ay_re8GGqsAduQAPHcPRMOe_wYBoUxEyxcmXpZZgPRjBOPA_1E972AwJ9SnJ01UyjSakaDky5sbCK6CePRy6W2FezFasOyDntu2UuGws9v8OjDWMKDDT5JkSmD2_C7JGIb2QPCYLZw7-55d8xqYmww_SFRB2FbeNQKarWEfzv2CJ6YZimie13wAgiZaIgDpUxpOoaOJvhBOJlOL5Ylq3vBKl2CEZIiq92cj81IOu"/>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-400">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>1d 3h</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Aguardando Peças -->
+<div class="flex flex-col w-80 shrink-0">
+<div class="flex items-center justify-between mb-3 px-1">
+<h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+<div class="size-2 rounded-full bg-status-amber"></div>
+                            Aguardando Peças
+                        </h3>
+<span class="bg-gray-200 dark:bg-[#1e2732] text-gray-600 dark:text-gray-400 text-xs px-2 py-0.5 rounded-full font-medium">1</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3 pb-2">
+<!-- Card 5 -->
+<div class="bg-white dark:bg-card-dark rounded-lg p-3 border border-gray-200 dark:border-gray-700 shadow-sm hover:border-gray-400 dark:hover:border-gray-500 transition-colors cursor-grab active:cursor-grabbing opacity-90">
+<div class="flex gap-3 mb-3">
+<div class="size-12 rounded-lg bg-gray-800 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="MRI machine medical imaging" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIyL9qymb0qe8ArPjlY9gC-nrpTjoi-sL4da4cuRpRdUwKxF_GJeyyiG4UMuB9KQTV7qTcQFG6Ag0XTsbz2sw8_Y3TYBdK0TgHahyVHxSosKi-KE1iDO2ol8m_O187wk1r5GB7OkDbRF6Z1KCinxLrCkbpGqYBQKviOJtphfu15-3RZEea6JyiP_5WrYiildzn6dLtc9Ddr1kFqieBK6htnWS8L17jsbpz7aAnxEooa0Hx43xv8Jg_V4ODoNI-dFCAZWbTS36rsVex"/>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-status-red/20 text-status-red text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">Crítico</span>
+<span class="text-gray-500 text-[10px]">#OS-2900</span>
+</div>
+<h4 class="text-sm font-medium text-slate-900 dark:text-white leading-tight">Ressonância Magnética</h4>
+<p class="text-xs text-gray-500 mt-0.5">TAG-003 • Imagiologia</p>
+</div>
+</div>
+<div class="bg-status-amber/10 rounded p-2 mb-2 border border-status-amber/20">
+<p class="text-[10px] text-status-amber flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-xs">block</span>
+                                    Sensor Coil (Importação)
+                                </p>
+</div>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+<div class="flex -space-x-2">
+<img class="size-6 rounded-full border-2 border-white dark:border-card-dark object-cover" data-alt="Technician portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMNN023YT_cFFV1TtDRwe2CL2RoA1zxbq21zUUS0TuFAerpsk6gYT819wBv7csnnDOaND3tAoz1DWgou2eyur3F2mc1viKt0U3sVOeTXKERtAALWdp5ZjCLtxJv_eKwam25Tjn0lsF_ZDyEfeT4_1jzSG1fIdGdyMWtkIZTxy3mJuTO1KNDQ7QiFwRWHdFzvxicL3vpKGwGxxfan0LYjv9Y6HiXYDLkZqCa8yIrxKQEyYkFAcFRAD6EcWK0kg8DSE-rArkAJBk7JKB"/>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-400">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>5d parado</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Concluído -->
+<div class="flex flex-col w-80 shrink-0">
+<div class="flex items-center justify-between mb-3 px-1">
+<h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
+<div class="size-2 rounded-full bg-status-green"></div>
+                            Concluído
+                        </h3>
+<span class="bg-gray-200 dark:bg-[#1e2732] text-gray-600 dark:text-gray-400 text-xs px-2 py-0.5 rounded-full font-medium">12</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-3 pb-2">
+<!-- Card 6 -->
+<div class="bg-white dark:bg-card-dark rounded-lg p-3 border border-gray-200 dark:border-gray-700 shadow-sm opacity-60 hover:opacity-100 transition-opacity">
+<div class="flex gap-3 mb-3">
+<div class="size-12 rounded-lg bg-gray-800 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover grayscale" data-alt="Syringe pump medical equipment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeeW2D3fETnZD-LPozr_XqSeAvgNJSW3dkMbiLpQkeZXtCTJXZDKaDMBawHaeVNTPUVVlemgl5ryh2fVpAwWWci87odeK-xYbzTGn_nGt5prdVz1cw9qcDKXzd06oQ65QduYfJB11gw8uW4xh9hlFXpTAUay7KzTnI34QjlIOugGfAqzM90lF7TIn8Sk7k1mdXZaOHuAqAzFxpV1Nf775g-PQjPJx8Yh7Hg_XD8XiJAv2Ba3cD8okKaBtvnNjrbuT5iYaEsRkC2oib"/>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-gray-700 text-gray-300 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">Baixa</span>
+<span class="text-gray-500 text-[10px]">#OS-2895</span>
+</div>
+<h4 class="text-sm font-medium text-slate-900 dark:text-white leading-tight line-through decoration-gray-500">Bomba de Seringa</h4>
+<p class="text-xs text-gray-500 mt-0.5">TAG-199 • Pediatria</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+<div class="flex -space-x-2">
+<img class="size-6 rounded-full border-2 border-white dark:border-card-dark object-cover grayscale" data-alt="Technician portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKvM6oF3cN9hJZhpPfP--mSZyF2FHtob730Ob6lFZhLv7viebl6F707YbZ_K_gbpQj837pkwRtcSMQ7AGD8ciukAhiobVGSuZsbSfNVi72nXG5MlI8UWxgvxO4p4sPLJF4z665gjIrZ3wE4ZS54CenLu074LH2Hmsnl1hhtyq4YmYpoNvv6ugexNmFiyjDv-iGuuPi_6iX8fvgrzH_PX_1XVjkvqk6cWk8nz2qzoeTRoR8W-8LASUAYbi4mRQLh0Ggqn02DXbchmG0"/>
+</div>
+<div class="flex items-center gap-1 text-xs text-status-green font-medium">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>Resolvido</span>
+</div>
+</div>
+</div>
+<!-- Card 7 -->
+<div class="bg-white dark:bg-card-dark rounded-lg p-3 border border-gray-200 dark:border-gray-700 shadow-sm opacity-60 hover:opacity-100 transition-opacity">
+<div class="flex gap-3 mb-3">
+<div class="size-12 rounded-lg bg-gray-800 overflow-hidden shrink-0">
+<img class="w-full h-full object-cover grayscale" data-alt="Incubator baby medical" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK8qLCiLLpX8o9VzajI-pYmYhNzCcSkYq69MKJFP792oK0ahJ16tQwX9UnOljUmtgEOjX9Nj16TgruYhF3WqabZuEpLlInHUQuIzwsqQqur5k9LsvlzeuRr2Q-AEdMGU87rPymnsnIHWPj0veTtwQsT6vRIvjapXGFuDuH4R2Ib5tNC-GVJ_KnFfRp2RmgLkrStdvrM8XcwlgL6yPWBM93kMzAHErbWOHZ3-RrvglGzXzvAJ3BCgQXWZQzCYTPIktJePZQ8cTkOqJi"/>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-gray-700 text-gray-300 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wide">Média</span>
+<span class="text-gray-500 text-[10px]">#OS-2888</span>
+</div>
+<h4 class="text-sm font-medium text-slate-900 dark:text-white leading-tight line-through decoration-gray-500">Incubadora Neonatal</h4>
+<p class="text-xs text-gray-500 mt-0.5">TAG-050 • UTI Neo</p>
+</div>
+</div>
+<div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+<div class="flex -space-x-2">
+<img class="size-6 rounded-full border-2 border-white dark:border-card-dark object-cover grayscale" data-alt="Technician portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeG8RhKzLGN1JWjfGj5mSNtYDtGDx3XEkWvQgySbtW2jIy0s1iLH-Nj88DfZ1enzTkyHAVAMioAPtsIcvZsrukiAqrF7qgYX4veLHD8pSIG_q1oPU50TozEzgxQG2rGmQ7EuWMB0O0lPzWDVAhTOp8aCNWjvHWChRM4QkNkeQhAEGSB0RVFFIyPwHIiVkU4_EzqumsITejV7ANnybrGQOsu316yhbThIbEFe_YqbynSH9QO-qKZzc1vLiyehsqgDjMdA9Np0hewdWf"/>
+</div>
+<div class="flex items-center gap-1 text-xs text-status-green font-medium">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>Resolvido</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Sidebar for Quick Actions -->
+<aside class="w-80 bg-[#1e2732] border-l border-[#27303a] hidden xl:flex flex-col z-20 shrink-0">
+<div class="p-5 border-b border-[#27303a]">
+<h3 class="text-white font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bolt</span>
+                Abertura Rápida
+            </h3>
+<p class="text-gray-400 text-xs mt-1">Registrar nova avaria ou solicitação urgente.</p>
+</div>
+<form class="flex-1 overflow-y-auto p-5 space-y-5">
+<div class="space-y-2">
+<label class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Equipamento / TAG</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-lg">qr_code_scanner</span>
+<input class="w-full bg-background-dark border border-[#27303a] rounded-lg py-2.5 pl-10 pr-3 text-sm text-white focus:ring-1 focus:ring-primary focus:border-primary placeholder-gray-600" placeholder="Ex: TAG-102 ou Ventilador" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Prioridade</label>
+<div class="grid grid-cols-3 gap-2">
+<label class="cursor-pointer">
+<input class="peer sr-only" name="priority" type="radio" value="low"/>
+<div class="text-center py-2 rounded-lg border border-[#27303a] bg-background-dark text-gray-400 text-xs font-medium peer-checked:bg-status-green/20 peer-checked:text-status-green peer-checked:border-status-green hover:bg-[#27303a] transition-all">Baixa</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="priority" type="radio" value="medium"/>
+<div class="text-center py-2 rounded-lg border border-[#27303a] bg-background-dark text-gray-400 text-xs font-medium peer-checked:bg-status-amber/20 peer-checked:text-status-amber peer-checked:border-status-amber hover:bg-[#27303a] transition-all">Média</div>
+</label>
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="priority" type="radio" value="high"/>
+<div class="text-center py-2 rounded-lg border border-[#27303a] bg-background-dark text-gray-400 text-xs font-medium peer-checked:bg-status-red/20 peer-checked:text-status-red peer-checked:border-status-red hover:bg-[#27303a] transition-all">Alta</div>
+</label>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Descrição do Defeito</label>
+<textarea class="w-full bg-background-dark border border-[#27303a] rounded-lg p-3 text-sm text-white focus:ring-1 focus:ring-primary focus:border-primary placeholder-gray-600 resize-none" placeholder="Descreva o problema observado..." rows="4"></textarea>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-semibold text-gray-300 uppercase tracking-wide">Anexar Foto</label>
+<div class="border-2 border-dashed border-[#27303a] rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-[#27303a]/50 hover:border-gray-500 transition-colors group">
+<span class="material-symbols-outlined text-3xl text-gray-500 group-hover:text-primary mb-2 transition-colors">add_a_photo</span>
+<p class="text-xs text-gray-400">Arraste ou clique para enviar</p>
+</div>
+</div>
+</form>
+<div class="p-5 border-t border-[#27303a] bg-[#1a222c]">
+<button class="w-full bg-primary hover:bg-primary-light text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-900/30 flex items-center justify-center gap-2 transition-all">
+<span>Abrir Chamado</span>
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</aside>
+</body></html>

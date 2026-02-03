@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 | Gestão Financeira - Seguradoras</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "accent": "#0bda5e",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823", // Deep charcoal/blue-black
+                        "surface-dark": "#16202e", // Slightly lighter for cards
+                        "border-dark": "#27303a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for high density tables */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27303a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #394656; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden antialiased">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#27303a] bg-primary px-6 py-3 shrink-0 z-20 shadow-md">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 text-white">
+<div class="size-8 flex items-center justify-center rounded bg-white/10 text-white">
+<span class="material-symbols-outlined text-[20px]">local_hospital</span>
+</div>
+<div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Zênite360</h2>
+<p class="text-xs text-blue-200 font-medium tracking-wide">GESTÃO FINANCEIRA (DGF)</p>
+</div>
+</div>
+<div class="h-6 w-px bg-white/20 mx-2"></div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-blue-100 hover:text-white text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-white text-sm font-bold border-b-2 border-white pb-0.5" href="#">Facturação</a>
+<a class="text-blue-100 hover:text-white text-sm font-medium transition-colors" href="#">Tesouraria</a>
+<a class="text-blue-100 hover:text-white text-sm font-medium transition-colors" href="#">Relatórios</a>
+<a class="text-blue-100 hover:text-white text-sm font-medium transition-colors" href="#">Configurações</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-blue-200 hover:text-white transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 size-2 bg-red-500 rounded-full"></span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-white/10">
+<div class="text-right hidden sm:block">
+<p class="text-white text-sm font-medium leading-none">Carlos Silva</p>
+<p class="text-blue-200 text-xs mt-1">Administrador Financeiro</p>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 ring-2 ring-white/10" data-alt="User profile picture of a financial administrator" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAeS8LHUFTO_VFnM_spuYiuHQ2LmaOznW0HiwSmTupgTNL8HdNBajcM6T0Xei6hAVblbzLegYZt47fOFWePd7R4X-2nDtVbQq9h842zPtgbitCDz4CDZZicQdWAj3purTBtXCuB0fnLzHs6Jw0HZt3AutM-_4gN-sI6fsbWb55jzQ835BvvHE_3EpQxhKxLMILiV5wfG_c8ZHObCRh6LORmgg7V5fe7xK6uh7cIgWSXmsR1R-zsXg4UPI9OvneY93BS1S_Lhpa6tDDy");'></div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Filters -->
+<aside class="w-72 flex flex-col bg-surface-dark border-r border-[#27303a] overflow-y-auto shrink-0 hidden lg:flex">
+<div class="p-5 border-b border-[#27303a]">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-white font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-400">filter_alt</span>
+                        Filtros Avançados
+                    </h3>
+<button class="text-xs text-blue-400 hover:text-blue-300">Limpar</button>
+</div>
+<p class="text-[#9aaabc] text-xs">Refine a lista de facturas</p>
+</div>
+<div class="flex-1 p-4 flex flex-col gap-6">
+<!-- Search Filter -->
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Buscar</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-[#9aaabc] text-[18px]">search</span>
+<input class="w-full bg-[#27303a] border border-[#394656] text-white text-sm rounded-lg pl-9 pr-3 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 placeholder:text-[#64748b]" placeholder="Apólice, Paciente..." type="text"/>
+</div>
+</div>
+<!-- Insurance Companies -->
+<div class="flex flex-col gap-3">
+<label class="text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Seguradoras</label>
+<div class="space-y-2">
+<label class="flex items-center gap-3 group cursor-pointer">
+<input checked="" class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm text-white group-hover:text-blue-200">ENSA Seguros</span>
+<span class="ml-auto text-xs text-[#9aaabc]">124</span>
+</label>
+<label class="flex items-center gap-3 group cursor-pointer">
+<input checked="" class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm text-white group-hover:text-blue-200">Nossa Seguros</span>
+<span class="ml-auto text-xs text-[#9aaabc]">85</span>
+</label>
+<label class="flex items-center gap-3 group cursor-pointer">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm text-white group-hover:text-blue-200">Saham Angola</span>
+<span class="ml-auto text-xs text-[#9aaabc]">32</span>
+</label>
+<label class="flex items-center gap-3 group cursor-pointer">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm text-white group-hover:text-blue-200">Fidelidade</span>
+<span class="ml-auto text-xs text-[#9aaabc]">18</span>
+</label>
+<label class="flex items-center gap-3 group cursor-pointer">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm text-white group-hover:text-blue-200">Bic Seguros</span>
+<span class="ml-auto text-xs text-[#9aaabc]">05</span>
+</label>
+</div>
+</div>
+<!-- Agreement Type -->
+<div class="flex flex-col gap-3">
+<label class="text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Tipo de Acordo</label>
+<select class="w-full bg-[#27303a] border border-[#394656] text-white text-sm rounded-lg p-2.5 focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+<option>Todos os Acordos</option>
+<option>Corporativo Standard</option>
+<option>Seguro de Saúde VIP</option>
+<option>Acordo Especial</option>
+</select>
+</div>
+<!-- Date Range -->
+<div class="flex flex-col gap-3">
+<label class="text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Período</label>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] text-[#9aaabc]">De</span>
+<input class="w-full bg-[#27303a] border border-[#394656] text-white text-xs rounded-lg px-2 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" type="date" value="2023-10-01"/>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] text-[#9aaabc]">Até</span>
+<input class="w-full bg-[#27303a] border border-[#394656] text-white text-xs rounded-lg px-2 py-2 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" type="date" value="2023-10-31"/>
+</div>
+</div>
+</div>
+<!-- Status Checkboxes -->
+<div class="flex flex-col gap-3">
+<label class="text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Status do Reembolso</label>
+<div class="flex flex-wrap gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20 cursor-pointer hover:bg-amber-500/20">
+<span class="size-1.5 rounded-full bg-amber-500"></span> Pendente
+                        </span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20 cursor-pointer hover:bg-blue-500/20">
+<span class="size-1.5 rounded-full bg-blue-400"></span> Enviado
+                        </span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-500 border border-green-500/20 cursor-pointer hover:bg-green-500/20">
+<span class="size-1.5 rounded-full bg-green-500"></span> Pago
+                        </span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-500 border border-red-500/20 cursor-pointer hover:bg-red-500/20">
+<span class="size-1.5 rounded-full bg-red-500"></span> Glosado
+                        </span>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-[#27303a]">
+<button class="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 hover:bg-blue-700 py-2.5 text-white text-sm font-medium transition-colors">
+                    Aplicar Filtros
+                </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<div class="flex-1 overflow-y-auto">
+<div class="layout-content-container flex flex-col max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8 w-full gap-6">
+<!-- Page Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-white text-2xl md:text-3xl font-bold leading-tight">Facturação de Seguradoras e Acordos</h1>
+<p class="text-[#9aaabc] text-sm">Gestão de reembolsos, glosas e cartas de garantia</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-[#27303a] hover:bg-[#323d4a] text-white text-sm font-medium rounded-lg border border-[#394656] transition-colors">
+<span class="material-symbols-outlined text-[20px]">cloud_upload</span>
+<span>Carta de Garantia</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-lg shadow-blue-900/20 transition-colors">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span>Gerar Ficheiro de Reclamação</span>
+</button>
+</div>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Card 1 -->
+<div class="relative overflow-hidden rounded-xl border border-[#27303a] bg-gradient-to-br from-surface-dark to-[#0f1823] p-6 shadow-sm group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-white">account_balance_wallet</span>
+</div>
+<div class="flex flex-col gap-1 relative z-10">
+<p class="text-[#9aaabc] text-sm font-medium uppercase tracking-wider">Valor a Reclamar</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-white text-2xl xl:text-3xl font-bold tracking-tight">AOA 45.200.000,00</h3>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="flex items-center text-[#0bda5e] text-xs font-bold bg-[#0bda5e]/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span>
+                                        +5.2%
+                                    </span>
+<span class="text-[#9aaabc] text-xs">vs. mês passado</span>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="relative overflow-hidden rounded-xl border border-[#27303a] bg-gradient-to-br from-surface-dark to-[#0f1823] p-6 shadow-sm group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-white">check_circle</span>
+</div>
+<div class="flex flex-col gap-1 relative z-10">
+<p class="text-[#9aaabc] text-sm font-medium uppercase tracking-wider">Facturas Liquidadas</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-white text-2xl xl:text-3xl font-bold tracking-tight">1.240</h3>
+<span class="text-[#9aaabc] text-sm font-normal">Facturas</span>
+</div>
+<div class="w-full bg-[#27303a] rounded-full h-1.5 mt-3">
+<div class="bg-blue-500 h-1.5 rounded-full" style="width: 78%"></div>
+</div>
+<p class="text-[#9aaabc] text-xs mt-1.5">78% da meta mensal atingida</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="relative overflow-hidden rounded-xl border border-[#27303a] bg-gradient-to-br from-surface-dark to-[#0f1823] p-6 shadow-sm group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-amber-500">gavel</span>
+</div>
+<div class="flex flex-col gap-1 relative z-10">
+<p class="text-[#9aaabc] text-sm font-medium uppercase tracking-wider">Glosas Pendentes</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-white text-2xl xl:text-3xl font-bold tracking-tight">12</h3>
+<span class="text-[#fa6238] text-sm font-bold">(AOA 4.5M)</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="flex items-center text-[#fa6238] text-xs font-bold bg-[#fa6238]/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] mr-0.5">warning</span>
+                                        Atenção
+                                    </span>
+<span class="text-[#9aaabc] text-xs">Requer acção imediata</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Table Section -->
+<div class="flex flex-col gap-4 bg-surface-dark rounded-xl border border-[#27303a] shadow-sm overflow-hidden flex-1 min-h-[500px]">
+<!-- Table Toolbar -->
+<div class="flex flex-wrap items-center justify-between gap-4 p-4 border-b border-[#27303a] bg-[#1a2330]">
+<div class="flex items-center gap-2">
+<h3 class="text-white font-semibold text-lg">Facturas Recentes</h3>
+<span class="bg-[#27303a] text-[#9aaabc] text-xs font-medium px-2 py-0.5 rounded-full">245 items</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center bg-[#0f1823] border border-[#27303a] rounded-lg h-9 px-3 w-64 focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500 transition-all">
+<span class="material-symbols-outlined text-[#9aaabc] text-[18px]">search</span>
+<input class="bg-transparent border-none text-white text-sm w-full focus:ring-0 placeholder:text-[#64748b]" placeholder="Pesquisar na tabela..."/>
+</div>
+<button class="flex items-center justify-center size-9 rounded-lg border border-[#27303a] bg-[#0f1823] text-[#9aaabc] hover:text-white hover:bg-[#27303a] transition-colors lg:hidden">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+<button class="flex items-center justify-center size-9 rounded-lg border border-[#27303a] bg-[#0f1823] text-[#9aaabc] hover:text-white hover:bg-[#27303a] transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+<button class="flex items-center justify-center size-9 rounded-lg border border-[#27303a] bg-[#0f1823] text-[#9aaabc] hover:text-white hover:bg-[#27303a] transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Table -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-[#27303a] bg-[#1a2330]">
+<th class="p-4 w-12">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</th>
+<th class="p-4 text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Seguradora / Acordo</th>
+<th class="p-4 text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">N.º da Apólice</th>
+<th class="p-4 text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Paciente</th>
+<th class="p-4 text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Data do Acto</th>
+<th class="p-4 text-xs font-semibold text-[#9aaabc] uppercase tracking-wider text-right">Valor (AOA)</th>
+<th class="p-4 text-xs font-semibold text-[#9aaabc] uppercase tracking-wider text-center">Status</th>
+<th class="p-4 w-14"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#27303a]">
+<!-- Row 1 -->
+<tr class="group hover:bg-[#27303a]/40 transition-colors">
+<td class="p-4">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-white p-1 flex items-center justify-center shrink-0">
+<!-- Abstract logo placeholder -->
+<div class="w-full h-full bg-blue-900 rounded-sm" data-alt="ENSA Insurance Logo"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">ENSA Seguros</span>
+<span class="text-[#9aaabc] text-xs">Acordo Corporativo</span>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7] font-mono">9982-AC-2023</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">João Manuel Bernardo</span>
+<span class="text-[#9aaabc] text-xs">ID: 449203</span>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7]">14 Out, 2023</td>
+<td class="p-4 text-sm text-white font-medium text-right font-mono">150.000,00</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
+<span class="size-1.5 rounded-full bg-amber-500"></span> Pendente
+                                            </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#9aaabc] hover:text-white transition-colors">
+<span class="material-symbols-outlined">edit_document</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-[#27303a]/40 transition-colors">
+<td class="p-4">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-white p-1 flex items-center justify-center shrink-0">
+<div class="w-full h-full bg-orange-600 rounded-sm" data-alt="Nossa Seguros Logo"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Nossa Seguros</span>
+<span class="text-[#9aaabc] text-xs">Saúde Prime</span>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7] font-mono">NS-2210-VIP</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Ana Paula Silva</span>
+<span class="text-[#9aaabc] text-xs">ID: 221990</span>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7]">13 Out, 2023</td>
+<td class="p-4 text-sm text-white font-medium text-right font-mono">85.500,00</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+<span class="size-1.5 rounded-full bg-blue-400"></span> Enviado
+                                            </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#9aaabc] hover:text-white transition-colors">
+<span class="material-symbols-outlined">edit_document</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-[#27303a]/40 transition-colors">
+<td class="p-4">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-white p-1 flex items-center justify-center shrink-0">
+<div class="w-full h-full bg-yellow-500 rounded-sm" data-alt="Saham Angola Logo"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Saham Angola</span>
+<span class="text-[#9aaabc] text-xs">Acordo Padrão</span>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7] font-mono">SA-0092-23</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Kieza Mateus</span>
+<span class="text-[#9aaabc] text-xs">ID: 110293</span>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7]">12 Out, 2023</td>
+<td class="p-4 text-sm text-white font-medium text-right font-mono">420.000,00</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-500 border border-red-500/20">
+<span class="size-1.5 rounded-full bg-red-500"></span> Glosado
+                                            </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#9aaabc] hover:text-white transition-colors">
+<span class="material-symbols-outlined">edit_document</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-[#27303a]/40 transition-colors">
+<td class="p-4">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-white p-1 flex items-center justify-center shrink-0">
+<div class="w-full h-full bg-red-700 rounded-sm" data-alt="Fidelidade Angola Logo"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Fidelidade</span>
+<span class="text-[#9aaabc] text-xs">Multicare</span>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7] font-mono">FID-9981-XP</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Mariana Costa</span>
+<span class="text-[#9aaabc] text-xs">ID: 559102</span>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7]">10 Out, 2023</td>
+<td class="p-4 text-sm text-white font-medium text-right font-mono">32.000,00</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-500 border border-green-500/20">
+<span class="size-1.5 rounded-full bg-green-500"></span> Pago
+                                            </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#9aaabc] hover:text-white transition-colors">
+<span class="material-symbols-outlined">edit_document</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="group hover:bg-[#27303a]/40 transition-colors">
+<td class="p-4">
+<input class="rounded border-[#394656] bg-[#27303a] text-blue-600 focus:ring-0 focus:ring-offset-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-white p-1 flex items-center justify-center shrink-0">
+<div class="w-full h-full bg-blue-900 rounded-sm" data-alt="ENSA Insurance Logo"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">ENSA Seguros</span>
+<span class="text-[#9aaabc] text-xs">Acordo Corporativo</span>
+</div>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7] font-mono">9983-AC-2023</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Pedro Dala</span>
+<span class="text-[#9aaabc] text-xs">ID: 882910</span>
+</div>
+</td>
+<td class="p-4 text-sm text-[#d0dbe7]">10 Out, 2023</td>
+<td class="p-4 text-sm text-white font-medium text-right font-mono">1.250.000,00</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500 border border-amber-500/20">
+<span class="size-1.5 rounded-full bg-amber-500"></span> Pendente
+                                            </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-[#9aaabc] hover:text-white transition-colors">
+<span class="material-symbols-outlined">edit_document</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-[#27303a] bg-[#1a2330] flex items-center justify-between">
+<span class="text-sm text-[#9aaabc]">Mostrando 1-5 de 245 resultados</span>
+<div class="flex items-center gap-2">
+<button class="size-8 flex items-center justify-center rounded border border-[#394656] bg-[#27303a] text-[#9aaabc] hover:text-white hover:bg-[#323d4a] disabled:opacity-50">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<span class="text-sm text-white px-2">Página 1</span>
+<button class="size-8 flex items-center justify-center rounded border border-[#394656] bg-[#27303a] text-[#9aaabc] hover:text-white hover:bg-[#323d4a]">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

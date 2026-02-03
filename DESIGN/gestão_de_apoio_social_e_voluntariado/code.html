@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 ERP - Gestão de Apoio Social</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#1a2634",
+                        "surface-hover": "#243242",
+                        "text-main": "#ffffff",
+                        "text-muted": "#9aaabc",
+                        "accent-green": "#0bda5e",
+                        "accent-amber": "#fbbf24",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-text-main h-screen flex overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-72 bg-[#101418] border-r border-gray-800 flex flex-col justify-between shrink-0 h-full overflow-y-auto">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-10">
+<div class="bg-center bg-no-repeat bg-cover rounded-lg h-10 w-10 flex items-center justify-center bg-primary text-white font-bold text-lg" data-alt="Zenite360 Logo Abstract">Z</div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-tight">Zênite360 ERP</h1>
+<p class="text-text-muted text-xs font-normal">Hospital Geral de Luanda</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-surface-hover hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">dashboard</span>
+<span class="text-sm font-medium">Dashboard Geral</span>
+</a>
+<div class="my-2 border-t border-gray-800/50"></div>
+<p class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Apoio Social</p>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-dark text-white border-l-4 border-primary shadow-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-white">diversity_3</span>
+<span class="text-sm font-medium">Gestão de Casos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-surface-hover hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">volunteer_activism</span>
+<span class="text-sm font-medium">Voluntariado</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-surface-hover hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">request_page</span>
+<span class="text-sm font-medium">Pedidos de Apoio</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-text-muted hover:bg-surface-hover hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">calendar_clock</span>
+<span class="text-sm font-medium">Agendamento Visitas</span>
+</a>
+</nav>
+</div>
+<div class="p-4 border-t border-gray-800 bg-[#0c1014]">
+<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-hover cursor-pointer transition-colors">
+<div class="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-gray-400 text-sm">person</span>
+</div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-white text-sm font-medium truncate">Dra. Ana Mateus</p>
+<p class="text-text-muted text-xs truncate">Diretora de Apoio</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full min-w-0 bg-background-dark overflow-hidden">
+<!-- Header -->
+<header class="px-8 py-6 border-b border-gray-800 bg-[#101418] shrink-0">
+<div class="flex flex-wrap items-end justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-white text-2xl font-bold leading-tight tracking-tight">Gestão de Apoio Social e Voluntariado</h2>
+<p class="text-text-muted text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                        Departamento de Apoio (DA) - Luanda
+                    </p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center gap-2 h-10 px-4 bg-surface-dark border border-gray-700 hover:bg-surface-hover text-white text-sm font-medium rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Exportar Relatório
+                    </button>
+<button class="flex items-center justify-center gap-2 h-10 px-4 bg-primary hover:bg-primary-light text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                        Novo Caso Social
+                    </button>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Stat Card 1 -->
+<div class="bg-surface-dark rounded-xl p-6 border border-gray-800 shadow-sm relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-white">diversity_1</span>
+</div>
+<p class="text-text-muted text-sm font-medium mb-1">Voluntários Ativos</p>
+<div class="flex items-baseline gap-2 mb-2">
+<h3 class="text-white text-3xl font-bold">142</h3>
+<span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>
+                            +5%
+                        </span>
+</div>
+<p class="text-gray-500 text-xs">Atualizado há 2h</p>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-dark rounded-xl p-6 border border-gray-800 shadow-sm relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-white">family_restroom</span>
+</div>
+<p class="text-text-muted text-sm font-medium mb-1">Famílias em Acompanhamento</p>
+<div class="flex items-baseline gap-2 mb-2">
+<h3 class="text-white text-3xl font-bold">89</h3>
+<span class="text-xs font-medium px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>
+                            +12%
+                        </span>
+</div>
+<p class="text-gray-500 text-xs">Necessidade crítica em alta</p>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-dark rounded-xl p-6 border border-gray-800 shadow-sm relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-white">savings</span>
+</div>
+<p class="text-text-muted text-sm font-medium mb-1">Donativos Recebidos (AOA)</p>
+<div class="flex items-baseline gap-2 mb-2">
+<h3 class="text-white text-3xl font-bold tracking-tight">2.450.000 Kz</h3>
+<span class="text-xs font-medium px-2 py-0.5 rounded-full bg-accent-amber/10 text-accent-amber flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>
+                            +850k Kz
+                        </span>
+</div>
+<p class="text-gray-500 text-xs">Vs. período anterior</p>
+</div>
+</div>
+<!-- Search & Filter -->
+<div class="bg-surface-dark p-4 rounded-xl border border-gray-800 flex flex-col md:flex-row gap-4 items-center">
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">search</span>
+<input class="w-full h-11 pl-10 pr-4 bg-[#101418] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm" placeholder="Pesquisar por nome do paciente, B.I. ou voluntário..." type="text"/>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<select class="h-11 bg-[#101418] border border-gray-700 text-white text-sm rounded-lg px-3 focus:outline-none focus:border-primary">
+<option>Todos os Status</option>
+<option>Ativos</option>
+<option>Pendentes</option>
+<option>Arquivados</option>
+</select>
+<select class="h-11 bg-[#101418] border border-gray-700 text-white text-sm rounded-lg px-3 focus:outline-none focus:border-primary">
+<option>Todas as Áreas</option>
+<option>Pediatria</option>
+<option>Oncologia</option>
+<option>Geriatria</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+<!-- Active Cases Table -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="w-1.5 h-6 bg-primary rounded-full block"></span>
+                            Casos Sociais Ativos
+                        </h3>
+<a class="text-primary-light hover:text-white text-sm font-medium transition-colors" href="#">Ver todos</a>
+</div>
+<div class="bg-surface-dark border border-gray-800 rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm text-gray-400">
+<thead class="bg-[#151c24] text-xs uppercase font-semibold text-gray-500">
+<tr>
+<th class="px-6 py-4">Paciente</th>
+<th class="px-6 py-4">B.I.</th>
+<th class="px-6 py-4">Situação Socioeconômica</th>
+<th class="px-6 py-4 text-right">Ação</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-800">
+<tr class="hover:bg-surface-hover transition-colors group">
+<td class="px-6 py-4 font-medium text-white">
+                                            Maria da Conceição
+                                            <span class="block text-xs text-gray-500 font-normal">Processo: #2024-884</span>
+</td>
+<td class="px-6 py-4 font-mono text-gray-300">004821092LA042</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900/30 text-red-400 border border-red-900/50">
+                                                Extrema Vulnerabilidade
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-hover transition-colors group">
+<td class="px-6 py-4 font-medium text-white">
+                                            António José Manuel
+                                            <span class="block text-xs text-gray-500 font-normal">Processo: #2024-912</span>
+</td>
+<td class="px-6 py-4 font-mono text-gray-300">009218371LA031</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-900/30 text-yellow-500 border border-yellow-900/50">
+                                                Baixa Renda
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-hover transition-colors group">
+<td class="px-6 py-4 font-medium text-white">
+                                            Isabel Nzinga
+                                            <span class="block text-xs text-gray-500 font-normal">Processo: #2024-765</span>
+</td>
+<td class="px-6 py-4 font-mono text-gray-300">005123984LA011</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/30 text-blue-400 border border-blue-900/50">
+                                                Apoio Pontual
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-hover transition-colors group">
+<td class="px-6 py-4 font-medium text-white">
+                                            Pedro Francisco
+                                            <span class="block text-xs text-gray-500 font-normal">Processo: #2024-889</span>
+</td>
+<td class="px-6 py-4 font-mono text-gray-300">008472193LA022</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900/30 text-red-400 border border-red-900/50">
+                                                Extrema Vulnerabilidade
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Volunteer Management -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="w-1.5 h-6 bg-accent-green rounded-full block"></span>
+                            Escala de Voluntários
+                        </h3>
+<div class="flex gap-2">
+<button class="text-xs font-medium text-gray-400 hover:text-white px-2 py-1 rounded bg-surface-dark border border-gray-700">Hoje</button>
+<button class="text-xs font-medium text-white px-2 py-1 rounded bg-primary border border-primary">Semana</button>
+</div>
+</div>
+<div class="bg-surface-dark border border-gray-800 rounded-xl overflow-hidden shadow-sm h-full flex flex-col">
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left text-sm text-gray-400">
+<thead class="bg-[#151c24] text-xs uppercase font-semibold text-gray-500">
+<tr>
+<th class="px-6 py-4">Voluntário</th>
+<th class="px-6 py-4">Setor</th>
+<th class="px-6 py-4">Disponibilidade</th>
+<th class="px-6 py-4 text-right">Ação</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-800">
+<tr class="hover:bg-surface-hover transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-indigo-900/50 flex items-center justify-center text-indigo-300 font-bold text-xs border border-indigo-700/50">JD</div>
+<div>
+<p class="text-white font-medium">João Domingos</p>
+<p class="text-xs text-gray-500">Enfermeiro Vol.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-gray-300">
+<span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                                                Pediatria
+                                            </div>
+</td>
+<td class="px-6 py-4">
+<span class="block text-white">Seg / Qua / Sex</span>
+<span class="text-xs text-gray-500">08:00 - 12:00</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_calendar</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-hover transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-teal-900/50 flex items-center justify-center text-teal-300 font-bold text-xs border border-teal-700/50">MA</div>
+<div>
+<p class="text-white font-medium">Marta António</p>
+<p class="text-xs text-gray-500">Apoio Geral</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-gray-300">
+<span class="w-2 h-2 rounded-full bg-orange-500"></span>
+                                                Triagem
+                                            </div>
+</td>
+<td class="px-6 py-4">
+<span class="block text-white">Ter / Qui</span>
+<span class="text-xs text-gray-500">13:00 - 17:00</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_calendar</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-hover transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-purple-900/50 flex items-center justify-center text-purple-300 font-bold text-xs border border-purple-700/50">CF</div>
+<div>
+<p class="text-white font-medium">Carlos Ferreira</p>
+<p class="text-xs text-gray-500">Psicólogo Vol.</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-gray-300">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                                Oncologia
+                                            </div>
+</td>
+<td class="px-6 py-4">
+<span class="block text-white">Sexta-feira</span>
+<span class="text-xs text-gray-500">09:00 - 15:00</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_calendar</span>
+</button>
+</td>
+</tr>
+<!-- Empty State Row/Spacer for consistency if needed or just another row -->
+<tr class="hover:bg-surface-hover transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-gray-700/50 flex items-center justify-center text-gray-300 font-bold text-xs border border-gray-600/50">LS</div>
+<div>
+<p class="text-white font-medium">Luísa Sebastião</p>
+<p class="text-xs text-gray-500">Educadora</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-gray-300">
+<span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                                                Pediatria
+                                            </div>
+</td>
+<td class="px-6 py-4">
+<span class="block text-white">Fins de Semana</span>
+<span class="text-xs text-gray-500">Rotativo</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-gray-700 rounded-lg text-gray-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit_calendar</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

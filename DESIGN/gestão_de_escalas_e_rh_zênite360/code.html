@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestão de Escalas e RH | Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "shift-m": "#22c55e",
+                        "shift-t": "#f97316",
+                        "shift-n": "#8b5cf6",
+                        "shift-p": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #27303a; border-radius: 10px; }
+        .grid-header-sticky { position: sticky; top: 0; z-index: 20; }
+        .sidebar-sticky { position: sticky; left: 0; z-index: 30; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-b-[#27303a] px-6 py-3 bg-white dark:bg-background-dark">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined">grid_view</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360</h2>
+</div>
+<label class="flex flex-col min-w-64 h-10">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full">
+<div class="text-[#9aaabc] flex border-none bg-slate-100 dark:bg-[#27303a] items-center justify-center pl-4 rounded-l-xl">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-slate-100 dark:bg-[#27303a] focus:ring-0 h-full placeholder:text-[#9aaabc] px-4 rounded-r-xl text-sm font-normal" placeholder="Pesquisar funcionalidade ou staff..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-slate-600 dark:text-white text-sm font-medium hover:text-primary" href="#">Dashboard</a>
+<a class="text-primary dark:text-white text-sm font-bold border-b-2 border-primary" href="#">RH</a>
+<a class="text-slate-600 dark:text-white text-sm font-medium hover:text-primary" href="#">Escalas</a>
+<a class="text-slate-600 dark:text-white text-sm font-medium hover:text-primary" href="#">Relatórios</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold gap-2">
+<span class="material-symbols-outlined text-lg">add</span>
+<span class="truncate">Nova Escala</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEaGg0t1hH0JDrBZfYk5Ij-nhw7D29L2FtOyiQxssVxAU2D1Ueo7iwpXeLBbY02r3DF7BGetbJ-6oADKDiItqcm2yNLs3sVJse4a1I-1o4RQWAM3_7-Bwf8Klccu1NmkXTS6FAfOsBc1KHc0XC_LYcspHRCrdkKRas0saFDNKNSF78GYbautuwyap2Ay3ub60700XNXyNfz-NNObU9pvia124qXbFF6yEhXeJvw7u3mBEcwFN-jwdrPM_JYBvCA7finWjDtpEJRM_y");'></div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Page Header & Breadcrumbs -->
+<div class="px-6 pt-4">
+<nav class="flex flex-wrap gap-2 py-2">
+<a class="text-[#9aaabc] text-xs font-medium uppercase tracking-wider" href="#">Recursos Humanos</a>
+<span class="text-[#9aaabc] text-xs font-medium">/</span>
+<span class="text-primary dark:text-white text-xs font-bold uppercase tracking-wider">Gestão de Escalas Mensais</span>
+</nav>
+<div class="flex flex-wrap justify-between items-end gap-3 pb-4 border-b border-slate-200 dark:border-[#27303a]">
+<div class="flex flex-col gap-1">
+<h1 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-tight">Escalas de Serviço</h1>
+<p class="text-[#9aaabc] text-sm font-normal">Planeamento de turnos: Outubro 2023 - Unidade Hospitalar Luanda</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-9 px-3 bg-slate-100 dark:bg-[#27303a] text-slate-700 dark:text-white text-xs font-bold gap-2 border border-slate-200 dark:border-transparent">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Exportar PDF
+                    </button>
+<button class="flex items-center justify-center rounded-lg h-9 px-3 bg-slate-100 dark:bg-[#27303a] text-slate-700 dark:text-white text-xs font-bold gap-2 border border-slate-200 dark:border-transparent">
+<span class="material-symbols-outlined text-lg">history</span>
+                        Histórico
+                    </button>
+</div>
+</div>
+</div>
+<!-- Filters Toolbar -->
+<div class="px-6 py-3 flex flex-wrap items-center justify-between gap-4 bg-slate-50 dark:bg-background-dark/50">
+<div class="flex gap-2 items-center overflow-x-auto pb-1 custom-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary text-white px-4">
+<span class="text-xs font-bold">Todos os Sectores</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#27303a] text-slate-700 dark:text-white px-4 border border-slate-200 dark:border-transparent shadow-sm">
+<span class="text-xs font-medium">SBU (Urgência)</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#27303a] text-slate-700 dark:text-white px-4 border border-slate-200 dark:border-transparent shadow-sm">
+<span class="text-xs font-medium">Médicos (MD)</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<div class="h-6 w-[1px] bg-slate-300 dark:bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-2 bg-white dark:bg-[#27303a] rounded-lg px-3 py-1.5 border border-slate-200 dark:border-transparent">
+<span class="material-symbols-outlined text-lg text-primary">calendar_month</span>
+<span class="text-xs font-bold">Outubro, 2023</span>
+<span class="material-symbols-outlined text-sm cursor-pointer">chevron_right</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-white dark:bg-[#27303a] border border-slate-200 dark:border-transparent">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary/10 text-primary dark:text-blue-300 text-xs font-bold gap-2">
+<span class="material-symbols-outlined text-lg">settings_suggest</span>
+                    Ajuste Automático
+                </button>
+</div>
+</div>
+<!-- Master-Detail Content -->
+<div class="flex-1 flex overflow-hidden border-t border-slate-200 dark:border-[#27303a]">
+<!-- Sidebar: Staff List -->
+<aside class="w-80 flex flex-col bg-white dark:bg-[#0f1823] border-r border-slate-200 dark:border-[#27303a] overflow-hidden">
+<div class="p-4 border-b border-slate-100 dark:border-[#27303a]">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">person_search</span>
+<input class="w-full bg-slate-50 dark:bg-[#1a222c] border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary" placeholder="Filtrar por nome..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Staff Item 1 -->
+<div class="p-4 border-b border-slate-50 dark:border-[#1a222c] hover:bg-slate-50 dark:hover:bg-[#1a222c] cursor-pointer bg-primary/5 border-l-4 border-l-primary">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="size-10 rounded-full object-cover" data-alt="Doctor portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-Tlx1I9Xci85IDrrPoxZzrJLk9izaA2ff8JjFx9UHp921VbxiSzE47SMqF1428znoYBPvCyjIND9RJDi6MmZ3UH4gWs0Aj_87Mb2KpPWmfslFvRUA5CevG_DK-pUW9Cayux0wDQeLDDGN1RrLjNS9jha0_gNWfoqlDf6fm6kX1ENHSFkMMyFrRlrCtjt7InZ9n3JYgRh5qPpTMQv55l60LtsqSShrC--Xz9Ho3Bs_FCB59p3DzwV9EZJmVxxqJN5A_ME8W8JM0Y3l"/>
+<span class="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white dark:border-[#0f1823] rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Dr. António Silva</p>
+<p class="text-xs text-slate-500 dark:text-[#9aaabc] uppercase font-semibold">Médico • SBU</p>
+</div>
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200">MD</span>
+</div>
+</div>
+<!-- Staff Item 2 -->
+<div class="p-4 border-b border-slate-50 dark:border-[#1a222c] hover:bg-slate-50 dark:hover:bg-[#1a222c] cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="size-10 rounded-full object-cover" data-alt="Nurse portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgFkoSkoYSVwRAcs0oBg_odogL8DJFi17IA0DRNYFo909IzlF4N3wDHVoQLqWeTUD--RzpivcMSBx9y8oicrE_hqQHUwYK39XdPx5rKplNKjgjlI9ppLbqytC0BrMnHMcEliTIO2zKdV_cKvp5IeKfjhXkjTsN7G3EUYXuj9QdokrJKLooOla4jDwu3g2r7C4K6L7eTP4Nm_TKF1fTZfYtX8HBB4bZSh_wpf4s4jod-ptMshDGXLbEtghyDwSM0UZIKp2MIY0KGH8V"/>
+<span class="absolute bottom-0 right-0 size-3 bg-orange-400 border-2 border-white dark:border-[#0f1823] rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Enfª. Maria Santos</p>
+<p class="text-xs text-slate-500 dark:text-[#9aaabc] uppercase font-semibold">Enfermagem • Pediatria</p>
+</div>
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">ENF</span>
+</div>
+</div>
+<!-- Staff Item 3 -->
+<div class="p-4 border-b border-slate-50 dark:border-[#1a222c] hover:bg-slate-50 dark:hover:bg-[#1a222c] cursor-pointer opacity-70">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="size-10 rounded-full object-cover" data-alt="Doctor portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdcSTdawUNSpnPzEATspGnY0y_huD2onjxSsAj3TLF8ppcEccbsjq9B1jm4_nALf9tIaoEIy4kDnEBTO8W5lXVlwpOiQLHyaFhNfO-YCSCuIovVOL704tL4eP1SzTyH4uoGobwJreHsm_58UExkcQr1D2FjnbqBhULiul9NGdhZa7bnIv3LIIA2A35OKqYcmv3rQWFJEOr6A9trpAtRJ2ad4U7MrQUkorHooYkDFE5mZHtnWe5bMhz1JacINqvRaJMVT7icaRzX-kQ"/>
+<span class="absolute bottom-0 right-0 size-3 bg-slate-400 border-2 border-white dark:border-[#0f1823] rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Dr. João Baptista</p>
+<p class="text-xs text-slate-500 dark:text-[#9aaabc] uppercase font-semibold">Médico • Ortopedia</p>
+</div>
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">FÉRIAS</span>
+</div>
+</div>
+<!-- Staff Item 4 -->
+<div class="p-4 border-b border-slate-50 dark:border-[#1a222c] hover:bg-slate-50 dark:hover:bg-[#1a222c] cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="size-10 rounded-full object-cover" data-alt="Staff portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqlNNlLRmsfUSsnKT91UN8GGhsTyReqwWrLfGJvRJCdcF27zdNcvlhmie85LhjWW5FCr4_ILT-0KnTXoi8j_Hc6k29p6gBE_MpN5MPtBt-AgQMC4QJfcovp7CwiECYlJNTOreow_lJ8zuvX8zu1TlvblVkpbFHNJjQlKFC6ZUg_Qrhdcby0lYgZ2Z9HodvA1U2kLDGfUYv0S22Th3vPjE_niWW9313I-EUJ6ZeXupIQbQ2WWp3XVhrrUL__jaCtP-KHPk2e4TIJ_N9"/>
+<span class="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white dark:border-[#0f1823] rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Téc. Beatriz Lemos</p>
+<p class="text-xs text-slate-500 dark:text-[#9aaabc] uppercase font-semibold">Adm • Receção</p>
+</div>
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-200">ADM</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Calendar Grid Area -->
+<section class="flex-1 overflow-auto custom-scrollbar bg-slate-100 dark:bg-[#101418]">
+<div class="inline-block min-w-full">
+<!-- Calendar Header (Days) -->
+<div class="grid-header-sticky flex bg-white dark:bg-[#1a222c] border-b border-slate-200 dark:border-[#27303a]">
+<div class="flex items-center justify-center min-w-[180px] border-r border-slate-200 dark:border-[#27303a] bg-slate-50 dark:bg-[#1a222c] text-[10px] font-black uppercase text-slate-500 py-3">
+                            Profissional
+                        </div>
+<div class="flex">
+<!-- Generate Day Columns (Simplified for 15 days view) -->
+<script>
+                                const days = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom','Seg'];
+                                document.write(days.map((day, i) => `
+                                    <div class="flex flex-col items-center justify-center min-w-[50px] border-r border-slate-100 dark:border-[#27303a] py-2 ${['Sáb','Dom'].includes(day) ? 'bg-slate-50 dark:bg-slate-800/30' : ''}">
+                                        <span class="text-[10px] font-bold text-[#9aaabc] uppercase">${day}</span>
+                                        <span class="text-sm font-black">${String(i + 1).padStart(2, '0')}</span>
+                                    </div>
+                                `).join(''));
+                            </script>
+</div>
+</div>
+<!-- Row 1: Dr. António Silva -->
+<div class="flex border-b border-slate-200 dark:border-[#27303a] bg-white dark:bg-[#0f1823]">
+<div class="flex items-center gap-3 px-4 min-w-[180px] border-r border-slate-200 dark:border-[#27303a] py-4 bg-slate-50/50 dark:bg-transparent">
+<div class="flex flex-col">
+<span class="text-xs font-bold truncate">A. Silva</span>
+<span class="text-[10px] text-primary font-medium">Médico</span>
+</div>
+</div>
+<div class="flex">
+<!-- Mock shifts for Row 1 -->
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-m flex items-center justify-center text-[10px] font-black text-white shadow-sm" title="Manhã (08:00 - 14:00)">M</div>
+</div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-m flex items-center justify-center text-[10px] font-black text-white" title="Manhã">M</div>
+</div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-n flex items-center justify-center text-[10px] font-black text-white" title="Noite">N</div>
+</div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 bg-slate-50 dark:bg-slate-800/10"></div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-p flex items-center justify-center text-[10px] font-black text-white" title="Piquete">P</div>
+</div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-t flex items-center justify-center text-[10px] font-black text-white" title="Tarde">T</div>
+</div>
+<!-- Weekend -->
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 bg-slate-100 dark:bg-slate-800/40"></div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 bg-slate-100 dark:bg-slate-800/40"></div>
+<!-- More days... -->
+<script>
+                                for(let i=0; i<7; i++) document.write(`<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1"></div>`);
+                            </script>
+</div>
+</div>
+<!-- Row 2: Enf. Maria Santos -->
+<div class="flex border-b border-slate-200 dark:border-[#27303a] bg-white dark:bg-[#0f1823]">
+<div class="flex items-center gap-3 px-4 min-w-[180px] border-r border-slate-200 dark:border-[#27303a] py-4 bg-slate-50/50 dark:bg-transparent">
+<div class="flex flex-col">
+<span class="text-xs font-bold truncate">M. Santos</span>
+<span class="text-[10px] text-emerald-600 font-medium">Enf.</span>
+</div>
+</div>
+<div class="flex">
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1"></div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-t flex items-center justify-center text-[10px] font-black text-white" title="Tarde">T</div>
+</div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-t flex items-center justify-center text-[10px] font-black text-white" title="Tarde">T</div>
+</div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-t flex items-center justify-center text-[10px] font-black text-white" title="Tarde">T</div>
+</div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1"></div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-n flex items-center justify-center text-[10px] font-black text-white" title="Noite">N</div>
+</div>
+<!-- Weekend -->
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 bg-slate-100 dark:bg-slate-800/40 flex items-center justify-center">
+<div class="w-full h-8 rounded bg-shift-p flex items-center justify-center text-[10px] font-black text-white" title="Piquete">P</div>
+</div>
+<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 bg-slate-100 dark:bg-slate-800/40"></div>
+<script>
+                                for(let i=0; i<7; i++) document.write(`<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1"></div>`);
+                            </script>
+</div>
+</div>
+<!-- Row 3: Dr. João Baptista (On Vacation) -->
+<div class="flex border-b border-slate-200 dark:border-[#27303a] bg-white dark:bg-[#0f1823] opacity-60">
+<div class="flex items-center gap-3 px-4 min-w-[180px] border-r border-slate-200 dark:border-[#27303a] py-4 bg-slate-50/50 dark:bg-transparent">
+<div class="flex flex-col">
+<span class="text-xs font-bold truncate">J. Baptista</span>
+<span class="text-[10px] text-slate-500 font-medium">Férias</span>
+</div>
+</div>
+<div class="flex bg-slate-200/20 dark:bg-slate-800/20">
+<script>
+                                for(let i=0; i<15; i++) document.write(`
+                                    <div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1 flex items-center justify-center">
+                                        <div class="w-full h-4 bg-slate-300 dark:bg-slate-700 rounded-full opacity-30"></div>
+                                    </div>
+                                `);
+                            </script>
+</div>
+</div>
+<!-- Multiple dummy rows for visual density -->
+<script>
+                        const names = ['L. Vunge', 'D. Costa', 'M. Agostinho', 'S. Paulo', 'F. Ginga', 'R. Nzuzi'];
+                        const roles = ['Enf.', 'Médico', 'Médico', 'Adm.', 'Enf.', 'Enf.'];
+                        names.forEach((name, idx) => {
+                            document.write(`
+                                <div class="flex border-b border-slate-100 dark:border-[#27303a] bg-white dark:bg-[#0f1823]">
+                                    <div class="flex items-center gap-3 px-4 min-w-[180px] border-r border-slate-200 dark:border-[#27303a] py-4 bg-slate-50/50 dark:bg-transparent">
+                                         <div class="flex flex-col">
+                                            <span class="text-xs font-bold truncate">${name}</span>
+                                            <span class="text-[10px] text-slate-400 font-medium">${roles[idx]}</span>
+                                         </div>
+                                    </div>
+                                    <div class="flex">
+                                        ${Array(15).fill(0).map(() => `<div class="min-w-[50px] border-r border-slate-100 dark:border-[#27303a] p-1"></div>`).join('')}
+                                    </div>
+                                </div>
+                            `);
+                        });
+                    </script>
+</div>
+</section>
+</div>
+<!-- Footer / Legend -->
+<footer class="px-6 py-3 bg-white dark:bg-background-dark border-t border-slate-200 dark:border-[#27303a] flex items-center justify-between">
+<div class="flex gap-6 items-center">
+<span class="text-[10px] font-black uppercase text-slate-400">Legenda:</span>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded bg-shift-m shadow-sm"></span>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-300">Manhã (M)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded bg-shift-t shadow-sm"></span>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-300">Tarde (T)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded bg-shift-n shadow-sm"></span>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-300">Noite (N)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded bg-shift-p shadow-sm"></span>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-300">Piquete (P)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded bg-slate-300 dark:bg-slate-700 shadow-sm opacity-50"></div>
+<span class="text-xs font-medium text-slate-600 dark:text-slate-300">Férias</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<p class="text-[11px] text-[#9aaabc] font-medium">Zênite360 ERP v2.4 • Hospital Geral de Luanda</p>
+</div>
+</footer>
+</main>
+</body></html>

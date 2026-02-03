@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 | Gestão de Manutenção Biomédica</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#16202c",
+                        "card-dark": "#1c2632",
+                        "accent-success": "#0bda5e",
+                        "accent-warning": "#ffab00",
+                        "accent-danger": "#fa6238",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f1823; }
+        ::-webkit-scrollbar-thumb { background: #27303a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-300">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation Bar -->
+<aside class="w-64 flex-shrink-0 bg-primary border-r border-slate-800 flex flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 px-2">
+<div class="size-8 bg-white rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined font-bold">medical_services</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-sm font-bold leading-tight">Zênite360</h1>
+<p class="text-slate-400 text-[10px] uppercase tracking-widest font-semibold">Hospital Central</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/10 text-white" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+<span class="text-sm font-medium">Visão Geral</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">inventory_2</span>
+<span class="text-sm font-medium">Inventário</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">engineering</span>
+<span class="text-sm font-medium">Ordens de Serviço</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">precision_manufacturing</span>
+<span class="text-sm font-medium">Calibração</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">settings_suggest</span>
+<span class="text-sm font-medium">Peças &amp; Stock</span>
+</a>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<div class="bg-white/5 p-3 rounded-lg border border-white/10">
+<p class="text-[10px] text-slate-400 uppercase font-bold mb-2">Engenheiro Responsável</p>
+<div class="flex items-center gap-2">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Profile picture of medical engineer" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgLP5eO6NjMJ8AEQ0Og5aJ-atSNDFMOs1hl5wwem7HXs8S5sehpwd88A20O0ZDQ7aFFaoX7CYtX53Fk_CGpzlvfHAk20NQ3-zsdluHLJ0YjROLWU2Kb8yuuZW63uhCcQdRoU5AnHtMb1eBqm0kNbRTNFPiCJfOmP_UJHfuQN120xEp4qz_EILtzfYxRmJaHqOym_wyHnOFeSQLG26WtZlqiFnY2r7g36_48JQlGlANN5wWxTMKCplEJP0oVV6JgVHIVhm1gHoUO5A8')"></div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-xs font-bold text-white truncate">Dr. João Manuel</span>
+<span class="text-[10px] text-slate-400">Biomédica Sênior</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 px-4 rounded-lg text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                    Nova Solicitação
+                </button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden bg-background-light dark:bg-background-dark">
+<!-- Top Nav Bar -->
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-surface-dark px-6 flex items-center justify-between">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative max-w-md w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/50 text-slate-200" placeholder="Pesquisar por Equipamento, Serial ou Setor..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-surface-dark"></span>
+</button>
+<button class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-800 mx-2"></div>
+<span class="text-xs font-semibold text-slate-400">ANGOLA / LUANDA</span>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+<!-- Section Header -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="text-2xl font-bold dark:text-white">Painel de Controlo Biomédico</h2>
+<p class="text-sm text-slate-500">Gestão integrada de ativos e manutenção preventiva.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-sm font-semibold transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+                            Exportar Relatório
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white hover:bg-primary/90 rounded-lg text-sm font-semibold transition-colors">
+<span class="material-symbols-outlined text-lg">build</span>
+                            Solicitar Reparação
+                        </button>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 text-sm font-medium">Equipamentos Ativos</p>
+<span class="material-symbols-outlined text-accent-success bg-accent-success/10 p-1 rounded">check_circle</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">1,240</p>
+<div class="flex items-center gap-1">
+<span class="text-accent-success text-xs font-bold">+2.4%</span>
+<span class="text-slate-400 text-[10px]">vs. mês anterior</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 text-sm font-medium">Em Manutenção</p>
+<span class="material-symbols-outlined text-accent-warning bg-accent-warning/10 p-1 rounded">construction</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">45</p>
+<div class="flex items-center gap-1">
+<span class="text-accent-warning text-xs font-bold">+5%</span>
+<span class="text-slate-400 text-[10px]">carga técnica alta</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 text-sm font-medium">Aguardando Peças</p>
+<span class="material-symbols-outlined text-slate-400 bg-slate-400/10 p-1 rounded">inventory</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">12</p>
+<div class="flex items-center gap-1">
+<span class="text-accent-danger text-xs font-bold">-3%</span>
+<span class="text-slate-400 text-[10px]">atraso logística</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 text-sm font-medium">Calibração Expirada</p>
+<span class="material-symbols-outlined text-accent-danger bg-accent-danger/10 p-1 rounded">error</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">08</p>
+<div class="flex items-center gap-1">
+<span class="text-accent-danger text-xs font-bold">Risco</span>
+<span class="text-slate-400 text-[10px]">ação imediata</span>
+</div>
+</div>
+</div>
+<!-- Main Grid Layout: Table and Sidebar -->
+<div class="grid grid-cols-12 gap-6 pb-10">
+<!-- Table Section -->
+<div class="col-span-12 lg:col-span-9 flex flex-col gap-4">
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
+<h3 class="font-bold text-sm uppercase tracking-wider text-slate-500">Inventário de Equipamentos</h3>
+<div class="flex gap-2">
+<button class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 text-slate-400 text-[10px] uppercase font-bold">
+<th class="px-6 py-3">Equipamento</th>
+<th class="px-6 py-3">Nº de Série</th>
+<th class="px-6 py-3">Setor</th>
+<th class="px-6 py-3 text-center">Última Manut.</th>
+<th class="px-6 py-3 text-center">Próx. Calibração</th>
+<th class="px-6 py-3">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold dark:text-slate-200">Ventilador Mecânico - Hamilton C3</span>
+<span class="text-[10px] text-slate-500 italic">Crítico / Suporte de Vida</span>
+</div>
+</td>
+<td class="px-6 py-4 text-xs font-mono text-slate-500">SN-9920-HC3</td>
+<td class="px-6 py-4">
+<span class="text-[10px] px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-bold">SBU (Urgência)</span>
+</td>
+<td class="px-6 py-4 text-xs text-center text-slate-400">12 Mai 2024</td>
+<td class="px-6 py-4 text-xs text-center font-medium dark:text-slate-300">12 Nov 2024</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-accent-success">
+<span class="size-2 rounded-full bg-accent-success"></span>
+<span class="text-xs font-bold uppercase tracking-tighter">Operativo</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold dark:text-slate-200">Monitor Multiparamétrico - Mindray</span>
+<span class="text-[10px] text-slate-500 italic">Monitorização Contínua</span>
+</div>
+</td>
+<td class="px-6 py-4 text-xs font-mono text-slate-500">SN-4451-MM</td>
+<td class="px-6 py-4">
+<span class="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 font-bold">Medicina</span>
+</td>
+<td class="px-6 py-4 text-xs text-center text-slate-400">05 Jan 2024</td>
+<td class="px-6 py-4 text-xs text-center font-medium text-accent-danger">Expira em 2d</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-accent-warning">
+<span class="size-2 rounded-full bg-accent-warning"></span>
+<span class="text-xs font-bold uppercase tracking-tighter">Pendente</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold dark:text-slate-200">Desfibrilhador Lifepak 20e</span>
+<span class="text-[10px] text-slate-500 italic">Emergência</span>
+</div>
+</td>
+<td class="px-6 py-4 text-xs font-mono text-slate-500">SN-1102-LP</td>
+<td class="px-6 py-4">
+<span class="text-[10px] px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-bold">SBU (Urgência)</span>
+</td>
+<td class="px-6 py-4 text-xs text-center text-slate-400">20 Fev 2024</td>
+<td class="px-6 py-4 text-xs text-center font-medium dark:text-slate-300">20 Ago 2024</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-accent-danger">
+<span class="size-2 rounded-full bg-accent-danger"></span>
+<span class="text-xs font-bold uppercase tracking-tighter">Inativo</span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold dark:text-slate-200">Máquina de RX Digital - GE</span>
+<span class="text-[10px] text-slate-500 italic">Imagiologia</span>
+</div>
+</td>
+<td class="px-6 py-4 text-xs font-mono text-slate-500">SN-8821-GERX</td>
+<td class="px-6 py-4">
+<span class="text-[10px] px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 font-bold">Imagiologia</span>
+</td>
+<td class="px-6 py-4 text-xs text-center text-slate-400">10 Abr 2024</td>
+<td class="px-6 py-4 text-xs text-center font-medium dark:text-slate-300">10 Abr 2025</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-accent-success">
+<span class="size-2 rounded-full bg-accent-success"></span>
+<span class="text-xs font-bold uppercase tracking-tighter">Operativo</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-slate-50/50 dark:bg-slate-800/30 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+<span class="text-xs text-slate-500 font-medium">Mostrando 4 de 1,240 registros</span>
+<div class="flex gap-1">
+<button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 bg-primary text-white font-bold text-xs">1</button>
+<button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-700 font-medium text-xs">2</button>
+<button class="size-8 flex items-center justify-center rounded border border-slate-200 dark:border-slate-700 text-slate-400 hover:bg-white dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Section: Alerts -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-4">
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-xs uppercase tracking-widest text-slate-500">Alertas Preventivas</h3>
+<span class="size-5 bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 text-[10px] flex items-center justify-center rounded-full font-bold">3</span>
+</div>
+<div class="flex flex-col gap-3">
+<div class="p-3 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 rounded-r-lg">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-bold text-red-600 dark:text-red-400 uppercase">Atrasado</span>
+<span class="text-[9px] text-red-500 font-medium">HÁ 3 DIAS</span>
+</div>
+<p class="text-xs font-bold text-slate-800 dark:text-slate-100">Bomba Infusora (Unidade 4)</p>
+<p class="text-[10px] text-slate-500 mt-1">Troca de Bateria &amp; Calibração de Fluxo</p>
+</div>
+<div class="p-3 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 rounded-r-lg">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-bold text-amber-600 dark:text-amber-400 uppercase">Próximo</span>
+<span class="text-[9px] text-amber-500 font-medium">FALTAM 2 DIAS</span>
+</div>
+<p class="text-xs font-bold text-slate-800 dark:text-slate-100">Eletrocardiógrafo Philips</p>
+<p class="text-[10px] text-slate-500 mt-1">Inspeção Elétrica Semestral</p>
+</div>
+<div class="p-3 bg-slate-50 dark:bg-slate-800/50 border-l-4 border-slate-400 rounded-r-lg">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] font-bold text-slate-500 uppercase">Agendado</span>
+<span class="text-[9px] text-slate-400 font-medium">15 MAI</span>
+</div>
+<p class="text-xs font-bold text-slate-800 dark:text-slate-100">Autoclave Getinge</p>
+<p class="text-[10px] text-slate-500 mt-1">Verificação de Válvulas de Segurança</p>
+</div>
+</div>
+<button class="w-full text-xs font-bold text-primary dark:text-blue-400 hover:underline py-1">
+                                Ver calendário completo
+                            </button>
+</div>
+<div class="bg-primary rounded-xl p-5 text-white shadow-xl relative overflow-hidden">
+<div class="relative z-10 flex flex-col gap-2">
+<p class="text-[10px] font-bold uppercase tracking-widest text-blue-300">Resumo Semanal</p>
+<p class="text-lg font-bold leading-tight">Disponibilidade de Frota Hospitalar</p>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-3xl font-bold">98.2%</span>
+<span class="text-[10px] text-green-400">+0.5%</span>
+</div>
+<div class="w-full bg-blue-900/50 h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-green-400 h-full rounded-full" style="width: 98.2%"></div>
+</div>
+</div>
+<div class="absolute -bottom-4 -right-4 size-24 bg-white/5 rounded-full blur-xl"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Exames e Resultados Laboratoriais | Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "accent-red": "#FF4D4D",
+                        "status-pending": "#EAB308",
+                        "status-processing": "#3B82F6",
+                        "status-completed": "#22C55E"
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex">
+<!-- SideNavBar -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-primary flex flex-col h-screen sticky top-0">
+<div class="p-6 flex flex-col h-full justify-between">
+<div class="flex flex-col gap-8">
+<div class="flex gap-3 items-center">
+<div class="bg-white/10 p-2 rounded-lg">
+<svg class="w-8 h-8 text-white" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight">Zênite360</h1>
+<p class="text-slate-400 text-xs font-normal">ERP Hospitalar Angola</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<p class="text-sm font-medium">Pacientes</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">stethoscope</span>
+<p class="text-sm font-medium">Consultas</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-white/20 text-white rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">biotech</span>
+<p class="text-sm font-medium">Exames e Diagnóstico</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">medication</span>
+<p class="text-sm font-medium">Farmácia</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-300 hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Configurações</p>
+</a>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 px-2 py-3 border-t border-white/10">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Perfil do médico Dr. Fernandes" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeJFnrrCRj2TD5D77Axc-OsFy1l41lf5DroWANcqnL3FB1hNwwZNAk8bpFxxPs98djSyqg2Uah0g7hXyatBkDxIXw2Bw0wn5cGdBBLLdpPaVqHaxb300j9XltfCTG_3hjtcPZxUCk_JOhdBEMx-Cw4ffmeP_XX3EdtL6LKrzZ1AN1CIYeCT2WcPwWAnlarTgcOSmVgrWCMbinUBGcZyPkt2PrThd_8Uro9oFA8Lq49MHZBIrplQHnXP4_Tp9kgp5a7dL5msxeKRcAo");'></div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-medium">Dr. Fernandes</p>
+<p class="text-slate-400 text-xs">Director Clínico</p>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-white/10 text-white text-sm font-bold hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span>Sair</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-8 py-4 sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Serviços de Diagnóstico</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary dark:placeholder-slate-500" placeholder="Pesquisar paciente ou ID de exame..." type="text"/>
+</div>
+<div class="flex gap-3">
+<button class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-accent-red rounded-full"></span>
+</button>
+<button class="p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<div class="p-8 flex flex-col gap-8 max-w-[1400px] mx-auto w-full">
+<!-- PageHeading -->
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Gestão de Exames &amp; Resultados</h1>
+<p class="text-slate-500 dark:text-slate-400">Direcção Clínica (DC) - Unidade Central de Diagnóstico</p>
+</div>
+<!-- New Request Section -->
+<section class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">add_circle</span>
+<h3 class="text-lg font-bold">Solicitar Novo Exame</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+<div class="md:col-span-2">
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Paciente</label>
+<select class="w-full h-12 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 text-sm focus:ring-primary focus:border-primary">
+<option>António Manuel Neto (ID: 44921)</option>
+<option>Maria Isabel Dos Santos (ID: 29910)</option>
+<option>Joaquim Alberto (ID: 11029)</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tipo de Exame</label>
+<select class="w-full h-12 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 text-sm focus:ring-primary focus:border-primary">
+<option>Hemograma Completo</option>
+<option>TAC Cerebral</option>
+<option>Raio-X Tórax</option>
+<option>Glicémia em Jejum</option>
+<option>Teste Malária (Gota Espessa)</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Urgência</label>
+<div class="flex gap-2">
+<select class="w-full h-12 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 text-sm focus:ring-primary focus:border-primary">
+<option>Normal</option>
+<option class="text-orange-500 font-bold">Urgente</option>
+<option class="text-red-500 font-bold">Emergência (STAT)</option>
+</select>
+<button class="h-12 px-6 bg-primary text-white font-bold rounded-lg hover:bg-opacity-90 transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+<span class="material-symbols-outlined text-lg">send</span>
+                                Requisitar
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Table Section -->
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/30">
+<div class="flex gap-4">
+<button class="px-4 py-1.5 text-sm font-semibold bg-primary text-white rounded-full">Todos</button>
+<button class="px-4 py-1.5 text-sm font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">Pendentes</button>
+<button class="px-4 py-1.5 text-sm font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">Em Processamento</button>
+<button class="px-4 py-1.5 text-sm font-medium text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">Concluídos</button>
+</div>
+<button class="flex items-center gap-2 text-primary dark:text-blue-400 text-sm font-bold">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Filtros Avançados
+                    </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Data/Hora</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Paciente</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Tipo de Exame</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Médico</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Prioridade</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Estado</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Acções</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<!-- Row 1: Completed -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm whitespace-nowrap">24 Mai 2024, 09:15</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-bold text-sm">António Neto</span>
+<span class="text-xs text-slate-500">ID: 44921</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-primary dark:text-blue-400">Hemograma Completo</td>
+<td class="px-6 py-4 text-sm">Dr. Mateus João</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">Normal</span>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-status-completed text-xs font-bold">
+<span class="w-2 h-2 rounded-full bg-status-completed"></span>
+                                        Concluído
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="px-4 py-1.5 bg-primary/10 dark:bg-blue-900/30 text-primary dark:text-blue-400 text-xs font-bold rounded-lg hover:bg-primary hover:text-white transition-all">Ver Resultado</button>
+</td>
+</tr>
+<!-- Row 2: Processing -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm whitespace-nowrap">24 Mai 2024, 10:30</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-bold text-sm">Maria Santos</span>
+<span class="text-xs text-slate-500">ID: 29910</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-primary dark:text-blue-400">TAC Cerebral</td>
+<td class="px-6 py-4 text-sm">Drª. Sara Lima</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center gap-1 w-fit">
+<span class="material-symbols-outlined text-xs">priority_high</span> Urgente
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-status-processing text-xs font-bold">
+<span class="w-2 h-2 rounded-full bg-status-processing animate-pulse"></span>
+                                        Em Processamento
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Pending Emergency -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors bg-red-50/20 dark:bg-red-900/5">
+<td class="px-6 py-4 text-sm whitespace-nowrap">24 Mai 2024, 11:05</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-bold text-sm">Joaquim Alberto</span>
+<span class="text-xs text-slate-500">ID: 11029</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium text-primary dark:text-blue-400">Teste Gota Espessa</td>
+<td class="px-6 py-4 text-sm">Dr. Fernandes</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400 flex items-center gap-1 w-fit border border-red-200 dark:border-red-800">
+<span class="material-symbols-outlined text-xs">bolt</span> Emergência
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-status-pending text-xs font-bold">
+<span class="w-2 h-2 rounded-full bg-status-pending"></span>
+                                        Pendente
+                                    </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="px-4 py-1.5 bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-bold rounded-lg cursor-not-allowed">Aguardando...</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Detailed Results Example (Side Panel Simulation) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-4">
+<div class="lg:col-span-2 space-y-6">
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-8 shadow-md">
+<div class="flex justify-between items-start mb-8 border-b border-slate-100 dark:border-slate-800 pb-6">
+<div>
+<h3 class="text-xl font-bold mb-1">Resultado de Hemograma</h3>
+<p class="text-sm text-slate-500 uppercase tracking-widest font-semibold">Paciente: António Manuel Neto | Requisitante: Dr. Mateus João</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-lg text-sm font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-lg">print</span>
+                                    Imprimir
+                                </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-opacity-90 transition-all">
+<span class="material-symbols-outlined text-lg">download</span>
+                                    Exportar PDF
+                                </button>
+</div>
+</div>
+<div class="space-y-4">
+<!-- Table Head -->
+<div class="grid grid-cols-4 px-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+<div>Parâmetro</div>
+<div>Valor Encontrado</div>
+<div>Unidade</div>
+<div>Valores de Referência</div>
+</div>
+<!-- Result Item 1 -->
+<div class="grid grid-cols-4 px-4 py-3 bg-slate-50 dark:bg-slate-800/30 rounded-lg border border-transparent">
+<div class="text-sm font-semibold">Glóbulos Brancos</div>
+<div class="text-sm">7.200</div>
+<div class="text-sm text-slate-500">/mm³</div>
+<div class="text-sm text-slate-500">4.500 - 11.000</div>
+</div>
+<!-- Result Item 2 (Abnormal) -->
+<div class="grid grid-cols-4 px-4 py-3 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-100 dark:border-red-900/30">
+<div class="text-sm font-semibold text-accent-red">Hemoglobina (Hb)</div>
+<div class="text-sm font-bold text-accent-red">9.8 *</div>
+<div class="text-sm text-slate-500">g/dL</div>
+<div class="text-sm text-slate-500">13.5 - 17.5</div>
+</div>
+<!-- Result Item 3 -->
+<div class="grid grid-cols-4 px-4 py-3 bg-slate-50 dark:bg-slate-800/30 rounded-lg">
+<div class="text-sm font-semibold">Plaquetas</div>
+<div class="text-sm font-medium">215.000</div>
+<div class="text-sm text-slate-500">/mm³</div>
+<div class="text-sm text-slate-500">150.000 - 450.000</div>
+</div>
+<!-- Result Item 4 (Abnormal) -->
+<div class="grid grid-cols-4 px-4 py-3 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-100 dark:border-red-900/30">
+<div class="text-sm font-semibold text-accent-red">Hematócrito</div>
+<div class="text-sm font-bold text-accent-red">29.4 *</div>
+<div class="text-sm text-slate-500">%</div>
+<div class="text-sm text-slate-500">41.0 - 53.0</div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-slate-100 dark:bg-slate-800 rounded-lg border-l-4 border-primary">
+<h4 class="text-xs font-bold text-slate-400 uppercase mb-2">Observações Clínicas</h4>
+<p class="text-sm italic">"Paciente apresenta quadro de anemia moderada normocítica normocrómica. Sugere-se investigação de ferropenia ou patologia crónica. Repetir exame em 48h pós-transfusão se clinicamente indicado."</p>
+</div>
+</div>
+</div>
+<!-- Stats Sidebar -->
+<div class="space-y-6">
+<div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
+<h4 class="text-sm font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">monitoring</span>
+                            Volume de Hoje
+                        </h4>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-slate-500 text-sm">Total Requisitados</span>
+<span class="text-2xl font-black text-primary dark:text-white">42</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 75%"></div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-4">
+<div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+<p class="text-xs text-slate-500 mb-1">Concluídos</p>
+<p class="text-lg font-bold text-status-completed">31</p>
+</div>
+<div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+<p class="text-xs text-slate-500 mb-1">Pendentes</p>
+<p class="text-lg font-bold text-status-pending">11</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-primary rounded-xl p-6 text-white overflow-hidden relative">
+<div class="relative z-10">
+<h4 class="text-lg font-bold mb-2">Sistema Zenite360</h4>
+<p class="text-xs text-slate-300 leading-relaxed">Todos os resultados são validados electronicamente pelo laboratório central de Luanda.</p>
+<button class="mt-4 px-4 py-2 bg-white text-primary text-xs font-bold rounded-lg hover:bg-slate-100 transition-colors">
+                                Manual de Protocolos
+                            </button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-9xl text-white/5 pointer-events-none">verified</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

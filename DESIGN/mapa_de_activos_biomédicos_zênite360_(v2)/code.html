@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Mapa de Activos Biomédicos</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823", // Dark blue/grey base
+                        "surface-dark": "#1a2430", // Slightly lighter for cards
+                        "border-dark": "#2c3b4d",
+                        "status-green": "#10b981",
+                        "status-red": "#ef4444",
+                        "status-yellow": "#f59e0b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Map pattern for grid background */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, #2c3b4d 1px, transparent 1px),
+                              linear-gradient(to bottom, #2c3b4d 1px, transparent 1px);
+        }
+        /* Custom scrollbar for dark mode professional feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2c3b4d; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3e5066; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white h-screen flex overflow-hidden selection:bg-primary selection:text-white">
+<!-- Sidebar -->
+<aside class="w-64 bg-primary flex-shrink-0 flex flex-col border-r border-border-dark hidden lg:flex z-20">
+<div class="h-16 flex items-center px-6 border-b border-[#ffffff10]">
+<div class="flex items-center gap-3 text-white">
+<span class="material-symbols-outlined text-3xl">medical_services</span>
+<div class="flex flex-col">
+<span class="font-bold text-lg tracking-tight">Zênite360</span>
+<span class="text-xs text-slate-300 font-medium opacity-80">Biomédica PRO</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-6 flex flex-col gap-2 px-3">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-[#ffffff10] transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-white">dashboard</span>
+<span class="text-sm font-medium">Visão Geral</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#ffffff15] text-white border-l-4 border-white shadow-sm" href="#">
+<span class="material-symbols-outlined fill-1">map</span>
+<span class="text-sm font-medium">Mapa de Activos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-[#ffffff10] transition-colors group" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="text-sm font-medium">Ordens de Serviço</span>
+<span class="ml-auto bg-status-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-[#ffffff10] transition-colors group" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-sm font-medium">Inventário</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-[#ffffff10] transition-colors group" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-sm font-medium">Relatórios</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-[#ffffff10] transition-colors group" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Técnicos</span>
+</a>
+</nav>
+<div class="p-4 border-t border-[#ffffff10]">
+<button class="flex items-center gap-3 w-full p-2 hover:bg-[#ffffff10] rounded-lg transition-colors text-left">
+<div class="size-8 rounded-full bg-cover bg-center border border-slate-500" data-alt="Avatar do Engenheiro Chefe" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAgOPu1BpGLgNxGX1T1yCOqPUazYNOTBPHe5iwck57Y29EEg01DTSvPJRXHNuepi4Zy_RsruDeI1orBxBIA-e4cCP9f9_nViGng0esRSbGKWUjoo-rbvmuVw1YHNM-WTqdh0UETyh3EJ4ZNfvBPWaqS2jXJwBVHeojleoG9d3s-H2fNU9yFozLLxMBsgC1m8khkcC_Tk36Qfqcm9mRsFzny3p-Er7jARO7wscn3uvBiKwdp1-zmDdyU3ehsDSu87vLueDiASYK3nzpA");'></div>
+<div class="flex flex-col overflow-hidden">
+<span class="text-sm font-medium text-white truncate">Eng. Mateus Dala</span>
+<span class="text-xs text-slate-400 truncate">Gestor de Manutenção</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 ml-auto text-lg">expand_more</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full relative min-w-0">
+<!-- Top Header -->
+<header class="h-16 flex items-center justify-between px-6 border-b border-border-dark bg-background-dark/95 backdrop-blur z-10">
+<div class="flex items-center gap-4">
+<button class="lg:hidden text-white p-1">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex flex-col">
+<h1 class="text-white font-bold text-lg leading-tight">Mapa de Activos</h1>
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<span>Hospital Geral de Luanda</span>
+<span class="text-slate-600">/</span>
+<span>Biomédica</span>
+<span class="text-slate-600">/</span>
+<span class="text-white">Piso 3 (UCI &amp; Bloco)</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<!-- Search -->
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="bg-surface-dark border-none rounded-lg pl-10 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:ring-1 focus:ring-primary w-64" placeholder="Pesquisar ID, Equipamento..." type="text"/>
+</div>
+<div class="h-8 w-px bg-border-dark mx-2"></div>
+<div class="flex gap-2">
+<button class="p-2 text-slate-400 hover:text-white hover:bg-surface-dark rounded-lg transition relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-status-red rounded-full border border-background-dark"></span>
+</button>
+<button class="p-2 text-slate-400 hover:text-white hover:bg-surface-dark rounded-lg transition">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Scrollable Area -->
+<div class="flex-1 overflow-hidden flex flex-col">
+<!-- Stats Row -->
+<div class="p-6 pb-2">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- KPI 1 -->
+<div class="bg-surface-dark border border-border-dark rounded-lg p-4 flex flex-col relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-status-green">check_circle</span>
+</div>
+<span class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Disponibilidade Crítica</span>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-white">94.2%</span>
+<span class="text-xs font-medium text-status-green mb-1.5 flex items-center">
+<span class="material-symbols-outlined text-sm">trending_up</span> +2.1%
+                            </span>
+</div>
+<div class="w-full bg-slate-700 h-1 mt-3 rounded-full overflow-hidden">
+<div class="bg-status-green h-full rounded-full" style="width: 94.2%"></div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-dark border border-border-dark rounded-lg p-4 flex flex-col relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-status-yellow">build</span>
+</div>
+<span class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">MTTR (Tempo Médio)</span>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-white">4h 12m</span>
+<span class="text-xs font-medium text-status-green mb-1.5 flex items-center">
+<span class="material-symbols-outlined text-sm">arrow_downward</span> -15m
+                            </span>
+</div>
+<span class="text-[10px] text-slate-500 mt-2">Meta: &lt; 4h 00m</span>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-dark border border-border-dark rounded-lg p-4 flex flex-col relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-status-red">warning</span>
+</div>
+<span class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Alertas Ativos</span>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-white">3</span>
+<span class="text-xs font-medium text-status-red mb-1.5 flex items-center">
+<span class="material-symbols-outlined text-sm">priority_high</span> Críticos
+                            </span>
+</div>
+<div class="flex gap-1 mt-3">
+<span class="size-2 rounded-full bg-status-red"></span>
+<span class="size-2 rounded-full bg-status-red"></span>
+<span class="size-2 rounded-full bg-status-red"></span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-dark border border-border-dark rounded-lg p-4 flex flex-col relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary-light">medical_information</span>
+</div>
+<span class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Total Activos (Piso 3)</span>
+<div class="flex items-end gap-2">
+<span class="text-2xl font-bold text-white">142</span>
+<span class="text-xs font-medium text-slate-400 mb-1.5">Unidades</span>
+</div>
+<span class="text-[10px] text-slate-500 mt-2">128 Operacionais • 11 Manutenção • 3 Parados</span>
+</div>
+</div>
+</div>
+<!-- Workspace: Map & Panel -->
+<div class="flex-1 flex min-h-0 px-6 pb-6 gap-6">
+<!-- Map Container -->
+<div class="flex-1 bg-[#05090e] border border-border-dark rounded-xl relative overflow-hidden flex flex-col shadow-inner">
+<!-- Map Controls Toolbar -->
+<div class="absolute top-4 left-4 z-10 flex gap-2">
+<div class="relative group">
+<button class="flex items-center gap-2 bg-surface-dark border border-border-dark text-white px-3 py-2 rounded-lg hover:bg-border-dark transition-colors shadow-lg">
+<span class="material-symbols-outlined text-lg">layers</span>
+<span class="text-sm font-medium">Piso 3 - UCI</span>
+<span class="material-symbols-outlined text-lg">arrow_drop_down</span>
+</button>
+<!-- Dropdown content placeholder -->
+</div>
+</div>
+<div class="absolute top-4 right-4 z-10 flex flex-col gap-2">
+<button class="bg-surface-dark border border-border-dark text-white size-10 flex items-center justify-center rounded-lg hover:bg-border-dark transition-colors shadow-lg" title="Zoom In">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="bg-surface-dark border border-border-dark text-white size-10 flex items-center justify-center rounded-lg hover:bg-border-dark transition-colors shadow-lg" title="Zoom Out">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="bg-surface-dark border border-border-dark text-white size-10 flex items-center justify-center rounded-lg hover:bg-border-dark transition-colors shadow-lg mt-2" title="Reset View">
+<span class="material-symbols-outlined">center_focus_strong</span>
+</button>
+</div>
+<div class="absolute bottom-4 left-4 z-10 bg-surface-dark/90 backdrop-blur border border-border-dark p-3 rounded-lg flex flex-col gap-2 shadow-lg">
+<span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Legenda</span>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-status-green shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
+<span class="text-xs text-white">Operacional</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-status-yellow shadow-[0_0_8px_rgba(245,158,11,0.4)]"></span>
+<span class="text-xs text-white">Em Manutenção</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-status-red shadow-[0_0_8px_rgba(239,68,68,0.4)]"></span>
+<span class="text-xs text-white">Crítico / Parado</span>
+</div>
+</div>
+<!-- Interactive Map Visualization (SVG Abstraction) -->
+<div class="w-full h-full relative overflow-auto cursor-grab active:cursor-grabbing bg-grid-pattern flex items-center justify-center p-20">
+<!-- Simplified Hospital Floor Plan SVG -->
+<div class="relative w-[800px] h-[500px] bg-transparent">
+<!-- Wall Structure -->
+<svg class="absolute inset-0 w-full h-full drop-shadow-2xl pointer-events-none" viewbox="0 0 800 500">
+<!-- Rooms Fill -->
+<path d="M50 50 H300 V200 H50 Z M350 50 H750 V150 H350 Z M50 250 H200 V450 H50 Z M250 250 H500 V450 H250 Z M550 200 H750 V450 H550 Z" fill="#1e293b" opacity="0.5"></path>
+<!-- Corridors -->
+<path d="M300 100 H350 M200 350 H250 M500 350 H550" opacity="0.3" stroke="#334155" stroke-linecap="butt" stroke-width="40"></path>
+<!-- Walls Outline -->
+<path d="M50 50 H300 V200 H50 Z M350 50 H750 V150 H350 Z M50 250 H200 V450 H50 Z M250 250 H500 V450 H250 Z M550 200 H750 V450 H550 Z" fill="none" stroke="#475569" stroke-width="4"></path>
+<!-- Room Labels -->
+<text fill="#64748b" font-size="14" font-weight="bold" text-anchor="middle" x="175" y="125">Bloco Operatório A</text>
+<text fill="#64748b" font-size="14" font-weight="bold" text-anchor="middle" x="550" y="100">Unidade de Cuidados Intensivos (UCI)</text>
+<text fill="#64748b" font-size="14" font-weight="bold" text-anchor="middle" x="125" y="350">Raio-X</text>
+<text fill="#64748b" font-size="14" font-weight="bold" text-anchor="middle" x="375" y="350">Laboratório</text>
+<text fill="#64748b" font-size="14" font-weight="bold" text-anchor="middle" x="650" y="325">Esterilização</text>
+</svg>
+<!-- Asset Pins -->
+<!-- Pin 1: Critical (Red) -->
+<div class="absolute top-[100px] left-[150px] group">
+<button class="relative z-10 size-8 rounded-full bg-status-red text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform animate-pulse">
+<span class="material-symbols-outlined text-sm font-bold">priority_high</span>
+</button>
+<!-- Tooltip Card -->
+<div class="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 w-64 bg-surface-dark border border-border-dark rounded-lg p-3 shadow-xl z-20 hidden group-hover:block">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-bold text-status-red uppercase">Crítico</span>
+<span class="text-[10px] text-slate-400">ID: ZT-4092</span>
+</div>
+<p class="text-sm font-bold text-white leading-tight mb-1">Ventilador Dräger Evita</p>
+<p class="text-xs text-slate-400 mb-2">Falha no sensor de fluxo. Requer peça.</p>
+<div class="flex items-center gap-2 pt-2 border-t border-border-dark">
+<div class="size-5 rounded-full bg-slate-600" data-alt="Tech avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB7JduNc2z1Bv0CiFNpofqxi7dQ4FjuipaeLEL8pKwS7NyCSWyli9so9zhzNY8LuKd6iUSIyqq6tmI1h4sGC70mgYTZMmoPSDMTC3CL25DqZMoWOW_kY7ftyykjnwQoXlCzg_caJ0mfBHUQZcGbnnGHORrZskq5fXEtBXmTIDLixoEMWQ3d3hQbg1mnGND6mETkCthOLC3QlRD_ostHdNrSL21XhExSw-yVALtkwnjG4oeqSc2IfxyCEEFY4DTfF6jkziS1QFEjdpSA");'></div>
+<span class="text-[10px] text-white">Téc. João Silva (A caminho)</span>
+</div>
+<!-- Triangle pointer -->
+<div class="absolute left-1/2 top-full -translate-x-1/2 border-8 border-transparent border-t-border-dark"></div>
+</div>
+</div>
+<!-- Pin 2: Maintenance (Yellow) -->
+<div class="absolute top-[320px] left-[125px] group">
+<button class="relative z-10 size-8 rounded-full bg-status-yellow text-background-dark flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm font-bold">build</span>
+</button>
+<!-- Tooltip Card -->
+<div class="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 w-56 bg-surface-dark border border-border-dark rounded-lg p-3 shadow-xl z-20 hidden group-hover:block">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-bold text-status-yellow uppercase">Em Manutenção</span>
+<span class="text-[10px] text-slate-400">ID: ZT-2201</span>
+</div>
+<p class="text-sm font-bold text-white leading-tight mb-1">Raio-X Portátil GE</p>
+<p class="text-xs text-slate-400">Calibração anual preventiva.</p>
+<div class="absolute left-1/2 top-full -translate-x-1/2 border-8 border-transparent border-t-border-dark"></div>
+</div>
+</div>
+<!-- Pin 3: Operational (Green) -->
+<div class="absolute top-[80px] left-[600px] group">
+<button class="relative z-10 size-6 rounded-full bg-status-green text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</button>
+</div>
+<!-- Pin 4: Operational (Green) -->
+<div class="absolute top-[120px] left-[550px] group">
+<button class="relative z-10 size-6 rounded-full bg-status-green text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[14px] font-bold">check</span>
+</button>
+</div>
+<!-- Pin 5: Critical (Red) -->
+<div class="absolute top-[380px] left-[400px] group">
+<button class="relative z-10 size-8 rounded-full bg-status-red text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-sm font-bold">priority_high</span>
+</button>
+<!-- Tooltip Card -->
+<div class="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 w-64 bg-surface-dark border border-border-dark rounded-lg p-3 shadow-xl z-20 hidden group-hover:block">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-bold text-status-red uppercase">Parado</span>
+<span class="text-[10px] text-slate-400">ID: ZT-8900</span>
+</div>
+<p class="text-sm font-bold text-white leading-tight mb-1">Centrífuga Refrigerada</p>
+<p class="text-xs text-slate-400 mb-2">Erro motor E-404. Não liga.</p>
+<div class="flex items-center gap-2 pt-2 border-t border-border-dark">
+<div class="size-5 rounded-full border border-dashed border-slate-500 bg-transparent flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-slate-500">person_off</span>
+</div>
+<span class="text-[10px] text-status-red font-medium">Técnico Não Atribuído</span>
+</div>
+<div class="absolute left-1/2 top-full -translate-x-1/2 border-8 border-transparent border-t-border-dark"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Panel (Work Orders) -->
+<div class="w-80 lg:w-96 flex flex-col bg-surface-dark border border-border-dark rounded-xl shadow-lg flex-shrink-0">
+<div class="p-4 border-b border-border-dark flex items-center justify-between">
+<h2 class="text-white font-bold text-sm">Ordens de Serviço (O.S.)</h2>
+<button class="text-xs bg-primary hover:bg-primary-light text-white px-3 py-1.5 rounded-md transition-colors font-medium">
+                            + Nova O.S.
+                        </button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+<!-- OS Card 1 (Active) -->
+<div class="bg-[#232d3b] border-l-4 border-status-red p-3 rounded-r-md cursor-pointer hover:bg-[#2a3646] transition-colors group">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] text-slate-400 font-mono">#4092</span>
+<span class="text-[10px] font-bold bg-red-500/10 text-status-red px-2 py-0.5 rounded border border-red-500/20">Urgente</span>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">Ventilador Dräger Evita</h3>
+<p class="text-xs text-slate-400 line-clamp-2 mb-3">Falha intermitente no sensor de fluxo. Paciente necessita transferência.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-cover bg-center" data-alt="Avatar Téc. Silva" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuATKs7KZLv6DMkjhvT2RE0AlKULY4CsflEXpnqrlg5M9Lhgg9QjtkgIVMxHjE05LleZzCdBfrECRb6jrV8N3lilYqbZRf15EihD3vELZGUXKnBIjknnDul_nrRwSdykOkKnt7uIZcZrJGWyO65TYPIWQ_oBfHLp4VbzdKwUh35O108sqMSPjmNfBnBwjY2NRfu0yXXWjPLFDOBs_9HMjGOd0DM4DgSeoYDaWAAi1Jx9O95Ag8e3VVToA3iPtofM4iHQkIzEJdQ8Qowq");'></div>
+<div class="flex flex-col">
+<span class="text-[10px] text-white font-medium">João Silva</span>
+<span class="text-[9px] text-status-green">A caminho</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-white">
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- OS Card 2 (Unassigned) -->
+<div class="bg-[#232d3b] border-l-4 border-status-red p-3 rounded-r-md cursor-pointer hover:bg-[#2a3646] transition-colors group">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] text-slate-400 font-mono">#4095</span>
+<span class="text-[10px] font-bold bg-red-500/10 text-status-red px-2 py-0.5 rounded border border-red-500/20">Crítico</span>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">Centrífuga Refrigerada</h3>
+<p class="text-xs text-slate-400 line-clamp-2 mb-3">Motor travado. Ruído excessivo durante operação.</p>
+<div class="flex items-center justify-between mt-auto pt-2 border-t border-[#ffffff05]">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-slate-700 flex items-center justify-center border border-dashed border-slate-500">
+<span class="material-symbols-outlined text-xs text-slate-400">person_add</span>
+</div>
+<span class="text-[10px] text-slate-400 italic">Não atribuído</span>
+</div>
+<button class="text-xs text-primary-light font-bold hover:underline">Atribuir</button>
+</div>
+</div>
+<!-- OS Card 3 (Maintenance) -->
+<div class="bg-[#232d3b] border-l-4 border-status-yellow p-3 rounded-r-md cursor-pointer hover:bg-[#2a3646] transition-colors group">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] text-slate-400 font-mono">#4088</span>
+<span class="text-[10px] font-bold bg-yellow-500/10 text-status-yellow px-2 py-0.5 rounded border border-yellow-500/20">Prev.</span>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">Raio-X Portátil GE</h3>
+<p class="text-xs text-slate-400 line-clamp-2 mb-3">Manutenção preventiva trimestral agendada.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded-full bg-cover bg-center" data-alt="Avatar Téc. Maria" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDH16uBKFDVgnGIEGSVuP20y-XOJjry1dbD3gXeVxFDEhyYpI0-bUytsBlGjqbu2CDPQnzCuw_5w0RnTKJzNCUmMLaSJgHrAp8KmWMo2zCM5wHC53_8jFSRh8XMv9e5KA-oIS-UfiJotQjafymLSQiYNO18hxpDfBM2lS2U5Y3xx7icaZLY_4QHkYo8wq2UqHXf-H5-TbsKOxnQr-vxuQj3cfUnu9fvsA58iqdRnMNvEecZHbLA6bWzORq_3KSt4k1yTsttvBM8-KLU");'></div>
+<div class="flex flex-col">
+<span class="text-[10px] text-white font-medium">Ana Maria</span>
+<span class="text-[9px] text-slate-400">Iniciado há 20m</span>
+</div>
+</div>
+</div>
+</div>
+<!-- OS Card 4 (Finished) -->
+<div class="bg-[#232d3b] border-l-4 border-status-green p-3 rounded-r-md cursor-pointer hover:bg-[#2a3646] transition-colors group opacity-70 hover:opacity-100">
+<div class="flex justify-between items-start mb-1">
+<span class="text-[10px] text-slate-400 font-mono">#4081</span>
+<span class="text-[10px] font-bold bg-green-500/10 text-status-green px-2 py-0.5 rounded border border-green-500/20">Concluído</span>
+</div>
+<h3 class="text-sm font-bold text-white mb-1">Desfibrilador ZOLL</h3>
+<p class="text-xs text-slate-400 line-clamp-1 mb-2">Substituição de bateria.</p>
+<div class="text-[10px] text-slate-500 text-right">Fechado às 09:30</div>
+</div>
+</div>
+<div class="p-3 border-t border-border-dark bg-[#141b24] rounded-b-xl">
+<button class="w-full py-2 text-xs text-slate-400 hover:text-white flex items-center justify-center gap-1 transition-colors">
+                            Ver todas as 12 ordens
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

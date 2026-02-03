@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 | Gestão de Resíduos</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "card-dark": "#16202c",
+                        "border-dark": "#27303a",
+                        "danger": "#ef4444",
+                        "warning": "#f59e0b",
+                        "success": "#10b981",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for table */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27303a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #394656;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col overflow-x-hidden font-display">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-border-dark bg-white dark:bg-primary px-8 py-3 sticky top-0 z-50 shadow-md">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary dark:text-white">
+<div class="size-8 rounded bg-white/10 flex items-center justify-center text-white">
+<span class="material-symbols-outlined">local_hospital</span>
+</div>
+<div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Zênite360</h2>
+<p class="text-xs opacity-70 font-normal">Gestão Ambiental Hospitalar</p>
+</div>
+</div>
+<div class="hidden md:flex items-center bg-gray-100 dark:bg-[#003366]/50 rounded-lg px-3 py-2 w-96 border border-transparent focus-within:border-white/30 transition-colors">
+<span class="material-symbols-outlined text-gray-500 dark:text-gray-300">search</span>
+<input class="bg-transparent border-none outline-none text-sm ml-2 w-full text-slate-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-300 focus:ring-0 p-0" placeholder="Pesquisar por lote, substância ou ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex gap-6">
+<a class="text-sm font-medium hover:text-primary dark:hover:text-blue-300 transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium hover:text-primary dark:hover:text-blue-300 transition-colors" href="#">Inventário</a>
+<a class="text-sm font-bold text-primary dark:text-white border-b-2 border-primary dark:border-white pb-0.5" href="#">Resíduos</a>
+<a class="text-sm font-medium hover:text-primary dark:hover:text-blue-300 transition-colors" href="#">Auditoria</a>
+</nav>
+<div class="flex items-center gap-3 pl-6 border-l border-gray-200 dark:border-white/10">
+<button class="relative text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-white">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 size-2 bg-red-500 rounded-full"></span>
+</button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border-2 border-white dark:border-primary-light shadow-sm" data-alt="User profile picture of Dr. Silva" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDdnFsvEtPChR_iDApOqnAtYmcAl7eWbpby2MGQiY7ovrxzvhlmq4rQg8hPqOlpY6iky0wfbgn1eQMmXOkJm-lUZu76MOPcUh9qSoiBYXO9G18PP8BPlDfQaLXpZdjwg4LVwJqUfOVVzwlE3u58X1uXjHmb8yMOjFIZrQDLO3QPhYu8qgiAAzdOqEzLhC_YGI0kuLCk20-aayGveVRtrjlI6RVnQHT53GF1KCsI_y1f-2QAFpjfMzMlSjmUlwx-F7yUOp4CuWgCKJAK");'></div>
+<div class="hidden xl:block">
+<p class="text-sm font-medium leading-none">Dr. Mateus Silva</p>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Farmacêutico Chefe</p>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 relative">
+<!-- Main Content -->
+<main class="flex-1 px-6 py-8 md:px-10 lg:px-16 max-w-[1600px] mx-auto w-full">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
+<span>Zênite360</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span>Gestão de Resíduos</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary dark:text-white font-medium">Químicos e Medicamentosos</span>
+</div>
+<h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Painel de Controlo de Resíduos</h1>
+<p class="text-gray-600 dark:text-gray-400 mt-2 max-w-2xl">Monitorização em tempo real do descarte de risco biológico, químicos perigosos e medicamentos expirados.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg border border-gray-300 dark:border-border-dark bg-white dark:bg-card-dark hover:bg-gray-50 dark:hover:bg-border-dark transition-colors text-sm font-medium shadow-sm">
+<span class="material-symbols-outlined text-[20px]">file_download</span>
+<span>Relatório Mensal</span>
+</button>
+<button class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-primary hover:bg-primary-light text-white text-sm font-bold shadow-md transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>Novo Descarte</span>
+</button>
+</div>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+<!-- KPI 1 -->
+<div class="bg-white dark:bg-card-dark rounded-xl p-6 border border-gray-200 dark:border-border-dark shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary dark:text-white">medication_liquid</span>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Medicamentos Expirados</p>
+<div class="flex items-baseline gap-2 mb-2">
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white">124 kg</h3>
+<span class="text-xs font-medium text-danger bg-danger/10 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-xs mr-0.5">trending_up</span> +5%
+                        </span>
+</div>
+<p class="text-xs text-gray-400">Desde o último mês</p>
+<div class="h-1 w-full bg-gray-100 dark:bg-gray-700 mt-4 rounded-full overflow-hidden">
+<div class="h-full bg-orange-500 w-[65%]"></div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-white dark:bg-card-dark rounded-xl p-6 border border-gray-200 dark:border-border-dark shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary dark:text-white">science</span>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Resíduos Químicos</p>
+<div class="flex items-baseline gap-2 mb-2">
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white">45 Unid.</h3>
+<span class="text-xs font-medium text-success bg-success/10 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-xs mr-0.5">trending_down</span> -2%
+                        </span>
+</div>
+<p class="text-xs text-gray-400">Estoque atual pendente</p>
+<div class="h-1 w-full bg-gray-100 dark:bg-gray-700 mt-4 rounded-full overflow-hidden">
+<div class="h-full bg-blue-500 w-[42%]"></div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-white dark:bg-card-dark rounded-xl p-6 border border-gray-200 dark:border-border-dark shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary dark:text-white">payments</span>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium mb-1">Valor Perdido (AOA)</p>
+<div class="flex items-baseline gap-2 mb-2">
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white">2.4M</h3>
+<span class="text-xs font-medium text-danger bg-danger/10 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-xs mr-0.5">trending_up</span> +12%
+                        </span>
+</div>
+<p class="text-xs text-gray-400">Total acumulado (Ano)</p>
+<div class="h-1 w-full bg-gray-100 dark:bg-gray-700 mt-4 rounded-full overflow-hidden">
+<div class="h-full bg-red-500 w-[80%]"></div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-white dark:bg-card-dark rounded-xl p-6 border border-red-200 dark:border-red-900/30 bg-red-50 dark:bg-red-900/10 shadow-sm relative overflow-hidden">
+<div class="absolute right-0 top-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl text-red-600 dark:text-red-400">warning</span>
+</div>
+<p class="text-red-600 dark:text-red-300 text-sm font-bold mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">notifications_active</span> Alertas Incineração
+                    </p>
+<div class="flex items-baseline gap-2 mb-2">
+<h3 class="text-3xl font-bold text-red-700 dark:text-red-100">3 Pendentes</h3>
+</div>
+<p class="text-xs text-red-500 dark:text-red-400 font-medium">Ação Requerida: Imediata</p>
+<button class="mt-4 w-full py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider rounded transition-colors">
+                        Ver Detalhes
+                    </button>
+</div>
+</div>
+<!-- Content Area: Table + Actions -->
+<div class="grid lg:grid-cols-4 gap-8">
+<!-- Main Table Section -->
+<div class="lg:col-span-3 flex flex-col gap-6">
+<div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-border-dark overflow-hidden flex flex-col shadow-sm">
+<div class="p-5 border-b border-gray-200 dark:border-border-dark flex flex-wrap justify-between items-center gap-4">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Itens Pendentes para Descarte Seguro</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400">Lista de reagentes e medicamentos aguardando processamento.</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex bg-gray-100 dark:bg-[#0f1823] rounded-lg p-1">
+<button class="px-3 py-1 rounded bg-white dark:bg-primary shadow text-xs font-medium text-slate-900 dark:text-white">Todos</button>
+<button class="px-3 py-1 rounded hover:bg-gray-200 dark:hover:bg-white/5 text-xs font-medium text-gray-500 dark:text-gray-400 transition-colors">Alta Toxicidade</button>
+<button class="px-3 py-1 rounded hover:bg-gray-200 dark:hover:bg-white/5 text-xs font-medium text-gray-500 dark:text-gray-400 transition-colors">Biológicos</button>
+</div>
+<button class="p-2 text-gray-400 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50 dark:bg-[#1b2128] border-b border-gray-200 dark:border-border-dark">
+<th class="p-4 pl-6 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-12">
+<input class="rounded border-gray-300 text-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600" type="checkbox"/>
+</th>
+<th class="p-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nome do Item</th>
+<th class="p-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Lote / ID</th>
+<th class="p-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Validade</th>
+<th class="p-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Nível de Risco</th>
+<th class="p-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Localização</th>
+<th class="p-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+<th class="p-4 pr-6 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-border-dark">
+<!-- Row 1 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
+<td class="p-4 pl-6"><input class="rounded border-gray-300 text-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600" type="checkbox"/></td>
+<td class="p-4">
+<div class="font-medium text-slate-900 dark:text-white">Formaldeído 37%</div>
+<div class="text-xs text-gray-500">Frasco 1L</div>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300 font-mono">AB-992-X</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300">12/10/2023</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border border-red-200 dark:border-red-800/50">
+<span class="material-symbols-outlined text-[16px]">skull</span>
+                                                Alto Risco
+                                            </span>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300">Armazém B - Zona Q</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-yellow-400 animate-pulse"></div>
+<span class="text-sm font-medium text-yellow-600 dark:text-yellow-400">Assinatura Pend.</span>
+</div>
+</td>
+<td class="p-4 pr-6 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Assinar</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
+<td class="p-4 pl-6"><input class="rounded border-gray-300 text-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600" type="checkbox"/></td>
+<td class="p-4">
+<div class="font-medium text-slate-900 dark:text-white">Insulina NPH</div>
+<div class="text-xs text-gray-500">Caixa 50 Ampolas</div>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300 font-mono">INS-2023-01</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300">01/11/2023</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border border-orange-200 dark:border-orange-800/50">
+<span class="material-symbols-outlined text-[16px]">coronavirus</span>
+                                                Risco Biológico
+                                            </span>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300">Farmácia Central</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-gray-400"></div>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">Pendente</span>
+</div>
+</td>
+<td class="p-4 pr-6 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Verificar</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
+<td class="p-4 pl-6"><input class="rounded border-gray-300 text-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600" type="checkbox"/></td>
+<td class="p-4">
+<div class="font-medium text-slate-900 dark:text-white">Ácido Sulfúrico</div>
+<div class="text-xs text-gray-500">Galão 5L</div>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300 font-mono">AC-SUL-55</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300">15/09/2023</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 border border-purple-200 dark:border-purple-800/50">
+<span class="material-symbols-outlined text-[16px]">science</span>
+                                                Corrosivo
+                                            </span>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300">Laboratório 3</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-green-500"></div>
+<span class="text-sm font-medium text-green-600 dark:text-green-400">Aprovado</span>
+</div>
+</td>
+<td class="p-4 pr-6 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Agendar</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
+<td class="p-4 pl-6"><input class="rounded border-gray-300 text-primary focus:ring-primary dark:bg-gray-700 dark:border-gray-600" type="checkbox"/></td>
+<td class="p-4">
+<div class="font-medium text-slate-900 dark:text-white">Cibitofeno 20mg</div>
+<div class="text-xs text-gray-500">Caixa 100 Comp</div>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300 font-mono">CIB-990-A</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300">05/11/2023</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800/50">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+                                                Tóxico
+                                            </span>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-300">Armazém A</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-red-500 animate-pulse"></div>
+<span class="text-sm font-medium text-red-500 dark:text-red-400">Revisão Nec.</span>
+</div>
+</td>
+<td class="p-4 pr-6 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Editar</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-gray-200 dark:border-border-dark flex justify-between items-center bg-gray-50 dark:bg-[#131b24]">
+<span class="text-xs text-gray-500 dark:text-gray-400">Mostrando 4 de 45 itens</span>
+<div class="flex gap-1">
+<button class="size-8 flex items-center justify-center rounded border border-gray-300 dark:border-border-dark hover:bg-white dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 disabled:opacity-50"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="size-8 flex items-center justify-center rounded border border-primary dark:border-primary bg-primary text-white text-xs font-medium">1</button>
+<button class="size-8 flex items-center justify-center rounded border border-gray-300 dark:border-border-dark hover:bg-white dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 text-xs font-medium">2</button>
+<button class="size-8 flex items-center justify-center rounded border border-gray-300 dark:border-border-dark hover:bg-white dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 text-xs font-medium">3</button>
+<button class="size-8 flex items-center justify-center rounded border border-gray-300 dark:border-border-dark hover:bg-white dark:hover:bg-white/10 text-gray-500 dark:text-gray-400"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar / Workflow Area -->
+<div class="lg:col-span-1 flex flex-col gap-6">
+<!-- Workflow Card -->
+<div class="bg-primary dark:bg-card-dark rounded-xl p-6 text-white shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined">verified_user</span>
+<h3 class="font-bold text-lg">Processo de Descarte</h3>
+</div>
+<div class="space-y-6 relative">
+<!-- Step Connector Line -->
+<div class="absolute left-[11px] top-2 bottom-2 w-0.5 bg-white/20"></div>
+<!-- Step 1 -->
+<div class="flex gap-4 relative">
+<div class="size-6 rounded-full bg-green-500 flex items-center justify-center shrink-0 z-10">
+<span class="material-symbols-outlined text-xs">check</span>
+</div>
+<div>
+<p class="text-xs font-medium opacity-70">Passo 1</p>
+<p class="text-sm font-semibold">Inventário Confirmado</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex gap-4 relative">
+<div class="size-6 rounded-full bg-white text-primary flex items-center justify-center shrink-0 z-10 border-2 border-white">
+<span class="text-xs font-bold">2</span>
+</div>
+<div class="w-full">
+<p class="text-xs font-medium opacity-70">Passo 2</p>
+<p class="text-sm font-semibold mb-2">Assinatura Digital</p>
+<div class="bg-white/10 rounded p-3 backdrop-blur-sm border border-white/10">
+<p class="text-xs mb-2 opacity-80">Aguardando aprovação de Dr. Mateus Silva</p>
+<button class="w-full py-1.5 bg-white text-primary rounded text-xs font-bold hover:bg-gray-100 transition-colors">Assinar Agora</button>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex gap-4 relative">
+<div class="size-6 rounded-full bg-primary border-2 border-white/30 flex items-center justify-center shrink-0 z-10">
+<span class="text-xs text-white/50">3</span>
+</div>
+<div>
+<p class="text-xs font-medium opacity-70">Passo 3</p>
+<p class="text-sm font-semibold opacity-50">Agendamento de Recolha</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Scheduling / Contractor Card -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-gray-200 dark:border-border-dark p-5 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-bold text-slate-900 dark:text-white text-sm">Recolha Especializada</h3>
+<span class="material-symbols-outlined text-gray-400 text-lg">calendar_month</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-gray-50 dark:bg-[#131b24] rounded-lg mb-4 border border-gray-100 dark:border-border-dark">
+<div class="bg-green-100 dark:bg-green-900/30 p-2 rounded text-green-700 dark:text-green-400">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div>
+<p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Próxima Recolha</p>
+<p class="text-sm font-bold text-slate-900 dark:text-white">15 Nov - EcoAngola</p>
+</div>
+</div>
+<div class="space-y-3">
+<p class="text-xs text-gray-500 dark:text-gray-400">Contratantes Disponíveis:</p>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-green-500"></div>
+<span class="text-gray-700 dark:text-gray-300">EcoAngola</span>
+</div>
+<span class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded text-gray-600 dark:text-gray-300">Principal</span>
+</div>
+<div class="flex items-center justify-between text-sm">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+<span class="text-gray-700 dark:text-gray-300 text-opacity-70">Luanda Clean</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-5 py-2 border border-primary text-primary dark:border-gray-500 dark:text-white rounded-lg text-xs font-bold hover:bg-primary hover:text-white dark:hover:bg-white dark:hover:text-primary transition-all">
+                            Solicitar Recolha Extra
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

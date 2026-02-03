@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard de Utilização por Sector Zênite360</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#002147",
+              "primary-light": "#0A2E5C",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1823",
+              "card-dark": "#16202c",
+              "border-dark": "#2a3848",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for dark mode dashboards */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a3848; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a4b5e; 
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased min-h-screen flex flex-col overflow-x-hidden">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-border-dark bg-white dark:bg-[#101418] px-6 py-3 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-primary dark:text-white">
+<div class="size-8 rounded bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">health_metrics</span>
+</div>
+<h2 class="text-xl font-black leading-tight tracking-[-0.015em]">Zênite360</h2>
+</div>
+<!-- Breadcrumb / Context -->
+<div class="hidden md:flex items-center gap-2 pl-6 border-l border-gray-200 dark:border-border-dark ml-2">
+<span class="text-gray-500 dark:text-slate-400 text-sm font-medium">Analytics</span>
+<span class="material-symbols-outlined text-gray-400 text-sm">chevron_right</span>
+<span class="text-gray-900 dark:text-white text-sm font-medium">Dashboard Geral</span>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="hidden md:flex w-full max-w-sm">
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+<span class="material-symbols-outlined text-slate-400">search</span>
+</div>
+<input class="block w-full rounded-lg border-none bg-gray-100 dark:bg-card-dark py-2 pl-10 pr-4 text-sm text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-primary dark:focus:ring-blue-500" placeholder="Pesquisar módulo, sector ou médico..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-card-dark rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-[#101418]"></span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-border-dark">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold text-gray-900 dark:text-white leading-none">Dr. António Silva</p>
+<p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Administrador IT</p>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="Portrait of Dr. António Silva, IT Administrator" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDZkcXgwxHqIVO24g3TiGqPdVPS7Ts8-EraqOZ1tbSHJs1h4kN3ilSy1o5gHksSIDd6xRQ01I-6iEeTW6NuyFSgvVunMdJdwecGa47EVfgJFY4A9xAKfI8fSEj3Zj-O_cbkb9InRtMfprQqKW5fylpHtP9dLmpboCt4aWRuW1IK5nDviicG_M1qi6pdUfWqYeVnfT14r5c01muGnikC_JDbLcUfHSI-Wk5kY1Xxyk10p0ZgC_-fcTYjCLuYFsHsUFFCP6vxFhvbZXyQ");'></div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col p-4 md:p-8 max-w-[1600px] mx-auto w-full gap-6">
+<!-- Page Title & Controls -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Dashboard de Utilização por Sector</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm md:text-base">Monitorização em tempo real da atividade e saúde do sistema hospitalar.</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<label class="hidden md:block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Filtros:</label>
+<div class="relative">
+<select class="appearance-none bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark text-slate-700 dark:text-white py-2.5 pl-4 pr-10 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer shadow-sm">
+<option>Últimos 30 Dias</option>
+<option>Hoje</option>
+<option>Esta Semana</option>
+<option>Este Trimestre</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+</div>
+</div>
+<div class="relative">
+<select class="appearance-none bg-white dark:bg-card-dark border border-gray-200 dark:border-border-dark text-slate-700 dark:text-white py-2.5 pl-4 pr-10 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer shadow-sm min-w-[180px]">
+<option>Todos os Sectores</option>
+<option>Banco de Urgência</option>
+<option>Internamento</option>
+<option>Farmácia</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</div>
+</div>
+<button class="flex items-center justify-center bg-primary hover:bg-primary/90 text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors shadow-sm gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span class="hidden sm:inline">Exportar Relatório</span>
+</button>
+</div>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+<!-- Card 1 -->
+<div class="bg-white dark:bg-card-dark p-5 rounded-xl border border-gray-100 dark:border-border-dark shadow-sm flex flex-col gap-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-primary dark:text-blue-400">medication</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="p-2 bg-blue-50 dark:bg-primary/20 rounded-lg text-primary dark:text-blue-400">
+<span class="material-symbols-outlined">medication</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold">Módulos Mais Acedidos</p>
+</div>
+<div>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">Farmácia Clínica</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_up</span>
+<p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium">+12% <span class="text-slate-400 font-normal">vs mês anterior</span></p>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white dark:bg-card-dark p-5 rounded-xl border border-gray-100 dark:border-border-dark shadow-sm flex flex-col gap-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-purple-600">group</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg text-purple-600 dark:text-purple-400">
+<span class="material-symbols-outlined">group</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold">Utilizadores Ativos</p>
+</div>
+<div>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">1,245</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_up</span>
+<p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium">+3.4% <span class="text-slate-400 font-normal">esta semana</span></p>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white dark:bg-card-dark p-5 rounded-xl border border-gray-100 dark:border-border-dark shadow-sm flex flex-col gap-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-amber-500">schedule</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg text-amber-600 dark:text-amber-400">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold">Pico de Acesso (Horário)</p>
+</div>
+<div>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">10:00 - 11:30</p>
+<div class="flex items-center gap-1 mt-1">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal">Carga do Servidor: <span class="text-amber-500 font-medium">Alta</span></p>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white dark:bg-card-dark p-5 rounded-xl border border-gray-100 dark:border-border-dark shadow-sm flex flex-col gap-4 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-red-500">gpp_bad</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="p-2 bg-red-50 dark:bg-red-900/20 rounded-lg text-red-600 dark:text-red-400">
+<span class="material-symbols-outlined">gpp_bad</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-semibold">Taxa de Erros</p>
+</div>
+<div>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">0.5%</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-emerald-500 text-sm">trending_down</span>
+<p class="text-emerald-600 dark:text-emerald-400 text-sm font-medium">-0.2% <span class="text-slate-400 font-normal">que a média</span></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Chart and List Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Chart Section -->
+<div class="lg:col-span-2 bg-white dark:bg-card-dark rounded-xl border border-gray-100 dark:border-border-dark shadow-sm p-6 flex flex-col h-[500px]">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Distribuição de Uso por Módulo e Sector</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Volume de transações nos últimos 30 dias</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-medium">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-primary"></span>
+<span class="text-slate-600 dark:text-slate-300">Clínico</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-cyan-500"></span>
+<span class="text-slate-600 dark:text-slate-300">Farmácia</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-purple-500"></span>
+<span class="text-slate-600 dark:text-slate-300">Financeiro</span>
+</div>
+</div>
+</div>
+<!-- Custom Stacked Bar Chart Visualization -->
+<div class="flex-1 flex items-end justify-between gap-4 sm:gap-8 px-2 relative">
+<!-- Y Axis Grid Lines (Visual only) -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none z-0">
+<div class="w-full h-px bg-gray-100 dark:bg-border-dark border-t border-dashed border-gray-200 dark:border-slate-700"></div>
+<div class="w-full h-px bg-gray-100 dark:bg-border-dark border-t border-dashed border-gray-200 dark:border-slate-700"></div>
+<div class="w-full h-px bg-gray-100 dark:bg-border-dark border-t border-dashed border-gray-200 dark:border-slate-700"></div>
+<div class="w-full h-px bg-gray-100 dark:bg-border-dark border-t border-dashed border-gray-200 dark:border-slate-700"></div>
+<div class="w-full h-px bg-gray-100 dark:bg-border-dark"></div>
+</div>
+<!-- Bar Group 1: Banco de Urgência -->
+<div class="relative z-10 flex flex-col items-center flex-1 h-full justify-end group cursor-pointer">
+<div class="w-full max-w-[60px] flex flex-col h-[85%] rounded-t-sm overflow-hidden shadow-lg transition-transform hover:scale-105">
+<div class="bg-primary h-[40%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-cyan-500 h-[30%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-purple-500 h-[30%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+</div>
+<p class="mt-4 text-xs font-semibold text-slate-600 dark:text-slate-400 text-center">SBU</p>
+</div>
+<!-- Bar Group 2: Internamento -->
+<div class="relative z-10 flex flex-col items-center flex-1 h-full justify-end group cursor-pointer">
+<div class="w-full max-w-[60px] flex flex-col h-[65%] rounded-t-sm overflow-hidden shadow-lg transition-transform hover:scale-105">
+<div class="bg-primary h-[60%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-cyan-500 h-[25%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-purple-500 h-[15%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+</div>
+<p class="mt-4 text-xs font-semibold text-slate-600 dark:text-slate-400 text-center">Internamento</p>
+</div>
+<!-- Bar Group 3: Consultas Externas -->
+<div class="relative z-10 flex flex-col items-center flex-1 h-full justify-end group cursor-pointer">
+<div class="w-full max-w-[60px] flex flex-col h-[45%] rounded-t-sm overflow-hidden shadow-lg transition-transform hover:scale-105">
+<div class="bg-primary h-[20%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-cyan-500 h-[40%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-purple-500 h-[40%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+</div>
+<p class="mt-4 text-xs font-semibold text-slate-600 dark:text-slate-400 text-center">Consultas</p>
+</div>
+<!-- Bar Group 4: Laboratório -->
+<div class="relative z-10 flex flex-col items-center flex-1 h-full justify-end group cursor-pointer">
+<div class="w-full max-w-[60px] flex flex-col h-[70%] rounded-t-sm overflow-hidden shadow-lg transition-transform hover:scale-105">
+<div class="bg-primary h-[10%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-cyan-500 h-[80%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-purple-500 h-[10%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+</div>
+<p class="mt-4 text-xs font-semibold text-slate-600 dark:text-slate-400 text-center">Laboratório</p>
+</div>
+<!-- Bar Group 5: Bloco Operatório -->
+<div class="relative z-10 flex flex-col items-center flex-1 h-full justify-end group cursor-pointer">
+<div class="w-full max-w-[60px] flex flex-col h-[55%] rounded-t-sm overflow-hidden shadow-lg transition-transform hover:scale-105">
+<div class="bg-primary h-[70%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-cyan-500 h-[20%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-purple-500 h-[10%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+</div>
+<p class="mt-4 text-xs font-semibold text-slate-600 dark:text-slate-400 text-center">Bloco</p>
+</div>
+<!-- Bar Group 6: Logística -->
+<div class="relative z-10 flex flex-col items-center flex-1 h-full justify-end group cursor-pointer">
+<div class="w-full max-w-[60px] flex flex-col h-[30%] rounded-t-sm overflow-hidden shadow-lg transition-transform hover:scale-105">
+<div class="bg-primary h-[10%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-cyan-500 h-[30%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+<div class="bg-purple-500 h-[60%] w-full relative group/segment">
+<div class="absolute inset-0 bg-white/0 group-hover/segment:bg-white/10 transition-colors"></div>
+</div>
+</div>
+<p class="mt-4 text-xs font-semibold text-slate-600 dark:text-slate-400 text-center">Logística</p>
+</div>
+</div>
+</div>
+<!-- Top Sectors List -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-gray-100 dark:border-border-dark shadow-sm p-6 flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Top 5 Sectores Ativos</h3>
+<button class="text-xs text-primary dark:text-blue-400 font-semibold hover:underline">Ver Todos</button>
+</div>
+<div class="flex flex-col gap-4 flex-1">
+<!-- Item 1 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300">1</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Banco de Urgência</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">12,450 acessos</p>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">arrow_upward</span> 8%
+                            </span>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300">2</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Bloco Operatório</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">8,320 acessos</p>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">arrow_upward</span> 12%
+                            </span>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300">3</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Admissão Geral</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">6,105 acessos</p>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center text-xs font-medium text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">remove</span> 0%
+                            </span>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300">4</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Recursos Humanos</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">4,200 acessos</p>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center text-xs font-medium text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">arrow_downward</span> 2%
+                            </span>
+</div>
+</div>
+<!-- Item 5 -->
+<div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer">
+<div class="size-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-sm font-bold text-slate-600 dark:text-slate-300">5</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Logística Central</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">3,980 acessos</p>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">arrow_upward</span> 5%
+                            </span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Table Section -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-gray-100 dark:border-border-dark shadow-sm overflow-hidden">
+<div class="flex items-center justify-between p-6 border-b border-gray-100 dark:border-border-dark">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Registo de Atividade Recente</h3>
+<div class="flex gap-2">
+<button class="text-sm font-medium text-slate-500 hover:text-primary dark:hover:text-white px-3 py-1 rounded-md transition-colors">Ver Tudo</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50 dark:bg-[#121b25] border-b border-gray-100 dark:border-border-dark">
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Sector</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Utilizador</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Módulo Acedido</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Data/Hora</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-border-dark">
+<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="py-4 px-6 text-sm font-medium text-slate-900 dark:text-white">SBU (Urgência)</td>
+<td class="py-4 px-6 text-sm text-slate-600 dark:text-slate-300">Dr. Pedro Manuel</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
+                                    Triagem
+                                </span>
+</td>
+<td class="py-4 px-6 text-sm text-slate-500 dark:text-slate-400">Hoje, 11:42</td>
+<td class="py-4 px-6 text-right">
+<span class="text-emerald-500 font-medium text-sm">Sucesso</span>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="py-4 px-6 text-sm font-medium text-slate-900 dark:text-white">Farmácia Central</td>
+<td class="py-4 px-6 text-sm text-slate-600 dark:text-slate-300">Ana Gomes (Téc.)</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 text-cyan-800 dark:bg-cyan-900/40 dark:text-cyan-300">
+                                    Stock
+                                </span>
+</td>
+<td class="py-4 px-6 text-sm text-slate-500 dark:text-slate-400">Hoje, 11:38</td>
+<td class="py-4 px-6 text-right">
+<span class="text-emerald-500 font-medium text-sm">Sucesso</span>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="py-4 px-6 text-sm font-medium text-slate-900 dark:text-white">Facturação</td>
+<td class="py-4 px-6 text-sm text-slate-600 dark:text-slate-300">Maria João</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300">
+                                    Seguros
+                                </span>
+</td>
+<td class="py-4 px-6 text-sm text-slate-500 dark:text-slate-400">Hoje, 11:35</td>
+<td class="py-4 px-6 text-right">
+<span class="text-red-500 font-medium text-sm">Erro Permissão</span>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="py-4 px-6 text-sm font-medium text-slate-900 dark:text-white">Laboratório</td>
+<td class="py-4 px-6 text-sm text-slate-600 dark:text-slate-300">Carlos Dundo</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
+                                    Resultados
+                                </span>
+</td>
+<td class="py-4 px-6 text-sm text-slate-500 dark:text-slate-400">Hoje, 11:30</td>
+<td class="py-4 px-6 text-right">
+<span class="text-emerald-500 font-medium text-sm">Sucesso</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</body></html>

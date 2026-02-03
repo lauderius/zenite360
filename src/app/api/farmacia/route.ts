@@ -1,32 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-interface ArtigoFarmacia {
-  id: bigint;
-  codigo_artigo: string;
-  nome_artigo: string;
-  descricao: string | null;
-  categoria: string;
-  tipo_medicamento: string | null;
-  localizacao_stock: string;
-  prateleira: string | null;
-  lote_atual: string | null;
-  data_validade: Date | null;
-  quantidade_stock: Decimal;
-  unidade_medida: string;
-  stock_minimo: Decimal;
-  stock_maximo: Decimal;
-  preco_compra: Decimal;
-  preco_venda: Decimal;
-  requer_receita_medica: boolean;
-  controlado_anvisa: boolean;
-  refrigeracao_necessaria: boolean;
-  activo: boolean;
-  created_at: Date | null;
-}
-
-type Decimal = number;
-
 // GET: Lista de medicamentos e dashboard
 export async function GET(request: NextRequest) {
   try {
@@ -35,7 +9,7 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
 
-    let artigos: ArtigoFarmacia[] = [];
+    let artigos: any[] = [];
     let total = 0;
 
     try {

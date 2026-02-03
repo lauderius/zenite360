@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestão de Utilizadores e Permissões (RBAC) - Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "border-dark": "#27303a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101418;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27303a;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a4755;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex h-16 shrink-0 items-center justify-between border-b border-solid border-border-dark bg-[#101418] px-6">
+<div class="flex items-center gap-4">
+<div class="size-8 text-white">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Zênite360 <span class="font-normal text-[#9aaabc] ml-2">| Administração Hospitalar</span></h2>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="flex items-center min-w-40 h-10 max-w-64 bg-border-dark rounded-lg px-3 gap-2">
+<span class="material-symbols-outlined text-[#9aaabc]">search</span>
+<input class="bg-transparent border-none text-white focus:ring-0 text-sm w-full placeholder:text-[#9aaabc]" placeholder="Pesquisa global..." type="text"/>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold transition-all hover:bg-primary/80">
+                    Guardar Alterações
+                </button>
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-border-dark text-white text-sm font-bold hover:bg-[#323d49]">
+                    Cancelar
+                </button>
+<div class="w-px h-6 bg-border-dark self-center mx-2"></div>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-border-dark text-white hover:bg-[#323d49]">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User administrator profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA5nkcrH-ltU-5E2-8doZS0mMyr4zARRfFwDxblaJPVOuKmdN2RaxwF3oYhw1c0XjycuErWsMM3HAEZNrw5i1TQGcxgCD9igkF_Bu52T4KsgSrJmeg5nhPf7KQlp_KDXyaCGRAaLgmmeQfXzL8jknZOOzWIqU5ZeM0ZeQAAUK2zYkx4mjWtLmArRE37MivnGAlaheRZ1jXchq2xmS2UT6bFyeRiWDI37OjTin71MF6b3VZUJZY3Gjr0gR8Qi9bbMXVi38BNIgXfL-RN");'></div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-[#101418] border-r border-border-dark flex flex-col justify-between shrink-0">
+<div class="flex flex-col gap-1 p-4">
+<div class="flex items-center gap-3 px-3 py-2 text-[#9aaabc] hover:text-white cursor-pointer rounded-lg transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-white cursor-pointer">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium leading-normal">Utilizadores</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#9aaabc] hover:text-white cursor-pointer rounded-lg transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Configurações</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#9aaabc] hover:text-white cursor-pointer rounded-lg transition-colors">
+<span class="material-symbols-outlined">description</span>
+<p class="text-sm font-medium leading-normal">Relatórios</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-[#9aaabc] hover:text-white cursor-pointer rounded-lg transition-colors">
+<span class="material-symbols-outlined">shield_person</span>
+<p class="text-sm font-medium leading-normal">Log de Auditoria</p>
+</div>
+<div class="mt-8 px-3">
+<p class="text-[10px] font-bold text-[#556b82] uppercase tracking-widest mb-2">Hospital Info</p>
+<div class="bg-border-dark/30 rounded-lg p-3">
+<p class="text-xs text-white font-medium">Hosp. Central de Luanda</p>
+<p class="text-[10px] text-[#9aaabc]">Unidade: Administrativa</p>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-border-dark">
+<div class="flex items-center gap-3 px-3 py-2 text-[#9aaabc] hover:text-red-400 cursor-pointer rounded-lg transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium leading-normal">Sair do Sistema</p>
+</div>
+</div>
+</aside>
+<!-- Split View: Main Content -->
+<main class="flex-1 flex overflow-hidden">
+<!-- User List Column (Master) -->
+<section class="w-[380px] border-r border-border-dark flex flex-col bg-background-dark/50">
+<div class="p-4 flex flex-col gap-4 shrink-0">
+<div class="flex flex-wrap gap-2 text-xs">
+<span class="text-[#9aaabc]">Administração</span>
+<span class="text-[#9aaabc]">/</span>
+<span class="text-white font-medium">Utilizadores e RBAC</span>
+</div>
+<h1 class="text-xl font-bold text-white">Utilizadores</h1>
+<div class="relative">
+<label class="flex items-center h-11 bg-border-dark rounded-lg px-3 gap-3">
+<span class="material-symbols-outlined text-[#9aaabc]">search</span>
+<input class="bg-transparent border-none text-white focus:ring-0 text-sm w-full placeholder:text-[#9aaabc]" placeholder="Pesquisar por nome ou BI..." type="text"/>
+</label>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex items-center gap-2 whitespace-nowrap rounded-lg bg-border-dark px-3 py-1.5 text-xs text-white hover:bg-primary/40">
+                            Médicos <span class="material-symbols-outlined !text-sm">expand_more</span>
+</button>
+<button class="flex items-center gap-2 whitespace-nowrap rounded-lg bg-border-dark px-3 py-1.5 text-xs text-white hover:bg-primary/40">
+                            Enfermeiros <span class="material-symbols-outlined !text-sm">expand_more</span>
+</button>
+<button class="flex items-center gap-2 whitespace-nowrap rounded-lg bg-primary/20 border border-primary/40 px-3 py-1.5 text-xs text-white">
+                            Ativos
+                        </button>
+</div>
+</div>
+<!-- Scrollable User List -->
+<div class="flex-1 overflow-y-auto px-4 pb-4 flex flex-col gap-2">
+<!-- Active User -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-primary border border-primary/50 cursor-pointer">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 border-2 border-white/20" data-alt="Doctor portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA0RB_-C_A2KQ5n0enAdauWB9iGT43vpU9DvtYidcC9Qhtj84sbH_NUI9lU2WLVYIM26Pynd_qnM38WQjWM3t8yHPWwM2sCvXs-sefRk7H90KXidU2X93aLWpUdrc6LkzICjz-xHBsxCY43gQExw4y3HYDaJdeNr8T3f8Y6nBs5b3JpifrFKcTAH0KyutS0zOgYFaIGZB5qr2na6Q38HYBlUgffVcR7OPRg_B-edyJgjV-zndLNrJE7Eqd1es7D-T6CJ500li4g1C3N");'></div>
+<div class="absolute bottom-0 right-0 size-3 bg-green-500 rounded-full border-2 border-primary"></div>
+</div>
+<div class="flex flex-col flex-1 overflow-hidden">
+<h3 class="text-sm font-semibold text-white truncate">Dr. António Manuel</h3>
+<p class="text-xs text-white/70 truncate">Médico Especialista</p>
+<span class="text-[10px] font-bold text-white/50 uppercase mt-1 tracking-wider">Perfil: Clínico</span>
+</div>
+<span class="material-symbols-outlined text-white/40">chevron_right</span>
+</div>
+<!-- User Item -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-border-dark/40 border border-transparent hover:border-border-dark cursor-pointer transition-all">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Nurse portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuANZN9XwDAbWgDksascIgVBJrojju130i8mPh2hrlfjj23LPehNZGv4sjGjGzYvkFjh178FZckfRiU86vlwqEdbdtLd25IZQIxYZWYlbsiG2-wqDizwdvbbLvCpb_R85a6-X9gZNFjBtXgrYq2WcIAeuAN94MuYgz0P7hFc9TPU-DyEmxUa9b5qJCnoprbCJvM7BGZGNYfznvAoe9VR3-2IKKxV7e5JsBm75oqjlyBDyk8cfYe2RTn0hV9P-RJR6sZ13TMk4KWJnq8l");'></div>
+<div class="flex flex-col flex-1 overflow-hidden">
+<h3 class="text-sm font-semibold text-white truncate">Dra. Beatriz Santos</h3>
+<p class="text-xs text-[#9aaabc] truncate">Enfermeira Chefe</p>
+<span class="text-[10px] font-bold text-[#556b82] uppercase mt-1 tracking-wider">Perfil: Enfermagem</span>
+</div>
+</div>
+<!-- User Item -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-border-dark/40 border border-transparent hover:border-border-dark cursor-pointer transition-all">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Administrator portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdsmZxQjhIM4MVbAwQKFSLxyLcADebtdXng8iy5XFEqVBSR_1tApVeGnetcI4_a1qwPOxRHST43wZbNp5ktqsU5yyR9gcGxfI77ssvia4Q5eI3kGGZH-IQrn1MGkdyzQ2OjQvI9VJjZs8zpN6VdqBvPS-CkCLX7n45V9oHbMfstx_KBUx7QJKQlST_qGaNTOyIUdRFjHnjnTOifjzJrra1ws02srDZ83FOHtWIxtOSkXiYpCyrXh51BjjjpB9L_f_Pf9nKvPbgvIS9");'></div>
+<div class="flex flex-col flex-1 overflow-hidden">
+<h3 class="text-sm font-semibold text-white truncate">Carlos Muhongo</h3>
+<p class="text-xs text-[#9aaabc] truncate">Gestor de Stock</p>
+<span class="text-[10px] font-bold text-[#556b82] uppercase mt-1 tracking-wider">Perfil: Logística</span>
+</div>
+</div>
+<!-- User Item -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-border-dark/40 border border-transparent hover:border-border-dark cursor-pointer transition-all">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Receptionist portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB7tPJ50uT_rgAHxcizmU1xjxa9tFc461fKekJ-6FDoGsSE_TEIV3297hUugGi6zrJU_5q48cZkNrd1cCdWEjrJ2mYGYA7uba8DK3blpj0EJKOGnKxGWWN7g-23y1AT2R77SdDhS_Uqg1OUfrgwhumdKtSocLbdxucPFqTdel2FJbdxjSj_aYkzxXaaSlmV-BU4WPU1oEYfXJumz4_Nd_fqkRSEHRFngjQM9NOEzLvyS5iQXHXN-veqmrd2xsdtNUF05tUUOoDEeA28");'></div>
+<div class="flex flex-col flex-1 overflow-hidden">
+<h3 class="text-sm font-semibold text-white truncate">Elsa Pereira</h3>
+<p class="text-xs text-[#9aaabc] truncate">Recepcionista</p>
+<span class="text-[10px] font-bold text-[#556b82] uppercase mt-1 tracking-wider">Perfil: Atendimento</span>
+</div>
+</div>
+<!-- User Item -->
+<div class="flex items-center gap-3 p-3 rounded-xl bg-border-dark/40 border border-transparent hover:border-border-dark cursor-pointer transition-all">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12" data-alt="Director portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCQh-47Nq_SEB-krr61qOhGbct6XJMzGCp9UhIJBQW3XxPDts-w7FsOl9IEIWc5LmsIe1X8e6fsMKJu5VEEtvWuAINly49-894OMtxJd5gxKKhSeitULYVDdQx5Iqk9B7R02Fld7rNPUvmW6yoWR9Lw6GYcE4nQt9DPmaOCw7JJkyUJJkWYv9OVkA8AFdvNrgvOPjZjE1hPMIYx9h4tFI7OCG43nWoqO0qpQEblIj9RjnIJxppLBuZcjJlZEJ3RHlDLaa9-R7C3qo9z");'></div>
+<div class="flex flex-col flex-1 overflow-hidden">
+<h3 class="text-sm font-semibold text-white truncate">Dra. Isabel Neto</h3>
+<p class="text-xs text-[#9aaabc] truncate">Diretora Administrativa</p>
+<span class="text-[10px] font-bold text-[#556b82] uppercase mt-1 tracking-wider">Perfil: Admin (DA)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Permission Management Panel (Detail) -->
+<section class="flex-1 overflow-y-auto bg-background-dark">
+<div class="p-8 max-w-5xl mx-auto">
+<!-- Context Header -->
+<div class="flex justify-between items-start mb-8 border-b border-border-dark pb-6">
+<div class="flex gap-6 items-center">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-20 border-4 border-primary/30" data-alt="Doctor profile large view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCUYBTAta0qv8UpmX8rnAxFWQXmuCvhz2KDyE_H_mq3EbGMlvftp1I5wUWdCI5W98441s4ZCyaIlx-0Cnsqwy4uTIkr9M-qRFiXgspiiFajtJ7eEWZuttdPeubYrUD26tihuqk4BR332uf3Iatx8mGUswqtjSKuxDWRJgTRVgRySezPFyIKqRZ5IjHWpmvBmqMXkzO-zJxZDc5plY0ptQYvOEJwYwV98jxYfXglfjJlpuc3iZvZPkc6TwOSuJLY5G4P7yEVt07RvQQK");'></div>
+<div>
+<h2 class="text-2xl font-bold text-white mb-1">Dr. António Manuel</h2>
+<p class="text-[#9aaabc] mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined !text-sm">badge</span> BI: 0045231LA042 • Médico Especialista
+                                </p>
+<div class="flex gap-2">
+<span class="bg-green-500/10 text-green-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase border border-green-500/20">Utilizador Ativo</span>
+<span class="bg-primary/20 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase border border-primary/40">Último Acesso: Hoje 08:45</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<label class="text-xs font-bold text-[#556b82] uppercase tracking-wider">Perfil de Acesso (RBAC)</label>
+<select class="bg-border-dark border-none rounded-lg text-white text-sm focus:ring-primary min-w-[180px]">
+<option selected="" value="clinico">Perfil: Clínico</option>
+<option value="enfermagem">Perfil: Enfermagem</option>
+<option value="admin">Perfil: Admin (DA)</option>
+<option value="custom">Personalizado...</option>
+</select>
+</div>
+</div>
+<!-- Permission Matrix -->
+<div class="space-y-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-lg font-bold text-white">Matriz de Permissões</h3>
+<button class="text-primary hover:text-white text-sm font-medium transition-colors">Copiar permissões de outro utilizador</button>
+</div>
+<!-- Module Row -->
+<div class="bg-[#101418] rounded-xl border border-border-dark overflow-hidden">
+<div class="bg-border-dark/30 p-4 border-b border-border-dark flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">local_hospital</span>
+<h4 class="font-bold text-white">Atendimento &amp; Triagem</h4>
+</div>
+<span class="material-symbols-outlined text-[#9aaabc]">expand_less</span>
+</div>
+<div class="p-6 grid grid-cols-4 gap-4">
+<label class="flex items-center gap-3 p-3 bg-border-dark/20 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer border border-transparent hover:border-primary/30">
+<input checked="" class="form-checkbox size-5 rounded text-primary bg-background-dark border-border-dark focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm font-medium text-white">Ver</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-border-dark/20 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer border border-transparent hover:border-primary/30">
+<input checked="" class="form-checkbox size-5 rounded text-primary bg-background-dark border-border-dark focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm font-medium text-white">Editar</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-border-dark/20 rounded-lg opacity-50 cursor-not-allowed">
+<input class="form-checkbox size-5 rounded bg-background-dark border-border-dark text-gray-600" disabled="" type="checkbox"/>
+<span class="text-sm font-medium text-white">Eliminar</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-border-dark/20 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer border border-transparent hover:border-primary/30">
+<input class="form-checkbox size-5 rounded text-primary bg-background-dark border-border-dark focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm font-medium text-white">Exportar</span>
+</label>
+</div>
+</div>
+<!-- Module Row -->
+<div class="bg-[#101418] rounded-xl border border-border-dark overflow-hidden">
+<div class="bg-border-dark/30 p-4 border-b border-border-dark flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">clinical_notes</span>
+<h4 class="font-bold text-white">Prontuário Clínico (SAM)</h4>
+</div>
+<span class="material-symbols-outlined text-[#9aaabc]">expand_less</span>
+</div>
+<div class="p-6 grid grid-cols-4 gap-4">
+<label class="flex items-center gap-3 p-3 bg-border-dark/20 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer border border-primary/30 ring-1 ring-primary/40">
+<input checked="" class="form-checkbox size-5 rounded text-primary bg-background-dark border-border-dark focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm font-medium text-white">Ver Histórico</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-border-dark/20 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer border border-primary/30 ring-1 ring-primary/40">
+<input checked="" class="form-checkbox size-5 rounded text-primary bg-background-dark border-border-dark focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm font-medium text-white">Editar Notas</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-border-dark/20 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer border border-transparent hover:border-primary/30">
+<input class="form-checkbox size-5 rounded text-primary bg-background-dark border-border-dark focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm font-medium text-white">Eliminar Notas</span>
+</label>
+<label class="flex items-center gap-3 p-3 bg-border-dark/20 rounded-lg hover:bg-primary/10 transition-colors cursor-pointer border border-transparent hover:border-primary/30">
+<input checked="" class="form-checkbox size-5 rounded text-primary bg-background-dark border-border-dark focus:ring-0 focus:ring-offset-0" type="checkbox"/>
+<span class="text-sm font-medium text-white">Exportar PDF</span>
+</label>
+</div>
+</div>
+<!-- Module Row -->
+<div class="bg-[#101418] rounded-xl border border-border-dark overflow-hidden">
+<div class="bg-border-dark/30 p-4 border-b border-border-dark flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+<h4 class="font-bold text-white">Gestão de Stock (SGF)</h4>
+</div>
+<span class="material-symbols-outlined text-[#9aaabc]">expand_more</span>
+</div>
+</div>
+<!-- Module Row -->
+<div class="bg-[#101418] rounded-xl border border-border-dark overflow-hidden">
+<div class="bg-border-dark/30 p-4 border-b border-border-dark flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">payments</span>
+<h4 class="font-bold text-white">Facturação &amp; Finanças (DGF)</h4>
+</div>
+<span class="material-symbols-outlined text-[#9aaabc]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Additional Settings -->
+<div class="mt-8 grid grid-cols-2 gap-6">
+<div class="p-6 bg-[#101418] rounded-xl border border-border-dark">
+<h4 class="text-sm font-bold text-white mb-4 uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined !text-lg">security</span> Restrições de IP / Horário
+                            </h4>
+<div class="space-y-4">
+<div class="flex items-center justify-between text-sm">
+<span class="text-[#9aaabc]">Acesso Externo (VPN)</span>
+<div class="w-10 h-5 bg-primary rounded-full relative">
+<div class="absolute right-1 top-1 size-3 bg-white rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between text-sm">
+<span class="text-[#9aaabc]">Apenas Horário Laboral</span>
+<div class="w-10 h-5 bg-border-dark rounded-full relative">
+<div class="absolute left-1 top-1 size-3 bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 bg-primary/10 rounded-xl border border-primary/20">
+<h4 class="text-sm font-bold text-white mb-2 uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined !text-lg">history</span> Auditoria Rápida
+                            </h4>
+<p class="text-xs text-[#9aaabc] mb-4">Últimas 3 alterações de permissão:</p>
+<ul class="text-[11px] space-y-2">
+<li class="flex items-center gap-2 text-white/80">
+<span class="size-1.5 bg-primary rounded-full"></span>
+<span>Adicionado "Exportar PDF" por Isabel Neto em 12/10</span>
+</li>
+<li class="flex items-center gap-2 text-white/80">
+<span class="size-1.5 bg-primary rounded-full"></span>
+<span>Removido "Eliminar SAM" por Sistema em 01/10</span>
+</li>
+</ul>
+<button class="mt-4 text-[11px] font-bold text-white uppercase tracking-widest bg-primary/40 px-3 py-1.5 rounded hover:bg-primary transition-colors">
+                                Ver Log Completo
+                            </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Bottom Status Bar -->
+<footer class="h-8 shrink-0 bg-[#0a0d10] border-t border-border-dark px-4 flex items-center justify-between text-[10px] text-[#556b82] uppercase tracking-widest font-bold">
+<div class="flex gap-6">
+<span class="flex items-center gap-1.5"><span class="size-2 bg-green-500 rounded-full"></span> Servidor Central: Online</span>
+<span>Versão ERP: v4.2.0-DA-Angola</span>
+</div>
+<div>
+<span>Zênite360 © 2024 - Projecto de Modernização Hospitalar</span>
+</div>
+</footer>
+</body></html>

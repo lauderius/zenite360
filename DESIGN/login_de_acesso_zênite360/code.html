@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login de Acesso Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                        "deep-navy": "#002147",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .bg-mesh {
+            background-color: #002147;
+            background-image: radial-gradient(at 0% 0%, hsla(210,100%,15%,1) 0, transparent 50%), 
+                              radial-gradient(at 50% 0%, hsla(210,100%,10%,1) 0, transparent 50%), 
+                              radial-gradient(at 100% 0%, hsla(212,100%,20%,1) 0, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<!-- Main Container with custom gradient background -->
+<div class="relative min-h-screen w-full flex flex-col items-center justify-center bg-mesh p-4">
+<!-- Header / Logo Area (Simplified TopNavBar behavior) -->
+<div class="absolute top-0 left-0 w-full px-6 py-6 flex justify-between items-center">
+<div class="flex items-center gap-3 text-white">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h1 class="text-white text-xl font-bold tracking-tight">Zênite360</h1>
+</div>
+<div class="hidden md:flex items-center gap-2 text-white/60 text-sm">
+<span class="material-symbols-outlined text-sm">lan</span>
+<span>Rede Local Activa</span>
+</div>
+</div>
+<!-- Authentication Card -->
+<main class="w-full max-w-[440px] bg-[#111418]/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+<!-- Header Image Component -->
+<div class="w-full h-32 bg-center bg-cover flex flex-col justify-end" data-alt="Abstract medical technology blue gradient pattern" style='background-image: linear-gradient(to bottom, rgba(0,33,71,0.2), rgba(17,20,24,1)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZOiTulW6ZBEsWP18UTxwrZCHYhos8vWGvFtckjFkG-f5go8GRE4BiKcu_n3mYuxX70ftcyvpoYTRYRDNcj24MJuNMDzImnqOTq2UQ7Q436eFS8vUzMqOUcqQQrKMDjMUj2JNkCWI7pBuJSmkk0zonX2xj7F9T88GBBpRXaO2kHCAwtCVpPkUZrUxhlTb3lbFQaApQs-X8BQe1bBiTZz5RyDUEzUwZtVA2drcBFsQ7dGJifcxQoFJ2PLNjTUIG3A8Cpbw2uKcaa1Go");'>
+</div>
+<div class="px-8 pt-4 pb-10">
+<!-- Headline Text -->
+<div class="text-center mb-8">
+<h2 class="text-white text-2xl font-bold leading-tight">Login de Acesso</h2>
+<p class="text-white/50 text-sm mt-2">Sistema Integrado de Gestão Hospitalar</p>
+</div>
+<form class="space-y-5">
+<!-- TextField: Username -->
+<div class="flex flex-col gap-2">
+<label class="text-white text-sm font-medium leading-normal">Utilizador ou E-mail</label>
+<div class="relative">
+<input class="form-input w-full rounded-lg text-white border border-[#3b4754] bg-[#1c2127] focus:border-primary focus:ring-1 focus:ring-primary h-12 px-4 text-base placeholder:text-[#9dabb9]" placeholder="ex: nome.sobrenome" type="text" value=""/>
+</div>
+</div>
+<!-- TextField: Password -->
+<div class="flex flex-col gap-2">
+<label class="text-white text-sm font-medium leading-normal">Palavra-passe</label>
+<div class="flex w-full items-stretch rounded-lg group">
+<input class="form-input flex-1 rounded-l-lg text-white border border-[#3b4754] bg-[#1c2127] focus:border-primary focus:ring-1 focus:ring-primary h-12 px-4 text-base border-r-0 placeholder:text-[#9dabb9]" placeholder="Introduza a sua senha" type="password" value=""/>
+<div class="text-[#9dabb9] flex border border-[#3b4754] bg-[#1c2127] items-center justify-center px-4 rounded-r-lg border-l-0 cursor-pointer hover:text-white transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</div>
+</div>
+</div>
+<!-- Remember Me & Forgot Password -->
+<div class="flex items-center justify-between text-sm">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded border-[#3b4754] bg-[#1c2127] text-primary focus:ring-primary size-4" type="checkbox"/>
+<span class="text-white/70 group-hover:text-white transition-colors">Lembrar-me</span>
+</label>
+<a class="text-primary font-medium hover:underline" href="#">Esqueceu a palavra-passe?</a>
+</div>
+<!-- Login Button -->
+<button class="w-full flex items-center justify-center rounded-lg h-12 px-4 bg-primary hover:bg-primary/90 text-white text-base font-bold transition-all shadow-lg shadow-primary/20 mt-4" type="submit">
+<span class="truncate">Entrar no Sistema</span>
+</button>
+</form>
+<!-- Footer Info -->
+<div class="mt-8 pt-6 border-t border-white/5 text-center">
+<div class="flex items-center justify-center gap-2 text-white/40 text-[12px] uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span>Acesso Restrito • Intranet</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Page Footer -->
+<footer class="mt-8 text-white/30 text-xs text-center">
+<p>© 2024 Projecto Zênite360. Todos os direitos reservados.</p>
+<p class="mt-1">Hospital Central de Luanda - Infraestrutura de Rede</p>
+</footer>
+</div>
+</body></html>

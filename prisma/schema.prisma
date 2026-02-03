@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex"]
 }
 
 datasource db {
@@ -9,77 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Models (named to match existing prisma client usage like prisma.pacientes)
-model pacientes {
-  id         Int      @id @default(autoincrement())
-  nome       String?
-  created_at DateTime @default(now())
-  deleted_at DateTime?
-}
 
-model agendamentos {
-  id              Int      @id @default(autoincrement())
-  pacienteId      Int?
-  departamentoId  Int?
-  data_agendamento DateTime?
-  deleted_at      DateTime?
-}
 
-model consultas {
-  id           Int      @id @default(autoincrement())
-  pacienteId   Int?
-  medicoId     Int?
-  departamentoId Int?
-  data_consulta DateTime?
-  deleted_at   DateTime?
-}
 
-model prescricoes {
-  id         Int      @id @default(autoincrement())
-  pacienteId Int?
-  status     String?
-  deleted_at DateTime?
-}
-
-model artigos_stock {
-  id               Int     @id @default(autoincrement())
-  nome             String?
-  activo           Boolean @default(true)
-  quantidade_stock Int     @default(0)
-  stock_minimo     Int     @default(0)
-}
-
-model exames_solicitados {
-  id        Int      @id @default(autoincrement())
-  status    String?
-  created_at DateTime @default(now())
-}
-
-model usuarios {
-  id            Int      @id @default(autoincrement())
-  username      String   @unique
-  email         String?
-  password_hash String?
-  criado_em     DateTime @default(now())
-}
-
-model funcionarios {
-  id                 Int      @id @default(autoincrement())
-  nomeCompleto       String?
-  cargo              String?
-  nivelAcesso        String?
-  departamentoId     Int?
-  dataNascimento     DateTime?
-  emailInstitucional String?
-}
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "mysql"
-}
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model agendamentos {
@@ -585,9 +518,12 @@ model sessions {
 model utilizadores {
   id                                                                          BigInt               @id @default(autoincrement()) @db.UnsignedBigInt
   name                                                                        String               @db.VarChar(255)
+  username                                                                    String               @unique @db.VarChar(255)
   email                                                                       String               @unique(map: "utilizadores_email_unique") @db.VarChar(255)
   email_verified_at                                                           DateTime?            @db.Timestamp(0)
   password                                                                    String               @db.VarChar(255)
+  numero_bi                                                                   String?              @unique @db.VarChar(20)
+  especialidade                                                               String?              @db.VarChar(100)
   remember_token                                                              String?              @db.VarChar(100)
   created_at                                                                  DateTime?            @db.Timestamp(0)
   updated_at                                                                  DateTime?            @db.Timestamp(0)

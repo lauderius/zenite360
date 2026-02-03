@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monitorização de Tráfego Intranet Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0a0e14",
+                        "card-dark": "#161e27",
+                        "accent-success": "#0bda5e",
+                        "accent-warning": "#fa6238",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-grid {
+            background-image: radial-gradient(#27303a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="w-64 bg-primary flex flex-col justify-between p-4 border-r border-slate-800 shrink-0">
+<div class="flex flex-col gap-8">
+<div class="flex gap-3 items-center px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-slate-700" data-alt="Zênite360 Hospital ERP Logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC7lLy_ISAZ9jAwQr2LgokD5BCGbmC8RHfwHrq4IJzhT63Pd8aFIL2JgrgS7OgZfDHjrahT3L83ALJ6hH9UkU6qYqHr0lwBJ7Fiy725gNycCDvwI5QeqRJBHPz60JB32YaIRkSjXFvxIAS9-WdFX_dPnR6Pff6rqsod8Kukq3_4ze65MyZE5APqzKNnXJ2X6yNE-Izl1FwDT3_DAlPYEwTSwT_T9MoqhWgfWI-0d65bTY_DWu4UFh-1jl3XOq1bCPAU3uUsblKb8rHD");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-none">Zênite360</h1>
+<p class="text-slate-400 text-xs font-normal mt-1">Hospital ERP Angola</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/10 text-white cursor-pointer hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard Geral</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 cursor-pointer hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-lg">lan</span>
+<p class="text-sm font-medium leading-normal">Topologia</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 cursor-pointer hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-lg">dns</span>
+<p class="text-sm font-medium leading-normal">Servidores Locais</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 cursor-pointer hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-lg">security</span>
+<p class="text-sm font-medium leading-normal">Segurança de Rede</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 cursor-pointer hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-lg">assessment</span>
+<p class="text-sm font-medium leading-normal">Relatórios de Tráfego</p>
+</div>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<div class="p-3 bg-white/5 rounded-lg border border-white/10">
+<p class="text-xs text-slate-400 mb-1">Status do Sistema</p>
+<div class="flex items-center gap-2">
+<div class="size-2 bg-accent-success rounded-full animate-pulse"></div>
+<span class="text-xs font-medium text-white">Rede Operacional</span>
+</div>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-slate-100 text-primary text-sm font-bold transition-all hover:bg-white">
+<span class="truncate">Suporte Técnico</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto bg-background-light dark:bg-background-dark">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-8 py-3">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-6 text-primary dark:text-blue-400">
+<span class="material-symbols-outlined text-2xl">monitoring</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">Monitorização de Tráfego Intranet</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center bg-slate-200 dark:bg-slate-800 rounded-lg px-3 py-1.5 w-64 border border-transparent focus-within:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-slate-500 text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-500" placeholder="Pesquisar terminal ou sector..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="p-2 bg-slate-200 dark:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors relative">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-1 right-1 size-2 bg-accent-warning rounded-full border border-background-dark"></span>
+</button>
+<button class="p-2 bg-slate-200 dark:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+<div class="h-8 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
+<button class="flex items-center gap-2 p-1 pr-3 bg-slate-200 dark:bg-slate-800 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<div class="size-7 rounded-full bg-primary flex items-center justify-center text-[10px] text-white font-bold">IT</div>
+<span class="text-xs font-semibold">Admin_Hospital</span>
+</button>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-8 max-w-[1600px] mx-auto w-full">
+<!-- KPI Stats Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-white dark:bg-card-dark rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Terminais Ativos</p>
+<span class="material-symbols-outlined text-primary dark:text-blue-400 text-xl">devices</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold">142</p>
+</div>
+<div class="mt-4 flex items-center gap-2 text-xs">
+<span class="text-accent-success font-bold flex items-center"><span class="material-symbols-outlined text-xs">trending_up</span> 5%</span>
+<span class="text-slate-400">vs última hora</span>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Latência Média</p>
+<span class="material-symbols-outlined text-primary dark:text-blue-400 text-xl">speed</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold">12<span class="text-lg font-medium text-slate-500">ms</span></p>
+</div>
+<div class="mt-4 flex items-center gap-2 text-xs">
+<span class="text-accent-success font-bold flex items-center"><span class="material-symbols-outlined text-xs">trending_down</span> 2%</span>
+<span class="text-slate-400">estável</span>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark rounded-xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Carga do Servidor Local</p>
+<span class="material-symbols-outlined text-primary dark:text-blue-400 text-xl">storage</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold">45%</p>
+</div>
+<div class="mt-4 w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary dark:bg-blue-500 h-full w-[45%]"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark rounded-xl p-5 border-2 border-accent-warning/30 bg-accent-warning/5 shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<p class="text-accent-warning text-sm font-bold uppercase tracking-wider">Alertas de IP</p>
+<span class="material-symbols-outlined text-accent-warning text-xl">warning</span>
+</div>
+<p class="text-slate-900 dark:text-white text-3xl font-bold">03</p>
+</div>
+<div class="mt-4 flex items-center gap-2 text-xs">
+<span class="text-accent-warning font-bold">Ação necessária</span>
+<span class="text-slate-400 italic">Conflito detectado</span>
+</div>
+</div>
+</div>
+<!-- Main Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Real-time Traffic -->
+<div class="lg:col-span-2 bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col">
+<div class="p-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500">timeline</span>
+                                Tráfego em Tempo Real (Uplink/Downlink)
+                            </h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-1.5">
+<div class="size-2 bg-blue-500 rounded-full"></div>
+<span class="text-xs text-slate-500">Downlink</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="size-2 bg-emerald-500 rounded-full"></div>
+<span class="text-xs text-slate-500">Uplink</span>
+</div>
+</div>
+</div>
+<div class="p-6 h-72 flex flex-col justify-end relative chart-grid">
+<!-- SVG Chart Simulation -->
+<svg class="absolute inset-x-0 bottom-10 w-full h-48 px-6" preserveaspectratio="none" viewbox="0 0 1000 200">
+<path d="M0 150 Q 50 140, 100 160 T 200 120 T 300 140 T 400 80 T 500 100 T 600 40 T 700 90 T 800 60 T 900 70 T 1000 30" fill="none" stroke="#3b82f6" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0 180 Q 50 170, 100 185 T 200 160 T 300 175 T 400 140 T 500 155 T 600 120 T 700 145 T 800 130 T 900 140 T 1000 110" fill="none" stroke="#10b981" stroke-dasharray="4" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="flex justify-between mt-4 text-[10px] font-bold text-slate-500 dark:text-slate-500 border-t border-slate-100 dark:border-slate-800 pt-4">
+<span>14:00</span><span>14:15</span><span>14:30</span><span>14:45</span><span>15:00</span><span>15:15</span><span>15:30</span>
+</div>
+</div>
+</div>
+<!-- Sector Connections Bar Chart -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col">
+<div class="p-5 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500">bar_chart</span>
+                                Conexões por Sector
+                            </h3>
+</div>
+<div class="p-6 flex-1 flex flex-col justify-between">
+<div class="space-y-4">
+<div class="space-y-1">
+<div class="flex justify-between text-xs font-medium">
+<span class="dark:text-slate-300">DG (Direção Geral)</span>
+<span class="dark:text-slate-400">12</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+<div class="bg-primary dark:bg-blue-600 h-full rounded-full" style="width: 40%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-xs font-medium">
+<span class="dark:text-slate-300">Farmácia</span>
+<span class="dark:text-slate-400">28</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+<div class="bg-primary dark:bg-blue-600 h-full rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-xs font-medium">
+<span class="dark:text-slate-300">Enfermagem</span>
+<span class="dark:text-slate-400">45</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+<div class="bg-primary dark:bg-blue-600 h-full rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-xs font-medium">
+<span class="dark:text-slate-300">Laboratório</span>
+<span class="dark:text-slate-400">18</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+<div class="bg-primary dark:bg-blue-600 h-full rounded-full" style="width: 50%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-xs font-medium">
+<span class="dark:text-slate-300">Urgência</span>
+<span class="dark:text-slate-400">32</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden">
+<div class="bg-primary dark:bg-blue-600 h-full rounded-full" style="width: 72%"></div>
+</div>
+</div>
+</div>
+<p class="text-[10px] text-slate-500 italic mt-4 text-center">Dados actualizados a cada 60s</p>
+</div>
+</div>
+</div>
+<!-- Network Topology Simulation -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500">account_tree</span>
+                            Topologia da Rede Hospitalar (Estado dos Terminais)
+                        </h3>
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded text-[10px] font-bold bg-accent-success/20 text-accent-success uppercase">Online</span>
+<span class="px-2 py-1 rounded text-[10px] font-bold bg-accent-warning/20 text-accent-warning uppercase">Aviso</span>
+</div>
+</div>
+<div class="p-8 h-64 bg-slate-50 dark:bg-[#0d131b] flex items-center justify-center relative overflow-hidden">
+<!-- Simulated Grid of Nodes -->
+<div class="grid grid-cols-10 gap-6 opacity-80">
+<!-- Generate a few simulated nodes -->
+<div class="size-10 rounded-lg bg-card-dark border border-accent-success flex items-center justify-center shadow-lg shadow-accent-success/10">
+<span class="material-symbols-outlined text-accent-success text-lg">desktop_windows</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-accent-success flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-success text-lg">desktop_windows</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-accent-warning flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-accent-warning text-lg">print</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-accent-success flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-success text-lg">desktop_windows</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-slate-700 flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-slate-500 text-lg">desktop_windows</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-accent-success flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-success text-lg">tablet_mac</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-accent-success flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-success text-lg">desktop_windows</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-accent-success flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-success text-lg">medical_services</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-accent-success flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-success text-lg">desktop_windows</span>
+</div>
+<div class="size-10 rounded-lg bg-card-dark border border-accent-success flex items-center justify-center">
+<span class="material-symbols-outlined text-accent-success text-lg">desktop_windows</span>
+</div>
+</div>
+<div class="absolute inset-0 pointer-events-none border border-primary/5 rounded-xl"></div>
+<p class="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-slate-500 font-medium">Visualização Estática da Sub-rede Local</p>
+</div>
+</div>
+<!-- Recent Events Table -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden mb-8">
+<div class="p-5 border-b border-slate-100 dark:border-slate-800">
+<h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500">list_alt</span>
+                            Eventos Recentes da Intranet
+                        </h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 font-semibold uppercase text-[11px] tracking-wider">
+<th class="px-6 py-4">Horário</th>
+<th class="px-6 py-4">Sector</th>
+<th class="px-6 py-4">Evento / Acção</th>
+<th class="px-6 py-4">IP Address</th>
+<th class="px-6 py-4">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">15:42:01</td>
+<td class="px-6 py-4 font-medium dark:text-slate-200">Sector SF (Farmácia)</td>
+<td class="px-6 py-4 dark:text-slate-300">Nova ligação detectada (Terminal-F3)</td>
+<td class="px-6 py-4 font-mono text-xs dark:text-slate-500">192.168.1.142</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-accent-success font-medium">
+<span class="size-1.5 bg-accent-success rounded-full"></span> Conectado
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">15:39:45</td>
+<td class="px-6 py-4 font-medium dark:text-slate-200">Administração</td>
+<td class="px-6 py-4 dark:text-slate-300">Tentativa de acesso não autorizado (SSH)</td>
+<td class="px-6 py-4 font-mono text-xs dark:text-slate-500">192.168.1.201</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-accent-warning font-medium">
+<span class="size-1.5 bg-accent-warning rounded-full"></span> Bloqueado
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">15:35:12</td>
+<td class="px-6 py-4 font-medium dark:text-slate-200">Direção Geral</td>
+<td class="px-6 py-4 dark:text-slate-300">Backup diário de base de dados concluído</td>
+<td class="px-6 py-4 font-mono text-xs dark:text-slate-500">192.168.1.10</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-blue-400 font-medium">
+<span class="size-1.5 bg-blue-400 rounded-full"></span> Sistema
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">15:28:33</td>
+<td class="px-6 py-4 font-medium dark:text-slate-200">Enfermagem - Ala B</td>
+<td class="px-6 py-4 dark:text-slate-300">Desconexão inesperada de terminal</td>
+<td class="px-6 py-4 font-mono text-xs dark:text-slate-500">192.168.2.55</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-slate-500 font-medium">
+<span class="size-1.5 bg-slate-500 rounded-full"></span> Offline
+                                        </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-3 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+<button class="text-xs font-bold text-primary dark:text-blue-400 hover:underline">Ver todos os eventos logados</button>
+</div>
+</div>
+</div>
+<footer class="mt-auto px-8 py-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-[10px] text-slate-500">
+<p>© 2024 Zênite360 ERP. Gestão Hospitalar Avançada - Angola.</p>
+<div class="flex gap-4">
+<span>IP do Servidor: 10.0.0.1</span>
+<span>Versão: 4.2.0-STABLE</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

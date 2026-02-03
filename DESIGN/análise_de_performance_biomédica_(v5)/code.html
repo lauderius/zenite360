@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Análise de Performance Biomédica - Projecto Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#002147",
+                        "primary-light": "#003366",
+                        "secondary": "#0bda5e",
+                        "warning": "#fa6238",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#1a2634",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        sans: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for dark mode */
+        .dark ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0f1823;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #27303a;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="h-16 bg-primary dark:bg-primary border-b border-primary-light flex items-center justify-between px-6 shrink-0 z-20">
+<div class="flex items-center gap-4">
+<div class="size-8 text-white">
+<svg class="h-full w-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold tracking-tight">Projecto Zênite360</h2>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-white/80 hover:text-white text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-white/80 hover:text-white text-sm font-medium transition-colors" href="#">Relatórios</a>
+<a class="text-white/80 hover:text-white text-sm font-medium transition-colors" href="#">Admin</a>
+</nav>
+<div class="h-6 w-px bg-white/20"></div>
+<div class="flex items-center gap-3">
+<button class="relative p-2 text-white/80 hover:text-white transition-colors rounded-full hover:bg-white/10">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border border-primary"></span>
+</button>
+<button class="flex items-center gap-2 pl-2 pr-1 py-1 rounded-full hover:bg-white/10 transition-colors">
+<span class="text-sm font-medium text-white hidden sm:block">Eng. Manuel Rocha</span>
+<div class="size-8 rounded-full bg-slate-300 bg-center bg-cover border border-white/20" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCktH2OsveF7OkY9tqDucHhtTCgB9QNVElTuYsapfN1dSZJyW3ROhv6u9yV4vd__So-4BAQBmQYWswfRLIyYGo0a6bt7BTiX84qDuVzoiMFdpsRRO1lHRkA-zqUYRftITmK5YqJ1oeewhQRVhJ79Il63oM9ud_Y5SwtkBrscoJEhHQmPMAQprAr1pUMTrKrWg5Xk0MqNNPHK0URJyexFFE5IjBIhMjTHq5brgqDSiVKc9sVnArO4n8LunzaAG6S0NRcWXWda0vKptj0');"></div>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-surface-dark dark:bg-[#0b1219] flex-col hidden lg:flex border-r border-white/5">
+<div class="p-6">
+<div class="mb-6">
+<h1 class="text-white text-sm font-medium uppercase tracking-wider text-opacity-70">Gestão Biomédica</h1>
+<p class="text-slate-400 text-xs mt-1">Hospital Geral de Luanda</p>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary text-white shadow-lg shadow-primary/20" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Visão Geral</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-secondary transition-colors">inventory_2</span>
+<span class="text-sm font-medium">Inventário</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-secondary transition-colors">build</span>
+<span class="text-sm font-medium">Manutenção Prev.</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-secondary transition-colors">network_check</span>
+<span class="text-sm font-medium">Calibração</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-secondary transition-colors">assignment</span>
+<span class="text-sm font-medium">Ordens de Serviço</span>
+<span class="ml-auto bg-warning text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">2</span>
+</a>
+</div>
+</div>
+<div class="mt-auto p-6 border-t border-white/5">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Configurações</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Sair</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto overflow-x-hidden bg-background-light dark:bg-background-dark p-6 lg:p-10">
+<div class="max-w-7xl mx-auto flex flex-col gap-8">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Performance Biomédica</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Análise de uptime, custos e KPIs operacionais para tomada de decisão.</p>
+</div>
+<div class="flex items-center gap-3 bg-white dark:bg-surface-dark p-1.5 rounded-lg border border-slate-200 dark:border-white/10 shadow-sm">
+<button class="px-4 py-2 text-sm font-medium rounded-md bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-white/20 transition-colors">Últimos 12 Meses</button>
+<button class="px-4 py-2 text-sm font-medium rounded-md text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">Ano Corrente</button>
+<button class="px-3 py-2 text-slate-400 hover:text-primary dark:hover:text-white">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+</button>
+</div>
+</div>
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- KPI 1: Uptime -->
+<div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-secondary">monitor_heart</span>
+</div>
+<div class="flex flex-col h-full justify-between">
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Uptime Global de Equipamentos</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white">98.2%</h3>
+<span class="text-secondary text-sm font-medium bg-secondary/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +0.5%
+                                    </span>
+</div>
+<p class="text-xs text-slate-400 mt-2">Target: 99.0%</p>
+</div>
+<div class="mt-4 h-1.5 w-full bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[98.2%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- KPI 2: Costs -->
+<div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-blue-400">payments</span>
+</div>
+<div class="flex flex-col h-full justify-between">
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Custo Total (AOA) vs Orçamento</p>
+<div class="flex items-baseline gap-2 flex-wrap">
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white">45.2M</h3>
+<span class="text-slate-400 text-sm">/ 50.0M</span>
+</div>
+<p class="text-xs text-slate-400 mt-2">90.4% do orçamento utilizado</p>
+</div>
+<div class="mt-4 h-1.5 w-full bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-blue-500 w-[90.4%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- KPI 3: Work Orders -->
+<div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-warning">pending_actions</span>
+</div>
+<div class="flex flex-col h-full justify-between">
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Ordens de Serviço Abertas</p>
+<div class="flex items-baseline gap-2">
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white">24</h3>
+<span class="text-warning text-sm font-medium bg-warning/10 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                                        Critícas: 5
+                                    </span>
+</div>
+<p class="text-xs text-slate-400 mt-2">Tempo médio de resolução: 4.2 dias</p>
+</div>
+<div class="flex mt-4 gap-1">
+<div class="h-1.5 flex-1 bg-secondary rounded-full" title="Concluídas"></div>
+<div class="h-1.5 flex-1 bg-secondary rounded-full" title="Concluídas"></div>
+<div class="h-1.5 flex-1 bg-secondary rounded-full" title="Concluídas"></div>
+<div class="h-1.5 flex-1 bg-warning rounded-full" title="Pendentes"></div>
+<div class="h-1.5 flex-1 bg-slate-200 dark:bg-white/10 rounded-full" title="Abertas"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Charts Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Line Chart -->
+<div class="lg:col-span-2 bg-white dark:bg-surface-dark p-6 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Tendência de Custo e Manutenção</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Últimos 12 Meses (Valores em Milhões AOA)</p>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<div class="flex items-center gap-1">
+<span class="size-2 rounded-full bg-primary"></span>
+<span class="text-slate-500 dark:text-slate-400">Real</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="size-2 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+<span class="text-slate-500 dark:text-slate-400">Meta</span>
+</div>
+</div>
+</div>
+<!-- CSS Chart Placeholder -->
+<div class="relative h-64 w-full flex items-end justify-between gap-2 px-2 pb-6 border-b border-slate-200 dark:border-white/10">
+<!-- Y-axis labels would go absolutely positioned on left -->
+<div class="absolute left-0 top-0 bottom-6 w-px border-l border-dashed border-slate-300 dark:border-white/10"></div>
+<div class="absolute left-0 right-0 top-[20%] h-px border-t border-dashed border-slate-300 dark:border-white/10"></div>
+<div class="absolute left-0 right-0 top-[50%] h-px border-t border-dashed border-slate-300 dark:border-white/10"></div>
+<div class="absolute left-0 right-0 top-[80%] h-px border-t border-dashed border-slate-300 dark:border-white/10"></div>
+<!-- Bar/Line Representation -->
+<div class="w-full h-full flex items-end justify-between z-10 pt-8">
+<div class="w-full flex items-end justify-between gap-2 sm:gap-4 h-full">
+<!-- Simple Bars for visual representation -->
+<div class="relative group flex-1 bg-primary/20 hover:bg-primary/30 rounded-t-sm h-[40%] transition-all">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-surface-dark text-white text-xs py-1 px-2 rounded whitespace-nowrap z-20">2.1M AOA</div>
+</div>
+<div class="relative group flex-1 bg-primary/30 hover:bg-primary/40 rounded-t-sm h-[55%] transition-all"></div>
+<div class="relative group flex-1 bg-primary/20 hover:bg-primary/30 rounded-t-sm h-[45%] transition-all"></div>
+<div class="relative group flex-1 bg-primary/40 hover:bg-primary/50 rounded-t-sm h-[60%] transition-all"></div>
+<div class="relative group flex-1 bg-primary/30 hover:bg-primary/40 rounded-t-sm h-[50%] transition-all"></div>
+<div class="relative group flex-1 bg-primary/50 hover:bg-primary/60 rounded-t-sm h-[70%] transition-all">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-surface-dark text-white text-xs py-1 px-2 rounded whitespace-nowrap z-20">3.8M AOA</div>
+</div>
+<div class="relative group flex-1 bg-primary/40 hover:bg-primary/50 rounded-t-sm h-[65%] transition-all"></div>
+<div class="relative group flex-1 bg-primary/30 hover:bg-primary/40 rounded-t-sm h-[48%] transition-all"></div>
+<div class="relative group flex-1 bg-primary/20 hover:bg-primary/30 rounded-t-sm h-[42%] transition-all"></div>
+<div class="relative group flex-1 bg-primary/60 hover:bg-primary/70 rounded-t-sm h-[80%] transition-all">
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-surface-dark text-white text-xs py-1 px-2 rounded whitespace-nowrap z-20">4.5M AOA</div>
+</div>
+<div class="relative group flex-1 bg-primary/50 hover:bg-primary/60 rounded-t-sm h-[75%] transition-all"></div>
+<div class="relative group flex-1 bg-primary/40 hover:bg-primary/50 rounded-t-sm h-[62%] transition-all"></div>
+</div>
+</div>
+<!-- Trend Line (SVG overlay) -->
+<svg class="absolute inset-0 h-full w-full pointer-events-none pb-6 px-2 pt-8" preserveaspectratio="none">
+<path d="M0,80 L30,70 L60,75 L90,50 L120,60 L150,40 L180,45 L210,65 L240,70 L270,30 L300,35 L330,50 L360,40 L390,45 L420,35 L450,20 L480,30 L510,40 L540,50 L570,45 L600,35 L630,40 L660,30 L690,25 L720,20 L750,30 L780,40 L810,50 L840,45 L870,35 L900,40 L930,30 L960,25 L990,20 L1020,30 L1050,40 L1080,50 L1110,45 L1140,35 L1170,40 L1200,30" fill="none" opacity="0.8" stroke="#00c2ff" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+<div class="flex justify-between mt-2 px-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+<span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span><span>Nov</span><span>Dez</span>
+</div>
+</div>
+<!-- Donut Chart -->
+<div class="bg-white dark:bg-surface-dark p-6 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm flex flex-col">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-1">Distribuição de Falhas</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Por Fabricante (Total: 142)</p>
+<div class="flex-1 flex items-center justify-center relative">
+<!-- CSS Conic Gradient Donut -->
+<div class="size-48 rounded-full relative" style="background: conic-gradient(#002147 0% 30%, #005bb5 30% 55%, #0bda5e 55% 75%, #fa6238 75% 90%, #94a3b8 90% 100%);">
+<div class="absolute inset-4 bg-white dark:bg-surface-dark rounded-full flex items-center justify-center flex-col z-10">
+<span class="text-3xl font-bold text-slate-900 dark:text-white">142</span>
+<span class="text-xs text-slate-500 uppercase font-semibold">Falhas</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-y-3 mt-6">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-primary"></span>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 dark:text-slate-400">Siemens</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">30%</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-[#005bb5]"></span>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 dark:text-slate-400">GE Healthcare</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">25%</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-secondary"></span>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 dark:text-slate-400">Dräger</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">20%</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-warning"></span>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 dark:text-slate-400">Mindray</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">15%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-white/5 shadow-sm overflow-hidden flex flex-col">
+<div class="p-6 border-b border-slate-200 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Equipamentos com Maior Incidência de Falhas</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Análise de recorrência para manutenção preventiva.</p>
+</div>
+<button class="px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary dark:text-blue-300 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 self-start sm:self-auto">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Exportar Relatório
+                        </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-primary/20 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-300 font-semibold">
+<th class="px-6 py-4 rounded-tl-lg">ID do Ativo</th>
+<th class="px-6 py-4">Nome do Equipamento</th>
+<th class="px-6 py-4">Fabricante</th>
+<th class="px-6 py-4 text-center cursor-pointer group hover:text-white transition-colors">
+<div class="flex items-center justify-center gap-1">
+                                            Nº Falhas
+                                            <span class="material-symbols-outlined text-[14px] opacity-0 group-hover:opacity-100">arrow_downward</span>
+</div>
+</th>
+<th class="px-6 py-4 text-center">Status</th>
+<th class="px-6 py-4 text-right rounded-tr-lg">Ação</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-white/5 text-sm text-slate-700 dark:text-slate-300">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">EQ-2023-089</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Raio-X Fixo Multix</td>
+<td class="px-6 py-4">Siemens</td>
+<td class="px-6 py-4 text-center font-bold text-slate-900 dark:text-white">5</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-400">
+                                            Crítico
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-medium">Ver Detalhes</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">EQ-2022-112</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Ventilador Pulmonar Evita</td>
+<td class="px-6 py-4">Dräger</td>
+<td class="px-6 py-4 text-center font-bold text-slate-900 dark:text-white">3</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-500/20 dark:text-yellow-400">
+                                            Em Análise
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-medium">Ver Detalhes</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">EQ-2021-045</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Monitor Multiparamétrico</td>
+<td class="px-6 py-4">Mindray</td>
+<td class="px-6 py-4 text-center font-bold text-slate-900 dark:text-white">3</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-500/20 dark:text-blue-400">
+                                            Agendado
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-medium">Ver Detalhes</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">EQ-2023-002</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Tomógrafo Computadorizado</td>
+<td class="px-6 py-4">GE Healthcare</td>
+<td class="px-6 py-4 text-center font-bold text-slate-900 dark:text-white">2</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-400">
+                                            Resolvido
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-medium">Ver Detalhes</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">EQ-2022-291</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Bomba de Infusão</td>
+<td class="px-6 py-4">B. Braun</td>
+<td class="px-6 py-4 text-center font-bold text-slate-900 dark:text-white">2</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-500/20 dark:text-yellow-400">
+                                            Em Análise
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary dark:text-blue-400 hover:underline text-sm font-medium">Ver Detalhes</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-white/5 flex items-center justify-between">
+<span class="text-sm text-slate-500 dark:text-slate-400">Mostrando 1-5 de 24 items</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded border border-slate-300 dark:border-white/10 text-slate-500 dark:text-slate-400 text-sm hover:bg-slate-100 dark:hover:bg-white/10 disabled:opacity-50">Anterior</button>
+<button class="px-3 py-1 rounded border border-slate-300 dark:border-white/10 text-slate-500 dark:text-slate-400 text-sm hover:bg-slate-100 dark:hover:bg-white/10">Próximo</button>
+</div>
+</div>
+</div>
+</div>
+<footer class="max-w-7xl mx-auto mt-12 py-6 border-t border-slate-200 dark:border-white/10 text-center md:text-left flex flex-col md:flex-row justify-between items-center text-slate-500 dark:text-slate-600 text-sm">
+<p>© 2024 Projecto Zênite360. Todos os direitos reservados.</p>
+<div class="flex gap-6 mt-2 md:mt-0">
+<a class="hover:text-slate-800 dark:hover:text-slate-400" href="#">Suporte</a>
+<a class="hover:text-slate-800 dark:hover:text-slate-400" href="#">Documentação</a>
+<a class="hover:text-slate-800 dark:hover:text-slate-400" href="#">Privacidade</a>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

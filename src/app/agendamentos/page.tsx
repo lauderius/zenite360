@@ -1,302 +1,325 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import {
+  Calendar,
+  Clock,
+  Plus,
+  Search,
+  Filter,
+  MoreVertical,
+  ChevronLeft,
+  ChevronRight,
+  User,
+  Stethoscope,
+  Activity,
+  CheckCircle2,
+  XCircle,
+  AlertCircle
+} from 'lucide-react';
+import { MainLayout, PageHeader, PageContent } from '@/components/layouts';
+import { Card, CardHeader, CardTitle, CardContent, Badge, Button, Input, Modal, Select, Spinner } from '@/components/ui';
 import Link from 'next/link';
-import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs } from '@/components/ui';
-import { Icons } from '@/components/ui/icons';
-import type { StatusAgendamento, TipoAtendimento } from '@/types';
-
-interface Agendamento {
-  id: number;
-  codigo: string;
-  paciente: string;
-  tipoAtendimento: TipoAtendimento;
-  dataAgendamento: Date;
-  horaInicio: string;
-  horaFim: string;
-  medico: string;
-  departamento: string;
-  status: StatusAgendamento;
-}
-
 import { api } from '@/services/api';
 
-const statusConfig: Record<StatusAgendamento, { label: string; variant: 'default' | 'primary' | 'success' | 'warning' | 'danger' }> = {
-  AGENDADO: { label: 'Agendado', variant: 'default' },
-  CONFIRMADO: { label: 'Confirmado', variant: 'primary' },
-  EM_ESPERA: { label: 'Em Espera', variant: 'warning' },
-  EM_ATENDIMENTO: { label: 'Em Atendimento', variant: 'warning' },
-  ATENDIDO: { label: 'Atendido', variant: 'success' },
-  REAGENDADO: { label: 'Reagendado', variant: 'primary' },
-  CANCELADO: { label: 'Cancelado', variant: 'danger' },
-  NAO_COMPARECEU: { label: 'Não Compareceu', variant: 'danger' },
-};
+export default function AgendamentosPage() {
+  const [agendamentos, setAgendamentos] = useState<any[]>([]);
+  const [pacientes, setPacientes] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [view, setView] = useState<'lista' | 'calendario'>('lista');
 
-const tipoConfig: Record<TipoAtendimento, string> = {
-  CONSULTA_EXTERNA: 'Consulta Externa',
-  URGENCIA: 'Urgência',
-  EMERGENCIA: 'Emergência',
-  INTERNAMENTO: 'Internamento',
-  CIRURGIA: 'Cirurgia',
-  EXAME: 'Exame',
-  PROCEDIMENTO: 'Procedimento',
-  RETORNO: 'Retorno',
-  DOMICILIARIO: 'Domiciliário',
-};
-
-// Componente de Calendário Simples
-function CalendarioSemanal({ agendamentos, dataAtual }: { agendamentos: Agendamento[]; dataAtual: Date }) {
-  const diasSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  const horasTrabalho = ['08:00', '09:00', '10:00', '11:00', '12:00', '14:00', '15:00', '16:00', '17:00'];
-
-  // Gerar dias da semana atual
-  const inicioSemana = new Date(dataAtual);
-  inicioSemana.setDate(dataAtual.getDate() - dataAtual.getDay());
-  
-  const diasDaSemana = Array.from({ length: 7 }, (_, i) => {
-    const dia = new Date(inicioSemana);
-    dia.setDate(inicioSemana.getDate() + i);
-    return dia;
+  // New Appointment Form State
+  const [formData, setFormData] = useState({
+    paciente_id: '',
+    medico_id: '1', // Placeholder doctor ID
+    data_agendamento: '',
+    hora_inicio: '',
+    tipo_agendamento: 'Consulta',
+    especialidade: 'Clínica Geral',
+    motivo_consulta: ''
   });
 
-  return (
-    <div className="overflow-x-auto">
-      <div className="min-w-[800px]">
-        {/* Header com dias */}
-        <div className="grid grid-cols-8 border-b border-slate-200 dark:border-slate-700">
-          <div className="p-3 text-center text-sm font-medium text-slate-500"></div>
-          {diasDaSemana.map((dia, index) => (
-            <div
-              key={index}
-              className={`p-3 text-center ${
-                dia.toDateString() === new Date().toDateString()
-                  ? 'bg-sky-50 dark:bg-sky-900/20'
-                  : ''
-              }`}
-            >
-              <p className="text-xs text-slate-500">{diasSemana[dia.getDay()]}</p>
-              <p className={`text-lg font-semibold ${
-                dia.toDateString() === new Date().toDateString()
-                  ? 'text-sky-600'
-                  : 'text-slate-700 dark:text-slate-200'
-              }`}>
-                {dia.getDate()}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* Grid de horários */}
-        {horasTrabalho.map((hora) => (
-          <div key={hora} className="grid grid-cols-8 border-b border-slate-100 dark:border-slate-700">
-            <div className="p-2 text-center text-xs text-slate-500 bg-slate-50 dark:bg-slate-800/50">
-              {hora}
-            </div>
-            {diasDaSemana.map((dia, index) => (
-              <div key={index} className="p-1 min-h-[60px] border-l border-slate-100 dark:border-slate-700">
-                {agendamentos
-                  .filter(
-                    (ag) =>
-                      new Date(ag.dataAgendamento).toDateString() === dia.toDateString() &&
-                      ag.horaInicio.startsWith(hora.split(':')[0])
-                  )
-                  .map((ag) => (
-                    <div
-                      key={ag.id}
-                      className="p-1 mb-1 text-xs bg-sky-100 dark:bg-sky-900/30 rounded border-l-2 border-sky-500 cursor-pointer hover:bg-sky-200 dark:hover:bg-sky-900/50"
-                    >
-                      <p className="font-medium text-sky-700 dark:text-sky-300 truncate">
-                        {ag.paciente.split(' ')[0]}
-                      </p>
-                      <p className="text-sky-600 dark:text-sky-400 truncate">{ag.horaInicio}</p>
-                    </div>
-                  ))}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// Componente de Lista
-function ListaAgendamentos({ agendamentos }: { agendamentos: Agendamento[] }) {
-  return (
-    <div className="space-y-3">
-      {agendamentos.map((ag) => (
-        <div
-          key={ag.id}
-          className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md transition-shadow"
-        >
-          <div className="flex items-center gap-4">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-sky-600">{ag.horaInicio}</p>
-              <p className="text-xs text-slate-500">{ag.horaFim}</p>
-            </div>
-            <div className="h-12 w-px bg-slate-200 dark:bg-slate-700"></div>
-            <div>
-              <p className="font-medium text-slate-700 dark:text-slate-200">{ag.paciente}</p>
-              <p className="text-sm text-slate-500">
-                {ag.medico} • {ag.departamento}
-              </p>
-              <p className="text-xs text-slate-400">{tipoConfig[ag.tipoAtendimento]}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Badge variant={statusConfig[ag.status].variant}>
-              {statusConfig[ag.status].label}
-            </Badge>
-            <Button variant="ghost" size="icon">
-              <Icons.MoreVertical size={16} />
-            </Button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export default function AgendamentosPage() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
-  const [dataAtual, setDataAtual] = useState(new Date());
-
-
-  useEffect(() => {
-    async function fetchAgendamentos() {
-      try {
-        const data = await api.get<Agendamento[]>('/agendamentos');
-        setAgendamentos(data);
-      } catch (error) {
-        // TODO: adicionar feedback de erro
-        setAgendamentos([]);
-      } finally {
-        setIsLoading(false);
-      }
+  const fetchAgendamentos = async () => {
+    setIsLoading(true);
+    try {
+      const res = await api.get<{ data: any[] }>('/agendamentos');
+      setAgendamentos(res.data || []);
+    } catch (error) {
+      console.error('Erro ao buscar agendamentos:', error);
+      setAgendamentos([]);
+    } finally {
+      setIsLoading(false);
     }
-    fetchAgendamentos();
-  }, []);
-
-  const navegarData = (direcao: 'anterior' | 'proximo') => {
-    setDataAtual((prev) => {
-      const novaData = new Date(prev);
-      novaData.setDate(prev.getDate() + (direcao === 'proximo' ? 7 : -7));
-      return novaData;
-    });
   };
 
-  if (isLoading) {
-    return (
-      <MainLayout>
-        <div className="flex items-center justify-center h-96">
-          <Spinner size="lg" />
-        </div>
-      </MainLayout>
-    );
-  }
+  const fetchPacientes = async () => {
+    try {
+      const res = await api.get<{ data: any[] }>('/pacientes');
+      setPacientes(res.data || []);
+    } catch (error) {
+      console.error('Erro ao buscar pacientes:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAgendamentos();
+    fetchPacientes();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      await api.post('/agendamentos', formData);
+      setIsModalOpen(false);
+      setFormData({
+        paciente_id: '',
+        medico_id: '1',
+        data_agendamento: '',
+        hora_inicio: '',
+        tipo_agendamento: 'Consulta',
+        especialidade: 'Clínica Geral',
+        motivo_consulta: ''
+      });
+      fetchAgendamentos();
+    } catch (error) {
+      console.error('Erro ao criar agendamento:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'Pendente': return <Badge variant="warning" className="uppercase text-[9px] font-black">Pendente</Badge>;
+      case 'Confirmado': return <Badge variant="primary" className="uppercase text-[9px] font-black">Confirmado</Badge>;
+      case 'Em_Andamento': return <Badge variant="info" className="uppercase text-[9px] font-black">Em Atendimento</Badge>;
+      case 'Concluido': return <Badge variant="success" className="uppercase text-[9px] font-black">Concluido</Badge>;
+      case 'Cancelado': return <Badge variant="danger" className="uppercase text-[9px] font-black">Cancelado</Badge>;
+      default: return <Badge variant="secondary" className="uppercase text-[9px] font-black">{status}</Badge>;
+    }
+  };
 
   return (
     <MainLayout>
       <PageHeader
-        title="Agendamentos"
-        description="Gestão de consultas e procedimentos agendados"
+        title="Agenda Médica"
+        description="Gestão centralizada de consultas, retornos e procedimentos."
         actions={
-          <Link href="/agendamentos/novo">
-            <Button>
-              <Icons.Plus size={16} />
-              Novo Agendamento
-            </Button>
-          </Link>
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="gradient-brand border-none rounded-2xl font-bold px-6 shadow-lg shadow-brand-500/20 group"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Novo Agendamento
+          </Button>
         }
       />
 
       <PageContent>
-        {/* Navegação de Data */}
-        <Card className="mb-6">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Button variant="outline" size="sm" onClick={() => navegarData('anterior')}>
-                  <Icons.ChevronLeft size={16} />
-                </Button>
-                <div className="text-center">
-                  <p className="text-lg font-semibold text-slate-700 dark:text-slate-200">
-                    {dataAtual.toLocaleDateString('pt-AO', { month: 'long', year: 'numeric' })}
-                  </p>
-                  <p className="text-sm text-slate-500">
-                    Semana de {new Date(dataAtual.setDate(dataAtual.getDate() - dataAtual.getDay())).toLocaleDateString('pt-AO', { day: 'numeric', month: 'short' })}
-                  </p>
-                </div>
-                <Button variant="outline" size="sm" onClick={() => navegarData('proximo')}>
-                  <Icons.ChevronRight size={16} />
-                </Button>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" onClick={() => setDataAtual(new Date())}>
-                  Hoje
-                </Button>
-              </div>
+        {/* Modal Novo Agendamento */}
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Agendar Nova Consulta"
+          size="lg"
+        >
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Select
+                label="Paciente"
+                required
+                options={pacientes.map(p => ({ value: p.id, label: p.nome_completo }))}
+                value={formData.paciente_id}
+                onChange={(e) => setFormData({ ...formData, paciente_id: e.target.value })}
+              />
+              <Select
+                label="Especialidade"
+                options={[
+                  { value: 'Clínica Geral', label: 'Clínica Geral' },
+                  { value: 'Pediatria', label: 'Pediatria' },
+                  { value: 'Ginecologia', label: 'Ginecologia' },
+                  { value: 'Ortopedia', label: 'Ortopedia' },
+                  { value: 'Cardiologia', label: 'Cardiologia' }
+                ]}
+                value={formData.especialidade}
+                onChange={(e) => setFormData({ ...formData, especialidade: e.target.value })}
+              />
+              <Input
+                label="Data da Consulta"
+                type="date"
+                required
+                value={formData.data_agendamento}
+                onChange={(e) => setFormData({ ...formData, data_agendamento: e.target.value })}
+              />
+              <Input
+                label="Horário"
+                type="time"
+                required
+                value={formData.hora_inicio}
+                onChange={(e) => setFormData({ ...formData, hora_inicio: e.target.value })}
+              />
+              <Select
+                label="Tipo de Atendimento"
+                options={[
+                  { value: 'Consulta', label: 'Consulta de Rotina' },
+                  { value: 'Retorno', label: 'Retorno' },
+                  { value: 'Urgencia', label: 'Urgência' },
+                  { value: 'Exame', label: 'Exame' }
+                ]}
+                value={formData.tipo_agendamento}
+                onChange={(e) => setFormData({ ...formData, tipo_agendamento: e.target.value })}
+              />
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Tabs de Visualização */}
-        <Card>
-          <CardContent className="p-4">
-            <Tabs
-              tabs={[
-                {
-                  id: 'calendario',
-                  label: 'Calendário',
-                  content: <CalendarioSemanal agendamentos={agendamentos} dataAtual={dataAtual} />,
-                },
-                {
-                  id: 'lista',
-                  label: 'Lista',
-                  content: <ListaAgendamentos agendamentos={agendamentos} />,
-                },
-              ]}
-              defaultTab="calendario"
-            />
-          </CardContent>
-        </Card>
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Motivo da Consulta</label>
+              <textarea
+                className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-brand-500 outline-none transition-all min-h-[100px]"
+                placeholder="Descreva brevemente o motivo do agendamento..."
+                value={formData.motivo_consulta}
+                onChange={(e) => setFormData({ ...formData, motivo_consulta: e.target.value })}
+              />
+            </div>
 
-        {/* Resumo do Dia */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
-          <Card>
-            <CardContent className="p-4 text-center">
-              <p className="text-3xl font-bold text-sky-600">{agendamentos.length}</p>
-              <p className="text-sm text-slate-500">Total Hoje</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <p className="text-3xl font-bold text-emerald-600">
-                {agendamentos.filter((a) => a.status === 'ATENDIDO').length}
-              </p>
-              <p className="text-sm text-slate-500">Atendidos</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <p className="text-3xl font-bold text-amber-600">
-                {agendamentos.filter((a) => ['AGENDADO', 'CONFIRMADO'].includes(a.status)).length}
-              </p>
-              <p className="text-sm text-slate-500">Pendentes</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <p className="text-3xl font-bold text-red-600">
-                {agendamentos.filter((a) => a.status === 'CANCELADO').length}
-              </p>
-              <p className="text-sm text-slate-500">Cancelados</p>
-            </CardContent>
-          </Card>
+            <div className="flex justify-end gap-3 pt-4">
+              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)}>Cancelar</Button>
+              <Button type="submit" className="gradient-brand border-none" isLoading={isSubmitting}>Confirmar Agendamento</Button>
+            </div>
+          </form>
+        </Modal>
+
+        {/* View Toggle & Filters */}
+        <div className="flex flex-col xl:flex-row gap-6 mb-8 items-center justify-between">
+          <div className="flex bg-white/5 p-1.5 rounded-2xl border border-white/5">
+            <button
+              onClick={() => setView('lista')}
+              className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${view === 'lista' ? 'bg-brand-500 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+            >
+              Vista em Lista
+            </button>
+            <button
+              onClick={() => setView('calendario')}
+              className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${view === 'calendario' ? 'bg-brand-500 text-white shadow-lg' : 'text-slate-500 hover:text-slate-300'}`}
+            >
+              Vista em Calendário
+            </button>
+          </div>
+
+          <div className="flex gap-3 w-full xl:w-auto">
+            <div className="relative flex-1 xl:w-80">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <input className="input-premium pl-12 h-12 text-xs" placeholder="Pesquisar agendamento..." />
+            </div>
+            <Button variant="outline" className="h-12 w-12 rounded-2xl border-white/5">
+              <Filter className="w-4 h-4 text-slate-500" />
+            </Button>
+          </div>
         </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <StatsCard title="Total Hoje" value={agendamentos.length.toString()} icon={<Calendar className="text-brand-500" />} />
+          <StatsCard title="Atendidos" value="12" icon={<CheckCircle2 className="text-emerald-500" />} />
+          <StatsCard title="Em Espera" value="05" icon={<Clock className="text-amber-500" />} />
+          <StatsCard title="Cancelados" value="02" icon={<XCircle className="text-red-500" />} />
+        </div>
+
+        {/* Main Content */}
+        <Card className="glass-card border-none rounded-3xl overflow-hidden min-h-[500px]">
+          {isLoading ? (
+            <div className="flex items-center justify-center p-20">
+              <div className="w-12 h-12 border-4 border-brand-500/20 border-t-brand-500 rounded-full animate-spin" />
+            </div>
+          ) : view === 'lista' ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="bg-white/[0.02] text-[10px] font-black text-slate-500 uppercase tracking-widest border-b border-white/5">
+                    <th className="px-8 py-5">Horário / Data</th>
+                    <th className="px-6 py-5">Paciente</th>
+                    <th className="px-6 py-5">Especialidade / Médico</th>
+                    <th className="px-6 py-5 text-center">Status</th>
+                    <th className="px-8 py-5 text-right">Acções</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {agendamentos.map((ag) => (
+                    <tr key={ag.id} className="group hover:bg-white/[0.02] transition-colors">
+                      <td className="px-8 py-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl bg-brand-500/10 flex items-center justify-center">
+                            <Clock className="w-5 h-5 text-brand-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-black text-white">{ag.hora_inicio.substring(0, 5)}</p>
+                            <p className="text-[10px] font-bold text-slate-500 uppercase">{new Date(ag.data_agendamento).toLocaleDateString()}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-slate-400">
+                            {ag.pacientes?.nome_completo?.charAt(0)}
+                          </div>
+                          <p className="text-sm font-bold text-white uppercase tracking-tight">{ag.pacientes?.nome_completo}</p>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5">
+                        <p className="text-sm font-bold text-slate-300">{ag.especialidade}</p>
+                        <p className="text-[10px] font-black text-slate-500 uppercase mt-0.5">Dr. {ag.medicos?.name || 'Não atribuído'}</p>
+                      </td>
+                      <td className="px-6 py-5 text-center">
+                        {getStatusBadge(ag.status)}
+                      </td>
+                      <td className="px-8 py-5 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-brand-500/10 text-brand-500">
+                            <Activity className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl hover:bg-white/10 text-slate-500">
+                            <MoreVertical className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {agendamentos.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-8 py-20 text-center">
+                        <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Nenhum agendamento encontrado</p>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="p-20 text-center">
+              <Calendar className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+              <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">A vista de calendário está a ser integrada...</p>
+            </div>
+          )}
+        </Card>
       </PageContent>
     </MainLayout>
+  );
+}
+
+function StatsCard({ title, value, icon }: any) {
+  return (
+    <Card className="glass-card border-none rounded-3xl p-6">
+      <div className="flex justify-between items-start">
+        <div>
+          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">{title}</p>
+          <h3 className="text-3xl font-black text-white">{value}</h3>
+        </div>
+        <div className="p-3 rounded-2xl bg-white/5">
+          {icon}
+        </div>
+      </div>
+    </Card>
   );
 }

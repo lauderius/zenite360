@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Criação de Utilizadores - Zênite360 ERP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f5bb3",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-black leading-tight tracking-tight">Zênite360 <span class="text-primary font-normal">ERP</span></h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Painel</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Pacientes</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Consultas</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Faturação</a>
+<a class="text-slate-900 dark:text-white text-sm font-bold border-b-2 border-primary py-1" href="#">Administração</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 rounded-lg px-3 py-1.5">
+<span class="material-symbols-outlined text-slate-400 text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm placeholder:text-slate-500 w-48" placeholder="Pesquisar..." type="text"/>
+</div>
+<button class="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold text-slate-900 dark:text-white">Admin DG</p>
+<p class="text-[10px] text-primary font-medium uppercase tracking-wider">Direção Geral</p>
+</div>
+<div class="size-10 rounded-full bg-primary/20 border-2 border-primary flex items-center justify-center text-primary font-bold">
+                    AD
+                </div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark hidden md:flex flex-col p-4 shrink-0">
+<div class="mb-6 px-2">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-normal">Administração</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">Hospital Central de Luanda</p>
+</div>
+<nav class="flex flex-col gap-1 flex-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<p class="text-sm font-medium">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-white shadow-md shadow-primary/20" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1">group</span>
+<p class="text-sm font-medium">Gestão de Utilizadores</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">account_tree</span>
+<p class="text-sm font-medium">Sectores</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">analytics</span>
+<p class="text-sm font-medium">Relatórios</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">security</span>
+<p class="text-sm font-medium">Segurança</p>
+</a>
+</nav>
+<div class="pt-4 border-t border-slate-200 dark:border-slate-800 mt-4">
+<div class="bg-primary/10 rounded-lg p-3">
+<p class="text-[10px] text-primary font-bold uppercase mb-1">Acesso Restrito</p>
+<p class="text-[11px] text-slate-600 dark:text-slate-400 leading-tight">Módulo administrativo acessível apenas para perfis DG ou Admin.</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-background-dark/50">
+<div class="max-w-5xl mx-auto p-6 md:p-8">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-4 text-xs font-medium">
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary" href="#">Configurações</a>
+<span class="text-slate-300 dark:text-slate-600 material-symbols-outlined text-sm">chevron_right</span>
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary" href="#">Utilizadores</a>
+<span class="text-slate-300 dark:text-slate-600 material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-primary">Novo Utilizador</span>
+</nav>
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h1 class="text-slate-900 dark:text-white text-3xl font-black tracking-tight">Criar Novo Utilizador</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Registe novos funcionários e atribua permissões específicas de acesso ao sistema.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-sm font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-lg">list</span>
+                            Ver Lista
+                        </button>
+</div>
+</div>
+<!-- Form Grid -->
+<form class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Main Form Section -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Personal Info Section -->
+<div class="bg-white dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">person</span>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold">Dados Pessoais e Conta</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="md:col-span-2">
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Nome Completo</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary text-sm p-2.5" placeholder="Ex: António Manuel dos Santos" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">E-mail / Utilizador</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary text-sm p-2.5" placeholder="exemplo@zenite.ao" type="email"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Status da Conta</label>
+<div class="flex items-center gap-3 h-[42px]">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+<span class="ml-3 text-sm font-medium text-slate-900 dark:text-slate-300">Ativa</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Section -->
+<div class="bg-white dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">lock</span>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold">Segurança e Acesso</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Palavra-passe Temporária</label>
+<div class="relative">
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary text-sm p-2.5 pr-10" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600" type="button">
+<span class="material-symbols-outlined text-lg">visibility</span>
+</button>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Confirmar Palavra-passe</label>
+<input class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary text-sm p-2.5" placeholder="••••••••" type="password"/>
+</div>
+<div class="md:col-span-2 bg-slate-50 dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+<div class="flex justify-between items-center mb-1">
+<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Força da Palavra-passe</p>
+<p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Forte</p>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1">
+<div class="bg-emerald-500 h-1 rounded-full w-3/4"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Assignment Section -->
+<div class="bg-white dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-lg">corporate_fare</span>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold">Atribuição Institucional</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Sector (Unidade)</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary text-sm p-2.5 appearance-none">
+<option value="">Selecione o Sector</option>
+<option value="DG">Direção Geral (DG)</option>
+<option value="DC">Direção Clínica (DC)</option>
+<option value="DPC">Direção Pedagógica (DPC)</option>
+<option value="DE">Direção de Enfermagem (DE)</option>
+<option selected="" value="DA">Direção Administrativa (DA)</option>
+<option value="SF">Serviços Farmacêuticos (SF)</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Cargo / Função</label>
+<select class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg focus:ring-primary focus:border-primary text-sm p-2.5 appearance-none">
+<option value="">Selecione o Cargo</option>
+<option value="DIRETOR">Diretor</option>
+<option value="TECNICO">Técnico Superior</option>
+<option value="SUPERVISOR">Supervisor</option>
+<option selected="" value="ADMINISTRATIVO">Administrativo</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Permissions Summary -->
+<div class="flex flex-col gap-6">
+<div class="bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20 p-6 sticky top-24">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold">Resumo de Permissões</h2>
+</div>
+<p class="text-xs text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                                Baseado no cargo de <strong class="text-primary">Administrativo</strong> no sector <strong class="text-primary">DA</strong>, o utilizador terá os seguintes acessos:
+                            </p>
+<ul class="space-y-3">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-emerald-500 text-sm mt-0.5">check_circle</span>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">Faturação e Pagamentos</p>
+<p class="text-[10px] text-slate-500">Emissão de faturas, recibos e consulta de histórico financeiro.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-emerald-500 text-sm mt-0.5">check_circle</span>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">Gestão de Agenda</p>
+<p class="text-[10px] text-slate-500">Marcação e desmarcação de consultas e exames.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-emerald-500 text-sm mt-0.5">check_circle</span>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">Arquivo Digital</p>
+<p class="text-[10px] text-slate-500">Upload de documentos administrativos e consulta de guias.</p>
+</div>
+</li>
+<li class="flex items-start gap-3 opacity-40">
+<span class="material-symbols-outlined text-slate-400 text-sm mt-0.5">block</span>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">Prontuário Médico</p>
+<p class="text-[10px] text-slate-500">Acesso restrito a notas clínicas e diagnósticos.</p>
+</div>
+</li>
+</ul>
+<div class="mt-8 pt-6 border-t border-primary/10">
+<div class="flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400 italic">
+<span class="material-symbols-outlined text-sm">history</span>
+                                    Esta ação será registada no log de auditoria.
+                                </div>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined">person_add</span>
+                                Criar Utilizador
+                            </button>
+<button class="w-full bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold py-3 px-6 rounded-lg transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700" type="button">
+                                Cancelar Registo
+                            </button>
+</div>
+</div>
+</form>
+</div>
+</main>
+</div>
+</body></html>

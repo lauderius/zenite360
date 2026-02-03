@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+@theme {
+    --color-brand-50: oklch(0.97 0.01 240);
+    --color-brand-100: oklch(0.94 0.03 240);
+    --color-brand-200: oklch(0.88 0.05 240);
+    --color-brand-300: oklch(0.80 0.09 240);
+    --color-brand-400: oklch(0.70 0.14 240);
+    --color-brand-500: oklch(0.60 0.20 240);
+    --color-brand-600: oklch(0.50 0.20 240);
+    --color-brand-700: oklch(0.40 0.18 240);
+    --color-brand-800: oklch(0.30 0.15 240);
+    --color-brand-900: oklch(0.20 0.10 240);
+    --color-brand-950: oklch(0.12 0.06 240);
+}
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+:root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+}
+
+@layer base {
+    body {
+        @apply bg-slate-50 text-slate-900 antialiased selection:bg-brand-500/20 selection:text-brand-700;
+    }
+
+    .dark body {
+        @apply bg-slate-950 text-slate-100 selection:bg-brand-500/30 selection:text-brand-300;
+    }
+}
+
+/* ==========================================================================
+   Premium Components (Glassmorphism & Utilities)
+   ========================================================================== */
+@layer components {
+
+    /* Panels & Cards */
+    .glass-panel {
+        @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-sm transition-all;
+    }
+
+    .dark .glass-panel {
+        @apply bg-slate-900/70 border-white/5 shadow-xl;
+    }
+
+    .glass-card {
+        @apply bg-white/40 backdrop-blur-md border border-white/20 shadow-sm transition-all hover:bg-white/60;
+    }
+
+    .dark .glass-card {
+        @apply bg-slate-800/40 border-white/5 hover:bg-slate-800/60;
+    }
+
+    /* Typography */
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-indigo-600;
+    }
+
+    .dark .text-gradient {
+        @apply from-brand-400 to-indigo-400;
+    }
+
+    /* Form Elements */
+    .input-premium {
+        @apply bg-white/50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 focus:bg-white transition-all outline-none;
+    }
+
+    .dark .input-premium {
+        @apply bg-slate-900/50 border-white/10 text-white focus:bg-slate-900;
+    }
+
+    /* Buttons */
+    .btn-premium {
+        @apply shadow-lg shadow-brand-500/20 transition-all hover:scale-[1.02] active:scale-[0.98];
+    }
+
+    /* Scrollbar */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+.gradient-brand {
+    @apply bg-gradient-to-br from-brand-500 to-indigo-600;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom Scrollbar for non-hidden areas */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 hover:bg-slate-700;
+}

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Configuração de Sessão e Segurança Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen">
+<div class="flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-[#27303a] px-10 py-3 bg-primary text-white">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 bg-white/10 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-white">shield_person</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360</h2>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64 hidden md:block">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#9aaabc] flex border-none bg-white/10 items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-white/10 focus:border-none h-full placeholder:text-[#9aaabc] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Pesquisar..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9 hidden lg:flex">
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal" href="#">Dashboard</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal" href="#">Pacientes</a>
+<a class="text-white text-sm font-bold leading-normal border-b-2 border-white" href="#">Segurança</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal" href="#">Relatórios</a>
+</div>
+<div class="flex gap-2">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/10 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/10 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-white/20" data-alt="Avatar de administrador do hospital" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAwtlhPr1NbZ8HDBwYEMROM7tHciVDz3PGt4SJvhpD9Da-MYpxR7LJyWOtRxcfK0bzOAK0RWNCdgzKLJSHi4DLPljOid6ANO16dCf3m0rTmxJHviBYvKn9uq7zRtc1LxyStwELUPuCRFSV-XuwnhMCS05dLKaM5Cae8HjHAwNPMXReD5bPUMFRbg7g-XLMzzSubMclrGi0qI67v6HMNcVd2UaHVxtoFJlD-qZPsdAWk3VmyOnXnR5B8gF-5CoWTNGfj9tIEBLhfqBaA");'></div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- SideNavBar -->
+<aside class="w-64 border-r border-slate-200 dark:border-[#27303a] bg-background-light dark:bg-background-dark p-4 hidden md:flex flex-col justify-between">
+<div class="flex flex-col gap-6">
+<div class="flex gap-3 items-center">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-primary/10" data-alt="Logotipo do Hospital Central" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLX15qtwW4awLMMNe3YktzO3NVICkOdAthj7rtH4V-v-hKipwCXQDHgyMpK-pi07aFY748GCoNjYc_kvEB1Lcu-46JBHYTNJ9NLibfR0dyMi78k2jRPT0z0NoGLmMZLEo7HF9TnAhvk8sP81zgmy3HamSR8MmGO0dofbyVwF_BULv4H1lvCdmSGEJeGu7lG2zJny64dj-elhLCfDYwl5mKgGS-8KbZI6RCIEoiXbglRbO1nPsw8Wi3UJmuram8QD4KnWVzYzXW-KmY");'></div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-normal">Gestão IT</h1>
+<p class="text-slate-500 dark:text-[#9aaabc] text-xs font-normal leading-normal uppercase tracking-wider">Hospital Central</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Visão Geral</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="text-sm font-medium">Políticas de Sessão</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="text-sm font-medium">Audit Log</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">lock_person</span>
+<span class="text-sm font-medium">Controlo de Acesso</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" href="#">
+<span class="material-symbols-outlined">build</span>
+<span class="text-sm font-medium">Manutenção</span>
+</a>
+</nav>
+</div>
+<div class="pt-4 border-t border-slate-200 dark:border-[#27303a]">
+<div class="bg-primary/5 dark:bg-primary/20 p-3 rounded-lg">
+<p class="text-xs text-slate-500 dark:text-[#9aaabc] mb-1">Última alteração:</p>
+<p class="text-xs font-semibold">Admin: Dr. Mateus</p>
+<p class="text-[10px] text-slate-400 italic">Há 45 minutos</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto">
+<div class="max-w-6xl mx-auto p-8">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 mb-2">
+<a class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium hover:underline" href="#">Administração</a>
+<span class="text-slate-400 text-sm font-medium">/</span>
+<span class="text-slate-900 dark:text-white text-sm font-medium">Segurança e Sessão</span>
+</div>
+<!-- PageHeading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-tight">Políticas de Segurança do Sistema</h1>
+<p class="text-slate-500 dark:text-[#9aaabc] text-base font-normal">Controlo rigoroso de acessos e tempos de resposta para conformidade hospitalar.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">power_settings_new</span>
+                                Terminar Todas as Sessões
+                             </button>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold text-sm hover:opacity-90 transition-opacity">
+                                Guardar Alterações
+                             </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Card 1: Time-out de Inatividade -->
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-[#27303a] rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-100 dark:border-[#27303a] flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">timer</span>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold">Time-out de Inatividade</h2>
+</div>
+<div class="p-6 space-y-6">
+<p class="text-sm text-slate-500 dark:text-[#9aaabc]">Configure quanto tempo o sistema aguarda antes de encerrar sessões inactivas.</p>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex flex-col items-center justify-center p-4 border-2 border-primary bg-primary/5 dark:bg-primary/20 rounded-xl transition-all">
+<span class="text-primary dark:text-blue-300 font-bold text-xl uppercase">5 min</span>
+<span class="text-xs text-slate-500 dark:text-[#9aaabc] font-medium mt-1">Área Clínica</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 border border-slate-200 dark:border-[#27303a] hover:border-primary/50 rounded-xl transition-all">
+<span class="text-slate-900 dark:text-white font-bold text-xl uppercase">15 min</span>
+<span class="text-xs text-slate-500 dark:text-[#9aaabc] font-medium mt-1">Administrativa</span>
+</button>
+</div>
+<div class="space-y-3">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300">Valor Personalizado (minutos)</label>
+<div class="flex items-center gap-4">
+<input class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-[#27303a] rounded-lg p-3 text-slate-900 dark:text-white focus:ring-primary focus:border-primary" type="number" value="10"/>
+<button class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-3 rounded-lg font-medium text-sm">Aplicar</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Políticas Globais -->
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-[#27303a] rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-100 dark:border-[#27303a] flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">policy</span>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold">Políticas de Acesso</h2>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white font-semibold">Auto-logout Global</p>
+<p class="text-xs text-slate-500 dark:text-[#9aaabc]">Deslogar todos os terminais ao fim do dia útil.</p>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white font-semibold">Bloqueio de Sessões Simultâneas</p>
+<p class="text-xs text-slate-500 dark:text-[#9aaabc]">Impedir logins múltiplos com a mesma conta.</p>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-100 dark:border-[#27303a]">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300 block mb-2">Troca de Senha Obrigatória (Dias)</label>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">key</span>
+<select class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-[#27303a] rounded-lg p-2.5 text-slate-900 dark:text-white">
+<option>A cada 30 dias</option>
+<option selected="">A cada 60 dias (Padrão)</option>
+<option>A cada 90 dias</option>
+<option>Sem expiração</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Active Sessions -->
+<div class="mt-8 bg-white dark:bg-background-dark border border-slate-200 dark:border-[#27303a] rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-100 dark:border-[#27303a] flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-500">online_prediction</span>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold">Sessões Ativas Atualmente</h2>
+<span class="bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs px-2 py-1 rounded-full font-bold">24 Online</span>
+</div>
+<button class="text-primary dark:text-blue-400 text-sm font-semibold hover:underline">Ver Histórico de Auditoria</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 uppercase text-[10px] tracking-wider font-bold">
+<tr>
+<th class="px-6 py-4">Utilizador</th>
+<th class="px-6 py-4">Sector</th>
+<th class="px-6 py-4">Endereço IP</th>
+<th class="px-6 py-4">Início da Sessão</th>
+<th class="px-6 py-4">Estado</th>
+<th class="px-6 py-4 text-right">Acções</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#27303a]">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-xs text-primary dark:text-blue-300">MM</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">Mateus Manuel</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400">ID: #ZEN-442</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Emergência</span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 font-mono">192.168.1.104</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400">Hoje, 08:45</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 text-green-500 font-medium">
+<span class="w-2 h-2 rounded-full bg-green-500"></span> Activo
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-red-500">
+<span class="material-symbols-outlined text-xl">logout</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-xs text-primary dark:text-blue-300">AS</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">Ana Santos</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400">ID: #ZEN-921</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Financeiro</span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 font-mono">192.168.1.150</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400">Hoje, 09:12</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 text-amber-500 font-medium">
+<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Inactivo (4m)
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-red-500">
+<span class="material-symbols-outlined text-xl">logout</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold text-xs text-primary dark:text-blue-300">JK</div>
+<div>
+<p class="font-bold text-slate-900 dark:text-white">João Kaputo</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400">ID: #ZEN-118</p>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 px-2 py-0.5 rounded text-[10px] font-bold uppercase">Radiologia</span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 font-mono">10.0.42.5</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400">Hoje, 10:05</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 text-green-500 font-medium">
+<span class="w-2 h-2 rounded-full bg-green-500"></span> Activo
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-red-500">
+<span class="material-symbols-outlined text-xl">logout</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-[#27303a] flex justify-between items-center">
+<p class="text-xs text-slate-500 dark:text-slate-400">A mostrar as últimas 10 sessões de 24 no total.</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs font-medium">Anterior</button>
+<button class="px-3 py-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs font-medium">Próximo</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

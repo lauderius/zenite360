@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Auditoria de Alterações de Perfil - Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#1a2332",
+                        "border-dark": "#2d3748",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-x-hidden">
+<div class="flex min-h-screen flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-border-dark bg-primary px-6 py-3 shadow-md">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-white">
+<div class="flex h-8 w-8 items-center justify-center rounded bg-blue-500/20 text-blue-200">
+<span class="material-symbols-outlined text-2xl">local_hospital</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight text-white">Zênite360 ERP</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#">Dashboard</a>
+<a class="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#">Pacientes</a>
+<a class="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#">Farmácia</a>
+<a class="text-sm font-medium text-slate-300 hover:text-white transition-colors" href="#">Finanças</a>
+<a class="text-sm font-medium text-white border-b-2 border-blue-400 pb-0.5" href="#">Administração</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden sm:block">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="h-9 w-64 rounded-lg border border-slate-600 bg-slate-800/50 pl-10 pr-4 text-sm text-white placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="Pesquisar..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative text-slate-300 hover:text-white">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute right-0 top-0 h-2 w-2 rounded-full bg-red-500 ring-2 ring-primary"></span>
+</button>
+<div class="h-9 w-9 overflow-hidden rounded-full border border-slate-600 bg-slate-700" data-alt="User profile picture placeholder">
+<img alt="Perfil" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-WwiGL6GMKgftQQO5Y2LCjwdNXNsnOGLX_BOwA8xog7w3DMEWqgmu1nxQ3s2vNBTfvTfH0cilCciVOR7rurgycNznZHYcX8T2vpU2eN4kzOdPw4nqzI42kSOePM7wTMrDkqUXYi1kjVSzBZYdFSdTP8nTj8cI9iDgoU1qgTiMLicMd-1es868EDa9QNDBkHXn7NXnPYfj8TjNcL408khQEo1uZYAMKirU6-UhjjFOqxqOhTFerNsdcCr_J_hMLZamECpN36nr7p_2"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 px-6 py-6 lg:px-12">
+<div class="mx-auto max-w-[1400px]">
+<!-- Breadcrumbs -->
+<nav class="mb-6 flex items-center text-sm text-slate-400">
+<a class="hover:text-blue-400 transition-colors" href="#">Início</a>
+<span class="mx-2 text-slate-600">/</span>
+<a class="hover:text-blue-400 transition-colors" href="#">Administração</a>
+<span class="mx-2 text-slate-600">/</span>
+<span class="font-medium text-white">Auditoria de Segurança</span>
+</nav>
+<!-- Page Heading -->
+<div class="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+<div>
+<h1 class="text-3xl font-bold tracking-tight text-white">Auditoria de Alterações de Perfil</h1>
+<p class="mt-2 text-slate-400 max-w-2xl">Registo detalhado e imutável de todas as alterações de permissões, acessos e perfis de utilizador no sistema Zênite360.</p>
+</div>
+<div class="mt-4 flex gap-3 md:mt-0">
+<button class="flex items-center gap-2 rounded-lg border border-border-dark bg-surface-dark px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                            Exportar CSV
+                        </button>
+<button class="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-500 transition-colors shadow-lg shadow-blue-900/20">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                            Configurar Alertas
+                        </button>
+</div>
+</div>
+<!-- Stats/KPIs -->
+<div class="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+<!-- KPI 1 -->
+<div class="rounded-xl border border-border-dark bg-surface-dark p-6 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-400">Alterações Hoje</p>
+<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
+<span class="material-symbols-outlined text-[20px]">history</span>
+</span>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-3xl font-bold text-white">142</span>
+<span class="flex items-center text-xs font-medium text-emerald-400">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+                                12% vs ontem
+                            </span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="rounded-xl border border-amber-500/20 bg-surface-dark p-6 shadow-sm relative overflow-hidden">
+<div class="absolute right-0 top-0 h-full w-1 bg-amber-500/50"></div>
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-400">Acessos Elevados Concedidos</p>
+<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500">
+<span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+</span>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-3xl font-bold text-white">3</span>
+<span class="text-xs font-medium text-amber-500">Atenção requerida</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="rounded-xl border border-border-dark bg-surface-dark p-6 shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-400">Alertas de Segurança</p>
+<span class="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-500">
+<span class="material-symbols-outlined text-[20px]">shield</span>
+</span>
+</div>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-3xl font-bold text-white">0</span>
+<span class="text-xs font-medium text-slate-500">Sistema seguro</span>
+</div>
+</div>
+</div>
+<!-- Filters & Toolbar -->
+<div class="mb-4 flex flex-col gap-4 rounded-xl border border-border-dark bg-surface-dark p-4 lg:flex-row lg:items-center lg:justify-between">
+<div class="flex flex-1 flex-wrap items-center gap-3">
+<div class="relative w-full sm:w-64">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="h-10 w-full rounded-lg border border-border-dark bg-background-dark pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none" placeholder="Buscar por utilizador ou admin..." type="text"/>
+</div>
+<div class="h-8 w-[1px] bg-border-dark hidden sm:block"></div>
+<button class="flex h-10 items-center justify-between gap-2 rounded-lg border border-border-dark bg-background-dark px-4 text-sm font-medium text-slate-300 hover:border-slate-600 transition-colors">
+<span>Todas as Ações</span>
+<span class="material-symbols-outlined text-[20px] text-slate-500">expand_more</span>
+</button>
+<button class="flex h-10 items-center justify-between gap-2 rounded-lg border border-border-dark bg-background-dark px-4 text-sm font-medium text-slate-300 hover:border-slate-600 transition-colors">
+<span>Últimos 7 dias</span>
+<span class="material-symbols-outlined text-[20px] text-slate-500">calendar_today</span>
+</button>
+<button class="flex h-10 items-center justify-between gap-2 rounded-lg border border-border-dark bg-background-dark px-4 text-sm font-medium text-slate-300 hover:border-slate-600 transition-colors">
+<span>Origem: Todos</span>
+<span class="material-symbols-outlined text-[20px] text-slate-500">filter_list</span>
+</button>
+</div>
+<div class="flex items-center justify-end">
+<span class="text-xs text-slate-500 mr-2">Exibindo 50 de 1,203 registos</span>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-hidden rounded-xl border border-border-dark bg-surface-dark shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="border-b border-border-dark bg-primary/20 text-xs uppercase font-semibold text-slate-300">
+<tr>
+<th class="px-6 py-4 min-w-[160px]">Data / Hora</th>
+<th class="px-6 py-4 min-w-[200px]">Administrador</th>
+<th class="px-6 py-4 min-w-[200px]">Usuário Alvo</th>
+<th class="px-6 py-4 min-w-[200px]">Ação</th>
+<th class="px-6 py-4 min-w-[250px]">Valores (Antigo → Novo)</th>
+<th class="px-6 py-4">Origem</th>
+<th class="px-6 py-4 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark text-slate-300">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-800/50 transition-colors group cursor-pointer">
+<td class="px-6 py-4 font-mono text-slate-400">14/10/2023 14:32</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-200">JS</div>
+<div>
+<div class="font-medium text-white">João Silva</div>
+<div class="text-xs text-slate-500">SysAdmin</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-700 overflow-hidden" data-alt="Profile picture of Maria Santos">
+<img class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnRtVQSZtbaatmOfDxbf5u48c18Kzfqf2ilmRVodz7N-apqa8pC-zU6cJpfb58nro5ul5m5Kk1AoYU1mH8LqjG_n9iPK6nE1369D8sSAlczvV8F557OgR1Bpbl7IeTGCZHc4jMzxkV9rP5KjmdqTZZWkoMnJcKjvOCAcDmgdLboTT63d-njd61fR4EXDh5JGfap2jrFpVrlJPdasa_OuqV4FWB8XMawrf74EIVDtnxK6fOVtpqAe6Y00wCFIEzpFoYRXBaNvFG15ZN"/>
+</div>
+<div>
+<div class="font-medium text-white">Maria Santos</div>
+<div class="text-xs text-slate-500">Enfermeira Chefe</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="rounded bg-slate-800 px-2 py-1 text-xs font-medium text-slate-300 border border-border-dark">Alteração de Perfil</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1 text-xs">
+<div class="flex items-center gap-2">
+<span class="text-red-400 line-through decoration-red-400/50">Acesso Nível 2</span>
+<span class="material-symbols-outlined text-[14px] text-slate-500">arrow_right_alt</span>
+<span class="font-bold text-emerald-400">Acesso Nível 3</span>
+</div>
+<span class="text-slate-500 italic">Motivo: Promoção interna</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-400 border border-border-dark">
+<span class="h-1.5 w-1.5 rounded-full bg-slate-500"></span>
+                                            Individual
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-emerald-500 text-[20px]" title="Sucesso">check_circle</span>
+</td>
+</tr>
+<!-- Row 2 - Batch Op -->
+<tr class="hover:bg-slate-800/50 transition-colors group cursor-pointer">
+<td class="px-6 py-4 font-mono text-slate-400">14/10/2023 11:15</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-purple-900 flex items-center justify-center text-xs font-bold text-purple-200">AS</div>
+<div>
+<div class="font-medium text-white">Ana Sousa</div>
+<div class="text-xs text-slate-500">Gestora RH</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-700 text-xs font-bold text-slate-300 border border-slate-600">
+                                                +12
+                                            </div>
+<div>
+<div class="font-medium text-white">Equipa Farmácia</div>
+<div class="text-xs text-slate-500">Multi-seleção</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="rounded bg-slate-800 px-2 py-1 text-xs font-medium text-slate-300 border border-border-dark">Alteração de Setor</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-xs">
+<span class="text-red-400 line-through decoration-red-400/50">Triagem</span>
+<span class="material-symbols-outlined text-[14px] text-slate-500">arrow_right_alt</span>
+<span class="font-bold text-emerald-400">Farmácia Central</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-xs font-medium text-blue-400 border border-blue-500/20">
+<span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                                            Lote (Batch)
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-emerald-500 text-[20px]" title="Sucesso">check_circle</span>
+</td>
+</tr>
+<!-- Row 3 - Critical -->
+<tr class="bg-amber-500/5 hover:bg-amber-500/10 transition-colors group cursor-pointer">
+<td class="px-6 py-4 font-mono text-slate-400">14/10/2023 09:42</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-200">JS</div>
+<div>
+<div class="font-medium text-white">João Silva</div>
+<div class="text-xs text-slate-500">SysAdmin</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-700 overflow-hidden" data-alt="Profile picture of Dr. Carlos">
+<img class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsozZdP0sNPtdpRg8uuQJ6jiGbwAP6HwHkG2FUGrUYLi5R8PsbuS9dAEMZfrO62eMrl5bA6pB2K6e0u7jO_Nl3kvwgDcL5-wueXGpoJcWnL97GVSVrf92G1CjgCLoqEsly3WfTCz_vuDdPmnCch07KwjadaB7RxxdaviTfo4s0ueeLbCHd93Z1BBr51M9iAJSwxI-FWB8mlNc8xC-giEqCNbypcesPYjtrLeAtLxIuWwFMp01am7lrAQDEc72ybCruqXDjhYaDR8dA"/>
+</div>
+<div>
+<div class="font-medium text-white">Dr. Carlos Mendes</div>
+<div class="text-xs text-slate-500">Diretor Clínico</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="rounded bg-amber-500/20 px-2 py-1 text-xs font-medium text-amber-500 border border-amber-500/30">Elevação de Privilégio</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1 text-xs">
+<div class="flex items-center gap-2">
+<span class="text-slate-400">Role: Médico</span>
+<span class="material-symbols-outlined text-[14px] text-slate-500">arrow_right_alt</span>
+<span class="font-bold text-amber-500">Role: SuperAdmin</span>
+</div>
+<span class="text-amber-500/80 text-[10px] uppercase font-bold tracking-wider">Acesso Crítico</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-400 border border-border-dark">
+<span class="h-1.5 w-1.5 rounded-full bg-slate-500"></span>
+                                            Individual
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-amber-500 text-[20px]" title="Aviso">warning</span>
+</td>
+</tr>
+<!-- Row 4 - Password Reset -->
+<tr class="hover:bg-slate-800/50 transition-colors group cursor-pointer">
+<td class="px-6 py-4 font-mono text-slate-400">13/10/2023 18:20</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-400 border border-slate-600">
+                                                SYS
+                                            </div>
+<div>
+<div class="font-medium text-white">Sistema</div>
+<div class="text-xs text-slate-500">Automático</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-700 overflow-hidden" data-alt="Profile picture of Pedro">
+<img class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyAG9S7jjERVPGX3UfpENcIyCJoIagciQRQgFryoTlyUPITSKxdsXGD_pm8Arb4Kx0gcYjvwPRED_ZghJO6lllJmZAINqlu5WaxpEtm9gmqX3iEXhEgL17Q_gMP72O6Bb1zI48IJjlcIQsVIAeVeJ8F8I5E3sMSPvdL54jJ0XR2uMSGHebuENBMNl_ZwsjNOAqQPMw6zqoT_LRfrYxzrUUQ4IjYg-yGgMUjA7mQh9ifoRpwHS2-poz8ERtccldIC_Do7pS6wsUEQs8"/>
+</div>
+<div>
+<div class="font-medium text-white">Pedro Gomes</div>
+<div class="text-xs text-slate-500">Recepcionista</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="rounded bg-slate-800 px-2 py-1 text-xs font-medium text-slate-300 border border-border-dark">Reset de Senha</span>
+</td>
+<td class="px-6 py-4">
+<div class="text-xs text-slate-400">
+                                            Solicitado via portal de auto-atendimento.
+                                        </div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-400 border border-border-dark">
+<span class="h-1.5 w-1.5 rounded-full bg-slate-500"></span>
+                                            Auto-Serviço
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-emerald-500 text-[20px]" title="Sucesso">check_circle</span>
+</td>
+</tr>
+<!-- Row 5 - Failed -->
+<tr class="hover:bg-slate-800/50 transition-colors group cursor-pointer border-l-2 border-l-red-500">
+<td class="px-6 py-4 font-mono text-slate-400">13/10/2023 16:05</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-blue-900 flex items-center justify-center text-xs font-bold text-blue-200">JS</div>
+<div>
+<div class="font-medium text-white">João Silva</div>
+<div class="text-xs text-slate-500">SysAdmin</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-slate-700 overflow-hidden" data-alt="Profile picture of Admin Externo">
+<img class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2lf4jDheXyU1tB3vWw8JsI96cY3SWM9ouo5K1TfIxwf5FfbL9NcRx4Cf_cMb-B5Z9DcZCm9Y1Sja3p0M5u29fWzgPsXCLtisE5LYA2j8pygHJvAnYqLPGHL5ni_H5wBOOd9vc6NReEqww0nUO80WWu06gxt2rb-JyzB4G2vAc1nd7l00e_JgY36InmZofXOAnB8LjucUfHsY7qb_j-KFAhqKz1KiarVR4fAcvf5jpsvkel-As9i0l-XHrTNP4ohz0JB20_JBZN9TA"/>
+</div>
+<div>
+<div class="font-medium text-white">Consultor Externo</div>
+<div class="text-xs text-slate-500">Temporário</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="rounded bg-slate-800 px-2 py-1 text-xs font-medium text-slate-300 border border-border-dark">Criação de Conta</span>
+</td>
+<td class="px-6 py-4">
+<div class="text-xs text-red-400">
+                                            Falha: Permissões insuficientes para criar conta com nível 'Root'.
+                                        </div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1 rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-400 border border-border-dark">
+<span class="h-1.5 w-1.5 rounded-full bg-slate-500"></span>
+                                            Individual
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-red-500 text-[20px]" title="Falha">error</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="border-t border-border-dark bg-surface-dark px-6 py-3 flex items-center justify-between">
+<button class="text-sm text-slate-400 hover:text-white disabled:opacity-50 flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+                            Anterior
+                        </button>
+<div class="flex gap-1">
+<button class="h-8 w-8 rounded bg-primary text-white text-sm font-medium">1</button>
+<button class="h-8 w-8 rounded hover:bg-slate-700 text-slate-400 text-sm font-medium">2</button>
+<button class="h-8 w-8 rounded hover:bg-slate-700 text-slate-400 text-sm font-medium">3</button>
+<span class="flex items-end px-1 text-slate-500">...</span>
+<button class="h-8 w-8 rounded hover:bg-slate-700 text-slate-400 text-sm font-medium">12</button>
+</div>
+<button class="text-sm text-slate-400 hover:text-white flex items-center gap-1">
+                            Próxima
+                            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

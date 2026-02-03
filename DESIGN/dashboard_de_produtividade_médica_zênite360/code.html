@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-ao"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard de Produtividade Médica | Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#210047",
+                        "accent": "#4f46e5",
+                        "success": "#10b981",
+                        "warning": "#f59e0b",
+                        "danger": "#ef4444",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#0a0612",
+                        "surface-dark": "#180f23",
+                        "border-dark": "#30273a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .chart-bar-glow:hover { filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.6)); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark bg-surface-dark px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-accent">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-black leading-tight tracking-tighter">Zênite360</h2>
+</div>
+<div class="h-6 w-px bg-border-dark"></div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full overflow-hidden">
+<div class="text-[#aa9abc] flex border-none bg-border-dark items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-border-dark text-white focus:ring-0 px-4 pl-2 text-sm" placeholder="Pesquisar pacientes ou médicos..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="flex items-center gap-6">
+<a class="text-white text-sm font-semibold border-b-2 border-accent pb-1" href="#">Dashboard</a>
+<a class="text-[#aa9abc] hover:text-white text-sm font-medium transition-colors" href="#">Relatórios</a>
+<a class="text-[#aa9abc] hover:text-white text-sm font-medium transition-colors" href="#">Escalas</a>
+<a class="text-[#aa9abc] hover:text-white text-sm font-medium transition-colors" href="#">Pacientes</a>
+</nav>
+<div class="h-6 w-px bg-border-dark"></div>
+<button class="flex items-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold border border-border-dark hover:bg-primary/80 transition-all">
+<span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+<span>Exportar PDF</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-accent" data-alt="Avatar de perfil do Diretor Clínico" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD1sd4rEe-2dvUTlmDfhO1sEIXZ-Jli65K6RH1Za7v1GiSaIgupngKEtokXlwX4oiGQLhonbQexQmTm7nv0p9hFX_IxS1-eZ6ECBAYOo33LRD083aywQh0VHeSGGUr63SSrqogVkBhq_lu_5W5cCSrLjVnqhMGhJ7530VEh87j47LAN5ePDtTdOa91skFT2jcK115DY5ZJEmJxwyElrliZuf-288kQKNTPIsGLWPYqcMz3GHSDbU8HdVVXInbt_cngnItqHZoX-gber");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="w-64 border-r border-border-dark bg-surface-dark flex flex-col justify-between p-4 shrink-0">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col px-3">
+<h1 class="text-white text-sm font-bold uppercase tracking-widest text-accent">Direção Clínica</h1>
+<p class="text-[#aa9abc] text-xs font-medium">Unidade Central de Luanda</p>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-semibold">Visão Geral</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#aa9abc] hover:bg-border-dark hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">account_tree</span>
+<p class="text-sm font-medium">Setores (SBU/SF)</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#aa9abc] hover:bg-border-dark hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">medical_services</span>
+<p class="text-sm font-medium">Corpo Clínico</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#aa9abc] hover:bg-border-dark hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+<p class="text-sm font-medium">Triagem Eficiente</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#aa9abc] hover:bg-border-dark hover:text-white transition-all cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Configurações</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-border-dark">
+<button class="w-full flex items-center justify-center gap-2 rounded-lg h-11 bg-accent text-white text-sm font-bold shadow-lg shadow-accent/20 hover:scale-[1.02] transition-transform">
+<span class="material-symbols-outlined text-lg">add_chart</span>
+<span>Novo Relatório</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+<!-- Breadcrumbs & Heading -->
+<div>
+<nav class="flex gap-2 mb-2">
+<a class="text-[#aa9abc] text-xs font-medium hover:text-white" href="#">Home</a>
+<span class="text-[#aa9abc] text-xs font-medium">/</span>
+<span class="text-white text-xs font-medium">Produtividade Médica</span>
+</nav>
+<div class="flex justify-between items-end">
+<div class="flex flex-col gap-1">
+<h2 class="text-white text-3xl font-black tracking-tight">Produtividade Médica Setorial</h2>
+<p class="text-[#aa9abc] text-sm">Análise de desempenho e eficiência clínica em tempo real - Projecto Zênite360</p>
+</div>
+<div class="flex gap-3 bg-surface-dark p-1.5 rounded-xl border border-border-dark">
+<button class="px-4 py-1.5 rounded-lg bg-primary text-white text-xs font-bold">Hoje</button>
+<button class="px-4 py-1.5 rounded-lg text-[#aa9abc] text-xs font-medium hover:text-white transition-colors">Semana</button>
+<button class="px-4 py-1.5 rounded-lg text-[#aa9abc] text-xs font-medium hover:text-white transition-colors">Mês</button>
+</div>
+</div>
+</div>
+<!-- Chips Filters -->
+<div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-accent px-4 text-white shadow-lg shadow-accent/20">
+<p class="text-sm font-bold">Todo Hospital</p>
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-surface-dark border border-border-dark px-4 text-[#aa9abc] hover:text-white hover:border-accent transition-all">
+<p class="text-sm font-medium">SBU (Serviço Bloco Único)</p>
+<span class="material-symbols-outlined text-lg">keyboard_arrow_down</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-surface-dark border border-border-dark px-4 text-[#aa9abc] hover:text-white hover:border-accent transition-all">
+<p class="text-sm font-medium">SF (Serviço Feminino)</p>
+<span class="material-symbols-outlined text-lg">keyboard_arrow_down</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-surface-dark border border-border-dark px-4 text-[#aa9abc] hover:text-white hover:border-accent transition-all">
+<p class="text-sm font-medium">Urgência</p>
+<span class="material-symbols-outlined text-lg">keyboard_arrow_down</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-surface-dark border border-border-dark px-4 text-[#aa9abc] hover:text-white hover:border-accent transition-all">
+<p class="text-sm font-medium">Pediatria</p>
+<span class="material-symbols-outlined text-lg">keyboard_arrow_down</span>
+</button>
+</div>
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface-dark p-5 rounded-2xl border border-border-dark hover:border-accent transition-all group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-accent/10 rounded-lg text-accent group-hover:bg-accent group-hover:text-white transition-all">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<span class="text-success text-xs font-bold flex items-center gap-1">+12.5% <span class="material-symbols-outlined text-sm">trending_up</span></span>
+</div>
+<p class="text-[#aa9abc] text-xs font-semibold uppercase tracking-wider mb-1">Média Consultas/Médico</p>
+<h3 class="text-white text-3xl font-black">24.8</h3>
+<p class="text-[#aa9abc] text-[10px] mt-2 italic">Meta institucional: 22.0</p>
+</div>
+<div class="bg-surface-dark p-5 rounded-2xl border border-border-dark hover:border-accent transition-all group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-success/10 rounded-lg text-success group-hover:bg-success group-hover:text-white transition-all">
+<span class="material-symbols-outlined">logout</span>
+</div>
+<span class="text-success text-xs font-bold flex items-center gap-1">+4.2% <span class="material-symbols-outlined text-sm">trending_up</span></span>
+</div>
+<p class="text-[#aa9abc] text-xs font-semibold uppercase tracking-wider mb-1">Taxa de Altas Hospitalares</p>
+<h3 class="text-white text-3xl font-black">88.5%</h3>
+<p class="text-[#aa9abc] text-[10px] mt-2 italic">Período: Últimos 30 dias</p>
+</div>
+<div class="bg-surface-dark p-5 rounded-2xl border border-border-dark hover:border-accent transition-all group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-warning/10 rounded-lg text-warning group-hover:bg-warning group-hover:text-white transition-all">
+<span class="material-symbols-outlined">timer</span>
+</div>
+<span class="text-danger text-xs font-bold flex items-center gap-1">-18.4% <span class="material-symbols-outlined text-sm">trending_down</span></span>
+</div>
+<p class="text-[#aa9abc] text-xs font-semibold uppercase tracking-wider mb-1">Espera (Triagem)</p>
+<h3 class="text-white text-3xl font-black">14 min</h3>
+<p class="text-[#aa9abc] text-[10px] mt-2 italic">Protocolo Manchester aplicado</p>
+</div>
+<div class="bg-surface-dark p-5 rounded-2xl border border-border-dark hover:border-accent transition-all group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary text-white border border-border-dark group-hover:bg-accent transition-all">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+<span class="text-success text-xs font-bold flex items-center gap-1">+2.1% <span class="material-symbols-outlined text-sm">trending_up</span></span>
+</div>
+<p class="text-[#aa9abc] text-xs font-semibold uppercase tracking-wider mb-1">Taxa de Resolutividade</p>
+<h3 class="text-white text-3xl font-black">94.2%</h3>
+<p class="text-[#aa9abc] text-[10px] mt-2 italic">Casos fechados sem reentrada</p>
+</div>
+</div>
+<!-- Main Productivity Chart & Side Panel -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+<!-- Multi-Bar Chart Area -->
+<div class="xl:col-span-2 bg-surface-dark rounded-2xl border border-border-dark p-6 flex flex-col gap-6">
+<div class="flex justify-between items-center">
+<h3 class="text-white text-lg font-bold">Produtividade por Setor (Volume vs Eficiência)</h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-accent"></span>
+<span class="text-[#aa9abc] text-xs">Consultas</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-primary border border-border-dark"></span>
+<span class="text-[#aa9abc] text-xs">Procedimentos</span>
+</div>
+</div>
+</div>
+<div class="flex-1 min-h-[300px] flex items-end justify-between gap-4 px-2">
+<!-- Chart Bar Group 1: SBU -->
+<div class="flex-1 flex flex-col items-center gap-3">
+<div class="w-full flex justify-center items-end gap-1.5 h-64">
+<div class="w-8 bg-accent rounded-t-md chart-bar-glow transition-all" style="height: 85%;"></div>
+<div class="w-8 bg-primary border border-border-dark rounded-t-md chart-bar-glow transition-all" style="height: 45%;"></div>
+</div>
+<span class="text-[#aa9abc] text-xs font-bold">SBU</span>
+</div>
+<!-- Chart Bar Group 2: SF -->
+<div class="flex-1 flex flex-col items-center gap-3">
+<div class="w-full flex justify-center items-end gap-1.5 h-64">
+<div class="w-8 bg-accent rounded-t-md chart-bar-glow transition-all" style="height: 60%;"></div>
+<div class="w-8 bg-primary border border-border-dark rounded-t-md chart-bar-glow transition-all" style="height: 55%;"></div>
+</div>
+<span class="text-[#aa9abc] text-xs font-bold">SF</span>
+</div>
+<!-- Chart Bar Group 3: Urgência -->
+<div class="flex-1 flex flex-col items-center gap-3">
+<div class="w-full flex justify-center items-end gap-1.5 h-64">
+<div class="w-8 bg-accent rounded-t-md chart-bar-glow transition-all" style="height: 95%;"></div>
+<div class="w-8 bg-primary border border-border-dark rounded-t-md chart-bar-glow transition-all" style="height: 30%;"></div>
+</div>
+<span class="text-[#aa9abc] text-xs font-bold">Urgência</span>
+</div>
+<!-- Chart Bar Group 4: Pediatria -->
+<div class="flex-1 flex flex-col items-center gap-3">
+<div class="w-full flex justify-center items-end gap-1.5 h-64">
+<div class="w-8 bg-accent rounded-t-md chart-bar-glow transition-all" style="height: 70%;"></div>
+<div class="w-8 bg-primary border border-border-dark rounded-t-md chart-bar-glow transition-all" style="height: 65%;"></div>
+</div>
+<span class="text-[#aa9abc] text-xs font-bold">Pediatria</span>
+</div>
+</div>
+</div>
+<!-- Side Panel: Top Performers -->
+<div class="bg-surface-dark rounded-2xl border border-border-dark p-6 flex flex-col gap-5">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-warning">workspace_premium</span>
+                        Melhores Desempenhos
+                    </h3>
+<div class="flex flex-col gap-4">
+<!-- Performer 1 -->
+<div class="flex items-center gap-4 p-3 bg-primary/20 rounded-xl border border-border-dark hover:border-accent/50 transition-all cursor-pointer">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Foto do Dr. Manuel Santos" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBrt0oNK3nT7yZ4ONHePfzHwIpnJ_8S3lEEs3grSBNAiYYfqtvgI4xe0YPpcSVHvBw9yUjGMv9ZtSwa68dZUuYjOYSiaM6My0k9Lb9wgvZ5TCfUtazIr0dvREhQIshzA7GT7ueUbnkvJMayfU6XswlXxoGQhi4CPVoLq8LxErSBLTRHtdL5eBeh3ByGrHjeTEhROzHAkPoJkKpW03lPtAFj0ZJJDulQ8xSglSRwzSaGNHvGs3vO1df3FPdlXeqm6pB_111VgZ5bxE3O')"></div>
+<div class="flex-1">
+<p class="text-white text-sm font-bold">Dr. Manuel Santos</p>
+<p class="text-[#aa9abc] text-[10px]">Especialista SBU</p>
+</div>
+<div class="text-right">
+<p class="text-accent text-sm font-black">9.8</p>
+<p class="text-[#aa9abc] text-[9px] uppercase font-bold tracking-tighter">IPM</p>
+</div>
+</div>
+<!-- Performer 2 -->
+<div class="flex items-center gap-4 p-3 bg-primary/20 rounded-xl border border-border-dark hover:border-accent/50 transition-all cursor-pointer">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Foto da Dra. Ana Luísa" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA8SxUQC1HwTUJbvzQcWx1T9eixxvxp82BmV1uaZ3eVtYDdTuTwVDK3JaXRHcss9mL8OqtzYfn506qOldeor7BWpFoy6azIHX6mvX_YX5OqYzHmF2vANJwHa-MZHqSiQiFNTnrGe6mbDi4X0g6WW9wWfS81VbhO0BYwp6Z8co0IcZfimUyhUyf5fpWI_zRYryZXXeOJC1Zbml3ZGIDrx0w9n8bZlcYnv2d6fs7Fzp1CfMQEZ8VsaCs9oJFmndoZtjYXHrYn0nuZBDnq')"></div>
+<div class="flex-1">
+<p class="text-white text-sm font-bold">Dra. Ana Luísa</p>
+<p class="text-[#aa9abc] text-[10px]">Pediatria</p>
+</div>
+<div class="text-right">
+<p class="text-accent text-sm font-black">9.5</p>
+<p class="text-[#aa9abc] text-[9px] uppercase font-bold tracking-tighter">IPM</p>
+</div>
+</div>
+<!-- Performer 3 -->
+<div class="flex items-center gap-4 p-3 bg-primary/20 rounded-xl border border-border-dark hover:border-accent/50 transition-all cursor-pointer">
+<div class="size-10 rounded-full bg-cover bg-center" data-alt="Foto do Dr. Kiluanji Costa" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDU1mhijMC_Y_mHdVoP9iP3FH3smPSQbeFL_PUYpGsjRLIwO7-83ZjGmirx61xjgCHEuPZUQPVESVdUDry0ZOYUQouQO7v2nmnahvh2C53_N-nsxZgEj8Ln4stSitqBKE45SG4g0z0QL1-5woqSR9V_DtoQMJ4t-ndQitA48LKypOnmUakxL0FxOAYGjxXWEzPpHWZRfDIBjsfwp3VdGTpv92V-GGxtJDxV_-H9IQpyEgHg2CAuisTXFK0IGUjara5jnL4uP0KPXMhX')"></div>
+<div class="flex-1">
+<p class="text-white text-sm font-bold">Dr. Kiluanji Costa</p>
+<p class="text-[#aa9abc] text-[10px]">Urgência</p>
+</div>
+<div class="text-right">
+<p class="text-accent text-sm font-black">9.2</p>
+<p class="text-[#aa9abc] text-[9px] uppercase font-bold tracking-tighter">IPM</p>
+</div>
+</div>
+</div>
+<div class="mt-4 p-4 rounded-xl bg-gradient-to-br from-primary to-accent/20 border border-accent/20">
+<p class="text-white text-xs font-bold mb-1">Dica de Eficiência</p>
+<p class="text-[#aa9abc] text-[11px] leading-relaxed">O setor de **Urgência** reduziu o tempo de espera em 15% após a implementação do novo protocolo de pré-triagem.</p>
+</div>
+</div>
+</div>
+<!-- Granular Data Table (High Density) -->
+<div class="bg-surface-dark rounded-2xl border border-border-dark overflow-hidden">
+<div class="px-6 py-4 border-b border-border-dark flex justify-between items-center bg-surface-dark/50">
+<h3 class="text-white text-lg font-bold">Detalhamento por Profissional</h3>
+<div class="flex gap-2">
+<button class="p-2 text-[#aa9abc] hover:text-white"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-2 text-[#aa9abc] hover:text-white"><span class="material-symbols-outlined">download</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-primary/30 text-[#aa9abc] uppercase text-[10px] font-black tracking-widest">
+<tr>
+<th class="px-6 py-3">Médico</th>
+<th class="px-6 py-3 text-center">Setor</th>
+<th class="px-6 py-3 text-center">Consultas</th>
+<th class="px-6 py-3 text-center">Taxa Resol.</th>
+<th class="px-6 py-3 text-center">Tempo Médio</th>
+<th class="px-6 py-3 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<tr class="hover:bg-primary/10 transition-colors">
+<td class="px-6 py-4 font-bold text-white">Dr. António Gouveia</td>
+<td class="px-6 py-4 text-center">SBU</td>
+<td class="px-6 py-4 text-center">142</td>
+<td class="px-6 py-4 text-center">98%</td>
+<td class="px-6 py-4 text-center">18 min</td>
+<td class="px-6 py-4 text-right"><span class="px-2 py-1 bg-success/20 text-success text-[10px] font-bold rounded-full">EXCELENTE</span></td>
+</tr>
+<tr class="hover:bg-primary/10 transition-colors">
+<td class="px-6 py-4 font-bold text-white">Dra. Maria Benguela</td>
+<td class="px-6 py-4 text-center">Urgência</td>
+<td class="px-6 py-4 text-center">215</td>
+<td class="px-6 py-4 text-center">85%</td>
+<td class="px-6 py-4 text-center">12 min</td>
+<td class="px-6 py-4 text-right"><span class="px-2 py-1 bg-warning/20 text-warning text-[10px] font-bold rounded-full">ALTO VOLUME</span></td>
+</tr>
+<tr class="hover:bg-primary/10 transition-colors">
+<td class="px-6 py-4 font-bold text-white">Dr. Paulo Kanganjo</td>
+<td class="px-6 py-4 text-center">Pediatria</td>
+<td class="px-6 py-4 text-center">98</td>
+<td class="px-6 py-4 text-center">92%</td>
+<td class="px-6 py-4 text-center">25 min</td>
+<td class="px-6 py-4 text-right"><span class="px-2 py-1 bg-accent/20 text-accent text-[10px] font-bold rounded-full">OTIMIZADO</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>

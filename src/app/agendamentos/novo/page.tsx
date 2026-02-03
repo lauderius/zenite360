@@ -52,13 +52,20 @@ export default function NovoAgendamentoPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input name="paciente" label="Paciente" value={form.paciente} onChange={handleChange} required />
-              <Select name="tipoAtendimento" label="Tipo de Atendimento" value={form.tipoAtendimento} onChange={handleChange} required>
-                <option value="CONSULTA_EXTERNA">Consulta Externa</option>
-                <option value="RETORNO">Retorno</option>
-                <option value="EXAME">Exame</option>
-                <option value="CIRURGIA">Cirurgia</option>
-                <option value="DOMICILIARIO">Domiciliário</option>
-              </Select>
+              <Select
+                name="tipoAtendimento"
+                label="Tipo de Atendimento"
+                value={form.tipoAtendimento}
+                onChange={handleChange}
+                required
+                options={[
+                  { value: "CONSULTA_EXTERNA", label: "Consulta Externa" },
+                  { value: "RETORNO", label: "Retorno" },
+                  { value: "EXAME", label: "Exame" },
+                  { value: "CIRURGIA", label: "Cirurgia" },
+                  { value: "DOMICILIARIO", label: "Domiciliário" }
+                ]}
+              />
               <Input name="dataAgendamento" label="Data" type="date" value={form.dataAgendamento} onChange={handleChange} required />
               <Input name="horaInicio" label="Hora Início" type="time" value={form.horaInicio} onChange={handleChange} required />
               <Input name="horaFim" label="Hora Fim" type="time" value={form.horaFim} onChange={handleChange} required />

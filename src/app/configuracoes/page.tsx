@@ -393,9 +393,9 @@ export default function ConfiguracoesPage() {
                   <div className="space-y-3">
                     <h4 className="font-medium text-slate-700 dark:text-slate-200">Backups Recentes</h4>
                     {[
-                      { data: '15/01/2024 02:00', tamanho: '2.3 GB', status: 'success' },
-                      { data: '14/01/2024 02:00', tamanho: '2.2 GB', status: 'success' },
-                      { data: '13/01/2024 02:00', tamanho: '2.2 GB', status: 'success' },
+                      { data: '15/01/2026 02:00', tamanho: '2.3 GB', status: 'success' },
+                      { data: '14/01/2026 02:00', tamanho: '2.2 GB', status: 'success' },
+                      { data: '13/01/2026 02:00', tamanho: '2.2 GB', status: 'success' },
                     ].map((backup, index) => (
                       <div key={index} className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
                         <div className="flex items-center gap-3">

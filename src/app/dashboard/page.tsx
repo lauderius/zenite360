@@ -1,223 +1,56 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import {
+  Calendar,
+  Users,
+  Bed,
+  Package,
+  TrendingUp,
+  Activity,
+  MapPin,
+  ArrowUpRight,
+  History,
+  AlertCircle,
+  Stethoscope,
+  ChevronRight,
+  MoreHorizontal
+} from 'lucide-react';
 import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts';
-import { Card, CardHeader, CardTitle, CardContent, Badge, Button, Spinner } from '@/components/ui';
-import { Icons } from '@/components/ui/icons';
-import { useAuth } from '@/contexts/AuthContext';
-import type { PrioridadeTriagem } from '@/types';
-
-// ============================================================================
-// COMPONENTE CARD DE ESTATÍSTICA
-// ============================================================================
-
-function StatCard({
-  title,
-  value,
-  icon: Icon,
-  trend,
-  trendValue,
-  color,
-}: {
-  title: string;
-  value: string | number;
-  icon: keyof typeof Icons;
-  trend?: 'up' | 'down' | 'neutral';
-  trendValue?: string;
-  color: 'sky' | 'emerald' | 'amber' | 'red' | 'purple' | 'orange';
-}) {
-  const IconComponent = Icons[Icon];
-  
-  const colorClasses = {
-    sky: 'bg-sky-500 shadow-sky-500/30',
-    emerald: 'bg-emerald-500 shadow-emerald-500/30',
-    amber: 'bg-amber-500 shadow-amber-500/30',
-    red: 'bg-red-500 shadow-red-500/30',
-    purple: 'bg-purple-500 shadow-purple-500/30',
-    orange: 'bg-orange-500 shadow-orange-500/30',
-  };
-
-  return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-5">
-        <div className="flex items-center gap-4">
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-lg ${colorClasses[color]}`}>
-            <IconComponent size={24} />
-          </div>
-          <div className="flex-1">
-            <p className="text-sm text-slate-500 dark:text-slate-400">{title}</p>
-            <p className="text-2xl font-bold text-slate-900 dark:text-white">{value}</p>
-          </div>
-          {trend && trendValue && (
-            <div className={`flex items-center gap-1 text-sm ${
-              trend === 'up' ? 'text-emerald-600' : trend === 'down' ? 'text-red-600' : 'text-slate-500'
-            }`}>
-              {trend === 'up' ? <Icons.TrendingUp size={16} /> : <Icons.TrendingDown size={16} />}
-              <span>{trendValue}</span>
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-// ============================================================================
-// BADGE DE TRIAGEM MANCHESTER
-// ============================================================================
-
-function TriagemBadge({ prioridade }: { prioridade: PrioridadeTriagem }) {
-  const config = {
-    EMERGENCIA: { label: 'Emergência', class: 'badge-emergencia' },
-    MUITO_URGENTE: { label: 'Muito Urggirente', class: 'badge-muito-urgente' },
-    URGENTE: { label: 'Urgente', class: 'badge-urgente' },
-    POUCO_URGENTE: { label: 'Pouco Urgente', class: 'badge-pouco-urgente' },
-    NAO_URGENTE: { label: 'Não Urgente', class: 'badge-nao-urgente' },
-  };
-
-  return <span className={config[prioridade].class}>{config[prioridade].label}</span>;
-}
-
-// ============================================================================
-// ESTATÍSTICAS DEFAULT
-// ============================================================================
-
-const defaultStats = {
-  pacientesHoje: 0,
-  consultasAgendadas: 0,
-  internamentosActivos: 0,
-  triagemPendente: 0,
-  prescricoesPendentes: 0,
-  faturasVencidas: 0,
-  ordensAbertas: 0,
-  estoqueCritico: 0,
-};
-
-// ============================================================================
-// PÁGINA DO DASHBOARD
-// ============================================================================
+import { Card, CardHeader, CardTitle, CardContent, Badge, Button, Avatar } from '@/components/ui';
 
 export default function DashboardPage() {
-  const { funcionario } = useAuth();
+  const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState(defaultStats);
-  
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/7d2d8f97-0a76-44ba-ac80-8cc7d10af208',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'src/app/dashboard/page.tsx:init',message:'DashboardPage inicializado',data:{funcionarioPresent:!!funcionario,usingMockStats: false},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'H3'})}).catch(()=>{});
-  // #endregion
+
+  const fetchDashboardData = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/dashboard');
+      if (response.ok) {
+        const result = await response.json();
+        setData(result);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados do dashboard:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    let mounted = true;
-    async function loadStats() {
-      try {
-        const res = await fetch('/api/dashboard');
-        if (!res.ok) throw new Error('Falha ao buscar estatísticas');
-        const data = await res.json();
-        if (!mounted) return;
-        setStats({
-          pacientesHoje: data.pacientesHoje ?? 0,
-          consultasAgendadas: data.consultasAgendadas ?? 0,
-          internamentosActivos: data.internamentosActivos ?? 0,
-          triagemPendente: data.triagemPendente ?? 0,
-          prescricoesPendentes: data.prescricoesPendentes ?? 0,
-          faturasVencidas: data.faturasVencidas ?? 0,
-          ordensAbertas: data.ordensAbertas ?? 0,
-          estoqueCritico: data.estoqueCritico ?? 0,
-        });
-      } catch (err) {
-        console.error(err);
-      } finally {
-        if (mounted) setIsLoading(false);
-      }
-    }
-
-    loadStats();
-    return () => { mounted = false; };
-  }, []);
-  
-  const [filaTriagem, setFilaTriagem] = useState<
-    { id: number; paciente: string; prioridade: PrioridadeTriagem; tempoEspera: number }[]
-  >([]);
-  const [consultasHoje, setConsultasHoje] = useState<
-    { id: number; hora: string; paciente: string; medico: string; status: string }[]
-  >([]);
-  const [alertasEstoque, setAlertasEstoque] = useState<
-    { id: number; medicamento: string; quantidade: number; minimo: number; status: string }[]
-  >([]);
-
-  useEffect(() => {
-    let mounted = true;
-    async function loadLists() {
-      try {
-        const [triRes, consRes, farmRes] = await Promise.all([
-          fetch('/api/triagem'),
-          fetch('/api/consultas'),
-          fetch('/api/farmacia'),
-        ]);
-
-        const tri = triRes.ok ? await triRes.json() : [];
-        const cons = consRes.ok ? await consRes.json() : [];
-        const farm = farmRes.ok ? await farmRes.json() : { data: [] };
-
-        if (!mounted) return;
-
-        setFilaTriagem(
-          (Array.isArray(tri) ? tri : []).slice(0, 5).map((t: unknown, idx: number) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const tt: any = t as any;
-            return {
-              id: tt.id ?? idx,
-              paciente: (tt.pacienteNome || (tt.paciente && (tt.paciente.nomeCompleto || tt.paciente.nome)) || `Paciente ${idx + 1}`) as string,
-              prioridade: (tt.prioridade || 'NAO_URGENTE') as PrioridadeTriagem,
-              tempoEspera: tt.tempoEsperaMin ?? 0,
-            };
-          })
-        );
-
-        setConsultasHoje(
-          (Array.isArray(cons) ? cons : []).slice(0, 5).map((c: unknown, idx: number) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const cc: any = c as any;
-            return {
-              id: cc.id ?? idx,
-              hora: cc.hora || (cc.dataHoraInicio ? new Date(cc.dataHoraInicio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—'),
-              paciente: (cc.paciente && (cc.paciente.nomeCompleto || cc.paciente.nome)) || `Paciente ${idx + 1}`,
-              medico: cc.medico?.nomeCompleto || cc.medicoNome || '—',
-              status: cc.status || 'AGENDADO',
-            };
-          })
-        );
-
-        setAlertasEstoque(
-          (Array.isArray(farm.data) ? farm.data : []).slice(0, 5).map((a: unknown, idx: number) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const aa: any = a as any;
-            const quantidade = aa.estoque ?? aa.quantidade_stock ?? 0;
-            const minimo = aa.estoqueMinimo ?? aa.stock_minimo ?? 0;
-            return {
-              id: aa.id ?? idx,
-              medicamento: aa.nome || aa.nome_artigo || `Medicamento ${idx + 1}`,
-              quantidade,
-              minimo,
-              status: quantidade < minimo ? 'CRITICO' : 'BAIXO',
-            };
-          })
-        );
-      } catch (err) {
-        console.error('Erro ao carregar listas do dashboard:', err);
-      }
-    }
-
-    loadLists();
-    return () => { mounted = false; };
+    fetchDashboardData();
   }, []);
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return (
       <MainLayout>
-        <div className="flex items-center justify-center h-96">
-          <Spinner size="lg" />
-        </div>
+        <PageHeader title="Visão 360" description="A carregar dados do painel..." />
+        <PageContent>
+          <div className="flex items-center justify-center p-20">
+            <div className="w-12 h-12 border-4 border-brand-500/20 border-t-brand-500 rounded-full animate-spin" />
+          </div>
+        </PageContent>
       </MainLayout>
     );
   }
@@ -225,252 +58,276 @@ export default function DashboardPage() {
   return (
     <MainLayout>
       <PageHeader
-        title="Dashboard"
-        description={`Visão geral do hospital — ${new Date().toLocaleDateString('pt-AO', { weekday: 'long', day: 'numeric', month: 'long' })}`}
+        title="Visão 360"
+        description="Painel Administrativo Hospitalar — Monitorização Global em Tempo Real"
         actions={
-          <Button variant="outline" size="sm">
-            <Icons.Download size={16} />
-            Exportar Relatório
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={fetchDashboardData}
+              variant="outline" size="sm" className="rounded-xl border-white/10 hover:bg-white/5">
+              <History className="w-4 h-4 mr-2" />
+              Actualizar
+            </Button>
+            <Button size="sm" className="gradient-brand border-none rounded-xl font-bold shadow-lg shadow-brand-500/20">
+              <ArrowUpRight className="w-4 h-4 mr-2" />
+              Exportar BI
+            </Button>
+          </div>
         }
       />
 
       <PageContent>
-        {/* Cards de Estatísticas - Linha 1 */}
-        <GridLayout cols={4}>
-          <StatCard
-            title="Pacientes Hoje"
-            value={stats.pacientesHoje}
-            icon="Users"
-            color="sky"
-            trend="up"
-            trendValue="+12%"
+        {/* KPI Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <KPICard
+            title="Consultas Hoje"
+            value={data.stats.consultasHoje.toString()}
+            trend="+12%"
+            icon={<Calendar className="w-6 h-6 text-brand-400" />}
+            color="brand"
           />
-          <StatCard
-            title="Consultas Agendadas"
-            value={stats.consultasAgendadas}
-            icon="Calendar"
-            color="emerald"
+          <KPICard
+            title="Em Triagem"
+            value={data.stats.emTriagem.toString()}
+            badge="3 Críticos"
+            icon={<Activity className="w-6 h-6 text-orange-500" />}
+            color="orange"
+            pulse
           />
-          <StatCard
-            title="Internamentos"
-            value={stats.internamentosActivos}
-            icon="Bed"
-            color="purple"
+          <KPICard
+            title="Admissões Ativas"
+            value={data.stats.admissoesAtivas.toString()}
+            trend="85% Ocup."
+            icon={<Bed className="w-6 h-6 text-indigo-400" />}
+            color="indigo"
           />
-          <StatCard
-            title="Triagem Pendente"
-            value={stats.triagemPendente}
-            icon="Activity"
-            color="amber"
+          <KPICard
+            title="Alertas de Stock"
+            value={data.stats.stockCritico.toString()}
+            warning={data.stats.stockCritico > 0 ? "Ação Necessária" : "Normal"}
+            icon={<Package className="w-6 h-6 text-red-500" />}
+            color="red"
           />
-        </GridLayout>
-
-        {/* Cards de Estatísticas - Linha 2 */}
-        <div className="mt-6">
-          <GridLayout cols={4}>
-            <StatCard
-              title="Prescrições Pendentes"
-              value={stats.prescricoesPendentes}
-              icon="FileText"
-              color="orange"
-            />
-            <StatCard
-              title="Faturas Vencidas"
-              value={stats.faturasVencidas}
-              icon="DollarSign"
-              color="red"
-            />
-            <StatCard
-              title="Ordens de Serviço"
-              value={stats.ordensAbertas}
-              icon="Wrench"
-              color="amber"
-            />
-            <StatCard
-              title="Estoque Crítico"
-              value={stats.estoqueCritico}
-              icon="AlertTriangle"
-              color="red"
-            />
-          </GridLayout>
         </div>
 
-        {/* Seção de Conteúdo Principal */}
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Fila de Triagem */}
-          <Card className="lg:col-span-1">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Icons.Activity className="w-5 h-5 text-sky-600" />
-                  Fila de Triagem
-                </CardTitle>
-                <Badge variant="warning">{filaTriagem.length} na fila</Badge>
+        {/* Charts & Analytics Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+          {/* Triage Analytics */}
+          <Card className="lg:col-span-2 glass-card border-none rounded-3xl overflow-hidden">
+            <CardHeader className="flex flex-row items-center justify-between pb-8">
+              <div>
+                <CardTitle className="text-white text-xl">Volume de Triagem (Manchester)</CardTitle>
+                <p className="text-sm text-slate-500 font-medium mt-1">Pacientes classificados hoje por nível de urgência</p>
               </div>
+              <Button variant="ghost" className="text-brand-500 hover:text-brand-400 hover:bg-brand-500/5">Ver Detalhes</Button>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {filaTriagem.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs font-medium text-slate-600 dark:text-slate-300">
-                        {index + 1}
-                      </span>
-                      <div>
-                        <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                          {item.paciente}
-                        </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                          {item.tempoEspera} min de espera
-                        </p>
-                      </div>
-                    </div>
-                    <TriagemBadge prioridade={item.prioridade} />
-                  </div>
-                ))}
-              </div>
-              <Button variant="ghost" className="w-full mt-4">
-                Ver Todos
-                <Icons.ArrowRight size={16} />
-              </Button>
+            <CardContent className="h-[300px] flex items-end justify-between gap-4 px-4 pb-2">
+              {data.chartData.map((item: any) => (
+                <ChartBar
+                  key={item.label}
+                  label={item.label}
+                  value={item.value}
+                  total={50}
+                  color={
+                    item.label === 'Emergência' ? 'bg-red-500' :
+                      item.label === 'M. Urgente' ? 'bg-orange-500' :
+                        item.label === 'Urgente' ? 'bg-amber-500' :
+                          item.label === 'Pouco Urg.' ? 'bg-emerald-500' : 'bg-sky-500'
+                  }
+                />
+              ))}
             </CardContent>
           </Card>
 
-          {/* Consultas de Hoje */}
-          <Card className="lg:col-span-1">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Icons.Calendar className="w-5 h-5 text-sky-600" />
-                  Consultas Hoje
-                </CardTitle>
-                <Badge variant="primary">{consultasHoje.length} agendadas</Badge>
+          {/* Regional Performance */}
+          <Card className="glass-card border-none rounded-3xl">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <div>
+                <CardTitle className="text-white text-xl">Fluxo Regional</CardTitle>
+                <p className="text-sm text-slate-500 font-medium mt-1">Origem dos pacientes (Mês)</p>
               </div>
+              <Button variant="ghost" size="icon" className="text-slate-500"><MoreHorizontal className="w-5 h-5" /></Button>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {consultasHoje.map((consulta) => (
-                  <div
-                    key={consulta.id}
-                    className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-mono font-medium text-sky-600 dark:text-sky-400">
-                        {consulta.hora}
-                      </span>
-                      <div>
-                        <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                          {consulta.paciente}
-                        </p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                          {consulta.medico}
-                        </p>
-                      </div>
-                    </div>
-                    <Badge
-                      variant={
-                        consulta.status === 'ATENDIDO'
-                          ? 'success'
-                          : consulta.status === 'EM_ATENDIMENTO'
-                          ? 'warning'
-                          : 'default'
-                      }
-                    >
-                      {consulta.status === 'ATENDIDO'
-                        ? 'Atendido'
-                        : consulta.status === 'EM_ATENDIMENTO'
-                        ? 'Em Atend.'
-                        : 'Agendado'}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-              <Button variant="ghost" className="w-full mt-4">
-                Ver Agenda Completa
-                <Icons.ArrowRight size={16} />
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Alertas de Estoque */}
-          <Card className="lg:col-span-1">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Icons.AlertTriangle className="w-5 h-5 text-amber-500" />
-                  Alertas de Estoque
-                </CardTitle>
-                <Badge variant="danger">{alertasEstoque.length} alertas</Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {alertasEstoque.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg"
-                  >
-                    <div>
-                      <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                        {item.medicamento}
-                      </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {item.quantidade} un. (mín: {item.minimo})
-                      </p>
-                    </div>
-                    <Badge variant={item.status === 'CRITICO' ? 'danger' : 'warning'}>
-                      {item.status === 'CRITICO' ? 'Crítico' : 'Baixo'}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-              <Button variant="ghost" className="w-full mt-4">
-                Ir para Farmácia
-                <Icons.ArrowRight size={16} />
-              </Button>
+            <CardContent className="space-y-6 pt-4">
+              <ProgressBar label="Luanda" value={65} color="bg-brand-500" />
+              <ProgressBar label="Huíla" value={18} color="bg-brand-500/70" />
+              <ProgressBar label="Benguela" value={12} color="bg-brand-500/50" />
+              <ProgressBar label="Cabinda" value={5} color="bg-brand-500/30" />
             </CardContent>
           </Card>
         </div>
 
-        {/* Acções Rápidas */}
-        <Card className="mt-6">
-          <CardHeader className="pb-3">
-            <CardTitle>Acções Rápidas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2">
-                <Icons.UserPlus size={24} className="text-sky-600" />
-                <span className="text-xs">Novo Paciente</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2">
-                <Icons.Calendar size={24} className="text-emerald-600" />
-                <span className="text-xs">Agendar Consulta</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2">
-                <Icons.Activity size={24} className="text-amber-600" />
-                <span className="text-xs">Nova Triagem</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2">
-                <Icons.FileText size={24} className="text-purple-600" />
-                <span className="text-xs">Nova Prescrição</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2">
-                <Icons.Bed size={24} className="text-orange-600" />
-                <span className="text-xs">Admitir Paciente</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-4 flex-col gap-2">
-                <Icons.Wrench size={24} className="text-red-600" />
-                <span className="text-xs">Abrir O.S.</span>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Bottom Section: Activities & Alerts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Recent Activity */}
+          <Card className="glass-card border-none rounded-3xl overflow-hidden">
+            <CardHeader className="bg-white/5 border-b border-white/5 flex flex-row items-center justify-between p-6">
+              <CardTitle className="text-white flex items-center gap-2">
+                <History className="w-5 h-5 text-brand-500" />
+                Atividade Recente
+              </CardTitle>
+              <Button variant="ghost" size="sm" className="text-[10px] font-black uppercase tracking-widest text-brand-500">Ver Tudo</Button>
+            </CardHeader>
+            <CardContent className="p-0">
+              <div className="divide-y divide-white/5">
+                {data.atividades.map((atv: any) => (
+                  <ActivityItem
+                    key={atv.id}
+                    title={atv.titulo}
+                    time={atv.tempo}
+                    description={atv.descricao}
+                    icon={
+                      <div className="p-2 rounded-xl bg-brand-500/10 text-brand-500">
+                        <Calendar className="w-4 h-4" />
+                      </div>
+                    }
+                  />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Critical Patients Table */}
+          <Card className="glass-card border-none rounded-3xl overflow-hidden">
+            <CardHeader className="bg-white/5 border-b border-white/5 flex flex-row items-center justify-between p-6">
+              <CardTitle className="text-white flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-red-500" />
+                Pacientes Críticos
+              </CardTitle>
+              <Badge className="bg-red-500/20 text-red-500 border-none font-black px-3">3 PACIENTES</Badge>
+            </CardHeader>
+            <CardContent className="p-0">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-white/[0.02] text-[10px] font-black text-slate-500 uppercase tracking-widest border-b border-white/5">
+                    <th className="px-6 py-4 text-left">Paciente</th>
+                    <th className="px-6 py-4 text-center">Tempo Espera</th>
+                    <th className="px-6 py-4 text-right">Ação</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 font-medium">
+                  <CriticalPatientRow name="João Manuel" id="#4918" urgency="Emergência" color="bg-red-500" waitTime="12 min" />
+                  <CriticalPatientRow name="Maria Costa" id="#4892" urgency="M. Urgente" color="bg-orange-500" waitTime="45 min" />
+                  <CriticalPatientRow name="Pedro Afonso" id="#4901" urgency="M. Urgente" color="bg-orange-500" waitTime="38 min" />
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+        </div>
       </PageContent>
     </MainLayout>
+  );
+}
+
+
+function KPICard({ title, value, trend, badge, warning, icon, color, pulse }: any) {
+  const colorMap: any = {
+    brand: 'border-brand-500/20 bg-brand-500/5',
+    orange: 'border-orange-500/20 bg-orange-500/5',
+    indigo: 'border-indigo-500/20 bg-indigo-500/5',
+    red: 'border-red-500/20 bg-red-500/5',
+  };
+
+  return (
+    <Card className={`glass-card border-none rounded-3xl p-6 relative overflow-hidden group`}>
+      <div className="flex justify-between items-start mb-4">
+        <div className={`p-4 rounded-2xl ${colorMap[color]} group-hover:scale-110 transition-transform duration-300`}>
+          {icon}
+        </div>
+        {trend && (
+          <Badge className="bg-emerald-500/10 text-emerald-500 border-none font-black flex items-center gap-1">
+            <TrendingUp className="w-3 h-3" /> {trend}
+          </Badge>
+        )}
+        {badge && (
+          <Badge className={`bg-red-500/10 text-red-500 border-none font-black ${pulse ? 'animate-pulse' : ''}`}>
+            {badge}
+          </Badge>
+        )}
+        {warning && (
+          <Badge className="bg-red-500 text-white border-none font-black uppercase text-[10px]">
+            {warning}
+          </Badge>
+        )}
+      </div>
+      <div>
+        <p className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">{title}</p>
+        <h3 className="text-4xl font-black text-white">{value}</h3>
+      </div>
+    </Card>
+  );
+}
+
+function ChartBar({ label, value, total, color }: any) {
+  const height = (value / total) * 100;
+  return (
+    <div className="flex flex-col items-center gap-3 w-full group">
+      <div className="text-[10px] font-black text-white bg-slate-800 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity mb-auto">
+        {value}
+      </div>
+      <div
+        className={`w-full max-w-[40px] rounded-t-xl transition-all duration-500 relative group-hover:brightness-125 ${color} opacity-20 group-hover:opacity-40`}
+        style={{ height: `${height}%` }}
+      >
+        <div className={`absolute top-0 left-0 right-0 h-1 ${color} rounded-t-xl`} />
+      </div>
+      <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest text-center h-4">{label}</span>
+    </div>
+  );
+}
+
+function ProgressBar({ label, value, color }: any) {
+  return (
+    <div className="space-y-2">
+      <div className="flex justify-between items-center text-xs">
+        <span className="font-black text-slate-400 uppercase tracking-widest">{label}</span>
+        <span className="font-black text-white">{value}%</span>
+      </div>
+      <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+        <div className={`h-full ${color} rounded-full transition-all duration-1000`} style={{ width: `${value}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function ActivityItem({ title, time, description, icon }: any) {
+  return (
+    <div className="flex items-start gap-4 p-6 hover:bg-white/[0.02] transition-colors group">
+      <div className="group-hover:scale-110 transition-transform duration-300">
+        {icon}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex justify-between items-start gap-2">
+          <p className="text-sm font-bold text-white truncate group-hover:text-brand-400 transition-colors uppercase tracking-tight">{title}</p>
+          <span className="text-[10px] font-black text-slate-600 whitespace-nowrap uppercase">{time}</span>
+        </div>
+        <p className="text-xs text-slate-500 font-medium mt-1">{description}</p>
+      </div>
+      <ChevronRight className="w-4 h-4 text-slate-700 mt-1 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
+    </div>
+  );
+}
+
+function CriticalPatientRow({ name, id, urgency, color, waitTime }: any) {
+  return (
+    <tr className="hover:bg-white/[0.02] transition-colors group">
+      <td className="px-6 py-5">
+        <div className="flex flex-col">
+          <span className="text-sm font-bold text-white uppercase tracking-tight">{name} <span className="text-slate-600 font-medium">{id}</span></span>
+          <div className="flex items-center gap-2 mt-1.5">
+            <div className={`w-2 h-2 rounded-full ${color}`} />
+            <span className={`text-[10px] font-black uppercase tracking-widest ${color.replace('bg-', 'text-')}`}>{urgency}</span>
+          </div>
+        </div>
+      </td>
+      <td className="px-6 py-5 text-center">
+        <Badge className="bg-red-500/10 text-red-500 border-none font-black px-3">{waitTime}</Badge>
+      </td>
+      <td className="px-6 py-5 text-right">
+        <Button variant="ghost" className="text-brand-500 hover:text-brand-400 hover:bg-brand-500/5 text-xs font-black uppercase tracking-widest rounded-xl">
+          Prontuário
+        </Button>
+      </td>
+    </tr>
   );
 }

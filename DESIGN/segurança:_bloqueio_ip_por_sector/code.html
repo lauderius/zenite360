@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Segurança: Bloqueio IP por Sector | Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined">shield_lock</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Zênite360</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium" href="#">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium" href="#">Sectores</a>
+<a class="text-primary dark:text-white border-b-2 border-primary dark:border-white pb-1 text-sm font-bold" href="#">Segurança</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium" href="#">Logs de Acesso</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="w-64 pl-10 pr-4 py-2 text-sm rounded-lg border-none bg-slate-100 dark:bg-slate-800 focus:ring-2 focus:ring-primary dark:text-white" placeholder="Pesquisar sector ou IP..."/>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">notifications</span>
+</button>
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-300">settings</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-slate-200 dark:border-slate-800">
+<div class="text-right hidden lg:block">
+<p class="text-xs font-bold text-slate-900 dark:text-white">Admin TI</p>
+<p class="text-[10px] text-slate-500">Acesso Nível DG</p>
+</div>
+<div class="size-10 rounded-full bg-primary flex items-center justify-center text-white font-bold border-2 border-slate-200 dark:border-slate-700">
+                    AD
+                </div>
+</div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark hidden xl:flex flex-col p-4 gap-6">
+<div class="flex flex-col gap-1">
+<label class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-2 px-3">Administração de Rede</label>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white shadow-lg shadow-primary/20" href="#">
+<span class="material-symbols-outlined text-[20px]">lock_person</span>
+<span class="text-sm font-medium">Controlo de Acesso</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<span class="text-sm font-medium">Firewall Interno</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">lan</span>
+<span class="text-sm font-medium">Zonas de Rede (VLAN)</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">history_edu</span>
+<span class="text-sm font-medium">Auditoria de Sistema</span>
+</a>
+</div>
+<div class="mt-auto bg-primary/5 dark:bg-primary/20 p-4 rounded-xl border border-primary/10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400 text-sm">verified_user</span>
+<p class="text-xs font-bold text-primary dark:text-blue-400">Segurança Activa</p>
+</div>
+<p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">O sistema está a filtrar acessos via Intranet Hospitalar (Angola).</p>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-6 lg:p-10">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white">Bloqueio IP por Sector</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Configuração de restrições de rede e mapeamento de terminais por departamento.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white text-sm font-bold rounded-lg hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-sm">print</span>
+                        Relatório
+                    </button>
+<button class="flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:bg-blue-900 shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Nova Regra
+                    </button>
+</div>
+</div>
+<!-- Restriction Mode Toggle -->
+<div class="bg-white dark:bg-slate-900 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 inline-flex mb-8 shadow-sm">
+<label class="relative flex items-center justify-center h-10 px-6 rounded-lg cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white text-slate-500 font-bold text-sm">
+<input checked="" class="sr-only" name="restriction-mode" type="radio"/>
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">gpp_maybe</span>
+                        Modo Rigoroso
+                    </span>
+</label>
+<label class="relative flex items-center justify-center h-10 px-6 rounded-lg cursor-pointer transition-all has-[:checked]:bg-primary has-[:checked]:text-white text-slate-500 font-bold text-sm">
+<input class="sr-only" name="restriction-mode" type="radio"/>
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                        Modo Permissivo
+                    </span>
+</label>
+</div>
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Data Table -->
+<div class="flex-1 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Sector Hospitalar</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Intervalo de IP Permitido</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Terminais Ativos</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Estado Rede</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary dark:text-blue-400">
+<span class="material-symbols-outlined text-sm">meeting_room</span>
+</div>
+<span class="font-bold text-sm">Receção Geral</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500 dark:text-slate-400">192.168.1.10 - 192.168.1.50</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-green-500 h-full w-[85%]"></div>
+</div>
+<span class="text-xs font-bold">42/50</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase">Seguro</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500"><span class="material-symbols-outlined text-sm">delete</span></button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-sm">history</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary dark:text-blue-400">
+<span class="material-symbols-outlined text-sm">child_care</span>
+</div>
+<span class="font-bold text-sm">Pediatria</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500 dark:text-slate-400">192.168.2.5 - 192.168.2.20</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-yellow-500 h-full w-[35%]"></div>
+</div>
+<span class="text-xs font-bold">07/15</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase">Seguro</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500"><span class="material-symbols-outlined text-sm">delete</span></button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-sm">history</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-red-100 dark:bg-red-900/20 flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined text-sm">e911_emergency</span>
+</div>
+<span class="font-bold text-sm">Banco de Urgência</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500 dark:text-slate-400">192.168.3.1 - 192.168.3.30</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-red-500 h-full w-[100%]"></div>
+</div>
+<span class="text-xs font-bold">30/30</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 uppercase">Bloqueado</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500"><span class="material-symbols-outlined text-sm">delete</span></button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-sm">history</span></button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-primary/10 flex items-center justify-center text-primary dark:text-blue-400">
+<span class="material-symbols-outlined text-sm">admin_panel_settings</span>
+</div>
+<span class="font-bold text-sm">Administração</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500 dark:text-slate-400">10.0.0.1 - 10.0.0.254</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-24 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="bg-blue-500 h-full w-[12%]"></div>
+</div>
+<span class="text-xs font-bold">12/254</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 uppercase">Seguro</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-red-500"><span class="material-symbols-outlined text-sm">delete</span></button>
+<button class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded text-slate-400 hover:text-primary"><span class="material-symbols-outlined text-sm">history</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Side Panel (Add Rule) -->
+<aside class="w-full lg:w-80 flex flex-col gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">add_moderator</span>
+                            Nova Regra IP
+                        </h3>
+<form class="flex flex-col gap-4">
+<div>
+<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Sector</label>
+<select class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:ring-primary">
+<option>Selecionar Departamento...</option>
+<option>Farmácia</option>
+<option>Laboratório</option>
+<option>Radiologia</option>
+<option>Bloco Operatório</option>
+</select>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Intervalo Inicial (IP)</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm font-mono focus:ring-primary" placeholder="Ex: 192.168.1.1" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-500 uppercase mb-1">Intervalo Final (IP)</label>
+<input class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm font-mono focus:ring-primary" placeholder="Ex: 192.168.1.254" type="text"/>
+</div>
+<div class="pt-2">
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="rounded border-slate-300 text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-sm font-medium">Activar Imediatamente</span>
+</label>
+</div>
+<button class="w-full py-2.5 bg-primary text-white rounded-lg font-bold text-sm hover:bg-blue-900 transition-all mt-4" type="submit">
+                                Salvar Configuração
+                            </button>
+</form>
+</div>
+<div class="bg-primary text-white p-5 rounded-xl border border-white/10 shadow-lg relative overflow-hidden">
+<!-- Background Pattern Decor -->
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-8xl">verified_user</span>
+</div>
+<h4 class="font-bold text-sm mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-300">info</span>
+                            Dica de Segurança
+                        </h4>
+<p class="text-xs text-blue-100 leading-relaxed">
+                            O mapeamento rigoroso impede que dispositivos não autorizados acessem módulos sensíveis do ERP, mesmo que possuam credenciais válidas.
+                        </p>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<!-- System Status Footer -->
+<footer class="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-6 py-3 flex justify-between items-center text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5"><span class="size-2 bg-green-500 rounded-full animate-pulse"></span> Servidor: Online</span>
+<span class="flex items-center gap-1.5">Módulo: Rede Hospitalar PT-AO</span>
+</div>
+<div>
+            © 2024 Zênite360 Security Portal
+        </div>
+</footer>
+</body></html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Linha do Tempo do Histórico Clínico - Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "manchester-red": "#ef4444",
+                        "manchester-orange": "#f97316",
+                        "manchester-yellow": "#eab308",
+                        "manchester-green": "#22c55e",
+                        "manchester-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #27303a;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-[#27303a] bg-background-light dark:bg-background-dark px-10 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary dark:text-white">
+<div class="size-6 bg-primary dark:bg-white rounded flex items-center justify-center text-white dark:text-primary">
+<span class="material-symbols-outlined text-sm">health_and_safety</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360</h2>
+</div>
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#9aaabc] flex border-none bg-slate-200 dark:bg-[#27303a] items-center justify-center pl-4 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border-none bg-slate-200 dark:bg-[#27303a] focus:ring-0 placeholder:text-[#9aaabc] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal dark:text-white" placeholder="Pesquisar paciente..."/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-sm font-medium leading-normal hover:text-primary dark:hover:text-blue-400" href="#">Dashboard</a>
+<a class="text-sm font-medium leading-normal border-b-2 border-primary dark:border-blue-400" href="#">Pacientes</a>
+<a class="text-sm font-medium leading-normal hover:text-primary dark:hover:text-blue-400" href="#">Agendas</a>
+<a class="text-sm font-medium leading-normal hover:text-primary dark:hover:text-blue-400" href="#">Relatórios</a>
+</nav>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold">
+<span class="truncate">Dr. António Kiluanje</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-300" data-alt="Portrait of a medical professional" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBDauL1AXpFgadFwADmd_jnDzJzU7YPufVoq9qaBz_-gfMe8peUqE0tmkffAIbm0qwyBQRnuKczPgCBZIxpdtfrAVWuRAXHcoeqdZ2udJbkzmVcrCjmkrU_dybjIxquIS5RK_e2zUKUAw9iNGXl6oi9NBg01COzCGVyarVaf8hH3IH0n9IvRlD0eDyc4Qn27AfLnCocC8Shp6UyS7KvrUEB0scy2pPkbDefRSIMEeGrW-ghBvvESfObOI8uF52qid2MrFi8Ph8jI43N");'></div>
+</div>
+</header>
+<div class="flex min-h-screen">
+<!-- Side Navigation -->
+<aside class="w-64 flex-shrink-0 border-r border-[#27303a] hidden lg:flex flex-col bg-background-light dark:bg-background-dark p-4">
+<div class="flex flex-col gap-6">
+<div class="flex gap-3 items-center">
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">clinical_notes</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-sm font-bold uppercase tracking-wider text-slate-500">Direcção Clínica</h1>
+<p class="text-xs text-[#9aaabc]">Controlo de Qualidade</p>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="px-3 py-2 text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Histórico Longitudinal</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-[#27303a] transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">grid_view</span>
+<p class="text-sm font-medium">Sumário Clínico</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-white" href="#">
+<span class="material-symbols-outlined text-xl">timeline</span>
+<p class="text-sm font-medium">Linha do Tempo</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-[#27303a] transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">lab_research</span>
+<p class="text-sm font-medium">Exames e Lab</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-200 dark:hover:bg-[#27303a] transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">medication</span>
+<p class="text-sm font-medium">Prescrições</p>
+</a>
+</div>
+<div class="pt-4 border-t border-[#27303a]">
+<p class="px-3 py-2 text-xs font-semibold text-[#9aaabc] uppercase tracking-wider">Filtros Rápidos</p>
+<div class="px-3 flex flex-col gap-4 mt-2">
+<div>
+<label class="text-xs font-medium block mb-2">Especialidade</label>
+<select class="w-full text-xs rounded-lg border-none bg-slate-200 dark:bg-[#27303a] dark:text-white">
+<option>Todas</option>
+<option>Cardiologia</option>
+<option>Cirurgia Geral</option>
+<option>Pediatria</option>
+</select>
+</div>
+<div>
+<label class="text-xs font-medium block mb-2">Ano</label>
+<select class="w-full text-xs rounded-lg border-none bg-slate-200 dark:bg-[#27303a] dark:text-white">
+<option>2024</option>
+<option>2023</option>
+<option>Todos os anos</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded text-primary focus:ring-primary bg-slate-200 dark:bg-[#27303a] border-none" type="checkbox"/>
+<span class="text-xs">Urgências</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded text-primary focus:ring-primary bg-slate-200 dark:bg-[#27303a] border-none" type="checkbox"/>
+<span class="text-xs">Internamentos</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Profile Header Section -->
+<div class="bg-white dark:bg-[#151d28] border-b border-[#27303a] p-6">
+<div class="flex flex-col md:flex-row gap-6 items-start">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-xl size-32 shadow-lg border-2 border-primary/20" data-alt="Portrait photo of a patient named João Manuel Neto" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAudmo6gX0CTaPUSGE1jatU9Z7KQO0uHgLvTU3414yDWybFXs11c0rJGzRyAOBrslT0zMS3k2pTpncAaKIbtWK15SX7zCxndpEuEtasUN5OB3bbdnnYbyHpOPb-_r176pp9t1Wg8ONwvxLpGxN2AduFo_XKvN8NmYyHislr7W-fa3xaRkMjEUS_MfYmXc9HTj18wxukJ7VbIAbN5UQv7mMrngaindk4XqOpy7VZ1uPY3ByWzpJ_aeuLFQ8uUCWINBi5ayCoF7-CdqnF");'></div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-2">
+<h2 class="text-2xl font-bold dark:text-white">João Manuel Neto</h2>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-manchester-green/20 text-manchester-green border border-manchester-green/30 rounded-full text-xs font-bold uppercase tracking-wider">Estável</span>
+<span class="px-3 py-1 bg-primary text-white rounded-full text-xs font-bold uppercase">Paciente VIP</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-2 text-[#9aaabc] text-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">id_card</span>
+<span>B.I.: 001234567LA042</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+<span>45 anos (Masculino)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">bloodtype</span>
+<span class="font-semibold text-red-500">O+ (Doador Universal)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">location_on</span>
+<span data-location="Luanda, Angola">Luanda, Talatona</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">contact_phone</span>
+<span>+244 923 000 000</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Timeline Content -->
+<div class="p-8 max-w-5xl mx-auto w-full">
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-xl font-bold dark:text-white">Linha do Tempo do Histórico Clínico</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-slate-200 dark:bg-[#27303a] hover:bg-slate-300 dark:hover:bg-[#323d4a] transition-colors">
+<span class="material-symbols-outlined">print</span>
+</button>
+<button class="p-2 rounded-lg bg-slate-200 dark:bg-[#27303a] hover:bg-slate-300 dark:hover:bg-[#323d4a] transition-colors">
+<span class="material-symbols-outlined">file_download</span>
+</button>
+</div>
+</div>
+<div class="relative timeline-line">
+<!-- Event Card 1: Surgery -->
+<div class="relative pl-12 pb-12">
+<div class="absolute left-0 top-0 size-10 rounded-full bg-manchester-red flex items-center justify-center text-white z-10 shadow-lg shadow-manchester-red/20">
+<span class="material-symbols-outlined text-xl">surgical</span>
+</div>
+<div class="bg-white dark:bg-[#1c242f] rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="text-xs font-bold text-manchester-red uppercase tracking-widest mb-1">Bloco Operatório</p>
+<h4 class="text-lg font-bold">Apendicectomia de Urgência</h4>
+</div>
+<div class="text-right">
+<p class="text-sm font-semibold">14 Out 2024</p>
+<p class="text-xs text-[#9aaabc]">03:45 AM</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-[#27303a] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">person</span>
+</div>
+<div>
+<p class="text-xs text-[#9aaabc]">Cirurgião Responsável</p>
+<p class="text-sm font-semibold">Dr. Mateus Van-Dúnem</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-manchester-red/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-manchester-red">priority_high</span>
+</div>
+<div>
+<p class="text-xs text-[#9aaabc]">Triagem Manchester</p>
+<p class="text-sm font-bold text-manchester-red">VERMELHO (Emergência)</p>
+</div>
+</div>
+</div>
+<p class="text-sm text-slate-600 dark:text-[#9aaabc] border-l-4 border-slate-200 dark:border-[#27303a] pl-4 italic mb-4">
+                                "Paciente admitido com quadro de abdómen agudo inflamatório. Procedimento realizado sem intercorrências. Encaminhado para recobro."
+                            </p>
+<div class="flex gap-2">
+<button class="px-4 py-2 text-xs font-bold bg-primary text-white rounded-lg">Ver Relatório Operatório</button>
+<button class="px-4 py-2 text-xs font-bold bg-slate-100 dark:bg-[#27303a] rounded-lg">Imagens (3)</button>
+</div>
+</div>
+</div>
+<!-- Event Card 2: Consultation -->
+<div class="relative pl-12 pb-12">
+<div class="absolute left-0 top-0 size-10 rounded-full bg-manchester-blue flex items-center justify-center text-white z-10 shadow-lg shadow-manchester-blue/20">
+<span class="material-symbols-outlined text-xl">stethoscope</span>
+</div>
+<div class="bg-white dark:bg-[#1c242f] rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="text-xs font-bold text-manchester-blue uppercase tracking-widest mb-1">Consulta Externa</p>
+<h4 class="text-lg font-bold">Acompanhamento Pós-Operatório</h4>
+</div>
+<div class="text-right">
+<p class="text-sm font-semibold">28 Out 2024</p>
+<p class="text-xs text-[#9aaabc]">10:15 AM</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-slate-100 dark:bg-[#27303a] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">person</span>
+</div>
+<div>
+<p class="text-xs text-[#9aaabc]">Médico Assistente</p>
+<p class="text-sm font-semibold">Dra. Isabel Santos</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-manchester-blue/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-manchester-blue">info</span>
+</div>
+<div>
+<p class="text-xs text-[#9aaabc]">Triagem Manchester</p>
+<p class="text-sm font-bold text-manchester-blue">AZUL (Não Urgente)</p>
+</div>
+</div>
+</div>
+<p class="text-sm text-slate-600 dark:text-[#9aaabc] mb-4">
+                                Cicatrização dentro dos parâmetros normais. Retirada de pontos realizada. Prescrição de dieta leve por mais 7 dias.
+                            </p>
+<div class="flex gap-2">
+<button class="px-4 py-2 text-xs font-bold bg-primary text-white rounded-lg">Notas Clínicas</button>
+<button class="px-4 py-2 text-xs font-bold bg-slate-100 dark:bg-[#27303a] rounded-lg">Receita Digital</button>
+</div>
+</div>
+</div>
+<!-- Event Card 3: Lab Result -->
+<div class="relative pl-12 pb-12">
+<div class="absolute left-0 top-0 size-10 rounded-full bg-slate-500 flex items-center justify-center text-white z-10 shadow-lg shadow-slate-500/20">
+<span class="material-symbols-outlined text-xl">biotech</span>
+</div>
+<div class="bg-white dark:bg-[#1c242f] rounded-xl p-5 shadow-sm border border-slate-200 dark:border-slate-800">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Laboratório Central</p>
+<h4 class="text-lg font-bold">Hemograma Completo + PCR</h4>
+</div>
+<div class="text-right">
+<p class="text-sm font-semibold">14 Out 2024</p>
+<p class="text-xs text-[#9aaabc]">02:30 AM</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-red-50 dark:bg-red-950/20 p-3 rounded-lg border border-red-200 dark:border-red-900/30 mb-4">
+<span class="material-symbols-outlined text-red-500">warning</span>
+<div>
+<p class="text-xs font-bold text-red-500">Valor Crítico Detectado</p>
+<p class="text-sm">Leucocitose severa (18.500/mm³) e PCR elevada (145 mg/L).</p>
+</div>
+</div>
+<button class="w-full py-2 text-xs font-bold border-2 border-dashed border-slate-200 dark:border-[#27303a] rounded-lg hover:border-primary dark:hover:border-blue-400 transition-colors">
+<span class="flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">visibility</span> Ver Resultados Detalhados
+                                </span>
+</button>
+</div>
+</div>
+<!-- Load More Trigger -->
+<div class="relative pl-12 py-4">
+<div class="absolute left-[18px] top-0 size-2 rounded-full bg-[#27303a]"></div>
+<button class="text-sm font-semibold text-[#9aaabc] hover:text-primary dark:hover:text-blue-400 flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined">expand_more</span> Carregar eventos anteriores (2023)
+                        </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Side Panel: Quick Actions & Stats -->
+<aside class="w-80 flex-shrink-0 border-l border-[#27303a] hidden xl:flex flex-col bg-background-light dark:bg-background-dark p-6">
+<h3 class="text-sm font-bold uppercase tracking-wider text-[#9aaabc] mb-4">Resumo do Histórico</h3>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="bg-white dark:bg-[#1c242f] p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-xs text-[#9aaabc] mb-1">Consultas</p>
+<p class="text-2xl font-bold text-primary dark:text-blue-400">24</p>
+</div>
+<div class="bg-white dark:bg-[#1c242f] p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-xs text-[#9aaabc] mb-1">Cirurgias</p>
+<p class="text-2xl font-bold text-manchester-red">02</p>
+</div>
+<div class="bg-white dark:bg-[#1c242f] p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-xs text-[#9aaabc] mb-1">Exames</p>
+<p class="text-2xl font-bold text-manchester-yellow">56</p>
+</div>
+<div class="bg-white dark:bg-[#1c242f] p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+<p class="text-xs text-[#9aaabc] mb-1">Internam.</p>
+<p class="text-2xl font-bold text-manchester-orange">03</p>
+</div>
+</div>
+<div class="mb-8">
+<h3 class="text-sm font-bold uppercase tracking-wider text-[#9aaabc] mb-4">Avisos e Alertas</h3>
+<div class="flex flex-col gap-3">
+<div class="p-3 rounded-lg bg-orange-100 dark:bg-orange-950/20 border-l-4 border-orange-500 flex gap-3">
+<span class="material-symbols-outlined text-orange-500">medical_services</span>
+<p class="text-xs font-medium">Paciente com alergia severa à Penicilina registrada.</p>
+</div>
+<div class="p-3 rounded-lg bg-blue-100 dark:bg-blue-950/20 border-l-4 border-blue-500 flex gap-3">
+<span class="material-symbols-outlined text-blue-500">notifications_active</span>
+<p class="text-xs font-medium">Próximo retorno agendado: 15 Nov 2024 (Cardiologia).</p>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full bg-primary text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add_circle</span> Nova Evolução Clínica
+                </button>
+</div>
+</aside>
+</div>
+</body></html>

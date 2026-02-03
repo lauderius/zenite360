@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lista de Ocupação e Enfermarias Zênite360 (V3)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0954aa",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101822",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between border-b border-solid border-[#283039] bg-background-light dark:bg-background-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">health_metrics</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360</h2>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#9caaba] flex border-none bg-slate-200 dark:bg-[#283039] items-center justify-center pl-4 rounded-l-lg">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-slate-200 dark:bg-[#283039] focus:border-none h-full placeholder:text-[#9caaba] px-4 rounded-l-none pl-2 text-base font-normal leading-normal" placeholder="Procurar paciente ou cama..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-6">
+<a class="text-slate-600 dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">Mapa de Camas</a>
+<a class="text-slate-600 dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Enfermarias</a>
+<a class="text-slate-600 dark:text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Pacientes</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-[#283039] text-slate-600 dark:text-white hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-[#283039] text-slate-600 dark:text-white hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile picture of a doctor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBghKeZeopXJkCE2epjFY46ejZGy2hw-ajqxtFGLe-sGGLrVesk3Cce5ZXEh5yYAUJpEdy2vdce6TsiuGyMAZ0aImoT3A8qirlkgJOzXU_ioO_-6vF8YogzzE8wkTqICuOhOgoSGE_Df0c7zlNZFaGB82x3swm1YX54jF8QqtqpKOQYwJ9YsUpVsuJcyOh9xgPkjxYGzUSO5BiNWCk4UzKrbSwGyTFh5x5SWZ3P-5uo6aj7BwdPAfpzCRGEhSjF8ZCBr_1UOgeP32YM");'></div>
+</div>
+</header>
+<main class="flex-1 px-4 lg:px-10 py-8 max-w-[1400px] mx-auto w-full">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between items-end gap-3 mb-8">
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Mapa de Camas e Ocupação</p>
+<p class="text-slate-500 dark:text-[#9caaba] text-base font-normal leading-normal flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">location_on</span>
+                        Direcção de Enfermagem (DE) - Hospital Central de Luanda
+                    </p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-slate-200 dark:bg-[#283039] text-slate-900 dark:text-white text-sm font-bold hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined mr-2">download</span> Relatório Diário
+                    </button>
+<button class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined mr-2">add</span> Nova Admissão
+                    </button>
+</div>
+</div>
+<!-- Stats & Trends Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+<!-- KPIs -->
+<div class="lg:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-[#3b4754] shadow-sm">
+<p class="text-slate-500 dark:text-[#9caaba] text-xs font-bold uppercase tracking-wider">Total de Camas</p>
+<div class="flex items-end justify-between">
+<p class="text-slate-900 dark:text-white text-3xl font-black">450</p>
+<p class="text-primary text-sm font-medium">100%</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-[#3b4754] shadow-sm">
+<p class="text-slate-500 dark:text-[#9caaba] text-xs font-bold uppercase tracking-wider">Ocupação</p>
+<div class="flex items-end justify-between">
+<p class="text-slate-900 dark:text-white text-3xl font-black">82%</p>
+<p class="text-green-500 text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-xs">trending_up</span> +5%
+                            </p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-[#3b4754] shadow-sm">
+<p class="text-slate-500 dark:text-[#9caaba] text-xs font-bold uppercase tracking-wider">Em Limpeza</p>
+<div class="flex items-end justify-between">
+<p class="text-slate-900 dark:text-white text-3xl font-black">14</p>
+<p class="text-amber-500 text-sm font-medium flex items-center">
+<span class="material-symbols-outlined text-xs">mop</span>
+</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-[#3b4754] shadow-sm">
+<p class="text-slate-500 dark:text-[#9caaba] text-xs font-bold uppercase tracking-wider">Altas Pendentes</p>
+<div class="flex items-end justify-between">
+<p class="text-slate-900 dark:text-white text-3xl font-black">8</p>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Pronto</span>
+</div>
+</div>
+</div>
+<!-- Charts (Sparkline style) -->
+<div class="rounded-xl p-5 bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-[#3b4754] shadow-sm flex flex-col justify-between">
+<div>
+<p class="text-slate-500 dark:text-[#9caaba] text-xs font-bold uppercase tracking-wider">Tendência (24h)</p>
+<div class="flex gap-2 items-baseline">
+<p class="text-slate-900 dark:text-white text-2xl font-bold">82.4%</p>
+<p class="text-green-500 text-xs font-medium">+1.2% vs ontem</p>
+</div>
+</div>
+<div class="h-16 w-full mt-2">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<path d="M0 35 Q 20 10, 40 25 T 80 15 T 100 20" fill="none" stroke="#0954aa" stroke-linecap="round" stroke-width="2.5"></path>
+<path d="M0 35 Q 20 10, 40 25 T 80 15 T 100 20 L 100 40 L 0 40 Z" fill="url(#grad)" opacity="0.2"></path>
+<defs>
+<lineargradient id="grad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#0954aa;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#0954aa;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<div class="flex justify-between text-[10px] text-slate-400 font-bold mt-1">
+<span>00h</span><span>08h</span><span>16h</span><span>AGORA</span>
+</div>
+</div>
+</div>
+<!-- Tabs -->
+<div class="mb-6 overflow-x-auto">
+<div class="flex border-b border-slate-200 dark:border-[#3b4754] min-w-max">
+<button class="flex flex-col items-center justify-center border-b-[3px] border-primary text-primary px-6 pb-3 pt-4 font-bold text-sm tracking-wide">
+                        Todas Enfermarias
+                    </button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-[#9caaba] px-6 pb-3 pt-4 font-bold text-sm tracking-wide hover:text-slate-700 dark:hover:text-white transition-colors">
+                        Medicina Homens
+                    </button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-[#9caaba] px-6 pb-3 pt-4 font-bold text-sm tracking-wide hover:text-slate-700 dark:hover:text-white transition-colors">
+                        Cuidados Intensivos (UCI)
+                    </button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-[#9caaba] px-6 pb-3 pt-4 font-bold text-sm tracking-wide hover:text-slate-700 dark:hover:text-white transition-colors">
+                        Pediatria
+                    </button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-slate-500 dark:text-[#9caaba] px-6 pb-3 pt-4 font-bold text-sm tracking-wide hover:text-slate-700 dark:hover:text-white transition-colors">
+                        Maternidade
+                    </button>
+</div>
+</div>
+<!-- Ward-Grouped List (Main Content) -->
+<div class="flex flex-col gap-6">
+<!-- Ward Group: Medicina Geral -->
+<div class="bg-white dark:bg-slate-800/40 rounded-xl overflow-hidden border border-slate-200 dark:border-[#3b4754] shadow-sm">
+<div class="bg-primary/10 dark:bg-primary/20 px-6 py-3 border-b border-slate-200 dark:border-[#3b4754] flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">apartment</span>
+<h3 class="font-bold text-slate-900 dark:text-white">Enfermaria: Medicina Homens - Piso 2</h3>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-primary text-white uppercase">Ala Norte</span>
+</div>
+<div class="text-xs font-bold text-slate-500 dark:text-slate-400">
+                            OCUPAÇÃO: <span class="text-primary">12/15 Camas (80%)</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-slate-500 dark:text-[#9caaba] text-[11px] font-black uppercase tracking-widest border-b border-slate-200 dark:border-[#3b4754]">
+<th class="px-6 py-3">Cama</th>
+<th class="px-6 py-3">Estado</th>
+<th class="px-6 py-3">Paciente</th>
+<th class="px-6 py-3">Médico Responsável</th>
+<th class="px-6 py-3">Tempo Int.</th>
+<th class="px-6 py-3 text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+<!-- Row: Occupied -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-bold text-primary">MH-201</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="flex h-2.5 w-2.5 rounded-full bg-red-500"></span>
+<span class="text-sm font-medium">Ocupado</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold">João Manuel Afonso</span>
+<span class="text-[11px] text-slate-500">64 Anos • NHC: 228491-B</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm">Dr. André Santos</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-sm font-medium">
+<span class="material-symbols-outlined text-[16px] text-slate-400">schedule</span> 12 Dias
+                                        </div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-primary hover:text-white transition-all" title="Transferir">
+<span class="material-symbols-outlined text-[18px]">move_item</span>
+</button>
+<button class="p-1.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-green-600 hover:text-white transition-all" title="Dar Alta">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row: Isolation -->
+<tr class="bg-indigo-50/30 dark:bg-indigo-900/10 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors">
+<td class="px-6 py-4 font-bold text-primary">MH-202</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="flex h-2.5 w-2.5 rounded-full bg-indigo-500 status-pulse"></span>
+<span class="text-sm font-bold text-indigo-600 dark:text-indigo-400">Isolamento</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold">Mateus Cardoso</span>
+<span class="text-[11px] text-slate-500">42 Anos • NHC: 110293-C</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium">Dr.ª Carla Matos</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1.5 text-sm font-medium text-amber-600">
+<span class="material-symbols-outlined text-[16px]">priority_high</span> 22 Dias
+                                        </div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 rounded bg-indigo-200 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300">
+<span class="material-symbols-outlined text-[18px]">clinical_notes</span>
+</button>
+<button class="p-1.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row: Cleaning -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-bold text-primary">MH-203</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="flex h-2.5 w-2.5 rounded-full bg-amber-400"></span>
+<span class="text-sm font-medium text-amber-600">Limpeza</span>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-400 italic text-sm">-- vago --</td>
+<td class="px-6 py-4 text-slate-400 text-sm">--</td>
+<td class="px-6 py-4 text-slate-400 text-sm">0h 45m</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary text-xs font-black uppercase hover:underline">Acelerar</button>
+</td>
+</tr>
+<!-- Row: Available -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-bold text-primary">MH-204</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="flex h-2.5 w-2.5 rounded-full bg-green-500"></span>
+<span class="text-sm font-medium text-green-600">Livre</span>
+</div>
+</td>
+<td class="px-6 py-4" colspan="3">
+<div class="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full"></div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="bg-primary/10 hover:bg-primary text-primary hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition-all">Ocupar Cama</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Ward Group: UCI -->
+<div class="bg-white dark:bg-slate-800/40 rounded-xl overflow-hidden border border-slate-200 dark:border-[#3b4754] shadow-sm">
+<div class="bg-primary/10 dark:bg-primary/20 px-6 py-3 border-b border-slate-200 dark:border-[#3b4754] flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">emergency</span>
+<h3 class="font-bold text-slate-900 dark:text-white">Enfermaria: Cuidados Intensivos (UCI) - Piso 1</h3>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-red-600 text-white uppercase">Crítico</span>
+</div>
+<div class="text-xs font-bold text-slate-500 dark:text-slate-400">
+                            OCUPAÇÃO: <span class="text-red-500">8/8 Camas (100%)</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-slate-500 dark:text-[#9caaba] text-[11px] font-black uppercase tracking-widest border-b border-slate-200 dark:border-[#3b4754]">
+<th class="px-6 py-3">Cama</th>
+<th class="px-6 py-3">Estado</th>
+<th class="px-6 py-3">Paciente</th>
+<th class="px-6 py-3">Monitorização</th>
+<th class="px-6 py-3">Tempo Int.</th>
+<th class="px-6 py-3 text-right">Ações</th>
+</tr>
+</thead>
+<tbody>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 border-b border-slate-100 dark:border-slate-700/50">
+<td class="px-6 py-4 font-bold text-primary">UCI-001</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="flex h-2.5 w-2.5 rounded-full bg-red-500 status-pulse"></span>
+<span class="text-sm font-bold text-red-600">CRÍTICO</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold">Fernando K. Van-Dúnem</span>
+<span class="text-[11px] text-slate-500">NHC: 992033-A</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-red-500 text-[18px]">ecg_heart</span>
+<span class="material-symbols-outlined text-primary text-[18px]">air</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-medium">3 Dias</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Global Footer / Summary -->
+<footer class="mt-8 pt-8 border-t border-slate-200 dark:border-[#3b4754] flex flex-wrap justify-between items-center gap-4 text-[#9caaba] text-sm">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="flex h-3 w-3 rounded-full bg-green-500"></span> <span>Livre (82)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex h-3 w-3 rounded-full bg-red-500"></span> <span>Ocupado (368)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="flex h-3 w-3 rounded-full bg-amber-400"></span> <span>Manutenção (14)</span>
+</div>
+</div>
+<div>
+                    Zênite360 v3.2.1 • Luanda, Angola • <span class="text-primary font-medium">Suporte Técnico</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

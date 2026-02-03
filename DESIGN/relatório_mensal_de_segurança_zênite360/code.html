@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Relatório Mensal de Segurança - Zênite360</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "secondary": "#27303a",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "accent-blue": "#0ea5e9",
+                        "accent-red": "#ef4444",
+                        "accent-green": "#10b981",
+                        "accent-amber": "#f59e0b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for better look in dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27303a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #394656; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full flex-row overflow-hidden">
+<!-- Side Navigation -->
+<aside class="flex w-72 flex-col border-r border-[#27303a] bg-[#101418] shrink-0 h-full overflow-y-auto hidden lg:flex">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- User/Hospital Profile -->
+<div class="flex gap-3 items-center pb-4 border-b border-[#27303a]">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-12 shadow-lg border-2 border-primary" data-alt="Hospital logo placeholder abstract cross" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCuIUTaddnSju8h8TmI1eHGQXnBS8qq9dneuqqIHQ7kFNszqSXISmQqzuTwqc_LWQ-av5iC7SiqpAXak3x9CcDVdEheiV4YaNMqEtvtHGfkjLpQFToQgR3u7d2K_gpb8ftUw9sIbAlo1X4tP7IIHMSxxqupzJI6nO-7OPzmurQHiz9tI5o-jU3_pETBjelTHLsqS-g0m7CTw3sIXgoE9snfGQiH8sRdW4NlCoQYf5GJ_w38OcTT5iqhJsEaSO5rDAFr7HamQGXd9O0S");'>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-tight tracking-wide">Admin Zênite360</h1>
+<p class="text-[#9aaabc] text-xs font-normal leading-normal">Hospital Central Luanda</p>
+</div>
+</div>
+<!-- Menu Items -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#27303a] cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-[#9aaabc] group-hover:text-white">dashboard</span>
+<p class="text-[#9aaabc] group-hover:text-white text-sm font-medium leading-normal">Dashboard</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#27303a] cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-[#9aaabc] group-hover:text-white">group</span>
+<p class="text-[#9aaabc] group-hover:text-white text-sm font-medium leading-normal">Pacientes</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#27303a] cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-[#9aaabc] group-hover:text-white">medication</span>
+<p class="text-[#9aaabc] group-hover:text-white text-sm font-medium leading-normal">Farmácia</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#27303a] cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-[#9aaabc] group-hover:text-white">payments</span>
+<p class="text-[#9aaabc] group-hover:text-white text-sm font-medium leading-normal">Finanças</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#27303a] cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-[#9aaabc] group-hover:text-white">work</span>
+<p class="text-[#9aaabc] group-hover:text-white text-sm font-medium leading-normal">Recursos Humanos</p>
+</div>
+<!-- Active State -->
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary border border-primary/50 shadow-sm">
+<span class="material-symbols-outlined text-white">shield</span>
+<p class="text-white text-sm font-bold leading-normal">Segurança</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-[#27303a] cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-[#9aaabc] group-hover:text-white">settings</span>
+<p class="text-[#9aaabc] group-hover:text-white text-sm font-medium leading-normal">Configurações</p>
+</div>
+</div>
+</div>
+<!-- Footer/Logout -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] cursor-pointer transition-colors text-[#9aaabc] hover:text-red-400">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium leading-normal">Sair do Sistema</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto bg-background-light dark:bg-background-dark relative">
+<!-- Top Toolbar / Header -->
+<header class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 md:px-10 border-b border-[#27303a] bg-[#101418]/80 backdrop-blur-md sticky top-0 z-20">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-primary dark:text-[#3b82f6] mb-1">
+<span class="material-symbols-outlined text-sm">security</span>
+<span class="text-xs font-bold uppercase tracking-wider">Módulo de Segurança</span>
+</div>
+<h1 class="text-white text-2xl md:text-3xl font-black leading-tight tracking-tight">RELATÓRIO MENSAL</h1>
+<p class="text-[#9aaabc] text-sm font-normal">Hospital Central de Luanda - Zênite360 ERP</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<!-- Date Selector -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[#9aaabc] text-lg">calendar_month</span>
+</div>
+<select class="pl-10 pr-8 h-10 w-48 appearance-none rounded-lg border border-[#394656] bg-[#1b2128] text-white text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none cursor-pointer">
+<option value="oct-23">Outubro 2023</option>
+<option value="sep-23">Setembro 2023</option>
+<option value="aug-23">Agosto 2023</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-[#9aaabc] text-lg">expand_more</span>
+</div>
+</div>
+<!-- Action Button -->
+<button class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-primary hover:bg-[#003066] text-white text-sm font-bold shadow-lg shadow-blue-900/20 transition-all active:scale-95">
+<span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+<span class="whitespace-nowrap">Gerar Relatório PDF</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 p-6 md:p-10 max-w-[1400px] mx-auto w-full flex flex-col gap-8">
+<!-- Executive Summary -->
+<section class="rounded-xl overflow-hidden relative group">
+<div class="absolute inset-0 bg-gradient-to-r from-primary to-[#0f1823] opacity-90 z-0"></div>
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=2670&amp;auto=format&amp;fit=crop')] bg-cover bg-center mix-blend-overlay opacity-30 z-0" data-alt="Abstract data visualization background"></div>
+<div class="relative z-10 p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start md:items-end justify-between">
+<div class="flex-1 max-w-3xl">
+<div class="flex items-center gap-2 mb-3">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-white/10 text-white border border-white/20">Resumo Executivo</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-green-500/20 text-green-400 border border-green-500/30">Status: Estável</span>
+</div>
+<h2 class="text-white text-xl md:text-2xl font-bold leading-snug mb-2">Análise de Segurança de Outubro</h2>
+<p class="text-slate-200 text-sm md:text-base leading-relaxed opacity-90">
+                                O sistema operou dentro dos parâmetros de segurança esperados durante o mês de Outubro. 
+                                Observou-se um aumento de <strong class="text-white">5%</strong> nas tentativas de acesso fora de horário no sector de Radiologia, que já está sob monitorização.
+                                A conformidade geral de senhas atingiu níveis óptimos de <strong class="text-white">98%</strong>.
+                            </p>
+</div>
+<div class="hidden md:block">
+<div class="rounded-full border border-white/20 p-2 bg-white/5 backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-3xl">verified_user</span>
+</div>
+</div>
+</div>
+</section>
+<!-- KPI Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- KPI 1 -->
+<div class="bg-[#1b2128] border border-[#27303a] rounded-xl p-5 flex flex-col justify-between h-40 relative overflow-hidden group hover:border-[#394656] transition-colors">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-white">group</span>
+</div>
+<div>
+<p class="text-[#9aaabc] text-xs font-semibold uppercase tracking-wider mb-1">Utilizadores (Activos/Inactivos)</p>
+<div class="flex items-baseline gap-1">
+<h3 class="text-white text-3xl font-bold">1,240</h3>
+<span class="text-[#9aaabc] text-lg font-normal">/ 15</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="bg-green-500/10 text-green-500 rounded px-1.5 py-0.5 text-xs font-medium flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span> +1%
+                            </span>
+<span class="text-[#64748b] text-xs">desde o mês passado</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-[#1b2128] border border-[#27303a] rounded-xl p-5 flex flex-col justify-between h-40 relative overflow-hidden group hover:border-[#394656] transition-colors">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-accent-red">gpp_bad</span>
+</div>
+<div>
+<p class="text-[#9aaabc] text-xs font-semibold uppercase tracking-wider mb-1">Acessos Negados</p>
+<h3 class="text-white text-3xl font-bold">42</h3>
+</div>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="bg-red-500/10 text-red-500 rounded px-1.5 py-0.5 text-xs font-medium flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span> +12%
+                            </span>
+<span class="text-[#64748b] text-xs">Alerta de tendência</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-[#1b2128] border border-[#27303a] rounded-xl p-5 flex flex-col justify-between h-40 relative overflow-hidden group hover:border-[#394656] transition-colors">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-accent-amber">password</span>
+</div>
+<div>
+<p class="text-[#9aaabc] text-xs font-semibold uppercase tracking-wider mb-1">Conformidade Senhas</p>
+<h3 class="text-white text-3xl font-bold">98%</h3>
+</div>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="bg-amber-500/10 text-amber-500 rounded px-1.5 py-0.5 text-xs font-medium flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_down</span> -2%
+                            </span>
+<span class="text-[#64748b] text-xs">Dentro da meta (&gt;95%)</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-[#1b2128] border border-[#27303a] rounded-xl p-5 flex flex-col justify-between h-40 relative overflow-hidden group hover:border-[#394656] transition-colors">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-accent-blue">policy</span>
+</div>
+<div>
+<p class="text-[#9aaabc] text-xs font-semibold uppercase tracking-wider mb-1">Incidentes de Protocolo</p>
+<h3 class="text-white text-3xl font-bold">3</h3>
+</div>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="bg-green-500/10 text-green-500 rounded px-1.5 py-0.5 text-xs font-medium flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_down</span> -10%
+                            </span>
+<span class="text-[#64748b] text-xs">Baixa Severidade</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Chart Section -->
+<div class="lg:col-span-2 bg-[#1b2128] border border-[#27303a] rounded-xl p-6 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-white text-lg font-bold">Acessos Fora de Horário por Sector</h3>
+<p class="text-[#9aaabc] text-sm">Contagem de tentativas de login entre 22h e 06h</p>
+</div>
+<button class="text-[#9aaabc] hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<!-- CSS Bar Chart -->
+<div class="flex-1 flex items-end justify-between gap-4 h-64 w-full pt-4 pb-2">
+<!-- Bar 1 -->
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-pointer">
+<div class="relative w-full max-w-[60px] bg-[#27303a] rounded-t-lg h-full flex items-end overflow-hidden">
+<div class="w-full bg-primary hover:bg-blue-600 transition-all duration-500 h-[35%] relative group-hover:h-[38%]">
+<div class="absolute -top-8 w-full text-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">12</div>
+</div>
+</div>
+<span class="text-[#9aaabc] text-xs font-medium text-center">Farmácia</span>
+</div>
+<!-- Bar 2 -->
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-pointer">
+<div class="relative w-full max-w-[60px] bg-[#27303a] rounded-t-lg h-full flex items-end overflow-hidden">
+<div class="w-full bg-accent-amber hover:bg-amber-400 transition-all duration-500 h-[65%] relative group-hover:h-[68%]">
+<div class="absolute -top-8 w-full text-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">24</div>
+</div>
+</div>
+<span class="text-[#9aaabc] text-xs font-medium text-center">Radiologia</span>
+</div>
+<!-- Bar 3 -->
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-pointer">
+<div class="relative w-full max-w-[60px] bg-[#27303a] rounded-t-lg h-full flex items-end overflow-hidden">
+<div class="w-full bg-primary hover:bg-blue-600 transition-all duration-500 h-[80%] relative group-hover:h-[83%]">
+<div class="absolute -top-8 w-full text-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">31</div>
+</div>
+</div>
+<span class="text-[#9aaabc] text-xs font-medium text-center">Urgências</span>
+</div>
+<!-- Bar 4 -->
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-pointer">
+<div class="relative w-full max-w-[60px] bg-[#27303a] rounded-t-lg h-full flex items-end overflow-hidden">
+<div class="w-full bg-primary hover:bg-blue-600 transition-all duration-500 h-[20%] relative group-hover:h-[23%]">
+<div class="absolute -top-8 w-full text-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">8</div>
+</div>
+</div>
+<span class="text-[#9aaabc] text-xs font-medium text-center">Admin</span>
+</div>
+<!-- Bar 5 -->
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-pointer">
+<div class="relative w-full max-w-[60px] bg-[#27303a] rounded-t-lg h-full flex items-end overflow-hidden">
+<div class="w-full bg-primary hover:bg-blue-600 transition-all duration-500 h-[45%] relative group-hover:h-[48%]">
+<div class="absolute -top-8 w-full text-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">18</div>
+</div>
+</div>
+<span class="text-[#9aaabc] text-xs font-medium text-center">Laboratório</span>
+</div>
+</div>
+</div>
+<!-- Critical Access List -->
+<div class="lg:col-span-1 bg-[#1b2128] border border-[#27303a] rounded-xl flex flex-col overflow-hidden">
+<div class="p-5 border-b border-[#27303a] bg-[#1b2128]">
+<h3 class="text-white text-lg font-bold">Acessos Críticos</h3>
+<p class="text-[#9aaabc] text-sm">Utilizadores com permissões elevadas activos</p>
+</div>
+<div class="flex-1 overflow-y-auto">
+<!-- List Item 1 -->
+<div class="flex items-center justify-between p-4 border-b border-[#27303a] hover:bg-[#27303a]/50 transition-colors">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white">JS</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Dr. João Silva</span>
+<span class="text-[#9aaabc] text-xs">Chefe Radiologia</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-500/20 text-red-400">Alto Risco</span>
+<span class="text-[#64748b] text-[10px]">Há 2h</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center justify-between p-4 border-b border-[#27303a] hover:bg-[#27303a]/50 transition-colors">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-[10px] font-bold text-white">AM</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Ana Mateus</span>
+<span class="text-[#9aaabc] text-xs">Admin Sistemas</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-500/20 text-amber-400">Médio</span>
+<span class="text-[#64748b] text-[10px]">Há 5min</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center justify-between p-4 border-b border-[#27303a] hover:bg-[#27303a]/50 transition-colors">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-[10px] font-bold text-white">PC</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Paulo Costa</span>
+<span class="text-[#9aaabc] text-xs">Director Financeiro</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-500/20 text-red-400">Alto Risco</span>
+<span class="text-[#64748b] text-[10px]">Ontem</span>
+</div>
+</div>
+<!-- List Item 4 -->
+<div class="flex items-center justify-between p-4 border-b border-[#27303a] hover:bg-[#27303a]/50 transition-colors">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-br from-slate-500 to-slate-600 flex items-center justify-center text-[10px] font-bold text-white">MK</div>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Maria Kiala</span>
+<span class="text-[#9aaabc] text-xs">Auditoria Interna</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-500/20 text-blue-400">Monitorizado</span>
+<span class="text-[#64748b] text-[10px]">Há 4h</span>
+</div>
+</div>
+</div>
+<div class="p-3 bg-[#161b21] border-t border-[#27303a] text-center">
+<button class="text-xs text-primary font-bold hover:underline">Ver lista completa (12)</button>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<div class="mt-4 border-t border-[#27303a] pt-6 pb-2 text-center">
+<p class="text-[#64748b] text-xs">© 2023 Zênite360 ERP Hospitalar. Todos os direitos reservados. Confidencial.</p>
+</div>
+</div>
+</main>
+</div>
+</body></html>

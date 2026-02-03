@@ -92,8 +92,8 @@ export default function TriagemPage() {
   useEffect(() => {
     async function fetchFilaTriagem() {
       try {
-        const data = await api.get<TriagemFila[]>('/triagem');
-        setFila(data);
+        const res = await api.get<{ data: TriagemFila[] }>('/triagem');
+        setFila(res.data || []);
       } catch (error) {
         setFila([]);
       } finally {

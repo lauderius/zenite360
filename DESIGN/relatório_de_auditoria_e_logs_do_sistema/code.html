@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Relatório de Auditoria e Logs do Sistema | Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-size: 20px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #394656; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-[#27303a] px-6 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary dark:text-white">
+<div class="size-6 bg-primary dark:bg-white flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white dark:text-primary !text-lg">shield_person</span>
+</div>
+<h2 class="text-primary dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360</h2>
+</div>
+<label class="flex flex-col min-w-40 h-10 max-w-64 hidden md:flex">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#9aaabc] flex border-none bg-slate-100 dark:bg-[#27303a] items-center justify-center pl-4 rounded-l-lg" data-icon="MagnifyingGlass">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-slate-100 dark:bg-[#27303a] focus:border-none h-full placeholder:text-[#9aaabc] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal" placeholder="Procurar logs..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-slate-600 dark:text-[#9aaabc] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal" href="#">Dashboard</a>
+<a class="text-primary dark:text-white border-b-2 border-primary dark:border-white py-1 text-sm font-medium leading-normal" href="#">Auditoria</a>
+<a class="text-slate-600 dark:text-[#9aaabc] hover:text-primary dark:hover:text-white text-sm font-medium leading-normal" href="#">Relatórios</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex cursor-pointer items-center justify-center rounded-lg h-10 bg-slate-100 dark:bg-[#27303a] text-slate-700 dark:text-white px-3">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex cursor-pointer items-center justify-center rounded-lg h-10 bg-slate-100 dark:bg-[#27303a] text-slate-700 dark:text-white px-3">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile picture showing an administrator" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD21GvuoBL7XjaiwufJREW7l96z3SVHc6dd_FlG2_uWyg7LC8XjCTxt5xCXUPDaU13IlUA3uQCwQ-W1mnozt26KEAA4In4NI4mZkCMg2WzpfD9coY-9FzzwH_Fj6-c7JOAtds8hW5ZE_d_eNPAI5sSQo1d0a7O6dRouR27Ppkh2GtqtSb2rIsZSkbv6Lj6AsVOE5RuIy_G6n800zAT5-0jMv6zdnBu-LnFMi2HaF_EFgxLqlcLyX-20snzJOlP9bgkE8E7lijsB27Cc");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-[#27303a] bg-white dark:bg-background-dark hidden xl:flex flex-col p-4 shrink-0">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col">
+<h1 class="text-primary dark:text-white text-base font-bold leading-normal">Projecto Zênite360</h1>
+<p class="text-slate-500 dark:text-[#9aaabc] text-xs font-medium uppercase tracking-wider">Direcção Administrativa (DA)</p>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9aaabc] hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">grid_view</span>
+<p class="text-sm font-medium">Visão Geral</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">security</span>
+<p class="text-sm font-medium">Auditoria do Sistema</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9aaabc] hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium">Utilizadores</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9aaabc] hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">apps</span>
+<p class="text-sm font-medium">Módulos ERP</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9aaabc] hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">settings_accessibility</span>
+<p class="text-sm font-medium">Controle de Acessos</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9aaabc] hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">cloud_download</span>
+<p class="text-sm font-medium">Exportações</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-slate-200 dark:border-[#27303a]">
+<div class="flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium">Sair do Sistema</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto custom-scrollbar bg-slate-50 dark:bg-background-dark/50">
+<div class="max-w-7xl mx-auto p-6 flex flex-col gap-6">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div class="flex flex-col gap-1">
+<h2 class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-[-0.033em]">Relatório de Auditoria e Logs</h2>
+<p class="text-slate-500 dark:text-[#9aaabc] text-base font-normal">Monitoramento em tempo real de todas as acções administrativas e clínicas.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-slate-200 dark:bg-[#27303a] text-slate-900 dark:text-white text-sm font-bold transition-all hover:bg-slate-300 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined">ios_share</span>
+<span>Exportar Excel</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+<span>Gerar PDF</span>
+</button>
+</div>
+</div>
+<!-- Quick Stats -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-[#394656] bg-white dark:bg-background-dark shadow-sm">
+<div class="flex justify-between">
+<p class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium">Total de Acções (24h)</p>
+<span class="material-symbols-outlined text-blue-500">monitoring</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">4.284</p>
+<p class="text-[#0bda5e] text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined !text-sm">trending_up</span>+12.4% vs ontem</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-[#394656] bg-white dark:bg-background-dark shadow-sm">
+<div class="flex justify-between">
+<p class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium">Utilizadores Online</p>
+<span class="material-symbols-outlined text-green-500">group</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">156</p>
+<p class="text-[#0bda5e] text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined !text-sm">fiber_manual_record</span>Actividade estável</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-[#394656] bg-white dark:bg-background-dark shadow-sm">
+<div class="flex justify-between">
+<p class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium">Alertas Críticos</p>
+<span class="material-symbols-outlined text-red-500">warning</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">08</p>
+<p class="text-[#fa6238] text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined !text-sm">trending_up</span>+3 desde as 08:00</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-5 border border-slate-200 dark:border-[#394656] bg-white dark:bg-background-dark shadow-sm">
+<div class="flex justify-between">
+<p class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium">Tentativas de Login Falhadas</p>
+<span class="material-symbols-outlined text-orange-500">lock_open</span>
+</div>
+<p class="text-slate-900 dark:text-white text-2xl font-bold leading-tight">24</p>
+<p class="text-slate-500 text-xs font-bold flex items-center gap-1">IPs Bloqueados: 2</p>
+</div>
+</div>
+<!-- Charts & Filters -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Chart Module Activity -->
+<div class="lg:col-span-2 flex flex-col gap-4 rounded-xl border border-slate-200 dark:border-[#394656] p-6 bg-white dark:bg-background-dark shadow-sm">
+<div class="flex justify-between items-center">
+<div>
+<p class="text-slate-900 dark:text-white text-lg font-bold">Actividade por Módulo</p>
+<p class="text-slate-500 dark:text-[#9aaabc] text-sm">Distribuição de acessos nos últimos 7 dias</p>
+</div>
+<select class="bg-slate-100 dark:bg-[#27303a] border-none rounded-lg text-xs font-bold text-slate-700 dark:text-white focus:ring-1 focus:ring-primary">
+<option>Última Semana</option>
+<option>Este Mês</option>
+</select>
+</div>
+<div class="grid h-48 grid-flow-col gap-4 grid-rows-[1fr_auto] items-end justify-items-center mt-4">
+<!-- Bars -->
+<div class="group relative flex flex-col items-center justify-end w-full h-full">
+<div class="bg-primary/20 dark:bg-primary/40 group-hover:bg-primary w-full rounded-t" style="height: 85%;"></div>
+<p class="mt-2 text-slate-500 dark:text-[#9aaabc] text-[11px] font-bold truncate w-full text-center">Clínica</p>
+</div>
+<div class="group relative flex flex-col items-center justify-end w-full h-full">
+<div class="bg-primary/20 dark:bg-primary/40 group-hover:bg-primary w-full rounded-t" style="height: 60%;"></div>
+<p class="mt-2 text-slate-500 dark:text-[#9aaabc] text-[11px] font-bold truncate w-full text-center">Farmácia</p>
+</div>
+<div class="group relative flex flex-col items-center justify-end w-full h-full">
+<div class="bg-primary/20 dark:bg-primary/40 group-hover:bg-primary w-full rounded-t" style="height: 95%;"></div>
+<p class="mt-2 text-slate-500 dark:text-[#9aaabc] text-[11px] font-bold truncate w-full text-center">Facturação</p>
+</div>
+<div class="group relative flex flex-col items-center justify-end w-full h-full">
+<div class="bg-primary/20 dark:bg-primary/40 group-hover:bg-primary w-full rounded-t" style="height: 40%;"></div>
+<p class="mt-2 text-slate-500 dark:text-[#9aaabc] text-[11px] font-bold truncate w-full text-center">RH</p>
+</div>
+<div class="group relative flex flex-col items-center justify-end w-full h-full">
+<div class="bg-primary/20 dark:bg-primary/40 group-hover:bg-primary w-full rounded-t" style="height: 30%;"></div>
+<p class="mt-2 text-slate-500 dark:text-[#9aaabc] text-[11px] font-bold truncate w-full text-center">Logística</p>
+</div>
+<div class="group relative flex flex-col items-center justify-end w-full h-full">
+<div class="bg-primary/20 dark:bg-primary/40 group-hover:bg-primary w-full rounded-t" style="height: 15%;"></div>
+<p class="mt-2 text-slate-500 dark:text-[#9aaabc] text-[11px] font-bold truncate w-full text-center">Admin</p>
+</div>
+<div class="group relative flex flex-col items-center justify-end w-full h-full">
+<div class="bg-primary/20 dark:bg-primary/40 group-hover:bg-primary w-full rounded-t" style="height: 50%;"></div>
+<p class="mt-2 text-slate-500 dark:text-[#9aaabc] text-[11px] font-bold truncate w-full text-center">Laboratório</p>
+</div>
+</div>
+</div>
+<!-- Filters Panel -->
+<div class="flex flex-col gap-4 rounded-xl border border-slate-200 dark:border-[#394656] p-6 bg-white dark:bg-background-dark shadow-sm">
+<p class="text-slate-900 dark:text-white text-lg font-bold">Filtros Avançados</p>
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-bold text-slate-500 dark:text-[#9aaabc]">Utilizador</label>
+<select class="bg-slate-100 dark:bg-[#27303a] border-none rounded-lg text-sm text-slate-700 dark:text-white focus:ring-2 focus:ring-primary w-full">
+<option>Todos os Utilizadores</option>
+<option>Dr. António Manuel</option>
+<option>Enf. Maria José</option>
+</select>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-bold text-slate-500 dark:text-[#9aaabc]">Intervalo de Datas</label>
+<div class="grid grid-cols-2 gap-2">
+<input class="bg-slate-100 dark:bg-[#27303a] border-none rounded-lg text-xs text-slate-700 dark:text-white focus:ring-2 focus:ring-primary" type="date"/>
+<input class="bg-slate-100 dark:bg-[#27303a] border-none rounded-lg text-xs text-slate-700 dark:text-white focus:ring-2 focus:ring-primary" type="date"/>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-bold text-slate-500 dark:text-[#9aaabc]">Categoria de Acção</label>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-primary/10 text-primary dark:bg-primary/30 dark:text-white rounded-full text-xs font-bold border border-primary/20 cursor-pointer">Criação</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-[#27303a] text-slate-600 dark:text-[#9aaabc] rounded-full text-xs font-bold cursor-pointer">Edição</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-[#27303a] text-slate-600 dark:text-[#9aaabc] rounded-full text-xs font-bold cursor-pointer">Eliminação</span>
+<span class="px-3 py-1 bg-slate-100 dark:bg-[#27303a] text-slate-600 dark:text-[#9aaabc] rounded-full text-xs font-bold cursor-pointer">Visualização</span>
+</div>
+</div>
+<button class="w-full mt-2 py-2.5 bg-primary text-white rounded-lg font-bold text-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined !text-sm">filter_alt</span>
+                                Aplicar Filtros
+                            </button>
+</div>
+</div>
+</div>
+<!-- Table Data -->
+<div class="flex flex-col gap-4 rounded-xl border border-slate-200 dark:border-[#394656] bg-white dark:bg-background-dark shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-[#394656] flex justify-between items-center bg-slate-50/50 dark:bg-[#27303a]/20">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Logs Recentes</h3>
+<div class="flex gap-2">
+<button class="p-2 text-slate-500 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-[#27303a]/50 border-b border-slate-200 dark:border-[#394656]">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9aaabc]">Data e Hora</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9aaabc]">Utilizador</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9aaabc]">Módulo</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9aaabc]">Acção Realizada</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9aaabc]">IP Address</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9aaabc]">Acções</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#394656]">
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a232e] transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-700 dark:text-white">23/10/2023 14:32:01</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Dr. António Manuel</span>
+<span class="text-xs text-slate-500 dark:text-[#9aaabc]">Médico Especialista</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[11px] font-bold uppercase">Clínica</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-orange-500"></span>
+<span class="text-sm text-slate-700 dark:text-white font-medium">Editou Prontuário #45920</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500 dark:text-[#9aaabc]">192.168.1.45</td>
+<td class="px-6 py-4">
+<button class="text-primary dark:text-blue-400 hover:underline text-xs font-bold uppercase">Detalhes</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a232e] transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-700 dark:text-white">23/10/2023 14:28:45</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Maria dos Santos</span>
+<span class="text-xs text-slate-500 dark:text-[#9aaabc]">Gestora Financeira</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[11px] font-bold uppercase">Facturação</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-green-500"></span>
+<span class="text-sm text-slate-700 dark:text-white font-medium">Visualizou Factura FA-2023/104</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500 dark:text-[#9aaabc]">192.168.1.102</td>
+<td class="px-6 py-4">
+<button class="text-primary dark:text-blue-400 hover:underline text-xs font-bold uppercase">Detalhes</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a232e] transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-700 dark:text-white">23/10/2023 14:25:12</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Admin Central</span>
+<span class="text-xs text-slate-500 dark:text-[#9aaabc]">Super Administrador</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[11px] font-bold uppercase">Segurança</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-red-500"></span>
+<span class="text-sm text-slate-700 dark:text-white font-medium">Eliminou Acesso de Utilizador 'temp_user'</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500 dark:text-[#9aaabc]">10.0.0.1</td>
+<td class="px-6 py-4">
+<button class="text-primary dark:text-blue-400 hover:underline text-xs font-bold uppercase">Detalhes</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a232e] transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-700 dark:text-white">23/10/2023 14:22:30</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Isabel Costa</span>
+<span class="text-xs text-slate-500 dark:text-[#9aaabc]">Farmacêutica</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 text-[11px] font-bold uppercase">Farmácia</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-blue-500"></span>
+<span class="text-sm text-slate-700 dark:text-white font-medium">Emitiu Guia de Saída #9042-S</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-mono text-slate-500 dark:text-[#9aaabc]">192.168.1.88</td>
+<td class="px-6 py-4">
+<button class="text-primary dark:text-blue-400 hover:underline text-xs font-bold uppercase">Detalhes</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-slate-200 dark:border-[#394656] bg-slate-50/50 dark:bg-[#27303a]/10">
+<p class="text-xs text-slate-500 dark:text-[#9aaabc] font-medium">A mostrar 1 a 10 de 1,284 resultados</p>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded bg-white dark:bg-[#27303a] border border-slate-200 dark:border-[#394656] text-xs font-bold hover:bg-slate-100 transition-colors">Anterior</button>
+<button class="px-3 py-1.5 rounded bg-primary text-white text-xs font-bold">1</button>
+<button class="px-3 py-1.5 rounded bg-white dark:bg-[#27303a] border border-slate-200 dark:border-[#394656] text-xs font-bold hover:bg-slate-100 transition-colors">2</button>
+<button class="px-3 py-1.5 rounded bg-white dark:bg-[#27303a] border border-slate-200 dark:border-[#394656] text-xs font-bold hover:bg-slate-100 transition-colors">3</button>
+<span class="text-slate-500 dark:text-[#9aaabc] self-end mb-1">...</span>
+<button class="px-3 py-1.5 rounded bg-white dark:bg-[#27303a] border border-slate-200 dark:border-[#394656] text-xs font-bold hover:bg-slate-100 transition-colors">128</button>
+<button class="px-3 py-1.5 rounded bg-white dark:bg-[#27303a] border border-slate-200 dark:border-[#394656] text-xs font-bold hover:bg-slate-100 transition-colors">Próximo</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Information -->
+<footer class="max-w-7xl mx-auto px-6 py-8 mt-auto border-t border-slate-200 dark:border-[#394656]">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-xs text-slate-500 dark:text-[#9aaabc]">© 2023 Zênite360 ERP - Projecto DA Angola. Todos os direitos reservados.</p>
+<div class="flex gap-6">
+<a class="text-xs text-slate-500 dark:text-[#9aaabc] hover:text-primary transition-colors" href="#">Política de Privacidade</a>
+<a class="text-xs text-slate-500 dark:text-[#9aaabc] hover:text-primary transition-colors" href="#">Termos de Auditoria</a>
+</div>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

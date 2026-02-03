@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Gestão de Ambulâncias</title>
+<!-- Fonts and Icons -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147", // Requested Deep Blue
+                        "primary-light": "#003366",
+                        "accent-green": "#10B981",
+                        "accent-red": "#EF4444",
+                        "accent-orange": "#F59E0B",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823", // Very dark blue/grey
+                        "surface-dark": "#1b2531", // Slightly lighter for cards
+                        "border-dark": "#2d3b4e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for data tables */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3b4e;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3e5066;
+        }
+        
+        .map-marker-pulse {
+            animation: pulse-animation 2s infinite;
+        }
+        
+        @keyframes pulse-animation {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-x-hidden min-h-screen flex flex-col">
+<!-- Navbar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-border-dark bg-[#002147] px-6 py-3 shadow-md">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 text-white">
+<div class="size-8 rounded bg-white/10 flex items-center justify-center text-accent-green">
+<span class="material-symbols-outlined">medical_services</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight">Zênite360 <span class="font-normal text-white/70">| Centro de Comando</span></h2>
+</div>
+<!-- Global Search -->
+<label class="hidden md:flex flex-col min-w-40 h-9 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-white/10 border border-white/10 focus-within:border-white/30 transition-colors">
+<div class="text-white/50 flex items-center justify-center pl-3">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full bg-transparent border-none text-white text-sm placeholder:text-white/50 focus:ring-0 px-3 py-1" placeholder="Pesquisar incidentes, viaturas..."/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-white/90 hover:text-white text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-white font-bold text-sm border-b-2 border-accent-green pb-0.5" href="#">Frota &amp; Emergências</a>
+<a class="text-white/90 hover:text-white text-sm font-medium transition-colors" href="#">Relatórios</a>
+<a class="text-white/90 hover:text-white text-sm font-medium transition-colors" href="#">Configurações</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center size-9 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-accent-red rounded-full border border-[#002147]"></span>
+</button>
+<div class="h-8 w-px bg-white/20 mx-1"></div>
+<div class="flex items-center gap-2 cursor-pointer hover:bg-white/5 p-1 rounded-lg transition-colors">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 border border-white/20" data-alt="User profile picture of a doctor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAw5OZp7gJXd66GvTNCPidAGOuDUjFA2_dPl_s69J6-igI9-n0SvBbj5oWoZU_ktTGlw_4s9hP1HC4Xr_DH2hJJ9MGhFEVRDe67JzXh9ejjeVWlRpwq-9K6myzw01QE8CCcSlmQf-Ll95zgfQqiXdkl2r8XslzdRBeonU8TtZAugaJBNotNbJgXX_7w-cIl_GrCjf43hNN0z4VxJTv6d-HLgihJRsK0QmnS1JCyRmwNG7UA5lgnE926DNRq-uc6fl71puSND2xYLgMF");'></div>
+<div class="hidden sm:block text-xs text-left">
+<p class="font-bold text-white leading-none">Dr. A. Silva</p>
+<p class="text-white/60 font-normal mt-0.5 leading-none">Supervisor</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col p-4 md:p-6 lg:px-8 max-w-[1600px] mx-auto w-full gap-6">
+<!-- Breadcrumbs & Heading -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2 text-sm text-[#9aaabc]">
+<a class="hover:text-white transition-colors" href="#">Início</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-white transition-colors" href="#">Urgências</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-white font-medium">Gestão de Frota (Luanda)</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl font-black text-white tracking-tight">Gestão de Ambulâncias e Emergência</h1>
+<p class="text-[#9aaabc] mt-1">Monitoramento em tempo real da província de Luanda</p>
+</div>
+<div class="flex gap-3">
+<button class="h-10 px-4 rounded-lg bg-surface-dark hover:bg-[#27303a] text-white text-sm font-bold border border-border-dark flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">groups</span>
+                        Ver Status da Equipa
+                    </button>
+<button class="h-10 px-4 rounded-lg bg-accent-red hover:bg-red-600 text-white text-sm font-bold shadow-lg shadow-red-900/20 flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">emergency_share</span>
+                        Despachar Ambulância
+                    </button>
+</div>
+</div>
+</div>
+<!-- KPIs -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Card 1 -->
+<div class="bg-surface-dark border border-border-dark rounded-xl p-5 flex flex-col relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[64px] text-accent-green">ambulance</span>
+</div>
+<p class="text-[#9aaabc] text-sm font-medium uppercase tracking-wider">Ambulâncias Prontas</p>
+<div class="flex items-end gap-3 mt-1">
+<p class="text-white text-3xl font-bold">8</p>
+<span class="text-accent-green text-sm font-medium mb-1.5 flex items-center bg-accent-green/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] mr-0.5">arrow_upward</span>
+                        +1 viatura
+                    </span>
+</div>
+<div class="w-full bg-gray-700 h-1 mt-4 rounded-full overflow-hidden">
+<div class="bg-accent-green h-full" style="width: 75%"></div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-dark border border-border-dark rounded-xl p-5 flex flex-col relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[64px] text-accent-orange">emergency</span>
+</div>
+<p class="text-[#9aaabc] text-sm font-medium uppercase tracking-wider">Em Serviço</p>
+<div class="flex items-end gap-3 mt-1">
+<p class="text-white text-3xl font-bold">3</p>
+<span class="text-accent-orange text-sm font-medium mb-1.5 flex items-center bg-accent-orange/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] mr-0.5">arrow_upward</span>
+                        +1 viatura
+                    </span>
+</div>
+<div class="w-full bg-gray-700 h-1 mt-4 rounded-full overflow-hidden">
+<div class="bg-accent-orange h-full" style="width: 45%"></div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-dark border border-border-dark rounded-xl p-5 flex flex-col relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[64px] text-blue-400">timer</span>
+</div>
+<p class="text-[#9aaabc] text-sm font-medium uppercase tracking-wider">Tempo Médio de Resposta</p>
+<div class="flex items-end gap-3 mt-1">
+<p class="text-white text-3xl font-bold">12 min</p>
+<span class="text-accent-green text-sm font-medium mb-1.5 flex items-center bg-accent-green/10 px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px] mr-0.5">arrow_downward</span>
+                        -2 min
+                    </span>
+</div>
+<div class="w-full bg-gray-700 h-1 mt-4 rounded-full overflow-hidden">
+<div class="bg-blue-400 h-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<!-- Main Content: Map & Sidebar -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1 min-h-[500px]">
+<!-- Column 1: Interactive Map -->
+<div class="lg:col-span-2 bg-surface-dark border border-border-dark rounded-xl flex flex-col overflow-hidden relative group/map">
+<!-- Map Header Overlay -->
+<div class="absolute top-4 left-4 z-10 w-full max-w-sm">
+<div class="flex bg-surface-dark/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg">
+<div class="flex items-center justify-center pl-3 text-[#9aaabc]">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="w-full bg-transparent border-none text-white placeholder:text-[#9aaabc] focus:ring-0 text-sm py-3 px-3" placeholder="Pesquisar rua ou ponto de referência..."/>
+</div>
+</div>
+<!-- Map Tools Overlay -->
+<div class="absolute top-4 right-4 z-10 flex flex-col gap-2">
+<button class="size-10 bg-surface-dark/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg flex items-center justify-center text-white hover:bg-[#27303a] transition-colors">
+<span class="material-symbols-outlined">layers</span>
+</button>
+<div class="flex flex-col bg-surface-dark/90 backdrop-blur-md border border-white/10 rounded-lg shadow-lg overflow-hidden">
+<button class="size-10 flex items-center justify-center text-white hover:bg-[#27303a] border-b border-white/10 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="size-10 flex items-center justify-center text-white hover:bg-[#27303a] transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+</div>
+<!-- Actual Map Image Background -->
+<div class="w-full h-full bg-cover bg-center relative bg-[#0f1823]" data-alt="Dark styled map of Luanda city showing streets and avenues" data-location="Luanda" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA-dtd9iLZJe5kJ3JFKCAOUxw3Y4LgNsZzklsIqFEkG9a79WA8UI6BVIsgluOJ6pgRNsAgTl8fOAgVPYTWiFoVZcs7u4E8-3C0iLEX89Adk6AgTX5nSXNJK6gXH0C1aEl4fAAS1kKc2NnE3wNN6Q4mfVhi-enxMwSTx1IGo6bmGptjtEGMSf4qA1yge3xbl6Kwvb1t33deNeYP78szHsscTtKz0bW5o4QMeICUi0abORU-2xlS7bhzi28gSE4IhlW_HaEdDkzvOc9xi"); background-color: #1a202c;'>
+<!-- Fallback visual if mapbox image fails or just as generic placeholder -->
+<div class="absolute inset-0 opacity-40" style="background-image: radial-gradient(#394656 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Markers -->
+<!-- Ambulance 1: Busy/Red -->
+<div class="absolute top-[40%] left-[30%] flex flex-col items-center gap-1 group/marker cursor-pointer">
+<div class="relative">
+<div class="size-10 rounded-full bg-accent-red border-2 border-white shadow-xl flex items-center justify-center z-10 relative map-marker-pulse">
+<span class="material-symbols-outlined text-white text-[20px]">ambulance</span>
+</div>
+<!-- Tooltip -->
+<div class="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-surface-dark text-white text-xs px-2 py-1 rounded border border-border-dark whitespace-nowrap opacity-0 group-hover/marker:opacity-100 transition-opacity pointer-events-none">
+                                AMB-02 (Ocupada)
+                            </div>
+</div>
+</div>
+<!-- Ambulance 2: Available/Green -->
+<div class="absolute top-[60%] left-[55%] flex flex-col items-center gap-1 group/marker cursor-pointer">
+<div class="size-10 rounded-full bg-accent-green border-2 border-white shadow-xl flex items-center justify-center z-10 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-[20px]">ambulance</span>
+</div>
+<div class="bg-primary/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm">AMB-04</div>
+</div>
+<!-- Ambulance 3: Idle/Yellow -->
+<div class="absolute top-[25%] left-[65%] flex flex-col items-center gap-1 group/marker cursor-pointer">
+<div class="size-8 rounded-full bg-accent-orange border-2 border-white shadow-xl flex items-center justify-center z-10 hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-[16px]">ambulance</span>
+</div>
+</div>
+<!-- Incident Location -->
+<div class="absolute top-[38%] left-[35%] flex flex-col items-center gap-1">
+<div class="text-accent-red animate-bounce">
+<span class="material-symbols-outlined text-[32px] drop-shadow-lg">location_on</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 2: Fleet Status Sidebar -->
+<div class="lg:col-span-1 flex flex-col gap-4">
+<div class="bg-surface-dark border border-border-dark rounded-xl flex flex-col h-full max-h-[600px]">
+<div class="p-4 border-b border-border-dark flex justify-between items-center">
+<h3 class="font-bold text-white text-lg">Estado da Frota</h3>
+<button class="text-[#9aaabc] hover:text-white">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-2 space-y-2">
+<!-- Vehicle Item 1 (Busy) -->
+<div class="p-3 rounded-lg bg-[#0f1823] border border-border-dark hover:border-white/20 transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-accent-red animate-pulse"></div>
+<span class="font-bold text-white group-hover:text-blue-400 transition-colors">AMB-02</span>
+<span class="text-xs text-[#9aaabc]">Toyota Hiace</span>
+</div>
+<span class="bg-primary-light text-blue-200 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-900/50">SAV</span>
+</div>
+<div class="flex items-center justify-between text-xs text-[#9aaabc]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">near_me</span> Em rota (Hosp. Central)
+                                </span>
+<span class="text-white font-medium">ETA: 5m</span>
+</div>
+<div class="mt-2 flex items-center gap-3">
+<div class="flex items-center gap-1 text-[10px] text-[#9aaabc]">
+<span class="material-symbols-outlined text-[12px]">local_gas_station</span> 45%
+                                </div>
+<div class="flex items-center gap-1 text-[10px] text-[#9aaabc]">
+<span class="material-symbols-outlined text-[12px]">medical_services</span> OK
+                                </div>
+</div>
+</div>
+<!-- Vehicle Item 2 (Available) -->
+<div class="p-3 rounded-lg bg-[#0f1823] border border-border-dark hover:border-white/20 transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-accent-green"></div>
+<span class="font-bold text-white group-hover:text-blue-400 transition-colors">AMB-04</span>
+<span class="text-xs text-[#9aaabc]">Mercedes Sprinter</span>
+</div>
+<span class="bg-gray-700 text-gray-300 text-[10px] font-bold px-2 py-0.5 rounded border border-gray-600">SBV</span>
+</div>
+<div class="flex items-center justify-between text-xs text-[#9aaabc]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Disponível (Base 1)
+                                </span>
+</div>
+<div class="mt-2 flex items-center gap-3">
+<div class="flex items-center gap-1 text-[10px] text-[#9aaabc]">
+<span class="material-symbols-outlined text-[12px]">local_gas_station</span> 82%
+                                </div>
+<div class="flex items-center gap-1 text-[10px] text-[#9aaabc]">
+<span class="material-symbols-outlined text-[12px]">medical_services</span> OK
+                                </div>
+</div>
+</div>
+<!-- Vehicle Item 3 (Available) -->
+<div class="p-3 rounded-lg bg-[#0f1823] border border-border-dark hover:border-white/20 transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-accent-green"></div>
+<span class="font-bold text-white group-hover:text-blue-400 transition-colors">AMB-01</span>
+<span class="text-xs text-[#9aaabc]">Toyota Land Cruiser</span>
+</div>
+<span class="bg-gray-700 text-gray-300 text-[10px] font-bold px-2 py-0.5 rounded border border-gray-600">SBV</span>
+</div>
+<div class="flex items-center justify-between text-xs text-[#9aaabc]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Disponível (Base 2)
+                                </span>
+</div>
+<div class="mt-2 flex items-center gap-3">
+<div class="flex items-center gap-1 text-[10px] text-[#9aaabc]">
+<span class="material-symbols-outlined text-[12px]">local_gas_station</span> 90%
+                                </div>
+<div class="flex items-center gap-1 text-[10px] text-[#9aaabc]">
+<span class="material-symbols-outlined text-[12px]">medical_services</span> Check
+                                </div>
+</div>
+</div>
+<!-- Vehicle Item 4 (Maintenance) -->
+<div class="p-3 rounded-lg bg-[#0f1823]/50 border border-border-dark opacity-70 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-accent-orange"></div>
+<span class="font-bold text-white">AMB-05</span>
+<span class="text-xs text-[#9aaabc]">Ford Transit</span>
+</div>
+<span class="bg-gray-700 text-gray-300 text-[10px] font-bold px-2 py-0.5 rounded border border-gray-600">SBV</span>
+</div>
+<div class="flex items-center justify-between text-xs text-[#9aaabc]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">build</span> Em Manutenção
+                                </span>
+</div>
+</div>
+</div>
+<div class="p-3 border-t border-border-dark bg-[#0f1823]/50 rounded-b-xl">
+<button class="w-full py-2 text-sm text-blue-400 font-medium hover:text-blue-300 transition-colors flex items-center justify-center gap-1">
+                            Ver toda a frota <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Calls Table -->
+<div class="bg-surface-dark border border-border-dark rounded-xl overflow-hidden flex flex-col">
+<div class="p-4 md:p-5 border-b border-border-dark flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<h3 class="font-bold text-white text-lg">Chamadas Activas</h3>
+<span class="bg-accent-red text-white text-xs font-bold px-2 py-0.5 rounded-full">2 Críticas</span>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 rounded bg-[#27303a] hover:bg-[#34404d] text-[#9aaabc] hover:text-white text-sm font-medium transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">sort</span> Filtrar
+                    </button>
+<button class="px-3 py-1.5 rounded bg-[#27303a] hover:bg-[#34404d] text-[#9aaabc] hover:text-white text-sm font-medium transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">download</span> Exportar
+                    </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm whitespace-nowrap">
+<thead class="bg-[#0f1823] text-[#9aaabc] uppercase text-xs font-semibold tracking-wider">
+<tr>
+<th class="px-6 py-4">ID / Tipo de Emergência</th>
+<th class="px-6 py-4">Localização</th>
+<th class="px-6 py-4">Prioridade</th>
+<th class="px-6 py-4">Ambulância Atribuída</th>
+<th class="px-6 py-4">ETA</th>
+<th class="px-6 py-4 text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<!-- Row 1 -->
+<tr class="hover:bg-[#27303a]/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-white font-bold">#2023-892</span>
+<span class="text-[#9aaabc]">Acidente Rodoviário</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-white">
+<span class="material-symbols-outlined text-[16px] text-accent-red">location_on</span>
+                                    Av. Deolinda Rodrigues
+                                </div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-accent-red/20 text-accent-red px-2 py-1 rounded text-xs font-bold border border-accent-red/20">ALTA</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded bg-primary flex items-center justify-center text-[10px] font-bold">02</div>
+<span class="text-white">AMB-02</span>
+<span class="text-xs text-[#9aaabc]">(SAV)</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono text-white">
+                                00:05:00
+                            </td>
+<td class="px-6 py-4 text-right">
+<button class="text-blue-400 hover:text-blue-300 font-medium text-sm">Detalhes</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-[#27303a]/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-white font-bold">#2023-891</span>
+<span class="text-[#9aaabc]">Parada Cardíaca</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-white">
+<span class="material-symbols-outlined text-[16px] text-[#9aaabc]">location_on</span>
+                                    Bairro Maianga, Rua 4
+                                </div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-accent-red/20 text-accent-red px-2 py-1 rounded text-xs font-bold border border-accent-red/20">CRÍTICA</span>
+</td>
+<td class="px-6 py-4">
+<span class="text-[#9aaabc] italic flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] animate-spin">sync</span> Despachando...
+                                </span>
+</td>
+<td class="px-6 py-4 font-mono text-white">
+                                --:--
+                            </td>
+<td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+<button class="bg-primary hover:bg-primary-light text-white text-xs font-bold px-3 py-1.5 rounded transition-colors border border-blue-800">Despachar</button>
+<button class="text-blue-400 hover:text-blue-300 font-medium text-sm">Detalhes</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-[#27303a]/30 transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-white font-bold">#2023-890</span>
+<span class="text-[#9aaabc]">Transferência Inter-Hospitalar</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-1 text-white">
+<span class="material-symbols-outlined text-[16px] text-[#9aaabc]">location_on</span>
+                                    Clínica Girassol -&gt; Josina Machel
+                                </div>
+</td>
+<td class="px-6 py-4">
+<span class="bg-accent-orange/20 text-accent-orange px-2 py-1 rounded text-xs font-bold border border-accent-orange/20">MÉDIA</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-6 rounded bg-gray-700 flex items-center justify-center text-[10px] font-bold">01</div>
+<span class="text-white">AMB-01</span>
+<span class="text-xs text-[#9aaabc]">(SBV)</span>
+</div>
+</td>
+<td class="px-6 py-4 font-mono text-white">
+                                00:15:30
+                            </td>
+<td class="px-6 py-4 text-right">
+<button class="text-blue-400 hover:text-blue-300 font-medium text-sm">Detalhes</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-3 border-t border-border-dark bg-[#0f1823]/50 flex justify-center">
+<button class="text-sm text-[#9aaabc] hover:text-white transition-colors">Carregar mais chamadas</button>
+</div>
+</div>
+</main>
+</body></html>

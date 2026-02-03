@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
 
 // GET: Listar internamentos
 export async function GET() {
   try {
-    const internamentos = await prisma.internamento.findMany();
-    return NextResponse.json(internamentos);
+    // Mock response
+    // const internamentos = await prisma.internamento.findMany();
+    const internamentos: any[] = [];
+    return NextResponse.json({ data: internamentos, success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'Erro ao buscar internamentos.' }, { status: 500 });
+    return NextResponse.json({ data: [], success: false, error: 'Erro ao buscar internamentos.' }, { status: 500 });
   }
 }
 
@@ -15,7 +16,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const internamento = await prisma.internamento.create({ data });
+    // Mock response
+    // const internamento = await prisma.internamento.create({ data });
+    const internamento = { id: 1, ...data, _mock: true };
     return NextResponse.json(internamento, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Erro ao criar internamento.' }, { status: 500 });

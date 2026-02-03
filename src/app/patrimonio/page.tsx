@@ -5,14 +5,14 @@ import Link from 'next/link';
 import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs, Modal, Input, Select } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
-import type { 
-  Ativo, 
-  CategoriaAtivo, 
-  StatusAtivo, 
+import type {
+  Ativo,
+  CategoriaAtivo,
+  StatusAtivo,
   OrdemManutencaoPatrimonio,
   CentralGases,
   AlertaGas,
-  DashboardPatrimonio 
+  DashboardPatrimonio
 } from '@/types/administrativo';
 
 // ============================================================================
@@ -51,16 +51,16 @@ import { api } from '@/services/api';
 // COMPONENTES
 // ============================================================================
 
-function StatCard({ 
-  title, 
-  value, 
-  icon: Icon, 
-  trend, 
+function StatCard({
+  title,
+  value,
+  icon: Icon,
+  trend,
   color = 'sky',
   subtitle
-}: { 
-  title: string; 
-  value: string | number; 
+}: {
+  title: string;
+  value: string | number;
   icon: React.ElementType;
   trend?: { value: number; positive: boolean };
   color?: 'sky' | 'emerald' | 'amber' | 'red' | 'purple';
@@ -217,6 +217,10 @@ export default function PatrimonioPage() {
         description="Gestão de ativos, manutenção e monitorização de gases medicinais"
         actions={
           <div className="flex gap-2">
+            <Button variant="outline" onClick={() => window.open('/api/pdf/patrimonio', '_blank')}>
+              <Icons.FileText size={16} />
+              Relatório
+            </Button>
             <Button variant="outline" onClick={() => setShowAlertModal(true)}>
               <Icons.Bell size={16} />
               Alertas ({alertas.filter(a => !a.reconhecido).length})
@@ -316,7 +320,7 @@ export default function PatrimonioPage() {
                   <Badge
                     variant={
                       central.status === 'CRITICO' ? 'danger' :
-                      central.status === 'ALERTA' ? 'warning' : 'success'
+                        central.status === 'ALERTA' ? 'warning' : 'success'
                     }
                     className="mt-2"
                   >
@@ -516,21 +520,19 @@ export default function PatrimonioPage() {
             {alertas.map((alerta) => (
               <div
                 key={alerta.id}
-                className={`p-4 rounded-lg border ${
-                  alerta.severidade === 'CRITICO'
+                className={`p-4 rounded-lg border ${alerta.severidade === 'CRITICO'
                     ? 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800'
                     : alerta.severidade === 'AVISO'
-                    ? 'bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800'
-                    : 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800'
-                }`}
+                      ? 'bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800'
+                      : 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800'
+                  }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-3">
                     <Icons.AlertTriangle
-                      className={`w-5 h-5 mt-0.5 ${
-                        alerta.severidade === 'CRITICO' ? 'text-red-600' :
-                        alerta.severidade === 'AVISO' ? 'text-amber-600' : 'text-blue-600'
-                      }`}
+                      className={`w-5 h-5 mt-0.5 ${alerta.severidade === 'CRITICO' ? 'text-red-600' :
+                          alerta.severidade === 'AVISO' ? 'text-amber-600' : 'text-blue-600'
+                        }`}
                     />
                     <div>
                       <p className="font-medium text-slate-700 dark:text-slate-200">{alerta.mensagem}</p>

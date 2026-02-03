@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 | Relatório de Fluxo Geográfico</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002647",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1a23",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-size: 20px; }
+        .choropleth-gradient {
+            background: linear-gradient(to right, #394856, #002647, #004a8b);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-[#27313a] bg-white dark:bg-background-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">health_metrics</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360 | Hospital ERP</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Dashboard</a>
+<a class="text-primary dark:text-white border-b-2 border-primary dark:border-white text-sm font-bold h-10 flex items-center" href="#">Relatórios</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Planeamento</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Configuração</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full border border-slate-200 dark:border-none">
+<div class="text-slate-400 dark:text-[#9aacbc] flex bg-white dark:bg-[#27313a] items-center justify-center pl-4 rounded-l-lg">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-white dark:bg-[#27313a] h-full placeholder:text-slate-400 dark:placeholder:text-[#9aacbc] px-4 rounded-l-none pl-2 text-sm font-normal" placeholder="Pesquisar..." value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-slate-100 dark:bg-[#27313a] text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-[#394856] transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-slate-100 dark:bg-[#27313a] text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-[#394856] transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="Avatar do utilizador DPC" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAMl7Mh7PNYkySdsq7inQ7cGhoZFQJM_QQkeCWDFGNOwGqrGa47oLqlnimGw7c3Qsfq5dvtyBdoYgQ65cmnQtPl8SfMkY-IC2wFGKyUrWVr7C7y78e91Ot-Cbwdu0MvE-CL-0xP5rBFyYWjtc2SHw-tTaGU-p8rTsNZKaHT44bQpQY2dCgm-d9q4RhKxYn5JtgIOlCV99IB2eCMFDzeMJYTul6Yv8GHYqWF9kOggjT5oQuELjEK1vGnOVG0MaXNzzJsPUuU7AjGNShf");'></div>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-4 sm:px-10 py-8">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between items-end gap-3 mb-6">
+<div class="flex flex-col gap-1">
+<p class="text-slate-900 dark:text-white text-3xl font-black leading-tight tracking-[-0.033em]">Relatório de Fluxo Geográfico</p>
+<p class="text-slate-500 dark:text-[#9aacbc] text-base font-normal">Análise estratégica de proveniência de pacientes por província e sector clínico (DPC)</p>
+</div>
+<div class="flex gap-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-slate-100 dark:bg-[#27313a] text-slate-900 dark:text-white text-sm font-bold border border-slate-200 dark:border-none">
+<span class="material-symbols-outlined mr-2">download</span>
+<span>Exportar PDF</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined mr-2">print</span>
+<span>Imprimir</span>
+</button>
+</div>
+</div>
+<!-- Chips / Filters -->
+<div class="flex gap-3 mb-8 flex-wrap items-center">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mr-2">Filtros:</span>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#27313a] px-4 border border-slate-200 dark:border-none shadow-sm">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">calendar_month</span>
+<p class="text-slate-700 dark:text-white text-sm font-medium">Últimos 30 dias</p>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#27313a] px-4 border border-slate-200 dark:border-none shadow-sm">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">medical_services</span>
+<p class="text-slate-700 dark:text-white text-sm font-medium">Todos os Sectores</p>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-white dark:bg-[#27313a] px-4 border border-slate-200 dark:border-none shadow-sm">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">group</span>
+<p class="text-slate-700 dark:text-white text-sm font-medium">Categoria: Todos</p>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-lg bg-primary/10 text-primary dark:bg-blue-500/10 dark:text-blue-400 px-4 ml-auto border border-primary/20 dark:border-blue-400/20">
+<span class="material-symbols-outlined">filter_list</span>
+<p class="text-sm font-bold">Limpar Filtros</p>
+</button>
+</div>
+<!-- Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-[#394856] bg-white dark:bg-background-dark/50 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-[#9aacbc] text-sm font-medium uppercase tracking-wider">Total de Pacientes (Nacional)</p>
+<span class="material-symbols-outlined text-primary dark:text-blue-400">analytics</span>
+</div>
+<div class="flex items-baseline gap-3">
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-black">12.450</p>
+<p class="text-[#0bda5b] text-sm font-bold flex items-center"><span class="material-symbols-outlined text-sm">arrow_upward</span>5.2%</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-[#394856] bg-white dark:bg-background-dark/50 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-[#9aacbc] text-sm font-medium uppercase tracking-wider">Província com Maior Fluxo</p>
+<span class="material-symbols-outlined text-primary dark:text-blue-400">location_on</span>
+</div>
+<div class="flex items-baseline gap-3">
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-black">Luanda</p>
+<p class="text-slate-400 dark:text-[#9aacbc] text-sm font-medium">65% do total</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-[#394856] bg-white dark:bg-background-dark/50 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-[#9aacbc] text-sm font-medium uppercase tracking-wider">Média de Deslocação</p>
+<span class="material-symbols-outlined text-primary dark:text-blue-400">distance</span>
+</div>
+<div class="flex items-baseline gap-3">
+<p class="text-slate-900 dark:text-white tracking-tight text-3xl font-black">145 km</p>
+<p class="text-[#0bda5b] text-sm font-bold flex items-center"><span class="material-symbols-outlined text-sm">trending_up</span>1.8%</p>
+</div>
+</div>
+</div>
+<!-- Main Content Area: Map + List -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+<!-- Map Section -->
+<div class="lg:col-span-8 flex flex-col rounded-xl border border-slate-200 dark:border-[#394856] bg-white dark:bg-background-dark/50 overflow-hidden min-h-[600px]">
+<div class="p-6 border-b border-slate-200 dark:border-[#394856] flex justify-between items-center bg-slate-50/50 dark:bg-transparent">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Mapa de Densidade Populacional</h3>
+<p class="text-sm text-slate-500 dark:text-[#9aacbc]">Visualização por 18 províncias de Angola</p>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase mr-4">
+<span class="text-slate-400">Baixo</span>
+<div class="w-32 h-2 rounded-full choropleth-gradient"></div>
+<span class="text-slate-400">Alto</span>
+</div>
+</div>
+</div>
+<div class="flex-1 relative @container">
+<!-- Placeholder Map Container -->
+<div class="absolute inset-0 bg-cover bg-center flex flex-col justify-between p-6 opacity-80" data-alt="Mapa coroplético de Angola mostrando densidade de pacientes por província" data-location="Angola" style='background-image: linear-gradient(rgba(15, 26, 35, 0.4), rgba(15, 26, 35, 0.4)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEKAIybJterRpHqKjPz8iAo3YKSxa1R8lR2cwchyGmE38o67A5DuecXy33ptwDMr7J9DS0FOeMJ_FioP7o3_IwfcK2B7ROBR8VZ_v8PgWU0dzdc0r4OHIOYSBqvNtRyHFjXDk4yUBbTZdvYyh6D83q7LmAjlvzXkA_rgH9PvtAE3iOC0EwRSdHg0DCT4Xkq1oaWTsSC4zo3ogjh86KXt_LbYBfIOnwDU1nQqjFK93Aju9tx73H4qzYzVVDiUbc1WRYbuZbsivM-yzb");'>
+<div class="flex justify-between w-full">
+<label class="flex flex-col min-w-40 h-10 w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-white/10 backdrop-blur-md border border-white/20">
+<div class="text-white flex items-center justify-center pl-3">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-white/60 px-4 pl-2 text-sm" placeholder="Focar província..." value=""/>
+</div>
+</label>
+<div class="flex flex-col gap-2">
+<div class="flex flex-col rounded-lg overflow-hidden bg-primary shadow-xl">
+<button class="size-10 flex items-center justify-center text-white hover:bg-white/10 border-b border-white/10 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="size-10 flex items-center justify-center text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<button class="size-10 rounded-lg bg-primary text-white flex items-center justify-center shadow-xl hover:bg-primary/90">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+</div>
+<!-- Info Overlay on Map (Province Detail) -->
+<div class="self-start mt-auto bg-primary/90 backdrop-blur text-white p-4 rounded-lg shadow-2xl border border-white/20 max-w-xs">
+<h4 class="font-bold text-lg border-b border-white/10 pb-2 mb-2">Luanda (Sede)</h4>
+<div class="space-y-2">
+<div class="flex justify-between text-xs">
+<span class="opacity-70">Pacientes:</span>
+<span class="font-bold">8.092</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="opacity-70">Crescimento:</span>
+<span class="font-bold text-green-400">+12%</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="opacity-70">Principal Sector:</span>
+<span class="font-bold text-blue-300">Urgências</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Ranking Section -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Province Ranking -->
+<div class="flex-1 flex flex-col rounded-xl border border-slate-200 dark:border-[#394856] bg-white dark:bg-background-dark/50 overflow-hidden">
+<div class="p-5 border-b border-slate-200 dark:border-[#394856] flex justify-between items-center">
+<h3 class="font-bold text-slate-900 dark:text-white">Ranking por Província</h3>
+<span class="material-symbols-outlined text-slate-400">sort</span>
+</div>
+<div class="overflow-y-auto max-h-[400px] p-4 custom-scrollbar">
+<div class="space-y-4">
+<!-- Item -->
+<div class="group cursor-pointer">
+<div class="flex justify-between mb-1">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Luanda</span>
+<span class="text-sm font-bold text-primary dark:text-blue-400">8.092</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- Item -->
+<div class="group cursor-pointer">
+<div class="flex justify-between mb-1">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Benguela</span>
+<span class="text-sm font-bold text-primary dark:text-blue-400">1.240</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary/70 h-full rounded-full" style="width: 45%"></div>
+</div>
+</div>
+<!-- Item -->
+<div class="group cursor-pointer">
+<div class="flex justify-between mb-1">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Huambo</span>
+<span class="text-sm font-bold text-primary dark:text-blue-400">950</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary/60 h-full rounded-full" style="width: 35%"></div>
+</div>
+</div>
+<!-- Item -->
+<div class="group cursor-pointer">
+<div class="flex justify-between mb-1">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Huíla</span>
+<span class="text-sm font-bold text-primary dark:text-blue-400">780</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary/50 h-full rounded-full" style="width: 28%"></div>
+</div>
+</div>
+<!-- Item -->
+<div class="group cursor-pointer">
+<div class="flex justify-between mb-1">
+<span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Cabinda</span>
+<span class="text-sm font-bold text-primary dark:text-blue-400">540</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary/40 h-full rounded-full" style="width: 20%"></div>
+</div>
+</div>
+<!-- More items... -->
+<p class="text-[10px] text-center text-slate-400 pt-2 italic">Exibindo 5 de 18 províncias</p>
+</div>
+</div>
+</div>
+<!-- Rural vs Urban Section -->
+<div class="rounded-xl border border-slate-200 dark:border-[#394856] bg-white dark:bg-background-dark/50 p-5">
+<h3 class="font-bold text-slate-900 dark:text-white mb-6">Origem: Urbano vs Rural</h3>
+<div class="flex items-end justify-around h-32 gap-6 px-4">
+<div class="flex flex-col items-center flex-1 gap-2">
+<span class="text-xs font-bold text-slate-400">74%</span>
+<div class="w-full bg-primary rounded-t-lg transition-all hover:bg-primary/80" style="height: 74%"></div>
+<span class="text-[10px] font-bold uppercase tracking-tight text-slate-500">Urbano</span>
+</div>
+<div class="flex flex-col items-center flex-1 gap-2">
+<span class="text-xs font-bold text-slate-400">26%</span>
+<div class="w-full bg-slate-300 dark:bg-slate-700 rounded-t-lg transition-all hover:opacity-80" style="height: 26%"></div>
+<span class="text-[10px] font-bold uppercase tracking-tight text-slate-500">Rural</span>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary"></div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Crescimento urbano: <span class="font-bold text-slate-700 dark:text-slate-200">+3.4%</span></p>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Crescimento rural: <span class="font-bold text-slate-700 dark:text-slate-200">-0.2%</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="max-w-[1440px] mx-auto px-10 py-8 border-t border-slate-200 dark:border-[#27313a] flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400">
+<p class="text-xs">© 2024 Zênite360 - Direção de Planeamento e Controlo (DPC)</p>
+<div class="flex gap-6">
+<a class="text-xs hover:text-primary dark:hover:text-white transition-colors" href="#">Termos de Uso</a>
+<a class="text-xs hover:text-primary dark:hover:text-white transition-colors" href="#">Ajuda &amp; Suporte</a>
+<a class="text-xs hover:text-primary dark:hover:text-white transition-colors" href="#">Versão 2.4.0</a>
+</div>
+</footer>
+</body></html>

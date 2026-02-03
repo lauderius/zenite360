@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 | Arquivo Clínico e Digitalização</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f131a",
+                        "surface-dark": "#1a202a",
+                        "surface-border": "#2d3748",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen flex flex-col overflow-hidden">
+<!-- Header -->
+<header class="h-16 flex items-center justify-between px-6 border-b dark:border-surface-border bg-white dark:bg-surface-dark shrink-0 z-20">
+<div class="flex items-center gap-4">
+<div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined">health_and_safety</span>
+</div>
+<div>
+<h1 class="text-lg font-bold tracking-tight text-slate-900 dark:text-white leading-none">Zênite360</h1>
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium">Módulo de Digitalização &amp; Arquivo Clínico</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+<button class="px-3 py-1.5 text-xs font-semibold rounded bg-white dark:bg-primary shadow-sm text-slate-900 dark:text-white">Indexação</button>
+<button class="px-3 py-1.5 text-xs font-semibold rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Arquivo Morto</button>
+<button class="px-3 py-1.5 text-xs font-semibold rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">Auditoria</button>
+</nav>
+<div class="h-6 w-px bg-slate-200 dark:bg-surface-border"></div>
+<div class="flex items-center gap-3">
+<button class="relative p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full border-2 border-white dark:border-surface-dark"></span>
+</button>
+<div class="flex items-center gap-3 pl-2">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold text-slate-900 dark:text-white leading-none">Dr. António Silva</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Administrador de Arquivo</p>
+</div>
+<div class="size-9 rounded-full bg-slate-200 dark:bg-slate-700 bg-center bg-cover border-2 border-white dark:border-slate-600" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBNev-SDbaVe33uodUh-tPved8ZI2bnwrHS1keoM1ey8AnM4OP5gKbzkFiPiY0XtdhJT68cQAkHDEerfVIXA0ACmq9rwROlHHM07J9jS-wCyhxZxbJaR0i0KQujI6dBG7Rw7eiFp6FRHdPWmFa7PCjqXJJoKfVoAnwinllXtIlUdPZi8c6UxQH2c6vuAKme7JMS0IxClyZATw4GSPJKFg4dGRy3Ice2sXVhl4VjD8N_MyDY8AKjT2jPHJ3nTAy_KHuZywWcg5q_p6L6');"></div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Grid -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar / Queue (Left) -->
+<aside class="w-80 flex flex-col border-r dark:border-surface-border bg-white dark:bg-[#151b23]">
+<div class="p-4 border-b dark:border-surface-border flex justify-between items-center">
+<h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Fila de Entrada</h2>
+<span class="bg-primary/20 text-blue-300 text-xs px-2 py-0.5 rounded-full font-bold">12 Novos</span>
+</div>
+<div class="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
+<!-- Scan Item Active -->
+<div class="group relative flex gap-3 p-3 rounded-lg bg-primary/10 border border-primary/30 cursor-pointer hover:bg-primary/20 transition-all">
+<div class="w-16 h-20 bg-slate-200 dark:bg-slate-800 rounded bg-cover bg-center shrink-0 border dark:border-slate-700" data-alt="Thumbnail of medical record scan" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCyAuFg43Dy_bLPWkHfLrIT81cEsUd4qjh-wWvyNOe2gYy3WPCuebsTyfA59zzAi0q8D2BRM3232kxtC3crlQDl59nM5yp5HFMXLjAHBBbG1IbAQEjdlb3KvL2mksdHLmq7WgrCpaT2nJQS-LWggT7IkmUp2zJSi-hxMaLAm3jfUE_hcHB3VGskKNNfdh7p0TRdN5-PiRTInNbOxnRZH_R4RAH1oYNb52iH--GgE0FhO9o78lkM2sMsuKkPf2qhCQ6HDicbvuBfvXuT');"></div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div>
+<p class="text-sm font-semibold text-white truncate">Scan_2023_OUT_12_042.pdf</p>
+<p class="text-xs text-slate-400">Hoje, 10:42</p>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-[10px] font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1">
+<span class="size-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+                                Em Processamento
+                            </span>
+</div>
+</div>
+</div>
+<!-- Scan Item Pending -->
+<div class="group relative flex gap-3 p-3 rounded-lg bg-white dark:bg-surface-dark border dark:border-surface-border cursor-pointer hover:border-slate-500 transition-all">
+<div class="w-16 h-20 bg-slate-200 dark:bg-slate-800 rounded bg-cover bg-center shrink-0 border dark:border-slate-700 opacity-70" data-alt="Thumbnail of document scan" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBwi9EFUaC-eIZAEDw-84HaUJCMg05nanOq8ekWQITVmbNpTMGVS-wzASViolh7gbpQNbIeDCYA-AhN9HjTKZ-8bfn4PcLLd1YcGUwnyl1dSEIgHyPSQq3n61rFbd3DYfLtweE-ZrAmH8fVOVJFQDFvvsifM8UvJxPw21ocwSss51c_kAsdS0vTspnAid6Ya1Bm4XQaF74qQilHPTXV4LqGe-4PfQbeF-4uM9K4TyTnAANceAuZKsHBLx7PwNGALAiFH5uOry3o4c9t');"></div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div>
+<p class="text-sm font-medium text-slate-300 truncate">Scan_2023_OUT_12_043.pdf</p>
+<p class="text-xs text-slate-500">Hoje, 10:45</p>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-[10px] font-bold uppercase tracking-wider text-amber-500">Aguardando</span>
+</div>
+</div>
+<button class="absolute top-2 right-2 text-slate-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">delete</span>
+</button>
+</div>
+<!-- Scan Item Pending -->
+<div class="group relative flex gap-3 p-3 rounded-lg bg-white dark:bg-surface-dark border dark:border-surface-border cursor-pointer hover:border-slate-500 transition-all">
+<div class="w-16 h-20 bg-slate-200 dark:bg-slate-800 rounded bg-cover bg-center shrink-0 border dark:border-slate-700 opacity-70" data-alt="Thumbnail of document scan" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBt2CujDYR0frY04nCmPApoO2b-1IsT0ZFOxPuGtAioSh2UpwUwYsCDO__ruW05EWKodgfkNbdAxJ4Qnl31cr4ehp40evh-rEflprQwr3lfltzKkDdKPFLsguKiz7yDYBc_690-CAW78yP7VV1VjQWwzxBivG8fRA3rdQGmS0GXgKyh85Tyaomqn-hPoLWpujie_sM2I4YY8HT689Xbiu48xqDo_fowjHUqLYyb2mgdDAFOC5jRrNp-1PVY1zq0B6bgunKYf8DBa1gR');"></div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div>
+<p class="text-sm font-medium text-slate-300 truncate">Scan_2023_OUT_12_044.pdf</p>
+<p class="text-xs text-slate-500">Hoje, 10:48</p>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-[10px] font-bold uppercase tracking-wider text-amber-500">Aguardando</span>
+</div>
+</div>
+</div>
+<!-- Scan Item Pending -->
+<div class="group relative flex gap-3 p-3 rounded-lg bg-white dark:bg-surface-dark border dark:border-surface-border cursor-pointer hover:border-slate-500 transition-all">
+<div class="w-16 h-20 bg-slate-200 dark:bg-slate-800 rounded bg-cover bg-center shrink-0 border dark:border-slate-700 opacity-70" data-alt="Thumbnail of document scan" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBShvb45S7IYKnrsiHY8baPitxznOz1PFwyFBugyY34bafcUhHNTD2eFlxD4YGELDl-Gis45NfJ98YIJ4cdgA3ldgqG_mUWO1lkd-CkZuaK4PK-xZg7DEMmVIejPLDp6FNZPZCF77U9YTKe7QqJmUnt-QLvwSLOExYc-T9RPuSIWOq585WbPNOIg_-KauneSEvfNnsd3WVhNnyuZm1A38Hu8X9bK-t5g7yOnD-HGTT70KFbAZkt5xoK4_V-8beMUS59MSlBppwaNcEJ');"></div>
+<div class="flex flex-col justify-between flex-1 min-w-0">
+<div>
+<p class="text-sm font-medium text-slate-300 truncate">Scan_2023_OUT_12_045.pdf</p>
+<p class="text-xs text-slate-500">Hoje, 11:00</p>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-[10px] font-bold uppercase tracking-wider text-amber-500">Aguardando</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border-t dark:border-surface-border bg-slate-50 dark:bg-[#1a202a]">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded text-sm font-bold text-slate-700 dark:text-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">upload_file</span>
+                    Carregar Manualmente
+                </button>
+</div>
+</aside>
+<!-- Main Workspace (Center + Right) -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- KPI Stats Bar -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 border-b dark:border-surface-border bg-white dark:bg-surface-dark">
+<div class="flex items-center gap-4 p-3 rounded bg-slate-50 dark:bg-[#151b23] border dark:border-surface-border">
+<div class="size-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+<span class="material-symbols-outlined">folder_open</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Processos Digitalizados</p>
+<p class="text-xl font-bold text-slate-900 dark:text-white">12.450</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded bg-slate-50 dark:bg-[#151b23] border dark:border-surface-border">
+<div class="size-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Pendentes de Indexação</p>
+<p class="text-xl font-bold text-slate-900 dark:text-white">34</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded bg-slate-50 dark:bg-[#151b23] border dark:border-surface-border">
+<div class="size-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+<span class="material-symbols-outlined">cloud_done</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Armazenamento (Local)</p>
+<p class="text-xl font-bold text-slate-900 dark:text-white">4.2TB <span class="text-xs text-slate-500 font-normal">/ 10TB</span></p>
+</div>
+</div>
+</div>
+<!-- Workspace Split -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Document Viewer (Center) -->
+<div class="flex-1 bg-slate-100 dark:bg-[#0d1117] relative flex flex-col items-center justify-center p-8 overflow-hidden">
+<!-- Toolbar -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 bg-white dark:bg-surface-dark rounded-full shadow-lg border dark:border-surface-border z-10">
+<button class="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white" title="Zoom Out">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<span class="text-xs font-mono text-slate-400 w-12 text-center">100%</span>
+<button class="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white" title="Zoom In">
+<span class="material-symbols-outlined">add</span>
+</button>
+<div class="w-px h-4 bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<button class="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white" title="Rotate Left">
+<span class="material-symbols-outlined">rotate_left</span>
+</button>
+<button class="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white" title="Rotate Right">
+<span class="material-symbols-outlined">rotate_right</span>
+</button>
+</div>
+<!-- PDF/Image Preview Container -->
+<div class="h-full w-full max-w-3xl bg-white shadow-2xl overflow-y-auto custom-scrollbar rounded-sm">
+<div class="w-full aspect-[1/1.414] bg-white bg-cover bg-center" data-alt="Full view of the scanned medical document showing text and charts" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC3vZKJSYhElHH2W7KeKOmFA1y2zfQvMTGfaHFB11XJqumGv-MRWb1t_SM_BBTAZcJSDi37zvZg8Prrhxr45vI2fBqHXcmnd7uyzJ_8SSb_4BG26_GFxjEtPdfPcmgKH6NiZalpYe9QYsLdBLdSX7Of7IrwKH3VKyQCRGuBa_WOnY3feOFV1x39VsPbR1yJ5IObnNZHnFwvI5WqxMeVV7FPDq7fiQozoZ7ToN3MvwvpjD8vgqB0W3Z6ihlr92y-glCNJ_S2COYpuyvO');">
+</div>
+</div>
+</div>
+<!-- Indexing Form (Right) -->
+<div class="w-96 bg-white dark:bg-surface-dark border-l dark:border-surface-border flex flex-col">
+<div class="p-5 border-b dark:border-surface-border">
+<h3 class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">edit_document</span>
+                            Dados do Documento
+                        </h3>
+</div>
+<div class="flex-1 overflow-y-auto p-5 space-y-6">
+<!-- Patient ID Search -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                Identificação do Paciente
+                            </label>
+<div class="relative">
+<input class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#151b23] border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-shadow" placeholder="Insira o Nº B.I. ou N.U.C.S" type="text" value="004821855LA032"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[20px]">search</span>
+<span class="absolute right-3 top-2.5 text-green-500 material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<!-- Patient Result Card -->
+<div class="p-3 bg-blue-50 dark:bg-primary/10 rounded border border-blue-100 dark:border-primary/20 flex gap-3 items-center">
+<div class="size-10 bg-blue-200 dark:bg-primary/30 rounded-full flex items-center justify-center text-primary dark:text-blue-200 font-bold">JM</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">João Manuel da Silva</p>
+<p class="text-xs text-slate-500 dark:text-blue-300">Nasc: 14/05/1982 (42 Anos)</p>
+</div>
+</div>
+</div>
+<!-- Document Type -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                Tipo de Documento
+                            </label>
+<div class="relative">
+<select class="w-full pl-10 pr-4 py-2.5 bg-slate-50 dark:bg-[#151b23] border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+<option>Relatório Cirúrgico</option>
+<option>Exame Laboratorial</option>
+<option>Prescrição Médica</option>
+<option>Ficha de Triagem</option>
+</select>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[20px]">category</span>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-slate-400 pointer-events-none text-[20px]">arrow_drop_down</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Date -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Data do Evento
+                                </label>
+<div class="relative">
+<input class="w-full px-3 py-2.5 bg-slate-50 dark:bg-[#151b23] border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none" type="date" value="2023-10-12"/>
+</div>
+</div>
+<!-- Department -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Serviço
+                                </label>
+<div class="relative">
+<select class="w-full px-3 py-2.5 bg-slate-50 dark:bg-[#151b23] border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none appearance-none">
+<option>Ortopedia</option>
+<option>Cardiologia</option>
+<option>Pediatria</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-slate-400 pointer-events-none text-[20px]">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- Observations -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                Observações
+                            </label>
+<textarea class="w-full px-3 py-2.5 bg-slate-50 dark:bg-[#151b23] border border-slate-300 dark:border-slate-600 rounded text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none resize-none" placeholder="Adicione notas relevantes sobre o estado do documento..." rows="4"></textarea>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="p-5 border-t dark:border-surface-border bg-slate-50 dark:bg-[#151b23] flex flex-col gap-3">
+<button class="w-full py-3 px-4 bg-primary hover:bg-primary-light text-white font-bold rounded shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2 transition-transform active:scale-[0.98]">
+<span class="material-symbols-outlined">save</span>
+                            Indexar e Arquivar
+                        </button>
+<button class="w-full py-2.5 px-4 bg-transparent border border-red-500/30 text-red-500 hover:bg-red-500/10 font-semibold rounded flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined">delete_forever</span>
+                            Rejeitar Imagem
+                        </button>
+</div>
+</div>
+</div>
+<!-- Bottom: Advanced Search (Collapsed/Small) -->
+<div class="h-12 border-t dark:border-surface-border bg-white dark:bg-surface-dark flex items-center px-4 justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-[#1f2833] transition-colors group">
+<div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 group-hover:text-primary dark:group-hover:text-blue-300">
+<span class="material-symbols-outlined">search</span>
+<span class="text-sm font-semibold">Pesquisar no Arquivo Morto Digital</span>
+</div>
+<span class="material-symbols-outlined text-slate-400">keyboard_arrow_up</span>
+</div>
+</main>
+</div>
+<!-- Map Component (Hidden/Placeholder based on prompt, but needed to follow rules if maps were requested. Since no map requested, I will use a decorative background pattern or similar in empty states if needed, but none present.) -->
+<style>
+        /* Custom scrollbar for webkit browsers */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.5);
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(156, 163, 175, 0.8);
+        }
+    </style>
+</body></html>

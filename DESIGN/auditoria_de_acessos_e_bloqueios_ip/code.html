@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Auditoria de Acessos e Bloqueios IP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "danger": "#fa6238",
+                        "success": "#0bda5e",
+                        "warning": "#facc15"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- TopNavBar Component -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#27303a] px-10 py-3 bg-primary">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 bg-white/10 p-1 rounded">
+<svg class="text-white" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Zênite360</h2>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#9aaabc] flex border-none bg-white/10 items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined text-sm">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-white/10 focus:border-none h-full placeholder:text-[#9aaabc] px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal" placeholder="Procurar logs..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="flex items-center gap-9">
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Dashboard</a>
+<a class="text-white text-sm font-bold border-b-2 border-white leading-normal py-1" href="#">Auditoria</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Utilizadores</a>
+<a class="text-white/80 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Configurações</a>
+</div>
+<div class="flex gap-2">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/10 text-white gap-2 text-sm font-bold leading-normal px-2.5">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/10 text-white gap-2 text-sm font-bold leading-normal px-2.5">
+<span class="material-symbols-outlined text-[20px]">help_outline</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/10 text-white gap-2 text-sm font-bold leading-normal px-2.5">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-white/20" data-alt="Avatar de utilizador administrativo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBqeDLTB7uv47qfSeDXzcOFzn7S4iX_thitEF_LcYSq-F9lWzkGYEHap_C6g0I2N8AotiBEv2aZnOQz4Nr00oeChpzQGo6pMWYOiE4y3Qlro-XE1RllrRoYwI6749kVNYs1h9UmxmlGvBmiB28eHIoWMI4MMRySwXMtLAi9bF0X3yyy1UFI_uflUvXYxTJRa8_OMdaP2s3pHjHciXeEusqXO-Jbvlj--vse2e26P6Tju748QaWeRDxjCoaP33s-EsYiSFzELg4ppHRI");'></div>
+</div>
+</header>
+<main class="flex-1 px-40 py-8">
+<div class="layout-content-container flex flex-col max-w-[1200px] mx-auto flex-1">
+<!-- PageHeading Component -->
+<div class="flex flex-wrap justify-between items-end gap-3 mb-8">
+<div class="flex min-w-72 flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="flex h-2 w-2 rounded-full bg-success"></span>
+<span class="text-success text-xs font-bold uppercase tracking-wider">Monitorização em Tempo Real</span>
+</div>
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Auditoria de Acessos e Bloqueios IP</p>
+<p class="text-[#9aaabc] text-base font-normal leading-normal">Registo detalhado de tentativas de autenticação e segurança do perímetro ERP.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-primary/40 border border-primary text-white text-sm font-bold">
+<span class="material-symbols-outlined mr-2 text-lg">sync</span>
+<span class="truncate">Actualizar</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold hover:bg-primary/80 transition-all">
+<span class="material-symbols-outlined mr-2 text-lg">file_download</span>
+<span class="truncate">Exportar Relatório</span>
+</button>
+</div>
+</div>
+<!-- Stats Component -->
+<div class="flex flex-wrap gap-4 mb-8">
+<div class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#394656] bg-primary/10">
+<div class="flex justify-between items-start">
+<p class="text-white/70 text-sm font-medium leading-normal uppercase tracking-wider">Tentativas de Invasão (24h)</p>
+<span class="material-symbols-outlined text-danger">shield_lock</span>
+</div>
+<p class="text-white tracking-light text-3xl font-bold leading-tight mt-1">1,242</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-danger text-sm">trending_up</span>
+<p class="text-danger text-sm font-bold leading-normal">+15.4%</p>
+<span class="text-[#9aaabc] text-xs ml-1">vs ontem</span>
+</div>
+</div>
+<div class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#394656] bg-primary/10">
+<div class="flex justify-between items-start">
+<p class="text-white/70 text-sm font-medium leading-normal uppercase tracking-wider">Bloqueios por IP Ativos</p>
+<span class="material-symbols-outlined text-success">block</span>
+</div>
+<p class="text-white tracking-light text-3xl font-bold leading-tight mt-1">28</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-success text-sm">trending_down</span>
+<p class="text-success text-sm font-bold leading-normal">-2%</p>
+<span class="text-[#9aaabc] text-xs ml-1">na última hora</span>
+</div>
+</div>
+<div class="flex min-w-[200px] flex-1 flex-col gap-2 rounded-xl p-6 border border-[#394656] bg-primary/10">
+<div class="flex justify-between items-start">
+<p class="text-white/70 text-sm font-medium leading-normal uppercase tracking-wider">Alertas de Força Bruta</p>
+<span class="material-symbols-outlined text-warning">warning</span>
+</div>
+<p class="text-white tracking-light text-3xl font-bold leading-tight mt-1">12</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-danger text-sm">trending_up</span>
+<p class="text-danger text-sm font-bold leading-normal">+5%</p>
+<span class="text-[#9aaabc] text-xs ml-1">incidência crítica</span>
+</div>
+</div>
+</div>
+<!-- Filter Section Header -->
+<div class="bg-primary/20 border-x border-t border-[#394656] rounded-t-xl overflow-hidden">
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-6 py-4 border-b border-[#394656]">Filtros de Pesquisa Avançada</h2>
+<!-- TextField Filters -->
+<div class="flex flex-wrap items-end gap-6 px-6 py-5 bg-[#1b2128]">
+<label class="flex flex-col min-w-[240px] flex-1">
+<p class="text-white/80 text-xs font-bold leading-normal pb-2 uppercase">Endereço IP</p>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-4 text-[#9aaabc] text-xl">language</span>
+<input class="form-input flex w-full rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary border border-[#394656] bg-background-dark/50 h-12 placeholder:text-[#9aaabc] pl-12 pr-4 text-sm font-normal" placeholder="Ex: 192.168.1.1" value=""/>
+</div>
+</label>
+<label class="flex flex-col min-w-[240px] flex-1">
+<p class="text-white/80 text-xs font-bold leading-normal pb-2 uppercase">Nome de Utilizador</p>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-4 text-[#9aaabc] text-xl">person</span>
+<input class="form-input flex w-full rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary border border-[#394656] bg-background-dark/50 h-12 placeholder:text-[#9aaabc] pl-12 pr-4 text-sm font-normal" placeholder="Introduza o username" value=""/>
+</div>
+</label>
+<label class="flex flex-col min-w-[200px] flex-1">
+<p class="text-white/80 text-xs font-bold leading-normal pb-2 uppercase">Estado da Tentativa</p>
+<select class="form-select flex w-full rounded-lg text-white focus:outline-0 focus:ring-2 focus:ring-primary border border-[#394656] bg-background-dark/50 h-12 px-4 text-sm font-normal">
+<option>Todos os Estados</option>
+<option>Sucesso</option>
+<option>Falha</option>
+<option>Bloqueado por IP</option>
+</select>
+</label>
+<button class="flex min-w-[120px] items-center justify-center rounded-lg h-12 bg-primary text-white text-sm font-bold px-6">
+                                Filtrar
+                            </button>
+</div>
+</div>
+<!-- Table Component -->
+<div class="overflow-x-auto border-x border-b border-[#394656] rounded-b-xl">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary/30 border-y border-[#394656]">
+<th class="px-6 py-4 text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Data / Hora</th>
+<th class="px-6 py-4 text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Utilizador</th>
+<th class="px-6 py-4 text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Endereço IP</th>
+<th class="px-6 py-4 text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Incompat. Sector</th>
+<th class="px-6 py-4 text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Estado</th>
+<th class="px-6 py-4 text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Dispositivo</th>
+<th class="px-6 py-4 text-[#9aaabc] text-xs font-bold uppercase tracking-wider text-right">Acções</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#27303a]">
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Mai, 14:23:45</td>
+<td class="px-6 py-4 text-sm">admin_geral</td>
+<td class="px-6 py-4 text-sm font-mono text-primary-200">197.231.42.12</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1 text-danger font-bold text-xs uppercase">
+<span class="material-symbols-outlined text-sm">report_problem</span> SIM
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-danger/20 px-2.5 py-0.5 text-xs font-bold text-danger">BLOQUEADO</span>
+</td>
+<td class="px-6 py-4 text-sm text-[#9aaabc]">Win10 / Chrome 124</td>
+<td class="px-6 py-4 text-right">
+<button class="text-white hover:text-primary-300"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Mai, 14:22:10</td>
+<td class="px-6 py-4 text-sm">dr.antonio.silva</td>
+<td class="px-6 py-4 text-sm font-mono">10.0.4.55</td>
+<td class="px-6 py-4 text-sm text-[#9aaabc]">Não</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-success/20 px-2.5 py-0.5 text-xs font-bold text-success">SUCESSO</span>
+</td>
+<td class="px-6 py-4 text-sm text-[#9aaabc]">iPad Pro / Safari</td>
+<td class="px-6 py-4 text-right">
+<button class="text-white hover:text-primary-300"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Mai, 14:21:55</td>
+<td class="px-6 py-4 text-sm">unknown_guest</td>
+<td class="px-6 py-4 text-sm font-mono text-danger">45.12.89.201</td>
+<td class="px-6 py-4 text-sm text-[#9aaabc]">Não</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-warning/20 px-2.5 py-0.5 text-xs font-bold text-warning">FALHA</span>
+</td>
+<td class="px-6 py-4 text-sm text-[#9aaabc]">Linux / Unknown</td>
+<td class="px-6 py-4 text-right">
+<button class="text-white hover:text-primary-300"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Mai, 14:15:22</td>
+<td class="px-6 py-4 text-sm">rececao_luanda</td>
+<td class="px-6 py-4 text-sm font-mono">10.0.12.5</td>
+<td class="px-6 py-4 text-sm text-[#9aaabc]">Não</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-success/20 px-2.5 py-0.5 text-xs font-bold text-success">SUCESSO</span>
+</td>
+<td class="px-6 py-4 text-sm text-[#9aaabc]">Win11 / Edge 120</td>
+<td class="px-6 py-4 text-right">
+<button class="text-white hover:text-primary-300"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Mai, 14:10:05</td>
+<td class="px-6 py-4 text-sm">admin_it_serv</td>
+<td class="px-6 py-4 text-sm font-mono text-primary-200">197.231.42.12</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1 text-danger font-bold text-xs uppercase">
+<span class="material-symbols-outlined text-sm">report_problem</span> SIM
+                                        </span>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-danger/20 px-2.5 py-0.5 text-xs font-bold text-danger">BLOQUEADO</span>
+</td>
+<td class="px-6 py-4 text-sm text-[#9aaabc]">Win10 / Chrome 124</td>
+<td class="px-6 py-4 text-right">
+<button class="text-white hover:text-primary-300"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between mt-6">
+<p class="text-sm text-[#9aaabc]">A mostrar 1 a 5 de 1,242 logs</p>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 border border-[#394656] text-white disabled:opacity-50">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary text-white font-bold text-sm">1</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 border border-[#394656] text-[#9aaabc] text-sm hover:text-white">2</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 border border-[#394656] text-[#9aaabc] text-sm hover:text-white">3</button>
+<span class="flex items-center px-2 text-[#9aaabc]">...</span>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 border border-[#394656] text-[#9aaabc] text-sm hover:text-white">24</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 border border-[#394656] text-white">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="border-t border-[#27303a] px-40 py-6 text-center">
+<p class="text-[#9aaabc] text-sm">© 2024 Zênite360 ERP Hospitalar - Segurança de Dados e Auditoria IP</p>
+</footer>
+</div>
+</div>
+</body></html>

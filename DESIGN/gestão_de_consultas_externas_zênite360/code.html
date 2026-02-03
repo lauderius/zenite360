@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Gestão de Consultas Externas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for a cleaner medical UI */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a2431;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #394656;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-[#27303a] px-6 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="size-8 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined">health_metrics</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-sm font-bold leading-tight tracking-tight uppercase">Projecto Zênite360</h2>
+<p class="text-[10px] text-slate-500 dark:text-[#9aaabc] font-medium uppercase tracking-widest">Direcção Clínica</p>
+</div>
+</div>
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-slate-600 dark:text-white text-sm font-semibold border-b-2 border-primary pb-1" href="#">Consultas Externas</a>
+<a class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium hover:text-primary transition-colors" href="#">Escalas Médicas</a>
+<a class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium hover:text-primary transition-colors" href="#">Pacientes</a>
+<a class="text-slate-500 dark:text-[#9aaabc] text-sm font-medium hover:text-primary transition-colors" href="#">Relatórios DC</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="hidden md:flex flex-col min-w-40 h-9 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full overflow-hidden border border-slate-200 dark:border-[#394656]">
+<div class="text-slate-400 dark:text-[#9aaabc] flex items-center justify-center pl-3 bg-white dark:bg-[#1a2431]">
+<span class="material-symbols-outlined text-sm">search</span>
+</div>
+<input class="w-full flex-1 border-none bg-white dark:bg-[#1a2431] text-sm placeholder:text-slate-400 dark:placeholder:text-[#9aaabc] focus:ring-0 px-3" placeholder="Pesquisar Paciente ou B.I."/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-slate-100 dark:bg-[#27303a] hover:bg-slate-200 dark:hover:bg-[#323d4a] transition-colors">
+<span class="material-symbols-outlined text-lg">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-slate-100 dark:bg-[#27303a] hover:bg-slate-200 dark:hover:bg-[#323d4a] transition-colors">
+<span class="material-symbols-outlined text-lg">settings</span>
+</button>
+</div>
+<div class="h-9 w-9 rounded-full bg-primary flex items-center justify-center text-xs font-bold text-white border-2 border-slate-200 dark:border-[#394656]">
+                DC
+            </div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Side Navigation -->
+<aside class="hidden xl:flex w-64 flex-col border-r border-slate-200 dark:border-[#27303a] bg-white dark:bg-background-dark p-4 gap-6">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-bold text-slate-400 dark:text-[#5c6e82] uppercase tracking-widest px-3">Menu Principal</span>
+<div class="flex flex-col gap-1 mt-2">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-blue-400">
+<span class="material-symbols-outlined">calendar_month</span>
+<p class="text-sm font-semibold">Agenda Diária</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9aaabc] hover:bg-slate-50 dark:hover:bg-[#1a2431] rounded-lg transition-colors cursor-pointer">
+<span class="material-symbols-outlined">groups</span>
+<p class="text-sm font-medium">Lista de Espera</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9aaabc] hover:bg-slate-50 dark:hover:bg-[#1a2431] rounded-lg transition-colors cursor-pointer">
+<span class="material-symbols-outlined">fingerprint</span>
+<p class="text-sm font-medium">Validação B.I.</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-[#9aaabc] hover:bg-slate-50 dark:hover:bg-[#1a2431] rounded-lg transition-colors cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<p class="text-sm font-medium">Indicadores DC</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-slate-200 dark:border-[#27303a]">
+<div class="flex items-center gap-3 px-3 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-colors cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium">Terminar Sessão</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Page Heading & Filters -->
+<div class="p-6 flex flex-col gap-6">
+<div class="flex flex-wrap justify-between items-end gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-2xl font-black tracking-tight text-slate-900 dark:text-white">Gestão de Consultas Externas</h1>
+<p class="text-sm text-slate-500 dark:text-[#9aaabc]">Controlo centralizado de agendamentos e disponibilidade hospitalar em Luanda</p>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+<span>Novo Agendamento</span>
+</button>
+</div>
+<!-- Stats Ribbon -->
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+<div class="flex flex-col gap-2 rounded-xl p-4 bg-white dark:bg-background-dark border border-slate-200 dark:border-[#394656] shadow-sm">
+<div class="flex justify-between items-center">
+<p class="text-slate-500 dark:text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Total Hoje</p>
+<span class="material-symbols-outlined text-primary text-sm">event_note</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-black text-slate-900 dark:text-white">142</p>
+<p class="text-emerald-500 text-xs font-bold">+5.2%</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-4 bg-white dark:bg-background-dark border border-slate-200 dark:border-[#394656] shadow-sm">
+<div class="flex justify-between items-center">
+<p class="text-slate-500 dark:text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Vagas Disponíveis</p>
+<span class="material-symbols-outlined text-emerald-500 text-sm">check_circle</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-black text-slate-900 dark:text-white">28</p>
+<p class="text-slate-400 text-xs font-medium">em 170 totais</p>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-4 bg-white dark:bg-background-dark border border-slate-200 dark:border-[#394656] shadow-sm">
+<div class="flex justify-between items-center">
+<p class="text-slate-500 dark:text-[#9aaabc] text-xs font-bold uppercase tracking-wider">Em Espera</p>
+<span class="material-symbols-outlined text-amber-500 text-sm">hourglass_empty</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-black text-slate-900 dark:text-white">15</p>
+<p class="text-amber-500 text-xs font-bold">+2 novos</p>
+</div>
+</div>
+<div class="hidden lg:flex flex-col gap-2 rounded-xl p-4 bg-primary text-white border border-primary shadow-sm shadow-primary/30">
+<div class="flex justify-between items-center">
+<p class="text-blue-200 text-xs font-bold uppercase tracking-wider">Taxa de Ocupação</p>
+<span class="material-symbols-outlined text-blue-200 text-sm">trending_up</span>
+</div>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-black">83%</p>
+<div class="w-full bg-white/20 h-1.5 rounded-full mt-2 relative">
+<div class="absolute inset-y-0 left-0 bg-white w-[83%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Filters Bar -->
+<div class="flex flex-wrap gap-3 bg-white dark:bg-[#1a2431] p-3 rounded-xl border border-slate-200 dark:border-[#27303a]">
+<div class="flex flex-col gap-1 min-w-[180px]">
+<label class="text-[10px] font-bold text-slate-400 dark:text-[#5c6e82] uppercase ml-1">Especialidade</label>
+<select class="bg-slate-50 dark:bg-[#27303a] border-none text-sm font-medium rounded-lg text-slate-700 dark:text-white focus:ring-1 focus:ring-primary h-9">
+<option>Todas Especialidades</option>
+<option>Cardiologia</option>
+<option>Pediatria</option>
+<option>Ginecologia</option>
+<option>Ortopedia</option>
+</select>
+</div>
+<div class="flex flex-col gap-1 min-w-[220px]">
+<label class="text-[10px] font-bold text-slate-400 dark:text-[#5c6e82] uppercase ml-1">Médico Responsável</label>
+<select class="bg-slate-50 dark:bg-[#27303a] border-none text-sm font-medium rounded-lg text-slate-700 dark:text-white focus:ring-1 focus:ring-primary h-9">
+<option>Todos os Médicos</option>
+<option>Dr. António Manuel</option>
+<option>Dra. Maria Isabel</option>
+<option>Dr. João Kiluanje</option>
+</select>
+</div>
+<div class="flex flex-col gap-1 min-w-[150px]">
+<label class="text-[10px] font-bold text-slate-400 dark:text-[#5c6e82] uppercase ml-1">Data de Consulta</label>
+<input class="bg-slate-50 dark:bg-[#27303a] border-none text-sm font-medium rounded-lg text-slate-700 dark:text-white focus:ring-1 focus:ring-primary h-9" type="date" value="2023-10-27"/>
+</div>
+<div class="flex flex-col gap-1 min-w-[140px]">
+<label class="text-[10px] font-bold text-slate-400 dark:text-[#5c6e82] uppercase ml-1">Estado</label>
+<select class="bg-slate-50 dark:bg-[#27303a] border-none text-sm font-medium rounded-lg text-slate-700 dark:text-white focus:ring-1 focus:ring-primary h-9">
+<option>Todos</option>
+<option>Confirmado</option>
+<option>Pendente</option>
+<option>Cancelado</option>
+</select>
+</div>
+<div class="flex items-end pb-0.5">
+<button class="bg-slate-200 dark:bg-[#394656] text-slate-700 dark:text-white p-2 rounded-lg hover:bg-slate-300 dark:hover:bg-[#4a5a6e] transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Dual Pane Layout -->
+<div class="flex flex-col lg:flex-row gap-6">
+<!-- Left Pane: Time Slot Picker -->
+<div class="w-full lg:w-1/3 flex flex-col gap-4">
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-[#394656] rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-200 dark:border-[#394656] bg-slate-50 dark:bg-[#1a2431] flex justify-between items-center">
+<h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">schedule</span>
+                                    Slots de Hoje
+                                </h3>
+<span class="text-[10px] font-bold text-emerald-500 uppercase">Período: Manhã/Tarde</span>
+</div>
+<div class="p-2 flex flex-col max-h-[600px] overflow-y-auto">
+<!-- Slot Card (Occupied) -->
+<div class="group flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-all border-l-4 border-primary bg-primary/5 mb-1">
+<div class="flex flex-col items-center justify-center min-w-[50px]">
+<span class="text-sm font-black text-primary">08:00</span>
+<span class="text-[10px] font-medium text-slate-400 uppercase tracking-tighter">Ocupado</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-slate-900 dark:text-white truncate">Francisco Domingos</p>
+<p class="text-[10px] text-slate-500 dark:text-[#9aaabc]">Cardiologia • Dr. António</p>
+</div>
+<span class="material-symbols-outlined text-sm text-primary opacity-0 group-hover:opacity-100 transition-opacity">visibility</span>
+</div>
+<!-- Slot Card (Free) -->
+<div class="group flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-all border-l-4 border-emerald-500 bg-emerald-500/5 mb-1 cursor-pointer">
+<div class="flex flex-col items-center justify-center min-w-[50px]">
+<span class="text-sm font-black text-emerald-600">08:30</span>
+<span class="text-[10px] font-medium text-emerald-500 uppercase tracking-tighter">Livre</span>
+</div>
+<div class="flex-1 flex items-center">
+<p class="text-xs italic text-slate-400">Clique para agendar slot</p>
+</div>
+<span class="material-symbols-outlined text-sm text-emerald-500">add_circle</span>
+</div>
+<div class="group flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-all border-l-4 border-primary bg-primary/5 mb-1">
+<div class="flex flex-col items-center justify-center min-w-[50px]">
+<span class="text-sm font-black text-primary">09:00</span>
+<span class="text-[10px] font-medium text-slate-400 uppercase tracking-tighter">Ocupado</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-slate-900 dark:text-white truncate">Isabel dos Santos Neto</p>
+<p class="text-[10px] text-slate-500 dark:text-[#9aaabc]">Triagem • Enfª. Carla</p>
+</div>
+</div>
+<div class="group flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-all border-l-4 border-primary bg-primary/5 mb-1">
+<div class="flex flex-col items-center justify-center min-w-[50px]">
+<span class="text-sm font-black text-primary">09:30</span>
+<span class="text-[10px] font-medium text-slate-400 uppercase tracking-tighter">Ocupado</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-slate-900 dark:text-white truncate">Mateus Cambolo</p>
+<p class="text-[10px] text-slate-500 dark:text-[#9aaabc]">Cardiologia • Dr. António</p>
+</div>
+</div>
+<div class="group flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-all border-l-4 border-amber-400 bg-amber-400/5 mb-1">
+<div class="flex flex-col items-center justify-center min-w-[50px]">
+<span class="text-sm font-black text-amber-600">10:00</span>
+<span class="text-[10px] font-medium text-amber-500 uppercase tracking-tighter">Reservado</span>
+</div>
+<div class="flex-1">
+<p class="text-xs font-bold text-slate-900 dark:text-white truncate">Emergência Administrativa</p>
+<p class="text-[10px] text-slate-500 dark:text-[#9aaabc]">Bloqueado pela DC</p>
+</div>
+</div>
+<div class="group flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-all border-l-4 border-emerald-500 bg-emerald-500/5 mb-1 cursor-pointer">
+<div class="flex flex-col items-center justify-center min-w-[50px]">
+<span class="text-sm font-black text-emerald-600">10:30</span>
+<span class="text-[10px] font-medium text-emerald-500 uppercase tracking-tighter">Livre</span>
+</div>
+<div class="flex-1 flex items-center">
+<p class="text-xs italic text-slate-400">Clique para agendar slot</p>
+</div>
+</div>
+<div class="group flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-all border-l-4 border-emerald-500 bg-emerald-500/5 mb-1 cursor-pointer">
+<div class="flex flex-col items-center justify-center min-w-[50px]">
+<span class="text-sm font-black text-emerald-600">11:00</span>
+<span class="text-[10px] font-medium text-emerald-500 uppercase tracking-tighter">Livre</span>
+</div>
+<div class="flex-1 flex items-center">
+<p class="text-xs italic text-slate-400">Clique para agendar slot</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Pane: Patient Booking & List -->
+<div class="w-full lg:flex-1 flex flex-col gap-6">
+<!-- Quick Add Form -->
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-[#394656] rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 border-b border-slate-200 dark:border-[#394656] flex justify-between items-center">
+<h3 class="text-sm font-bold text-slate-900 dark:text-white">Registo Rápido de Agendamento</h3>
+<button class="text-primary text-[10px] font-bold uppercase tracking-wider hover:underline">Limpar Formulário</button>
+</div>
+<div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-500 dark:text-[#9aaabc] uppercase">Nome do Paciente</label>
+<input class="bg-slate-50 dark:bg-[#1a2431] border border-slate-200 dark:border-[#27303a] rounded-lg text-sm px-3 h-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Nome Completo" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-500 dark:text-[#9aaabc] uppercase">N.º Bilhete de Identidade (B.I. Angola)</label>
+<div class="relative">
+<input class="w-full bg-slate-50 dark:bg-[#1a2431] border border-slate-200 dark:border-[#27303a] rounded-lg text-sm px-3 h-10 pr-10 focus:ring-1 focus:ring-primary focus:border-primary" placeholder="000000000AA000" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-emerald-500 text-sm">verified_user</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-500 dark:text-[#9aaabc] uppercase">Tipo de Consulta</label>
+<div class="flex gap-2">
+<button class="flex-1 py-2 text-xs font-bold rounded-lg border border-primary bg-primary/10 text-primary">Primeira Vez</button>
+<button class="flex-1 py-2 text-xs font-bold rounded-lg border border-slate-200 dark:border-[#27303a] text-slate-500">Seguimento</button>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-500 dark:text-[#9aaabc] uppercase">Estado Inicial</label>
+<select class="bg-slate-50 dark:bg-[#1a2431] border border-slate-200 dark:border-[#27303a] rounded-lg text-sm px-3 h-10 focus:ring-1 focus:ring-primary">
+<option>Confirmado</option>
+<option>Pendente</option>
+<option>Urgente</option>
+</select>
+</div>
+<div class="md:col-span-2 flex justify-end gap-3 mt-2">
+<button class="px-6 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-colors">Confirmar e Agendar</button>
+</div>
+</div>
+</div>
+<!-- Searchable List -->
+<div class="bg-white dark:bg-background-dark border border-slate-200 dark:border-[#394656] rounded-xl overflow-hidden shadow-sm flex-1">
+<div class="p-4 border-b border-slate-200 dark:border-[#394656] flex flex-wrap gap-4 items-center justify-between">
+<h3 class="text-sm font-bold text-slate-900 dark:text-white">Lista de Pacientes Agendados (Hoje)</h3>
+<div class="flex gap-2">
+<button class="text-xs font-medium text-slate-500 flex items-center gap-1 bg-slate-100 dark:bg-[#27303a] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-[#394656]">
+<span class="material-symbols-outlined text-sm">download</span> Exportar PDF
+                                    </button>
+<button class="text-xs font-medium text-slate-500 flex items-center gap-1 bg-slate-100 dark:bg-[#27303a] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-[#394656]">
+<span class="material-symbols-outlined text-sm">print</span> Imprimir Guia
+                                    </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-[#1a2431] text-[10px] uppercase font-bold text-slate-500 dark:text-[#9aaabc] border-b border-slate-200 dark:border-[#394656]">
+<th class="px-4 py-3">Hora</th>
+<th class="px-4 py-3">Paciente</th>
+<th class="px-4 py-3">B.I.</th>
+<th class="px-4 py-3">Especialidade</th>
+<th class="px-4 py-3">Tipo</th>
+<th class="px-4 py-3">Estado</th>
+<th class="px-4 py-3 text-right">Acções</th>
+</tr>
+</thead>
+<tbody class="text-sm divide-y divide-slate-100 dark:divide-[#27303a]">
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-colors">
+<td class="px-4 py-3 font-bold text-primary">08:00</td>
+<td class="px-4 py-3">
+<div class="font-semibold text-slate-900 dark:text-white">Francisco Domingos</div>
+<div class="text-[10px] text-slate-400">LU-2023-9981</div>
+</td>
+<td class="px-4 py-3 font-mono text-xs text-slate-500">0082721LA044</td>
+<td class="px-4 py-3">Cardiologia</td>
+<td class="px-4 py-3">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">Primeira</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+<span class="text-xs font-medium">Confirmado</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-colors">
+<td class="px-4 py-3 font-bold text-primary">09:00</td>
+<td class="px-4 py-3">
+<div class="font-semibold text-slate-900 dark:text-white">Isabel dos Santos Neto</div>
+<div class="text-[10px] text-slate-400">LU-2023-9985</div>
+</td>
+<td class="px-4 py-3 font-mono text-xs text-slate-500">0091102LA081</td>
+<td class="px-4 py-3">Triagem</td>
+<td class="px-4 py-3">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">Seguimento</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-amber-500"></span>
+<span class="text-xs font-medium">Em Espera</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a2431] transition-colors">
+<td class="px-4 py-3 font-bold text-primary">09:30</td>
+<td class="px-4 py-3">
+<div class="font-semibold text-slate-900 dark:text-white">Mateus Cambolo</div>
+<div class="text-[10px] text-slate-400">LU-2023-9990</div>
+</td>
+<td class="px-4 py-3 font-mono text-xs text-slate-500">0019283BE011</td>
+<td class="px-4 py-3">Cardiologia</td>
+<td class="px-4 py-3">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">Primeira</span>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-red-500"></span>
+<span class="text-xs font-medium">Cancelado</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-200 dark:border-[#394656] bg-slate-50 dark:bg-[#1a2431] flex justify-between items-center">
+<p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">A mostrar 3 de 142 registos</p>
+<div class="flex gap-1">
+<button class="px-3 py-1 bg-white dark:bg-[#27303a] border border-slate-200 dark:border-[#394656] rounded text-xs font-bold text-slate-500">Anterior</button>
+<button class="px-3 py-1 bg-primary text-white border border-primary rounded text-xs font-bold">1</button>
+<button class="px-3 py-1 bg-white dark:bg-[#27303a] border border-slate-200 dark:border-[#394656] rounded text-xs font-bold text-slate-500">2</button>
+<button class="px-3 py-1 bg-white dark:bg-[#27303a] border border-slate-200 dark:border-[#394656] rounded text-xs font-bold text-slate-500">Seguinte</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Global Footer Status -->
+<footer class="mt-auto border-t border-slate-200 dark:border-[#27303a] bg-white dark:bg-background-dark p-3 px-6 flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+<div class="flex gap-4">
+<span class="flex items-center gap-1"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Servidor: Luanda Hub 01</span>
+<span class="flex items-center gap-1"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Sincronização: OK</span>
+</div>
+<div>© 2023 PROJECTO ZÊNITE360 - SISTEMA INTEGRADO DE GESTÃO HOSPITALAR</div>
+</footer>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard Financeiro DGF Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#210047",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#0e0816",
+                        "card-dark": "#180f23",
+                        "border-dark": "#30273a",
+                        "accent-success": "#0bda73",
+                        "accent-warning": "#ffb400",
+                        "accent-error": "#fa6c38"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 bg-primary border-r border-border-dark flex flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 px-2">
+<div class="bg-white/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-white text-2xl">local_hospital</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-tight">Zênite360</h1>
+<p class="text-white/60 text-[10px] font-medium uppercase tracking-wider">ERP Hospitalar Angola</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2 rounded-xl bg-white/10 text-white cursor-pointer transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium">Dashboard DGF</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-xl text-white/70 hover:bg-white/5 hover:text-white cursor-pointer transition-colors">
+<span class="material-symbols-outlined">receipt_long</span>
+<p class="text-sm font-medium">Facturação</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-xl text-white/70 hover:bg-white/5 hover:text-white cursor-pointer transition-colors">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<p class="text-sm font-medium">Tesouraria</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-xl text-white/70 hover:bg-white/5 hover:text-white cursor-pointer transition-colors">
+<span class="material-symbols-outlined">trending_down</span>
+<p class="text-sm font-medium">Custos Operacionais</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-xl text-white/70 hover:bg-white/5 hover:text-white cursor-pointer transition-colors">
+<span class="material-symbols-outlined">analytics</span>
+<p class="text-sm font-medium">Relatórios Financeiros</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-xl text-white/70 hover:bg-white/5 hover:text-white cursor-pointer transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Configurações</p>
+</div>
+</nav>
+</div>
+<div class="flex flex-col gap-4">
+<button class="w-full py-3 px-4 bg-accent-success/20 hover:bg-accent-success/30 text-accent-success rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                    Novo Lançamento
+                </button>
+<div class="flex items-center gap-3 p-2 bg-white/5 rounded-xl">
+<div class="size-8 rounded-full bg-cover" data-alt="Profile picture of financial administrator" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA99y_XVV0WTRLFGfxU8C7XGADJZW8IQ8MZGkGL4M4iV2_mzHTvx47UGL9AKZNio3BDfBkZ0c5VDqhFBSC67gozbvpGAHXeVmRrDkIqXni-qpXjooP-sLJBSM731_qYeUcXFmVFi0ORpoyEaztSEarsEl06zoIr5cPf1B-3RMuHVpksWvsyCGZByG_w82kVSyx9p1iMzPVcqMgCgbUj6REh5eCEkAP-PQTeGo3dK_nkbdh1XymOw68tjFjnqrgAoxX9uXdPbaRgXYh-')"></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-xs text-white font-bold truncate">Admin Financeiro</p>
+<p class="text-[10px] text-white/50 truncate">DGF Luanda</p>
+</div>
+<span class="material-symbols-outlined text-white/40 ml-auto text-sm">more_vert</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto hide-scrollbar bg-background-light dark:bg-background-dark">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-10 flex items-center justify-between border-b border-border-dark bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-8 py-4">
+<div class="flex flex-col">
+<h2 class="text-xl font-bold text-slate-900 dark:text-white">Direcção de Gestão Financeira</h2>
+<p class="text-sm text-slate-500 dark:text-slate-400">Projecto Zênite360 • Unidade Luanda</p>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-200 dark:bg-border-dark border-none rounded-xl text-sm focus:ring-2 focus:ring-primary w-64 text-white" placeholder="Procurar guia, factura ou paciente..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="size-10 flex items-center justify-center bg-slate-200 dark:bg-border-dark rounded-xl text-slate-600 dark:text-white hover:bg-slate-300 dark:hover:bg-primary/40 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="size-10 flex items-center justify-center bg-slate-200 dark:bg-border-dark rounded-xl text-slate-600 dark:text-white hover:bg-slate-300 dark:hover:bg-primary/40 transition-colors">
+<span class="material-symbols-outlined">calendar_today</span>
+</button>
+</div>
+</div>
+</header>
+<div class="p-8 flex flex-col gap-8">
+<!-- KPI Statistics Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Facturação Total</p>
+<span class="material-symbols-outlined text-accent-success">trending_up</span>
+</div>
+<p class="text-2xl font-black text-slate-900 dark:text-white">AOA 45.280.000,00</p>
+<p class="text-xs font-bold text-accent-success mt-1">+12,4% <span class="text-slate-400 font-normal">vs mês anterior</span></p>
+</div>
+<div class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Pagamentos Pendentes</p>
+<span class="material-symbols-outlined text-accent-warning">hourglass_empty</span>
+</div>
+<p class="text-2xl font-black text-slate-900 dark:text-white">AOA 12.450.000,00</p>
+<p class="text-xs font-bold text-accent-warning mt-1">+5,2% <span class="text-slate-400 font-normal">aguardando liquidação</span></p>
+</div>
+<div class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Custos Operacionais</p>
+<span class="material-symbols-outlined text-accent-error">payments</span>
+</div>
+<p class="text-2xl font-black text-slate-900 dark:text-white">AOA 28.120.000,00</p>
+<p class="text-xs font-bold text-accent-error mt-1">-2,1% <span class="text-slate-400 font-normal">redução de overhead</span></p>
+</div>
+<div class="bg-white dark:bg-card-dark p-6 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Margem Líquida</p>
+<span class="material-symbols-outlined text-primary dark:text-white/60">account_balance</span>
+</div>
+<p class="text-2xl font-black text-slate-900 dark:text-white">38,5%</p>
+<p class="text-xs font-bold text-accent-success mt-1">+4,3% <span class="text-slate-400 font-normal">acima da meta</span></p>
+</div>
+</div>
+<!-- Tabs & Department View -->
+<div class="flex flex-col gap-4">
+<div class="flex border-b border-slate-200 dark:border-border-dark gap-8">
+<a class="flex items-center gap-2 border-b-2 border-primary dark:border-white pb-3 text-primary dark:text-white" href="#">
+<span class="material-symbols-outlined text-sm">home_health</span>
+<p class="text-sm font-bold tracking-wide uppercase">Geral</p>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined text-sm">medical_services</span>
+<p class="text-sm font-bold tracking-wide uppercase">Clínica</p>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined text-sm">vaccines</span>
+<p class="text-sm font-bold tracking-wide uppercase">Farmácia</p>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent pb-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined text-sm">corporate_fare</span>
+<p class="text-sm font-bold tracking-wide uppercase">Administração</p>
+</a>
+</div>
+</div>
+<!-- Main Chart & Department Breakdown -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Billing vs Expenses Chart -->
+<div class="lg:col-span-2 bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-border-dark p-6">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Facturação vs Despesas</h3>
+<p class="text-sm text-slate-500">Fluxo de caixa nos últimos 30 dias</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-accent-success"></span>
+<span class="text-xs font-medium text-slate-400">Receitas</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-accent-error"></span>
+<span class="text-xs font-medium text-slate-400">Despesas</span>
+</div>
+</div>
+</div>
+<div class="h-64 w-full relative">
+<!-- SVG Chart Simulation -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 250">
+<defs>
+<lineargradient id="revenueGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#0bda73" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#0bda73" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Revenue Line -->
+<path d="M0,200 Q100,180 200,150 T400,120 T600,80 T800,100 T1000,40" fill="none" stroke="#0bda73" stroke-width="3"></path>
+<path d="M0,200 Q100,180 200,150 T400,120 T600,80 T800,100 T1000,40 L1000,250 L0,250 Z" fill="url(#revenueGradient)"></path>
+<!-- Expense Line -->
+<path d="M0,220 Q100,210 200,190 T400,180 T600,150 T800,160 T1000,130" fill="none" stroke="#fa6c38" stroke-dasharray="5,5" stroke-width="2"></path>
+</svg>
+<div class="flex justify-between mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+<span>01 Out</span>
+<span>07 Out</span>
+<span>14 Out</span>
+<span>21 Out</span>
+<span>28 Out</span>
+<span>30 Out</span>
+</div>
+</div>
+</div>
+<!-- Revenue by Department -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-border-dark p-6">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Receita por Dept.</h3>
+<div class="flex flex-col gap-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-sm font-medium text-slate-400">Clínica Médica</span>
+<span class="text-sm font-bold text-white">AOA 22.4M</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-border-dark h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 55%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-sm font-medium text-slate-400">Farmácia Central</span>
+<span class="text-sm font-bold text-white">AOA 15.1M</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-border-dark h-2 rounded-full overflow-hidden">
+<div class="bg-accent-success h-full rounded-full" style="width: 38%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-sm font-medium text-slate-400">Administração</span>
+<span class="text-sm font-bold text-white">AOA 7.78M</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-border-dark h-2 rounded-full overflow-hidden">
+<div class="bg-accent-warning h-full rounded-full" style="width: 17%"></div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-primary/20 rounded-xl border border-primary/40">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-white">info</span>
+<p class="text-xs text-slate-500 dark:text-slate-300">O departamento de Clínica atingiu 110% da meta mensal prevista para Outubro.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Transactions Table -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-border-dark overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-border-dark flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Transacções Recentes</h3>
+<button class="text-primary dark:text-white/60 text-sm font-bold hover:underline">Ver Todas</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-white/5">
+<tr>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">ID / Guia</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Entidade / Paciente</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Data</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Valor (AOA)</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Estado</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-border-dark">
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-bold text-slate-700 dark:text-white">#FT-2023-0982</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium dark:text-white">ENSA Seguros</span>
+<span class="text-xs text-slate-400">Apólice 99827-B</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">25 Out, 2023</td>
+<td class="px-6 py-4 text-sm font-black text-slate-900 dark:text-white">1.250.000,00</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-accent-success/10 text-accent-success">
+                                            Pago
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">more_horiz</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-bold text-slate-700 dark:text-white">#FT-2023-0985</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium dark:text-white">Manuel dos Santos</span>
+<span class="text-xs text-slate-400">Paciente Particular</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">24 Out, 2023</td>
+<td class="px-6 py-4 text-sm font-black text-slate-900 dark:text-white">45.000,00</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-accent-warning/10 text-accent-warning">
+                                            Pendente
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">more_horiz</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-bold text-slate-700 dark:text-white">#FT-2023-0870</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium dark:text-white">Unitel SA (Protocolo)</span>
+<span class="text-xs text-slate-400">Serviço Ocupacional</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">12 Out, 2023</td>
+<td class="px-6 py-4 text-sm font-black text-slate-900 dark:text-white">5.800.200,00</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-accent-error/10 text-accent-error">
+                                            Vencido
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">more_horiz</span>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-bold text-slate-700 dark:text-white">#FT-2023-0990</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium dark:text-white">Ana Paula Gonçalves</span>
+<span class="text-xs text-slate-400">Seguro Saham</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">24 Out, 2023</td>
+<td class="px-6 py-4 text-sm font-black text-slate-900 dark:text-white">122.500,00</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-accent-success/10 text-accent-success">
+                                            Pago
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">more_horiz</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<footer class="p-8 text-center text-slate-500 text-xs">
+                © 2023 DGF Zênite360 - Sistema de Gestão Hospitalar Angola. Versão 4.2.1-PRO
+            </footer>
+</main>
+</div>
+</body></html>

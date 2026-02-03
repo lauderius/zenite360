@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Painel do Técnico</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#385980",
+                        "primary-hover": "#2c4666",
+                        "background-light": "#f6f7f7",
+                        "background-dark": "#131416",
+                        "surface-dark": "#2d3034",
+                        "surface-darker": "#1a1d21",
+                        "border-dark": "#3e4249",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar Navigation (Desktop) -->
+<aside class="hidden lg:flex w-72 flex-col border-r border-border-dark bg-background-dark shrink-0">
+<div class="p-6 flex flex-col h-full justify-between">
+<div class="flex flex-col gap-8">
+<!-- Brand -->
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shadow-lg shadow-primary/20" data-alt="Abstract blue gradient logo representing medical technology" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAdHgKXQ3qyWm_2s1SEcq2y7siaM9LPdwBeUr9LBe_a0fw5YdFsNfYTGzfB-ZFiYMuFdv1XP0raohO3SYhgN9qEFAVeiVnGCGwy5EHirKfadqHLNwGuzgTO1nkkD13nPYvn_GZCUasYNgFaH39ZJAY4fbps67VXDjbM_NiGZ6CzKnHhoz-zn-eOy0EtjatXu9em8f-ULRBy6llciWSwPBicjBQvEmkBzcFLxzQDPKfAhQEK__G4OLFhx4WG3mVLayv1G8zSOz520XYv");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight">Zênite360</h1>
+<p class="text-[#a4aab2] text-xs font-normal">Manutenção Biomédica</p>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-dark border border-border-dark/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-primary">dashboard</span>
+<p class="text-white text-sm font-medium">Visão Geral</p>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-dark/50 text-[#a4aab2] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<p class="text-inherit text-sm font-medium">Minhas Ordens</p>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-dark/50 text-[#a4aab2] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<p class="text-inherit text-sm font-medium">Inventário</p>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-dark/50 text-[#a4aab2] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<p class="text-inherit text-sm font-medium">Escala</p>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-surface-dark/50 text-[#a4aab2] hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-inherit text-sm font-medium">Configurações</p>
+</a>
+</nav>
+</div>
+<!-- Footer/User -->
+<div class="pt-4 border-t border-border-dark">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-primary" data-alt="Portrait of technician Joao" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBsRJpDnKHm43IapL_PvnSCgeQJihZxrwkuFq_Tld_MtEtkrzRNfMdvghqbYLIqZQZ49rMt3sPcPy_UDrYcQ6ah5cbZaM76qAll5DhMfqKlR5CkL2FgVcGuzuqxg2t1uiMiUw7KCjWYESMGJ1Gd2yUYoLAtrVH4BfjlfeVdYOUg1SMusB2UHdm208ij3B9F_9P6U25jG5Vyk2CVm7P2qA7Fw6-96HS8cy1lL3kSk4eQ_Y0KrDI-5hW4q6RhTGbsJAnq1uEaP23MbXeP");'></div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-bold">Téc. João Silva</p>
+<p class="text-[#a4aab2] text-xs">Engenharia Clínica</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full bg-background-dark overflow-hidden relative">
+<!-- Top Mobile Header (Visible only on mobile/tablet) -->
+<header class="lg:hidden flex items-center justify-between px-6 py-4 border-b border-border-dark bg-background-dark z-20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">menu</span>
+<h2 class="text-white text-lg font-bold">Zênite360</h2>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-8 border border-primary" data-alt="Portrait of technician Joao" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBrT7M2eAdPL8utQCYWY9Dh0LW0rFl11vSXjaX4J9v9baQDEe8zx1qMBq5sHhNYRIioO3ApsVtj1E0PR6l3eyF75-G4TiWN4Ih0pnpLDboCjf7LK6l1ME1Byc5Obc1IZXXFc-haevv8CZUexNkgYyTX5Ky8mJSidJGqt_KL4ZQx-hlvgLKvyA-G7Pml5F56WFB8BdBalYqDIQ88xD4-OMA3EsKyKncnavKfs8ged_FSu7N420-fnBWqgphCG2GP2YADClGVSxs_SelC");'></div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<div class="max-w-[1200px] mx-auto p-6 md:p-10 flex flex-col gap-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<p class="text-primary text-sm font-medium mb-1 uppercase tracking-wider">Painel de Controle</p>
+<h2 class="text-white text-3xl font-bold leading-tight">Olá, Técnico João 👋</h2>
+<p class="text-[#a4aab2] mt-1">Você tem <span class="text-white font-bold">3 ordens prioritárias</span> para hoje.</p>
+</div>
+<div class="flex gap-4">
+<button class="hidden md:flex items-center justify-center gap-2 h-12 px-6 rounded-lg bg-surface-dark border border-border-dark hover:bg-border-dark text-white font-medium transition-all">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span>Ajuda</span>
+</button>
+<button class="flex shadow-lg shadow-primary/20 items-center justify-center gap-2 h-12 px-6 rounded-lg bg-primary hover:bg-primary-hover text-white font-bold transition-all w-full md:w-auto">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span>Scan QR Code</span>
+</button>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Main Feed (2/3) -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Stats Overview -->
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-surface-dark rounded-xl p-5 border border-border-dark flex flex-col items-center justify-center gap-1 hover:border-primary/50 transition-colors cursor-pointer group">
+<p class="text-[#a4aab2] text-sm font-medium">Pendentes</p>
+<p class="text-white text-3xl font-bold group-hover:text-primary transition-colors">4</p>
+</div>
+<div class="bg-surface-dark rounded-xl p-5 border border-border-dark flex flex-col items-center justify-center gap-1 hover:border-primary/50 transition-colors cursor-pointer group">
+<p class="text-[#a4aab2] text-sm font-medium">Em Progresso</p>
+<p class="text-white text-3xl font-bold group-hover:text-primary transition-colors">2</p>
+</div>
+<div class="bg-surface-dark rounded-xl p-5 border border-border-dark flex flex-col items-center justify-center gap-1 hover:border-primary/50 transition-colors cursor-pointer group">
+<p class="text-[#a4aab2] text-sm font-medium">Concluídas</p>
+<p class="text-white text-3xl font-bold group-hover:text-primary transition-colors">12</p>
+</div>
+</div>
+<!-- Filter/Tabs -->
+<div class="flex items-center justify-between mt-2">
+<h3 class="text-white text-xl font-bold">Minhas Ordens de Serviço</h3>
+<div class="flex gap-2 bg-surface-dark p-1 rounded-lg border border-border-dark">
+<button class="px-3 py-1 bg-border-dark rounded text-xs font-bold text-white shadow-sm">Todas</button>
+<button class="px-3 py-1 hover:bg-white/5 rounded text-xs font-medium text-[#a4aab2] transition-colors">Alta Prioridade</button>
+</div>
+</div>
+<!-- Task Feed -->
+<div class="flex flex-col gap-4">
+<!-- Card 1: Emergency -->
+<article class="flex flex-col sm:flex-row gap-5 p-5 rounded-xl bg-surface-dark border-l-4 border-l-red-500 border-y border-r border-y-border-dark border-r-border-dark hover:border-border-dark/80 transition-all shadow-sm">
+<div class="shrink-0">
+<div class="w-full sm:w-24 h-40 sm:h-24 rounded-lg bg-cover bg-center bg-no-repeat bg-surface-darker" data-alt="Philips V60 Ventilator device" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAIz0y43yZ-XdfN-pCSpqcaXgD66j5VCyPWtFa5YsduIA7xGJD8FWCjUPuoN5nOk4jvryDy1eFfIYhmaZ-ir5nken1BakQSWBEZriKnmcqiU_Vce3XcuIeiH4WlP2cUhPHzOLjzQtWwH_YlixLjaOvGR0UYvqMeraaW8GQUfmX7cktvcFKP_jCObTBt-C9k06U_KKu1dNTIL9N0qID7CG3HbkyQogueVe7UNsKlwhg923W7MXh0rVR6casHM-I6X7Mgikq7GXBFJcGx");'>
+</div>
+</div>
+<div class="flex flex-col flex-1 gap-1">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-red-500/10 text-red-500 border border-red-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                                                        Emergência
+                                                    </span>
+<span class="text-[#a4aab2] text-xs">#OS-8921</span>
+</div>
+<h4 class="text-white text-lg font-bold">Ventilador Mecânico - Philips V60</h4>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-sm text-[#a4aab2] mt-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span>UTI - Leito 04 (Ala Norte)</span>
+</div>
+<p class="text-gray-300 text-sm mt-2 line-clamp-2">Falha crítica no sensor de fluxo. Equipamento apresentando erro 304 durante a inicialização. Necessária substituição imediata.</p>
+<div class="flex gap-3 mt-4 pt-4 border-t border-white/5">
+<button class="flex-1 sm:flex-none h-10 px-5 bg-primary hover:bg-primary-hover text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                                                Iniciar
+                                            </button>
+<button class="flex-1 sm:flex-none h-10 px-5 bg-transparent border border-border-dark hover:bg-white/5 text-white text-sm font-medium rounded-lg transition-colors">
+                                                Ver Detalhes
+                                            </button>
+</div>
+</div>
+</article>
+<!-- Card 2: High Priority -->
+<article class="flex flex-col sm:flex-row gap-5 p-5 rounded-xl bg-surface-dark border-l-4 border-l-orange-500 border-y border-r border-y-border-dark border-r-border-dark hover:border-border-dark/80 transition-all shadow-sm">
+<div class="shrink-0">
+<div class="w-full sm:w-24 h-40 sm:h-24 rounded-lg bg-cover bg-center bg-no-repeat bg-surface-darker" data-alt="Patient Monitor screen displaying vitals" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB0vOG1vNDILveupzxCMUujx-j4gbfSgoEf_CHPlPp6h2nutfdT7rDmjsVuIyCvE0exyleMTezdIqnSk2GQOOyYfDmMk8il37Lx3ROWgX9fXO0TC9y6HCt3ykYGec4chhIftQbNOz7oz77SaTLl0yiZqYyJjhGbZPtkxEohjvIHwjQGiI0DxDm0OrpqSV4HTOEWGqnZn8ihXrGWSCj1Z8OxZsLEXVhH5NbCLQYEhA_R5rZr-E37PKo9UK_KOTnQS0KqxXwXONWA1jvA");'>
+</div>
+</div>
+<div class="flex flex-col flex-1 gap-1">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                                                        Alta Prioridade
+                                                    </span>
+<span class="text-[#a4aab2] text-xs">#OS-8840</span>
+</div>
+<h4 class="text-white text-lg font-bold">Monitor Multiparamétrico</h4>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-sm text-[#a4aab2] mt-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span>Triagem ER - Box 2</span>
+</div>
+<p class="text-gray-300 text-sm mt-2 line-clamp-2">Ecrã com intermitência e artefatos visuais. Suspeita de cabo flat solto ou danificado.</p>
+<div class="flex gap-3 mt-4 pt-4 border-t border-white/5">
+<button class="flex-1 sm:flex-none h-10 px-5 bg-primary hover:bg-primary-hover text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                                                Iniciar
+                                            </button>
+<button class="flex-1 sm:flex-none h-10 px-5 bg-transparent border border-border-dark hover:bg-white/5 text-white text-sm font-medium rounded-lg transition-colors">
+                                                Ver Detalhes
+                                            </button>
+</div>
+</div>
+</article>
+<!-- Card 3: Medium Priority -->
+<article class="flex flex-col sm:flex-row gap-5 p-5 rounded-xl bg-surface-dark border-l-4 border-l-blue-500 border-y border-r border-y-border-dark border-r-border-dark hover:border-border-dark/80 transition-all shadow-sm">
+<div class="shrink-0">
+<div class="w-full sm:w-24 h-40 sm:h-24 rounded-lg bg-cover bg-center bg-no-repeat bg-surface-darker" data-alt="Infusion pump medical device" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA5w_u-1iczTgdiXA6R1UJuajRCb_7ldeCqtThH4JXm3tiRDsEHD3G6o_3vzJzNIW6fWJyodE1RSVnoifbceykuUExBxcowb5c8S5yT_Ikmfy0j8o9bz8Tm2gHH7mfidz7s21hnuSJtTmG2Gv7fdHtZPbwZO5AItfM85cegj7iVYGmXksdjdwGGdBu4ZqR1SVdagNbZAlFHDPXejasvX69e94psagq3KyM45xChDe4hmN65dng1-FlNKAW8xSh80iQNte0MLhjOcRH2");'>
+</div>
+</div>
+<div class="flex flex-col flex-1 gap-1">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-1">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-blue-500/10 text-blue-500 border border-blue-500/20">
+                                                        Média Prioridade
+                                                    </span>
+<span class="text-[#a4aab2] text-xs">#OS-8712</span>
+</div>
+<h4 class="text-white text-lg font-bold">Bomba de Infusão - Braun</h4>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-sm text-[#a4aab2] mt-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<span>Enfermaria Geral - Posto 1</span>
+</div>
+<p class="text-gray-300 text-sm mt-2 line-clamp-2">Manutenção Preventiva Trimestral. Verificar calibração e estado da bateria.</p>
+<div class="flex gap-3 mt-4 pt-4 border-t border-white/5">
+<button class="flex-1 sm:flex-none h-10 px-5 bg-primary hover:bg-primary-hover text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+                                                Iniciar
+                                            </button>
+<button class="flex-1 sm:flex-none h-10 px-5 bg-transparent border border-border-dark hover:bg-white/5 text-white text-sm font-medium rounded-lg transition-colors">
+                                                Ver Detalhes
+                                            </button>
+</div>
+</div>
+</article>
+</div>
+</div>
+<!-- Right Column: Tools & Inventory (1/3) -->
+<div class="flex flex-col gap-6">
+<!-- Parts Registration Module -->
+<div class="bg-surface-dark rounded-xl border border-border-dark overflow-hidden">
+<div class="p-5 border-b border-border-dark bg-surface-darker/50">
+<h3 class="text-white font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">build</span>
+                                        Registar Peças
+                                    </h3>
+<p class="text-[#a4aab2] text-sm mt-1">Registre o consumo de peças rapidamente.</p>
+</div>
+<div class="p-5 flex flex-col gap-4">
+<div>
+<label class="block text-xs font-medium text-[#a4aab2] mb-1.5 uppercase">Código ou Nome da Peça</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-[#a4aab2] material-symbols-outlined text-[20px]">search</span>
+<input class="w-full bg-background-dark border border-border-dark text-white text-sm rounded-lg pl-10 pr-4 py-2.5 focus:ring-1 focus:ring-primary focus:border-primary outline-none placeholder-[#50555e]" placeholder="Ex: Filtro HEPA..." type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-xs font-medium text-[#a4aab2] mb-1.5 uppercase">Quantidade</label>
+<div class="flex items-center gap-3">
+<button class="size-10 rounded-lg bg-background-dark border border-border-dark text-white flex items-center justify-center hover:bg-border-dark transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<span class="text-white font-mono font-bold text-lg w-8 text-center">1</span>
+<button class="size-10 rounded-lg bg-background-dark border border-border-dark text-white flex items-center justify-center hover:bg-border-dark transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<button class="w-full mt-2 h-10 bg-white/5 hover:bg-white/10 border border-white/10 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+                                        Adicionar ao Inventário
+                                    </button>
+</div>
+</div>
+<!-- Shift/Schedule Info -->
+<div class="bg-surface-dark rounded-xl border border-border-dark p-5">
+<h3 class="text-white font-bold text-lg mb-4">Seu Turno</h3>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="text-white text-sm font-bold">08:00 - 18:00</p>
+<p class="text-[#a4aab2] text-xs">Horário Regular</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="size-10 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
+<span class="material-symbols-outlined">location_city</span>
+</div>
+<div>
+<p class="text-white text-sm font-bold">Bloco A - Hospital Geral</p>
+<p class="text-[#a4aab2] text-xs">Localização Atual</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Preview -->
+<div class="bg-surface-dark rounded-xl border border-border-dark overflow-hidden relative group">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10 flex flex-col justify-end p-5">
+<p class="text-white font-bold text-sm">Mapa do Hospital</p>
+<p class="text-white/70 text-xs">Navegue até o próximo equipamento</p>
+</div>
+<div class="h-32 w-full bg-cover bg-center opacity-60 group-hover:opacity-80 transition-opacity" data-alt="Map view showing hospital layout in Luanda" data-location="Luanda, Angola" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDx-Uu2HDdCsh-VNPwFGRbLN56ZIkrNtuEdj6Hrh-aA5V9AV9MXpkHc-PPXtLA2L2dJ_j9P-OfsMDnYoLSl4nzPS7xlNzJv0ZjBDUy9GBAKz4OG4ch0abVBwlsg11Oh1UFRj43-3j5Z0g7gKkABmO_ef5wAUMrEDH4cnGgHlTmfCh65FkYsuhqhKbGLBw4UCropITNLr3WLuKrteqEPOdg3Yho2mVDMoE_GippGTxDvzqrdnxU8xiEtzNj0-jC4Y6wnCB-uRaBi05ik");'></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

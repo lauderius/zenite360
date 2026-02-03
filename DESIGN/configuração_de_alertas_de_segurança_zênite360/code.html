@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Configuração de Alertas de Segurança - Zênite360</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#0B2C56",
+                        "primary-hover": "#003366",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#16202c",
+                        "border-dark": "#27303a",
+                        "accent-red": "#EF4444",
+                        "accent-orange": "#F97316",
+                        "accent-yellow": "#EAB308",
+                        "accent-blue": "#3B82F6",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "Noto Sans", "sans-serif"],
+                        "body": ["Inter", "Noto Sans", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="flex w-72 flex-col border-r border-border-dark bg-[#101418] hidden lg:flex">
+<div class="flex flex-col h-full justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Brand -->
+<div class="flex items-center gap-3 px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 shadow-lg shadow-blue-900/20" data-alt="Zênite360 Logo Abstract Blue Shield" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAXbAz_lkVCuu2eTyard5bnDqFBXPCy7uQsp024PwfAb0dBQijWWy9vwnHlig45_En4PXumw50FEG4-nRrjxD_RpBtA2saiF35nRTwDUrXbnqtExi2mF7ujhoEKiZpTOTTLqxtZS6PkoYZElgsCaxK7N46fdz1l8UwbEli-Y79m0PoZAToz66xXeVceO8kDRysOs7sxm-pgVVGEowNX6GUYLEh-d9klfDOVa-E9hf9fS89naz335eazyRUcL1-bvxW_4xw4UA_nFraQ");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-none tracking-tight">Zênite360</h1>
+<p class="text-slate-400 text-xs font-normal mt-1">Enterprise ERP Angola</p>
+</div>
+</div>
+<!-- Navigation Items -->
+<nav class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-blue-400 transition-colors">dashboard</span>
+<span class="text-sm font-medium">Painel Geral</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-blue-400 transition-colors">badge</span>
+<span class="text-sm font-medium">Gestão de Identidade</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-blue-400 transition-colors">monitor_heart</span>
+<span class="text-sm font-medium">Monitorização</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/40 border border-primary/50 text-white shadow-sm shadow-blue-900/10" href="#">
+<span class="material-symbols-outlined text-blue-400 fill-1">shield_with_house</span>
+<span class="text-sm font-medium">Alertas de Segurança</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-blue-400 transition-colors">bar_chart</span>
+<span class="text-sm font-medium">Relatórios</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-blue-400 transition-colors">settings</span>
+<span class="text-sm font-medium">Configurações</span>
+</a>
+</nav>
+</div>
+<!-- User Profile -->
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl bg-surface-dark border border-border-dark">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9" data-alt="User Avatar Portrait Professional" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAqvxecKr_UF_31hXMNKu35Rwjx9L7t9LeTysbIAOlOkW_6J3rVABLrSTnYbis-FjCoqAwR1oDDoIjNdsUmsyGOu1YAtdyjXki01AmtNGc732WsZfP5910FLiLPzIXffy_QWogeFLXITmiLMrKlLcguwe7LxrBpsgAMGL965TF_9jnQTSIgU31HeNCKoRCRxYqfRf-k3cvlYVS0FZzXcdCUmcddeocKqluEeyCcVNGVNMXLOYgoDU-_rltN8PACBtid-RVJYY5X4JeZ");'></div>
+<div class="flex flex-col flex-1 min-w-0">
+<p class="text-white text-sm font-medium truncate">Carlos M. Manuel</p>
+<p class="text-slate-400 text-xs truncate">Admin. de Sistemas</p>
+</div>
+<button class="text-slate-400 hover:text-white">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden bg-background-dark relative">
+<!-- Top Header -->
+<header class="h-16 flex items-center justify-between px-6 border-b border-border-dark bg-[#101418] shrink-0 z-20">
+<div class="flex items-center gap-4">
+<button class="lg:hidden text-slate-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<nav class="flex items-center text-sm text-slate-400">
+<a class="hover:text-white transition-colors" href="#">Painel</a>
+<span class="mx-2 text-slate-600">/</span>
+<a class="hover:text-white transition-colors" href="#">Segurança</a>
+<span class="mx-2 text-slate-600">/</span>
+<span class="text-white font-medium">Alertas</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+</span>
+<span class="text-xs font-medium text-green-500 uppercase tracking-wide">Sistema Operacional</span>
+</div>
+<div class="h-6 w-px bg-border-dark mx-2 hidden md:block"></div>
+<div class="relative">
+<span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-accent-red text-[10px] font-bold text-white">3</span>
+<button class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex flex-1 overflow-hidden relative">
+<!-- Main Configuration Panel -->
+<div class="flex-1 overflow-y-auto p-6 lg:p-10 scrollbar-thin scrollbar-thumb-border-dark scrollbar-track-transparent">
+<div class="max-w-6xl mx-auto flex flex-col gap-8">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+<div class="flex flex-col gap-2">
+<h2 class="text-3xl font-bold text-white tracking-tight">Configuração de Alertas de Segurança</h2>
+<p class="text-slate-400 max-w-2xl">
+                                    Defina gatilhos automáticos e canais de notificação para proteger a infraestrutura do Zênite360.
+                                </p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-surface-dark hover:bg-border-dark text-white rounded-lg text-sm font-medium border border-border-dark transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">history</span>
+                                    Log de Auditoria
+                                </button>
+<button class="px-4 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-sm font-medium shadow-lg shadow-blue-900/20 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                                    Nova Regra
+                                </button>
+</div>
+</div>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-dark border border-border-dark rounded-xl p-5 flex flex-col gap-3 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-white">rule</span>
+</div>
+<span class="text-slate-400 text-sm font-medium">Regras Ativas</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-white">24</span>
+<span class="text-xs text-green-500 font-medium">+2 esta semana</span>
+</div>
+</div>
+<div class="bg-surface-dark border border-border-dark rounded-xl p-5 flex flex-col gap-3 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-accent-red">warning</span>
+</div>
+<span class="text-slate-400 text-sm font-medium">Alertas Críticos (24h)</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-white">3</span>
+<span class="text-xs text-accent-red font-medium">Requer atenção</span>
+</div>
+</div>
+<div class="bg-surface-dark border border-border-dark rounded-xl p-5 flex flex-col gap-3 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-blue-400">mail</span>
+</div>
+<span class="text-slate-400 text-sm font-medium">Canais Conectados</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-white">4/4</span>
+<span class="text-xs text-slate-500 font-medium">SMS, Email, App, Modal</span>
+</div>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-surface-dark p-4 rounded-xl border border-border-dark">
+<div class="relative w-full sm:w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-[20px]">search</span>
+<input class="w-full bg-[#101418] border-border-dark text-white text-sm rounded-lg pl-10 pr-4 py-2.5 focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-slate-600" placeholder="Pesquisar regras ou gatilhos..." type="text"/>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<span class="text-sm text-slate-400 whitespace-nowrap hidden sm:block">Filtrar por:</span>
+<select class="bg-[#101418] border-border-dark text-white text-sm rounded-lg py-2.5 pl-3 pr-8 focus:ring-1 focus:ring-primary focus:border-primary w-full sm:w-auto">
+<option>Todos os Níveis</option>
+<option>Crítico</option>
+<option>Alto</option>
+<option>Médio</option>
+<option>Baixo</option>
+</select>
+</div>
+</div>
+<!-- Rules Table -->
+<div class="bg-surface-dark border border-border-dark rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-border-dark bg-[#101418]">
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-400 w-1/3">Regra de Gatilho</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-400">Nível de Severidade</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-400">Canais</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-400 text-center">Estado</th>
+<th class="py-4 px-6 text-xs font-semibold uppercase tracking-wider text-slate-400 text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-dark">
+<!-- Row 1 -->
+<tr class="group hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Múltiplas Tentativas de Login Falhadas</span>
+<span class="text-slate-500 text-xs mt-1">Acionado após 5 tentativas em 1 minuto.</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                                    Crítico
+                                                </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded bg-[#101418] border border-border-dark text-xs text-slate-300">Email</span>
+<span class="px-2 py-1 rounded bg-[#101418] border border-border-dark text-xs text-slate-300">SMS</span>
+</div>
+</td>
+<td class="py-4 px-6 text-center">
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="relative w-9 h-5 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+</label>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="text-slate-400 hover:text-white p-2 hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="group hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Acesso Nível 1 Fora de Horário</span>
+<span class="text-slate-500 text-xs mt-1">Acesso Admin detectado entre 22h-06h.</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-orange-500/10 text-orange-400 border border-orange-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                                                    Alto
+                                                </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded bg-[#101418] border border-border-dark text-xs text-slate-300">In-app</span>
+<span class="px-2 py-1 rounded bg-[#101418] border border-border-dark text-xs text-slate-300">SMS</span>
+</div>
+</td>
+<td class="py-4 px-6 text-center">
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="relative w-9 h-5 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+</label>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="text-slate-400 hover:text-white p-2 hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="group hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Login a partir de IP Não Autorizado</span>
+<span class="text-slate-500 text-xs mt-1">IP fora da whitelist da organização.</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-yellow-500"></span>
+                                                    Médio
+                                                </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded bg-[#101418] border border-border-dark text-xs text-slate-300">Email</span>
+</div>
+</td>
+<td class="py-4 px-6 text-center">
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="relative w-9 h-5 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+</label>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="text-slate-400 hover:text-white p-2 hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="group hover:bg-white/[0.02] transition-colors">
+<td class="py-4 px-6">
+<div class="flex flex-col">
+<span class="text-white font-medium text-sm">Alteração de Permissões Críticas</span>
+<span class="text-slate-500 text-xs mt-1">Modificação em perfis de Administrador.</span>
+</div>
+</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                                    Crítico
+                                                </span>
+</td>
+<td class="py-4 px-6">
+<div class="flex gap-2">
+<span class="px-2 py-1 rounded bg-[#101418] border border-border-dark text-xs text-slate-300">Modal Sistema</span>
+</div>
+</td>
+<td class="py-4 px-6 text-center">
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="relative w-9 h-5 bg-slate-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+</label>
+</td>
+<td class="py-4 px-6 text-right">
+<button class="text-slate-400 hover:text-white p-2 hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-border-dark bg-[#101418] flex items-center justify-between">
+<span class="text-xs text-slate-400">A mostrar 1-4 de 24 regras</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-xs font-medium text-slate-400 hover:text-white disabled:opacity-50">Anterior</button>
+<button class="px-3 py-1 text-xs font-medium text-white bg-white/5 rounded-md">1</button>
+<button class="px-3 py-1 text-xs font-medium text-slate-400 hover:text-white">2</button>
+<button class="px-3 py-1 text-xs font-medium text-slate-400 hover:text-white">3</button>
+<button class="px-3 py-1 text-xs font-medium text-slate-400 hover:text-white">Próximo</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Live Feed -->
+<aside class="w-80 border-l border-border-dark bg-[#101418] flex-col hidden xl:flex">
+<div class="p-4 border-b border-border-dark flex items-center justify-between bg-surface-dark">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+</span>
+<h3 class="text-sm font-bold text-white uppercase tracking-wide">Centro de Alertas Ativos</h3>
+</div>
+<button class="text-slate-400 hover:text-white">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4 scrollbar-thin scrollbar-thumb-border-dark scrollbar-track-transparent">
+<!-- Alert Card 1 (Critical) -->
+<div class="p-4 rounded-lg bg-red-500/5 border border-red-500/20 relative group hover:bg-red-500/10 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-red-400 uppercase tracking-wider bg-red-500/10 px-1.5 py-0.5 rounded border border-red-500/20">Crítico</span>
+<span class="text-[10px] text-slate-400">2 min atrás</span>
+</div>
+<h4 class="text-white text-sm font-bold leading-tight mb-1">Login Falhado (Múltiplo)</h4>
+<p class="text-slate-400 text-xs mb-3">IP: 192.168.0.105 tentou acesso root 8 vezes.</p>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 bg-red-500/20 hover:bg-red-500/30 text-red-200 text-xs font-medium py-1.5 px-2 rounded transition-colors text-center">Investigar</button>
+</div>
+</div>
+<!-- Alert Card 2 (High) -->
+<div class="p-4 rounded-lg bg-orange-500/5 border border-orange-500/20 relative group hover:bg-orange-500/10 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-orange-400 uppercase tracking-wider bg-orange-500/10 px-1.5 py-0.5 rounded border border-orange-500/20">Alto</span>
+<span class="text-[10px] text-slate-400">5 min atrás</span>
+</div>
+<h4 class="text-white text-sm font-bold leading-tight mb-1">Acesso Fora de Horário</h4>
+<p class="text-slate-400 text-xs mb-3">Utilizador: Maria Silva (Admin) acedeu ao módulo financeiro.</p>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 bg-surface-dark hover:bg-border-dark text-slate-300 text-xs font-medium py-1.5 px-2 rounded border border-border-dark transition-colors text-center">Contactar</button>
+<button class="bg-orange-500/20 hover:bg-orange-500/30 text-orange-200 text-xs font-medium py-1.5 px-3 rounded transition-colors">Log</button>
+</div>
+</div>
+<!-- Alert Card 3 (Info) -->
+<div class="p-4 rounded-lg bg-surface-dark border border-border-dark relative group hover:bg-white/5 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider bg-blue-500/10 px-1.5 py-0.5 rounded border border-blue-500/20">Info</span>
+<span class="text-[10px] text-slate-400">12 min atrás</span>
+</div>
+<h4 class="text-white text-sm font-bold leading-tight mb-1">Backup Concluído</h4>
+<p class="text-slate-400 text-xs">Backup diário de base de dados finalizado com sucesso.</p>
+</div>
+<!-- Alert Card 4 (Medium) -->
+<div class="p-4 rounded-lg bg-yellow-500/5 border border-yellow-500/20 relative group hover:bg-yellow-500/10 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-yellow-400 uppercase tracking-wider bg-yellow-500/10 px-1.5 py-0.5 rounded border border-yellow-500/20">Médio</span>
+<span class="text-[10px] text-slate-400">45 min atrás</span>
+</div>
+<h4 class="text-white text-sm font-bold leading-tight mb-1">Novo Dispositivo</h4>
+<p class="text-slate-400 text-xs mb-3">Login detetado de dispositivo desconhecido (iPhone 14).</p>
+<div class="flex gap-2 mt-auto">
+<button class="flex-1 bg-surface-dark hover:bg-border-dark text-slate-300 text-xs font-medium py-1.5 px-2 rounded border border-border-dark transition-colors text-center">Verificar</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Toast Notification (Simulated) -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-surface-dark border border-border-dark text-white px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3 animate-[slideUp_0.5s_ease-out]">
+<span class="material-symbols-outlined text-green-500">check_circle</span>
+<span class="text-sm font-medium">Configurações de alerta atualizadas com sucesso.</span>
+<button class="text-slate-400 hover:text-white ml-2">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</main>
+</div>
+</body></html>

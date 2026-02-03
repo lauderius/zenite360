@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Dashboard CCIH</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#0B2C56",
+                        "accent-red": "#EF4444",
+                        "accent-yellow": "#F59E0B",
+                        "accent-green": "#10B981",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823", // Very dark blue/grey
+                        "card-dark": "#1e2732",
+                        "border-dark": "#27303a"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display transition-colors duration-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark bg-primary px-4 py-3 lg:px-10 shadow-md">
+<div class="flex items-center gap-4 lg:gap-8">
+<div class="flex items-center gap-3 text-white">
+<div class="flex size-8 items-center justify-center rounded bg-white/10 text-white">
+<span class="material-symbols-outlined text-2xl">local_hospital</span>
+</div>
+<h2 class="hidden md:block text-white text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360 <span class="opacity-70 font-normal">| CCIH</span></h2>
+</div>
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-primary-light border border-primary-light/50 focus-within:border-blue-400 transition-colors">
+<div class="text-blue-200 flex items-center justify-center pl-3 pr-1">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg rounded-l-none border-none bg-transparent text-white focus:outline-0 focus:ring-0 placeholder:text-blue-200/50 px-2 text-sm font-normal leading-normal" placeholder="Pesquisar..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-4 lg:gap-8 items-center">
+<div class="hidden lg:flex items-center gap-6">
+<a class="text-white hover:text-blue-200 text-sm font-medium leading-normal transition-colors" href="#">Dashboard</a>
+<a class="text-blue-200 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Vigilância</a>
+<a class="text-blue-200 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Relatórios</a>
+<a class="text-blue-200 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Configurações</a>
+</div>
+<div class="flex gap-2">
+<button class="relative flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary-light text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 rounded-full bg-accent-red"></span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary-light text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-primary-light cursor-pointer" data-alt="Profile picture of Dr. Silva" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC76J8B-BU-OYTpwmqAXUbb69GcDige3PNgc6yDuH5chypNqh5Bu9a4o5x3IEoqV7_AsdG8vn6FKYWsv1DhKDcohdm4_ZsdzFZY1USM002XPXuIqiD80Y7V-nHiMlgyVAJw3oBGoFyiOooAEUQjR1EiwHZhIyrE9-UeWV8q-z_52UtTifD09BeoVJO_FZ6eBZikhZrj6QKDSz9pjmB4_lLUBzLIhxv27U9qNuY1LQmQQidyGB08QNoreBOHDaBJ3Urh4xpboConiHGq");'></div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="layout-container flex h-full grow flex-col bg-background-light dark:bg-background-dark">
+<div class="w-full max-w-[1600px] mx-auto px-4 lg:px-8 py-6 flex flex-col gap-6">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap items-center gap-2 px-1">
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary dark:hover:text-blue-300 transition-colors" href="#">Início</a>
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-600 text-sm">chevron_right</span>
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary dark:hover:text-blue-300 transition-colors" href="#">CCIH</a>
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-600 text-sm">chevron_right</span>
+<span class="text-primary dark:text-white text-sm font-medium">Dashboard Geral</span>
+</div>
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 px-1">
+<div>
+<h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Painel de Controlo</h1>
+<p class="text-slate-500 dark:text-slate-400 mt-1 text-sm">Visão geral de infecções hospitalares e adesão a protocolos.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-mono text-slate-500 dark:text-slate-500 bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded">Ultima atualização: 14:32</span>
+<button class="flex items-center gap-2 bg-primary hover:bg-blue-900 text-white text-sm font-medium py-2 px-4 rounded-lg shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Exportar PDF
+                        </button>
+</div>
+</div>
+<!-- KPI Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- KPI 1 -->
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">Taxa de Infecção Global</p>
+<span class="material-symbols-outlined text-accent-red text-[24px]">coronavirus</span>
+</div>
+<div class="flex items-baseline gap-3 mt-2">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">3.2%</p>
+<div class="flex items-center gap-1 text-accent-green bg-green-500/10 px-1.5 py-0.5 rounded text-xs font-bold">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+                                0.5%
+                            </div>
+</div>
+<p class="text-xs text-slate-400 dark:text-slate-500 mt-1">vs. mês anterior (3.7%)</p>
+</div>
+<!-- KPI 2 -->
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">Adesão à Higiene (Mãos)</p>
+<span class="material-symbols-outlined text-blue-400 text-[24px]">wash</span>
+</div>
+<div class="flex items-baseline gap-3 mt-2">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">85%</p>
+<div class="flex items-center gap-1 text-accent-green bg-green-500/10 px-1.5 py-0.5 rounded text-xs font-bold">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                2.0%
+                            </div>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+<div class="bg-accent-green h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-red-200 dark:border-red-900/30 shadow-sm relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-red-500 text-[80px]">warning</span>
+</div>
+<div class="flex justify-between items-start relative z-10">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">Alertas MMR Activos</p>
+<span class="material-symbols-outlined text-accent-red text-[24px] animate-pulse">notifications_active</span>
+</div>
+<div class="flex items-baseline gap-3 mt-2 relative z-10">
+<p class="text-accent-red text-3xl font-bold leading-tight">4</p>
+<span class="text-slate-500 text-xs font-normal">Casos Críticos</span>
+</div>
+<p class="text-xs text-accent-red/80 mt-1 font-medium relative z-10">Requer atenção imediata</p>
+</div>
+<!-- KPI 4 -->
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium leading-normal">Consumo Antibióticos (DDD)</p>
+<span class="material-symbols-outlined text-accent-yellow text-[24px]">medication</span>
+</div>
+<div class="flex items-baseline gap-3 mt-2">
+<p class="text-slate-900 dark:text-white text-3xl font-bold leading-tight">450</p>
+<div class="flex items-center gap-1 text-slate-400 bg-slate-500/10 px-1.5 py-0.5 rounded text-xs font-bold">
+<span class="material-symbols-outlined text-[14px]">remove</span>
+                                0%
+                            </div>
+</div>
+<p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Dose Diária Definida / 1000 dias</p>
+</div>
+</div>
+<!-- Main Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column: Map & Chart -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Map Section -->
+<div class="flex flex-col rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-border-dark flex justify-between items-center">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Distribuição Geográfica de Riscos</h3>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400"><span class="size-2 rounded-full bg-accent-red"></span> Alto Risco</span>
+<span class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400"><span class="size-2 rounded-full bg-accent-yellow"></span> Médio</span>
+<span class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400"><span class="size-2 rounded-full bg-accent-green"></span> Seguro</span>
+</div>
+</div>
+<div class="relative w-full aspect-video bg-slate-900">
+<!-- Placeholder for Map -->
+<div class="w-full h-full bg-center bg-no-repeat bg-cover opacity-80" data-alt="Heat map of hospital floor plan showing infection clusters in wards" data-location="Luanda" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9FBxtvPWVw6q7Fl7_gPmwoAC8XYjsvJ3pz2B-ZW0_LFd51R_7qBnHUobHd5hDm5wgfoiRNJg9rDZhG8BKsKlmCTjhW8jpdNH5fCfObg4flIrA5j6-33IUCczw6_xLQydhmHGeSfDu2FYH2Ny8CRFd9YZbs-KyRDyYEFZrsIlRTPP-FLe_xO4Uobnxmp4ETCgfcq0tkbomfgvsBDn81bI2qSIMZk4mgXaMn1hyQyDkz29-h93rpr1tmKlwrmeAweWPcWR3YLwtOWrn");'></div>
+<!-- Simulated UI Overlays on Map -->
+<div class="absolute top-1/4 left-1/4 group cursor-pointer">
+<div class="size-4 bg-accent-red rounded-full animate-ping absolute"></div>
+<div class="size-4 bg-accent-red rounded-full border-2 border-white relative z-10"></div>
+<div class="absolute left-6 top-0 bg-background-dark/90 text-white text-xs p-2 rounded w-32 hidden group-hover:block z-20 shadow-lg border border-slate-700">
+<p class="font-bold">UCI - Ala Norte</p>
+<p class="text-accent-red">3 Casos Activos</p>
+</div>
+</div>
+<div class="absolute bottom-1/3 right-1/3 group cursor-pointer">
+<div class="size-3 bg-accent-yellow rounded-full absolute"></div>
+<div class="absolute left-5 top-0 bg-background-dark/90 text-white text-xs p-2 rounded w-32 hidden group-hover:block z-20 shadow-lg border border-slate-700">
+<p class="font-bold">Enfermaria Geral</p>
+<p class="text-accent-yellow">Alerta Higiene</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart Section -->
+<div class="flex flex-col rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-border-dark flex justify-between items-center">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold leading-tight">Tendência Semestral de Infeções</h3>
+<select class="bg-slate-100 dark:bg-background-dark border-none text-xs rounded text-slate-700 dark:text-slate-300 py-1 px-3 focus:ring-1 focus:ring-primary">
+<option>Todos os Agentes</option>
+<option>S. aureus</option>
+<option>E. coli</option>
+</select>
+</div>
+<div class="p-6">
+<!-- Chart Placeholder -->
+<div class="w-full aspect-[3/1] bg-slate-50 dark:bg-slate-800/50 rounded-lg flex items-end justify-between px-4 pb-4 gap-2 border border-slate-100 dark:border-slate-800/50 relative overflow-hidden" data-alt="Bar chart showing infection trends over 6 months">
+<!-- Grid lines simulation -->
+<div class="absolute inset-0 flex flex-col justify-between py-4 px-4 opacity-10 pointer-events-none">
+<div class="w-full h-px bg-slate-500"></div>
+<div class="w-full h-px bg-slate-500"></div>
+<div class="w-full h-px bg-slate-500"></div>
+<div class="w-full h-px bg-slate-500"></div>
+</div>
+<!-- Bars -->
+<div class="w-full bg-primary/30 hover:bg-primary/50 transition-all rounded-t h-[40%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">2.8%</div>
+<p class="absolute -bottom-6 w-full text-center text-xs text-slate-500">Jan</p>
+</div>
+<div class="w-full bg-primary/30 hover:bg-primary/50 transition-all rounded-t h-[35%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">2.4%</div>
+<p class="absolute -bottom-6 w-full text-center text-xs text-slate-500">Fev</p>
+</div>
+<div class="w-full bg-primary/30 hover:bg-primary/50 transition-all rounded-t h-[55%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">4.1%</div>
+<p class="absolute -bottom-6 w-full text-center text-xs text-slate-500">Mar</p>
+</div>
+<div class="w-full bg-primary/40 hover:bg-primary/60 transition-all rounded-t h-[60%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">4.5%</div>
+<p class="absolute -bottom-6 w-full text-center text-xs text-slate-500">Abr</p>
+</div>
+<div class="w-full bg-primary/30 hover:bg-primary/50 transition-all rounded-t h-[45%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.7%</div>
+<p class="absolute -bottom-6 w-full text-center text-xs text-slate-500">Mai</p>
+</div>
+<div class="w-full bg-primary hover:bg-primary-light transition-all rounded-t h-[38%] relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">3.2%</div>
+<p class="absolute -bottom-6 w-full text-center text-xs text-slate-500 font-bold">Jun</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar -->
+<div class="lg:col-span-1 flex flex-col gap-6">
+<!-- Isolation Protocols -->
+<div class="flex flex-col rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm h-auto">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-border-dark flex justify-between items-center">
+<h3 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Protocolos Activos</h3>
+<span class="bg-primary/20 text-blue-300 text-xs px-2 py-0.5 rounded-full">5 Leitos</span>
+</div>
+<div class="flex flex-col p-2 gap-2">
+<!-- Item 1 -->
+<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-slate-100 dark:hover:border-white/5">
+<div class="size-10 rounded-full bg-accent-yellow/20 flex items-center justify-center text-accent-yellow shrink-0">
+<span class="material-symbols-outlined text-[20px]">single_bed</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between">
+<p class="text-sm font-bold text-slate-900 dark:text-white truncate">Quarto 302</p>
+<span class="text-[10px] font-bold uppercase text-accent-yellow bg-accent-yellow/10 px-1.5 rounded">Contacto</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">S. aureus (MRSA)</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-slate-100 dark:hover:border-white/5">
+<div class="size-10 rounded-full bg-accent-red/20 flex items-center justify-center text-accent-red shrink-0">
+<span class="material-symbols-outlined text-[20px]">masks</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between">
+<p class="text-sm font-bold text-slate-900 dark:text-white truncate">Quarto 104</p>
+<span class="text-[10px] font-bold uppercase text-accent-red bg-accent-red/10 px-1.5 rounded">Aérea</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">Tuberculose (Suspeita)</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer border border-transparent hover:border-slate-100 dark:hover:border-white/5">
+<div class="size-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+<span class="material-symbols-outlined text-[20px]">sanitizer</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between">
+<p class="text-sm font-bold text-slate-900 dark:text-white truncate">Quarto 210</p>
+<span class="text-[10px] font-bold uppercase text-blue-400 bg-blue-500/10 px-1.5 rounded">Gotículas</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">Influenza A</p>
+</div>
+</div>
+</div>
+<div class="p-3 border-t border-slate-100 dark:border-border-dark">
+<button class="w-full text-xs font-medium text-primary dark:text-blue-300 hover:text-white hover:underline">Ver todos os quartos</button>
+</div>
+</div>
+<!-- Lab Alerts -->
+<div class="flex flex-col rounded-xl bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark shadow-sm grow">
+<div class="px-5 py-4 border-b border-slate-100 dark:border-border-dark flex justify-between items-center">
+<h3 class="text-slate-900 dark:text-white text-base font-bold leading-tight flex items-center gap-2">
+                                    Alertas Laboratório
+                                    <span class="flex size-2 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-red opacity-75"></span>
+<span class="relative inline-flex rounded-full size-2 bg-accent-red"></span>
+</span>
+</h3>
+</div>
+<div class="flex flex-col p-2 gap-2">
+<!-- Alert Item 1 -->
+<div class="relative flex flex-col gap-1 p-3 rounded-lg bg-accent-red/5 border-l-4 border-accent-red">
+<div class="flex justify-between items-start">
+<p class="text-xs font-bold text-accent-red uppercase tracking-wider">Crítico</p>
+<span class="text-[10px] text-slate-500">10:45</span>
+</div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Hemocultura Positiva</p>
+<p class="text-xs text-slate-600 dark:text-slate-300">Klebsiella pneumoniae (KPC+)</p>
+<div class="mt-2 flex gap-2">
+<button class="text-[10px] bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded px-2 py-1 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700">Protocolo</button>
+<button class="text-[10px] bg-accent-red text-white rounded px-2 py-1 hover:bg-red-600">Notificar</button>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="relative flex flex-col gap-1 p-3 rounded-lg bg-accent-yellow/5 border-l-4 border-accent-yellow">
+<div class="flex justify-between items-start">
+<p class="text-xs font-bold text-accent-yellow uppercase tracking-wider">Atenção</p>
+<span class="text-[10px] text-slate-500">09:12</span>
+</div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Urocultura</p>
+<p class="text-xs text-slate-600 dark:text-slate-300">E. coli Resistente</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Analítica e Compliance Biomédico - Zênite360</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#1a3b66",
+                        "primary-accent": "#3b82f6", 
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f172a", // Deep charcoal/slate
+                        "surface-dark": "#1e293b", // Lighter slate for cards
+                        "surface-darker": "#111827", // Very dark for sidebar
+                        "status-success": "#10b981",
+                        "status-warning": "#f59e0b",
+                        "status-error": "#ef4444",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for dark mode tables */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display antialiased overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 flex flex-col bg-[#002147] border-r border-slate-700/50 relative z-20">
+<!-- Brand -->
+<div class="h-16 flex items-center px-6 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-white/10 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">monitor_heart</span>
+</div>
+<div>
+<h1 class="text-white text-sm font-bold leading-tight">Zênite360 ERP</h1>
+<p class="text-white/60 text-xs">Biomédica</p>
+</div>
+</div>
+</div>
+<!-- Nav Items -->
+<nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+<!-- Main Group -->
+<div class="px-3 mb-2 text-xs font-semibold text-white/40 uppercase tracking-wider">Gestão Principal</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/10 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">dashboard</span>
+<span class="text-sm font-medium">Visão Geral</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/10 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">inventory_2</span>
+<span class="text-sm font-medium">Gestão de Activos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/10 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">build</span>
+<span class="text-sm font-medium">Manutenção Preventiva</span>
+</a>
+<!-- Active State Example -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded bg-primary-accent text-white shadow-lg shadow-blue-900/50 group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">analytics</span>
+<span class="text-sm font-medium">Analítica e Compliance</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/10 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">verified</span>
+<span class="text-sm font-medium">Certificações</span>
+</a>
+<div class="my-4 border-t border-white/10"></div>
+<!-- Secondary Group -->
+<div class="px-3 mb-2 text-xs font-semibold text-white/40 uppercase tracking-wider">Configurações</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/10 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">settings</span>
+<span class="text-sm font-medium">Configurações</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-white/70 hover:bg-white/10 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">help</span>
+<span class="text-sm font-medium">Suporte</span>
+</a>
+</nav>
+<!-- User Profile -->
+<div class="p-4 border-t border-white/10 bg-[#001835]">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-cover bg-center ring-2 ring-white/10" data-alt="Portrait of a male doctor or engineer" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0oyRSyyyNxypy2gveegifTCnyi6VzFi8EuPr20qHgPxnkIYD9_tbYZHiI9GDn2V9vIp4dqu-UfrXZFt7pGk6QrluU8lfSruhoLs4t79CcBKv0Dxh4Un6W1lAgTejm32SxQTpKJUA9bkKVn3uqzIkyfFmp-OBdV85qtQRSLFFZ8i5m12fO-mHcvvuSwUidTFKOuLMXC1RZBxz5okhgJ6-zyNIUneh3Jc17JuYHygurwQjWqLfHgzj8I4VzvUUFpFxDx6erBP620HPa');"></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium text-white truncate">Eng. Carlos Manuel</p>
+<p class="text-xs text-white/50 truncate">Chefe de Departamento</p>
+</div>
+<button class="text-white/50 hover:text-white">
+<span class="material-symbols-outlined text-lg">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Top Header -->
+<header class="h-16 bg-surface-dark border-b border-slate-700/50 flex items-center justify-between px-6 shrink-0 z-10">
+<div class="flex items-center gap-4">
+<button class="lg:hidden text-slate-400 hover:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<!-- Breadcrumbs/Title -->
+<div class="flex flex-col">
+<h2 class="text-lg font-bold text-white tracking-tight">Analítica e Compliance</h2>
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<span>Biomédica</span>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-slate-200">Dashboard V5</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<!-- Search -->
+<div class="relative hidden md:block group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-primary-accent transition-colors">
+<span class="material-symbols-outlined text-xl">search</span>
+</span>
+<input class="bg-background-dark border border-slate-700 text-sm text-white rounded-full pl-10 pr-4 py-2 w-64 focus:ring-2 focus:ring-primary-accent focus:border-transparent placeholder-slate-500 transition-all" placeholder="Pesquisar activo, ID ou sector..." type="text"/>
+</div>
+<!-- Notifications -->
+<button class="relative p-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 size-2 bg-status-error rounded-full ring-2 ring-surface-dark"></span>
+</button>
+</div>
+</header>
+<!-- Scrollable Page Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6">
+<div class="max-w-[1600px] mx-auto space-y-6">
+<!-- Toolbar / Filters -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-wrap gap-2">
+<!-- Filter: Period -->
+<div class="relative inline-block text-left">
+<button class="flex items-center gap-2 bg-surface-dark border border-slate-700 hover:border-slate-500 text-white text-sm px-4 py-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg text-slate-400">calendar_today</span>
+<span>Período: Último Trimestre</span>
+<span class="material-symbols-outlined text-lg text-slate-500">expand_more</span>
+</button>
+</div>
+<!-- Filter: Sector -->
+<div class="relative inline-block text-left">
+<button class="flex items-center gap-2 bg-surface-dark border border-slate-700 hover:border-slate-500 text-white text-sm px-4 py-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-lg text-slate-400">domain</span>
+<span>Sector: Todos</span>
+<span class="material-symbols-outlined text-lg text-slate-500">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Action Button -->
+<button class="flex items-center justify-center gap-2 bg-primary-accent hover:bg-blue-600 text-white text-sm font-semibold px-5 py-2 rounded-lg shadow-lg shadow-blue-500/20 transition-all transform hover:-translate-y-0.5">
+<span class="material-symbols-outlined text-lg">download</span>
+                            Exportar Relatório de Activos
+                        </button>
+</div>
+<!-- KPI Cards Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+<!-- KPI 1 -->
+<div class="bg-surface-dark border border-slate-700/50 rounded-xl p-5 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div class="p-2 rounded-lg bg-blue-500/10 text-blue-400">
+<span class="material-symbols-outlined">medical_services</span>
+</div>
+<span class="flex items-center text-xs font-medium text-status-success bg-status-success/10 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span> +5%
+                                </span>
+</div>
+<p class="text-slate-400 text-sm font-medium">Total de Activos</p>
+<h3 class="text-2xl font-bold text-white mt-1">1,248</h3>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-dark border border-slate-700/50 rounded-xl p-5 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div class="p-2 rounded-lg bg-purple-500/10 text-purple-400">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<span class="flex items-center text-xs font-medium text-status-error bg-status-error/10 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_down</span> -1.2%
+                                </span>
+</div>
+<p class="text-slate-400 text-sm font-medium">Taxa de Conformidade</p>
+<h3 class="text-2xl font-bold text-white mt-1">94.2%</h3>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-dark border border-slate-700/50 rounded-xl p-5 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div class="p-2 rounded-lg bg-amber-500/10 text-amber-400">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<span class="flex items-center text-xs font-medium text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full">
+                                    Atenção
+                                </span>
+</div>
+<p class="text-slate-400 text-sm font-medium">Calibrações Pendentes</p>
+<h3 class="text-2xl font-bold text-white mt-1">12</h3>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-dark border border-slate-700/50 rounded-xl p-5 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+<span class="material-symbols-outlined">attach_money</span>
+</div>
+<span class="text-xs text-slate-500">YTD (Ano Fiscal)</span>
+</div>
+<p class="text-slate-400 text-sm font-medium">Custo Total Manutenção</p>
+<h3 class="text-2xl font-bold text-white mt-1">Kz 45.2M</h3>
+</div>
+</div>
+<!-- Charts Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Chart 1: Costs by Sector -->
+<div class="bg-surface-dark border border-slate-700/50 rounded-xl p-6 shadow-sm col-span-1 lg:col-span-2">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-base font-semibold text-white">Custo de Manutenção por Sector</h3>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-xl">more_horiz</span>
+</button>
+</div>
+<!-- Visualization Placeholder (Bar Chart) -->
+<div class="w-full h-64 flex flex-col justify-end gap-2 pb-2">
+<div class="flex items-end justify-between h-full gap-4 px-2">
+<!-- Bar Item -->
+<div class="flex flex-col items-center gap-2 group flex-1">
+<div class="w-full bg-slate-700 rounded-t-sm h-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary-accent group-hover:bg-blue-400 transition-all h-[85%]"></div>
+</div>
+<span class="text-xs text-slate-400 font-medium truncate w-full text-center">Radiologia</span>
+</div>
+<div class="flex flex-col items-center gap-2 group flex-1">
+<div class="w-full bg-slate-700 rounded-t-sm h-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary-accent group-hover:bg-blue-400 transition-all h-[60%]"></div>
+</div>
+<span class="text-xs text-slate-400 font-medium truncate w-full text-center">Bloco Op.</span>
+</div>
+<div class="flex flex-col items-center gap-2 group flex-1">
+<div class="w-full bg-slate-700 rounded-t-sm h-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary-accent group-hover:bg-blue-400 transition-all h-[45%]"></div>
+</div>
+<span class="text-xs text-slate-400 font-medium truncate w-full text-center">U.C.I.</span>
+</div>
+<div class="flex flex-col items-center gap-2 group flex-1">
+<div class="w-full bg-slate-700 rounded-t-sm h-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary-accent group-hover:bg-blue-400 transition-all h-[30%]"></div>
+</div>
+<span class="text-xs text-slate-400 font-medium truncate w-full text-center">Laboratório</span>
+</div>
+<div class="flex flex-col items-center gap-2 group flex-1">
+<div class="w-full bg-slate-700 rounded-t-sm h-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary-accent group-hover:bg-blue-400 transition-all h-[20%]"></div>
+</div>
+<span class="text-xs text-slate-400 font-medium truncate w-full text-center">Triagem</span>
+</div>
+</div>
+<!-- X Axis Label -->
+<div class="w-full border-t border-slate-700"></div>
+</div>
+</div>
+<!-- Chart 2: Equipment by Manufacturer (Donut) -->
+<div class="bg-surface-dark border border-slate-700/50 rounded-xl p-6 shadow-sm col-span-1">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-base font-semibold text-white">Equipamentos</h3>
+<button class="text-slate-400 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-xl">filter_list</span>
+</button>
+</div>
+<div class="flex items-center justify-center py-4">
+<!-- CSS-only Donut Chart approximation -->
+<div class="relative size-48 rounded-full bg-[conic-gradient(var(--tw-gradient-stops))] from-blue-500 via-indigo-500 to-purple-500 p-8 flex items-center justify-center" style="background: conic-gradient(#3b82f6 0% 40%, #8b5cf6 40% 70%, #10b981 70% 90%, #64748b 90% 100%);">
+<div class="size-32 bg-surface-dark rounded-full flex flex-col items-center justify-center z-10">
+<span class="text-2xl font-bold text-white">1248</span>
+<span class="text-xs text-slate-400">Total</span>
+</div>
+</div>
+</div>
+<!-- Legend -->
+<div class="grid grid-cols-2 gap-3 mt-4">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-[#3b82f6]"></span>
+<span class="text-xs text-slate-300">GE Health (40%)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-[#8b5cf6]"></span>
+<span class="text-xs text-slate-300">Siemens (30%)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-[#10b981]"></span>
+<span class="text-xs text-slate-300">Philips (20%)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-[#64748b]"></span>
+<span class="text-xs text-slate-300">Outros (10%)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Complex Table Section -->
+<div class="bg-surface-dark border border-slate-700/50 rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="p-6 border-b border-slate-700/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<div>
+<h3 class="text-lg font-bold text-white">Gestão de Garantias e Calibração</h3>
+<p class="text-sm text-slate-400">Monitorização de certificados e datas críticas de manutenção.</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors" title="Filter">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded transition-colors" title="Settings">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm text-slate-400">
+<thead class="bg-slate-800/50 text-xs uppercase font-semibold text-slate-200">
+<tr>
+<th class="px-6 py-4 min-w-[100px]" scope="col">ID Activo</th>
+<th class="px-6 py-4 min-w-[200px]" scope="col">Equipamento</th>
+<th class="px-6 py-4" scope="col">Fabricante</th>
+<th class="px-6 py-4" scope="col">Sector</th>
+<th class="px-6 py-4" scope="col">Status Calibração</th>
+<th class="px-6 py-4" scope="col">Garantia Até</th>
+<th class="px-6 py-4 text-right" scope="col">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-700/50">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-mono text-white">BM-2049</td>
+<td class="px-6 py-4">
+<div class="font-medium text-white">Ventilador Mecânico</div>
+<div class="text-xs text-slate-500">Modelo: Servo-U</div>
+</td>
+<td class="px-6 py-4">Maquet/Getinge</td>
+<td class="px-6 py-4">U.C.I.</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+<span class="size-1.5 rounded-full bg-emerald-400"></span>
+                                                Conforme
+                                            </span>
+</td>
+<td class="px-6 py-4 font-mono text-slate-300">12/2024</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary-accent hover:text-blue-400 font-medium text-xs">Ver Detalhes</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-mono text-white">BM-3102</td>
+<td class="px-6 py-4">
+<div class="font-medium text-white">Monitor de Sinais Vitais</div>
+<div class="text-xs text-slate-500">Modelo: IntelliVue MX450</div>
+</td>
+<td class="px-6 py-4">Philips</td>
+<td class="px-6 py-4">Triagem</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+<span class="size-1.5 rounded-full bg-amber-400"></span>
+                                                Expira em 15 dias
+                                            </span>
+</td>
+<td class="px-6 py-4 font-mono text-slate-300">05/2025</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary-accent hover:text-blue-400 font-medium text-xs">Ver Detalhes</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-mono text-white">BM-1055</td>
+<td class="px-6 py-4">
+<div class="font-medium text-white">Raio-X Digital</div>
+<div class="text-xs text-slate-500">Modelo: Definium 646</div>
+</td>
+<td class="px-6 py-4">GE Healthcare</td>
+<td class="px-6 py-4">Radiologia</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                                                Vencido
+                                            </span>
+</td>
+<td class="px-6 py-4 font-mono text-slate-300">01/2023 <span class="text-xs text-red-400 block">(Expirada)</span></td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary-accent hover:text-blue-400 font-medium text-xs">Ver Detalhes</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 font-mono text-white">BM-4011</td>
+<td class="px-6 py-4">
+<div class="font-medium text-white">Bomba de Infusão</div>
+<div class="text-xs text-slate-500">Modelo: Alaris GH</div>
+</td>
+<td class="px-6 py-4">BD (Becton Dickinson)</td>
+<td class="px-6 py-4">Oncologia</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+<span class="size-1.5 rounded-full bg-emerald-400"></span>
+                                                Conforme
+                                            </span>
+</td>
+<td class="px-6 py-4 font-mono text-slate-300">08/2026</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary-accent hover:text-blue-400 font-medium text-xs">Ver Detalhes</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-700/50 flex justify-between items-center bg-slate-800/20">
+<span class="text-xs text-slate-500">A mostrar 4 de 1248 activos</span>
+<div class="flex gap-1">
+<button class="px-3 py-1 text-xs font-medium text-slate-400 bg-slate-800 border border-slate-700 rounded hover:bg-slate-700 disabled:opacity-50">Anterior</button>
+<button class="px-3 py-1 text-xs font-medium text-white bg-primary-accent border border-blue-500 rounded hover:bg-blue-600">1</button>
+<button class="px-3 py-1 text-xs font-medium text-slate-400 bg-slate-800 border border-slate-700 rounded hover:bg-slate-700">2</button>
+<button class="px-3 py-1 text-xs font-medium text-slate-400 bg-slate-800 border border-slate-700 rounded hover:bg-slate-700">3</button>
+<button class="px-3 py-1 text-xs font-medium text-slate-400 bg-slate-800 border border-slate-700 rounded hover:bg-slate-700">Próximo</button>
+</div>
+</div>
+</div>
+<!-- Bottom Index Chart -->
+<div class="bg-surface-dark border border-slate-700/50 rounded-xl p-6 shadow-sm">
+<div class="flex items-center justify-between mb-2">
+<div>
+<h3 class="text-base font-semibold text-white">Índice de Falhas (MTBF Trend)</h3>
+<p class="text-xs text-slate-400">Tendência de falhas técnicas nos últimos 6 meses</p>
+</div>
+<div class="flex gap-2">
+<span class="flex items-center text-xs text-emerald-400">
+<span class="material-symbols-outlined text-sm mr-1">arrow_downward</span> 12% vs mês anterior
+                                </span>
+</div>
+</div>
+<!-- Simple Trend Line Visualization using CSS Gradients/Borders -->
+<div class="relative h-48 w-full mt-4 bg-slate-800/20 rounded-lg overflow-hidden border border-slate-700/30">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between py-4 px-6 pointer-events-none">
+<div class="w-full h-px bg-slate-700/30"></div>
+<div class="w-full h-px bg-slate-700/30"></div>
+<div class="w-full h-px bg-slate-700/30"></div>
+<div class="w-full h-px bg-slate-700/30"></div>
+</div>
+<!-- Area Chart Shape (Simplified with clip-path for demonstration) -->
+<div class="absolute bottom-4 left-6 right-6 h-[80%] opacity-20 bg-primary-accent" style="clip-path: polygon(0% 80%, 16% 65%, 33% 70%, 50% 40%, 66% 45%, 83% 20%, 100% 30%, 100% 100%, 0% 100%);">
+</div>
+<!-- Line Chart Shape -->
+<div class="absolute bottom-4 left-6 right-6 h-[80%] bg-gradient-to-r from-blue-400 to-primary-accent" style="height: 2px; top: auto; clip-path: polygon(0% 80%, 16% 65%, 33% 70%, 50% 40%, 66% 45%, 83% 20%, 100% 30%, 100% 31%, 83% 21%, 66% 46%, 50% 41%, 33% 71%, 16% 66%, 0% 81%);">
+</div>
+<!-- Points -->
+<div class="absolute bottom-[calc(4%+80%*0.2)] left-[calc(1.5rem)] size-2 bg-white rounded-full shadow border border-primary-accent"></div>
+<div class="absolute bottom-[calc(4%+80%*0.35)] left-[calc(1.5rem+16%)] size-2 bg-white rounded-full shadow border border-primary-accent"></div>
+<div class="absolute bottom-[calc(4%+80%*0.3)] left-[calc(1.5rem+33%)] size-2 bg-white rounded-full shadow border border-primary-accent"></div>
+<div class="absolute bottom-[calc(4%+80%*0.6)] left-[calc(1.5rem+50%)] size-2 bg-white rounded-full shadow border border-primary-accent"></div>
+<div class="absolute bottom-[calc(4%+80%*0.55)] left-[calc(1.5rem+66%)] size-2 bg-white rounded-full shadow border border-primary-accent"></div>
+<div class="absolute bottom-[calc(4%+80%*0.8)] left-[calc(1.5rem+83%)] size-2 bg-white rounded-full shadow border border-primary-accent"></div>
+<div class="absolute bottom-[calc(4%+80%*0.7)] left-[calc(1.5rem+95%)] size-2 bg-white rounded-full shadow border border-primary-accent"></div>
+</div>
+<!-- X Axis Labels -->
+<div class="flex justify-between px-6 mt-2 text-xs text-slate-500">
+<span>Jan</span>
+<span>Fev</span>
+<span>Mar</span>
+<span>Abr</span>
+<span>Mai</span>
+<span>Jun</span>
+<span>Jul</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

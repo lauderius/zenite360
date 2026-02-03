@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mapa de Ocupação Hospitalar Zênite360 (V2)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#066be0",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "manchester-red": "#ef4444",
+                        "manchester-orange": "#f97316",
+                        "manchester-yellow": "#eab308",
+                        "manchester-green": "#22c55e",
+                        "manchester-blue": "#3b82f6"
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-1 { font-variation-settings: 'FILL' 1; }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined fill-1">layers</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">Zênite360</h2>
+</div>
+<label class="flex flex-col min-w-40 !h-10 max-w-64 hidden md:block">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 flex border-none bg-slate-100 dark:bg-[#27303a] items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-slate-100 dark:bg-[#27303a] text-slate-900 dark:text-white placeholder:text-slate-400 px-4 rounded-r-lg text-sm focus:ring-0" placeholder="Pesquisar paciente ou cama..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-primary text-sm font-semibold" href="#">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Pacientes</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Relatórios</a>
+<a class="text-slate-600 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors" href="#">Configurações</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-[#27303a] text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-[#27303a] text-slate-600 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-xl">schedule</span>
+</button>
+</div>
+<div class="h-10 w-10 rounded-full border-2 border-primary bg-center bg-no-repeat bg-cover" data-alt="User profile avatar of the head nurse" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2eXJ39Q4fXqBkuhvPFoFNWM7pWOepsLA-DuAMRMMwWlglUM9w057YzU05kVmo0lUfAoTr8guVIeqE3EAwQ6L4GOrGJWiOcLBYDtenPh4QYY86UkH0pFRz6_mQMm8aQEZf968Til28Klzra6AY_vX0PMumKbJlaRx6CC7GCl88e9nsRnRkPHXIQt5ruHbhpv8zMe_ivUcZwNvDYzrHS4ShKkmJCIBQ_bYHoWOn6YQKIABKKnnBcBhaG6vqEOyv-meJxrX9Lf7Pb2N4");'></div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)] overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark p-4 flex flex-col justify-between hidden md:flex shrink-0">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold">Direcção de Enfermagem</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wider mt-1">Mapa de Camas</p>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white cursor-pointer shadow-sm">
+<span class="material-symbols-outlined fill-1" data-icon="emergency">medical_services</span>
+<p class="text-sm font-semibold">Urgência</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined" data-icon="child_care">child_care</span>
+<p class="text-sm font-medium">Maternidade</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined" data-icon="stethoscope">stethoscope</span>
+<p class="text-sm font-medium">Medicina Geral</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined" data-icon="bed">bed</span>
+<p class="text-sm font-medium">Pediatria</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<p class="text-sm font-medium">UCI</p>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+<p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest px-3 mb-2">Filtros de Triagem</p>
+<div class="space-y-1">
+<label class="flex items-center gap-3 px-3 py-1.5 cursor-pointer">
+<span class="w-3 h-3 rounded-full bg-manchester-red"></span>
+<span class="text-sm text-slate-600 dark:text-slate-300">Críticos (Vermelho)</span>
+</label>
+<label class="flex items-center gap-3 px-3 py-1.5 cursor-pointer">
+<span class="w-3 h-3 rounded-full bg-manchester-orange"></span>
+<span class="text-sm text-slate-600 dark:text-slate-300">Urgentes (Laranja)</span>
+</label>
+<label class="flex items-center gap-3 px-3 py-1.5 cursor-pointer">
+<span class="w-3 h-3 rounded-full bg-manchester-green"></span>
+<span class="text-sm text-slate-600 dark:text-slate-300">Estáveis (Verde)</span>
+</label>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[10px] font-bold text-slate-400 uppercase">Sistema Live</span>
+</div>
+<p class="text-[11px] text-slate-500">Última actualização: 14:20:05</p>
+</div>
+<button class="flex w-full items-center justify-center rounded-lg h-11 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span>Mudar Turno</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-slate-50 dark:bg-background-dark/50">
+<!-- Stats Dashboard Header -->
+<div class="p-6 pb-0">
+<div class="flex flex-wrap gap-4 mb-6">
+<div class="flex min-w-[180px] flex-1 flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1a232e] border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Taxa de Ocupação</p>
+<div class="flex items-baseline gap-2">
+<p class="text-slate-900 dark:text-white text-3xl font-black">85%</p>
+<p class="text-[#0bda5e] text-sm font-bold">+2.4%</p>
+</div>
+</div>
+<div class="flex min-w-[180px] flex-1 flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1a232e] border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Camas Totais</p>
+<div class="flex items-baseline gap-2">
+<p class="text-slate-900 dark:text-white text-3xl font-black">120</p>
+<p class="text-slate-400 text-sm font-medium">Angola/LU</p>
+</div>
+</div>
+<div class="flex min-w-[180px] flex-1 flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1a232e] border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Camas Livres</p>
+<div class="flex items-baseline gap-2">
+<p class="text-green-500 text-3xl font-black">18</p>
+<p class="text-manchester-red text-sm font-bold">-5%</p>
+</div>
+</div>
+<div class="flex min-w-[180px] flex-1 flex-col gap-1 rounded-xl p-5 bg-white dark:bg-[#1a232e] border border-slate-200 dark:border-slate-800 shadow-sm">
+<p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Camas Ocupadas</p>
+<div class="flex items-baseline gap-2">
+<p class="text-primary text-3xl font-black">102</p>
+<p class="text-[#0bda5e] text-sm font-bold">+5%</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold">Sector: Urgência — Piso 1</h2>
+<div class="flex gap-2 flex-wrap">
+<button class="flex h-9 items-center gap-2 rounded-lg bg-white dark:bg-[#27303a] border border-slate-200 dark:border-slate-800 px-4 text-slate-700 dark:text-white text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-700">
+<span>Todos</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-lg bg-white dark:bg-[#27303a] border border-slate-200 dark:border-slate-800 px-4 text-slate-700 dark:text-white text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-700">
+<span>Criticos</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-lg bg-white dark:bg-[#27303a] border border-slate-200 dark:border-slate-800 px-4 text-slate-700 dark:text-white text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-700">
+<span>Altas Previstas</span>
+<span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bed Grid Layout -->
+<div class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+<!-- Bed Card: Occupied (Critical) -->
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-red rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 relative group hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Cama</span>
+<span class="text-xl font-black text-slate-900 dark:text-white">101</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="w-4 h-4 rounded-full bg-manchester-red mb-1 shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>
+<span class="text-[10px] font-bold text-manchester-red uppercase">Crítico</span>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">João Manuel Baptista</p>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">badge</span>
+<span>B.I. 0004567LA042</span>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span>Entrada: 08:30</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-bold uppercase">Ocupada</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">info</span>
+</div>
+</div>
+<!-- Bed Card: Occupied (Stable) -->
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-green rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 relative group hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Cama</span>
+<span class="text-xl font-black text-slate-900 dark:text-white">102</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="w-4 h-4 rounded-full bg-manchester-green mb-1"></span>
+<span class="text-[10px] font-bold text-manchester-green uppercase">Estável</span>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">Maria Isabel Dos Santos</p>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">badge</span>
+<span>B.I. 0008922HU099</span>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span>Entrada: 10:15</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-bold uppercase">Ocupada</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">info</span>
+</div>
+</div>
+<!-- Bed Card: Free -->
+<div class="bg-slate-100 dark:bg-slate-800/30 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg p-4 transition-all hover:border-green-500/50 cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Cama</span>
+<span class="text-xl font-black text-slate-400 dark:text-slate-500">103</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-bold text-green-500 uppercase">Disponível</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center py-4 gap-2">
+<span class="material-symbols-outlined text-green-500 text-3xl">add_circle</span>
+<p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Admitir Paciente</p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 flex justify-center">
+<span class="px-2 py-0.5 rounded bg-green-500 text-white text-[10px] font-bold uppercase">Livre</span>
+</div>
+</div>
+<!-- Bed Card: Occupied (Urgent) -->
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-orange rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 relative group hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Cama</span>
+<span class="text-xl font-black text-slate-900 dark:text-white">104</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="w-4 h-4 rounded-full bg-manchester-orange mb-1 shadow-[0_0_8px_rgba(249,115,22,0.4)]"></span>
+<span class="text-[10px] font-bold text-manchester-orange uppercase">Urgente</span>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">António G. Mateus</p>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">badge</span>
+<span>B.I. 0001233BE011</span>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span>Entrada: 12:45</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-bold uppercase">Ocupada</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">info</span>
+</div>
+</div>
+<!-- Bed Card: Occupied (Yellow) -->
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-yellow rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 relative group hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Cama</span>
+<span class="text-xl font-black text-slate-900 dark:text-white">105</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="w-4 h-4 rounded-full bg-manchester-yellow mb-1"></span>
+<span class="text-[10px] font-bold text-manchester-yellow uppercase">Semi-Urgente</span>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">Francisca Lumbo</p>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">badge</span>
+<span>B.I. 0005541LA110</span>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span>Entrada: 11:30</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-bold uppercase">Ocupada</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">info</span>
+</div>
+</div>
+<!-- Bed Card: Occupied (Blue/Non-Urgent) -->
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-blue rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 relative group hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Cama</span>
+<span class="text-xl font-black text-slate-900 dark:text-white">106</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="w-4 h-4 rounded-full bg-manchester-blue mb-1"></span>
+<span class="text-[10px] font-bold text-manchester-blue uppercase">Não Urgente</span>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">Bernardo Silva</p>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">badge</span>
+<span>B.I. 0003312BA445</span>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span>Entrada: 13:20</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-bold uppercase">Ocupada</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">info</span>
+</div>
+</div>
+<!-- Repeat Free Bed for visual balance -->
+<div class="bg-slate-100 dark:bg-slate-800/30 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg p-4 transition-all hover:border-green-500/50 cursor-pointer">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter">Cama</span>
+<span class="text-xl font-black text-slate-400 dark:text-slate-500">107</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-bold text-green-500 uppercase">Disponível</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center py-4 gap-2">
+<span class="material-symbols-outlined text-green-500 text-3xl">add_circle</span>
+<p class="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase">Admitir Paciente</p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 flex justify-center">
+<span class="px-2 py-0.5 rounded bg-green-500 text-white text-[10px] font-bold uppercase">Livre</span>
+</div>
+</div>
+<!-- Bed Card: Occupied (Alta Prevista) -->
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-green rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 relative group hover:ring-2 hover:ring-primary/50 transition-all cursor-pointer ring-1 ring-primary/20">
+<div class="absolute -top-2 -right-2">
+<span class="flex items-center justify-center h-6 px-2 rounded bg-amber-500 text-white text-[9px] font-black uppercase shadow-lg">Alta Hoje</span>
+</div>
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Cama</span>
+<span class="text-xl font-black text-slate-900 dark:text-white">108</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="w-4 h-4 rounded-full bg-manchester-green mb-1"></span>
+<span class="text-[10px] font-bold text-manchester-green uppercase">Estável</span>
+</div>
+</div>
+<div class="space-y-1">
+<p class="text-sm font-bold text-slate-800 dark:text-slate-200 truncate">Manuel de Carvalho</p>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">badge</span>
+<span>B.I. 0007821LA090</span>
+</div>
+<div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="text-amber-500 font-bold">Saída: 16:00 (Est.)</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="px-2 py-0.5 rounded bg-primary text-white text-[10px] font-bold uppercase">Ocupada</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">info</span>
+</div>
+</div>
+<!-- More beds for dense visual effect -->
+<!-- [Repeated structure for bed 109 to 115 ...] -->
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-orange rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 opacity-80">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col"><span class="text-xl font-black">109</span></div>
+<span class="w-4 h-4 rounded-full bg-manchester-orange"></span>
+</div>
+<p class="text-sm font-bold truncate">Paula Gonçalves</p>
+<p class="text-[11px] text-slate-500">B.I. 0004512LA902</p>
+</div>
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-red rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 opacity-80">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col"><span class="text-xl font-black">110</span></div>
+<span class="w-4 h-4 rounded-full bg-manchester-red"></span>
+</div>
+<p class="text-sm font-bold truncate">Domingos T. Neto</p>
+<p class="text-[11px] text-slate-500">B.I. 0001222HU001</p>
+</div>
+<div class="bg-white dark:bg-[#1a232e] border-l-4 border-manchester-yellow rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 p-4 opacity-80">
+<div class="flex justify-between items-start mb-3">
+<div class="flex flex-col"><span class="text-xl font-black">111</span></div>
+<span class="w-4 h-4 rounded-full bg-manchester-yellow"></span>
+</div>
+<p class="text-sm font-bold truncate">Sofia Mendes</p>
+<p class="text-[11px] text-slate-500">B.I. 0009912BA122</p>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800/30 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg p-4 flex items-center justify-center">
+<span class="text-slate-400 font-bold">112: LIVRE</span>
+</div>
+</div>
+</main>
+</div>
+<!-- Quick Legend Overlay (Mobile Bottom or Floating) -->
+<div class="fixed bottom-4 right-4 flex flex-col items-end gap-2 lg:flex-row lg:items-center lg:bg-white/90 lg:dark:bg-[#1a232e]/90 lg:backdrop-blur-md lg:p-2 lg:rounded-full lg:shadow-2xl lg:border lg:border-slate-200 lg:dark:border-slate-800 z-50">
+<div class="hidden lg:flex items-center gap-4 px-4 border-r border-slate-300 dark:border-slate-700">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-manchester-red"></span>
+<span class="text-[10px] font-bold uppercase dark:text-slate-300">Emergência</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-manchester-orange"></span>
+<span class="text-[10px] font-bold uppercase dark:text-slate-300">Muito Urgente</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-manchester-yellow"></span>
+<span class="text-[10px] font-bold uppercase dark:text-slate-300">Urgente</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-manchester-green"></span>
+<span class="text-[10px] font-bold uppercase dark:text-slate-300">Estável</span>
+</div>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-full text-[10px] font-bold uppercase">
+                Ocupada
+            </div>
+<div class="flex items-center gap-2 px-3 py-1 bg-green-500 text-white rounded-full text-[10px] font-bold uppercase">
+                Livre
+            </div>
+</div>
+</div>
+</body></html>

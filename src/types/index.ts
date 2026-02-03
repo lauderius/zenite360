@@ -83,7 +83,8 @@ export type FormaPagamento =
 
 export interface Usuario {
   id: number;
-  funcionarioId: number;
+  name?: string;
+  funcionarioId?: number;
   username: string;
   email: string;
   activo: boolean;

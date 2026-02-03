@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Tabs, Avatar } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
+import { api } from '@/services/api';
 
 interface Exame {
   id: number;
@@ -197,16 +198,15 @@ export default function LaboratorioPage() {
                         {examesFiltrados.map((exame) => (
                           <div
                             key={exame.id}
-                            className={`flex items-center justify-between p-4 rounded-lg border ${
-                              exame.urgente
+                            className={`flex items-center justify-between p-4 rounded-lg border ${exame.urgente
                                 ? 'border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-800'
                                 : 'border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700'
-                            }`}
+                              }`}
                           >
                             <div className="flex items-center gap-4">
                               {/* Indicador de Status */}
                               <div className={`w-2 h-12 rounded-full ${statusConfig[exame.status].cor}`} />
-                              
+
                               <div>
                                 <div className="flex items-center gap-2">
                                   <p className="font-medium text-slate-700 dark:text-slate-200">
@@ -233,7 +233,7 @@ export default function LaboratorioPage() {
                               <Badge variant={statusConfig[exame.status].variant}>
                                 {statusConfig[exame.status].label}
                               </Badge>
-                              
+
                               <div className="flex gap-1">
                                 {exame.status === 'SOLICITADO' && (
                                   <Button size="sm" variant="outline">

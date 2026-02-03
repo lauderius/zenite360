@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Infraestrutura</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#210047", // Deep purple provided in instructions
+                        "secondary": "#2e2345",
+                        "accent-blue": "#3b82f6",
+                        "accent-cyan": "#06b6d4",
+                        "accent-teal": "#14b8a6",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#180f23", // Dark background provided
+                        "alert-red": "#ef4444",
+                        "alert-amber": "#f59e0b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#30273a] bg-[#141018] px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg">
+<span class="material-symbols-outlined text-white">grid_view</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Zênite360 | Infraestrutura</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="hidden md:flex gap-2">
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-[#30273a] text-white hover:bg-[#4a3e56] transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">notifications</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-[#30273a] text-white hover:bg-[#4a3e56] transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">settings</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg bg-[#30273a] text-white hover:bg-[#4a3e56] transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">help</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-[#30273a]">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold text-white">Dr. Arnaldo Silva</p>
+<p class="text-xs text-[#aa9abc]">Director de Manutenção</p>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-[#30273a]" data-alt="Profile picture of a maintenance director" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuANd6t-xFT72l3Qt-RFvGnWLHWzaggIsZ7pXn8Tkvf_YlPxMomO19G0yVoyNxkvY7DNiPHvZDMffZxx5YnQ1W3x7rh885-g9nlOEEbm29w5pzu-sm180Qe-fXOmUML7tKRGb5WxdBNlnFRLXk4htHkwkUjXW_I8ir270UsbfTYr8368lwrjENKIZ6GtaXY9_NZTHyCPkO5kfANOMv0xOaiYjXt7YJfcfhTKJ3l38OVUPY3MhfZpmKEcnDz_27s7lb_gUvCzklok1eif");'></div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<div class="flex flex-1 w-full justify-center p-4 md:p-6 lg:p-8">
+<div class="flex flex-col max-w-[1400px] flex-1 gap-6">
+<!-- Breadcrumbs & Actions -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-col gap-2">
+<div class="flex flex-wrap gap-2 text-sm">
+<a class="text-[#aa9abc] font-medium hover:text-white transition-colors" href="#">Dashboard</a>
+<span class="text-[#aa9abc] font-medium">/</span>
+<a class="text-[#aa9abc] font-medium hover:text-white transition-colors" href="#">Infraestrutura</a>
+<span class="text-[#aa9abc] font-medium">/</span>
+<span class="text-white font-medium">Consumo de Energia e Água</span>
+</div>
+<h1 class="text-white text-3xl font-bold leading-tight">Painel de Controlo de Utilidades</h1>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-[#30273a] text-white rounded-lg font-medium text-sm hover:bg-[#4a3e56] transition-colors">
+<span class="material-symbols-outlined" style="font-size: 18px;">calendar_today</span>
+<span>Out 2023</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-bold text-sm hover:bg-[#32006b] transition-colors shadow-lg shadow-purple-900/20">
+<span class="material-symbols-outlined" style="font-size: 18px;">download</span>
+<span>Relatório de Sustentabilidade</span>
+</button>
+</div>
+</div>
+<!-- Top Stats Row (Gauges & Cost) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+<!-- Electricity Card -->
+<div class="bg-secondary rounded-xl p-6 border border-[#30273a] flex flex-col relative overflow-hidden group hover:border-[#aa9abc] transition-colors">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-white" style="font-size: 120px;">bolt</span>
+</div>
+<div class="flex justify-between items-start z-10">
+<div>
+<p class="text-[#aa9abc] text-sm font-medium uppercase tracking-wider">Eletricidade (Tempo Real)</p>
+<h3 class="text-white text-4xl font-bold mt-2 font-mono tracking-tight">12,450 <span class="text-lg text-[#aa9abc] font-normal font-display">kWh</span></h3>
+</div>
+<div class="flex flex-col items-end">
+<span class="flex items-center text-[#0bda73] text-sm font-bold bg-[#0bda73]/10 px-2 py-1 rounded">
+<span class="material-symbols-outlined mr-1" style="font-size: 16px;">trending_up</span>
+                                +2.4%
+                            </span>
+<span class="text-[#aa9abc] text-xs mt-1">vs. média horária</span>
+</div>
+</div>
+<!-- Visual Gauge Simulation -->
+<div class="mt-6 z-10">
+<div class="w-full bg-[#141018] rounded-full h-3 mb-2 overflow-hidden">
+<div class="bg-gradient-to-r from-accent-blue to-accent-cyan h-3 rounded-full" style="width: 75%"></div>
+</div>
+<div class="flex justify-between text-xs text-[#aa9abc]">
+<span>0 kWh</span>
+<span>Capacidade: 16,000 kWh</span>
+</div>
+</div>
+<div class="mt-4 flex gap-4 border-t border-[#30273a] pt-4 z-10">
+<div>
+<p class="text-xs text-[#aa9abc]">Pico Hoje</p>
+<p class="text-white font-bold">14,200 kWh</p>
+</div>
+<div>
+<p class="text-xs text-[#aa9abc]">Fator Potência</p>
+<p class="text-accent-cyan font-bold">0.92</p>
+</div>
+</div>
+</div>
+<!-- Water Card -->
+<div class="bg-secondary rounded-xl p-6 border border-[#30273a] flex flex-col relative overflow-hidden group hover:border-[#aa9abc] transition-colors">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-white" style="font-size: 120px;">water_drop</span>
+</div>
+<div class="flex justify-between items-start z-10">
+<div>
+<p class="text-[#aa9abc] text-sm font-medium uppercase tracking-wider">Água (Tempo Real)</p>
+<h3 class="text-white text-4xl font-bold mt-2 font-mono tracking-tight">450 <span class="text-lg text-[#aa9abc] font-normal font-display">m³</span></h3>
+</div>
+<div class="flex flex-col items-end">
+<span class="flex items-center text-accent-cyan text-sm font-bold bg-accent-cyan/10 px-2 py-1 rounded">
+<span class="material-symbols-outlined mr-1" style="font-size: 16px;">trending_down</span>
+                                -1.1%
+                            </span>
+<span class="text-[#aa9abc] text-xs mt-1">vs. média horária</span>
+</div>
+</div>
+<!-- Visual Gauge Simulation -->
+<div class="mt-6 z-10">
+<div class="w-full bg-[#141018] rounded-full h-3 mb-2 overflow-hidden">
+<div class="bg-gradient-to-r from-accent-teal to-green-400 h-3 rounded-full" style="width: 45%"></div>
+</div>
+<div class="flex justify-between text-xs text-[#aa9abc]">
+<span>0 m³</span>
+<span>Capacidade: 1,000 m³</span>
+</div>
+</div>
+<div class="mt-4 flex gap-4 border-t border-[#30273a] pt-4 z-10">
+<div>
+<p class="text-xs text-[#aa9abc]">Pressão Principal</p>
+<p class="text-white font-bold">4.2 Bar</p>
+</div>
+<div>
+<p class="text-xs text-[#aa9abc]">Reserva Tanque</p>
+<p class="text-accent-teal font-bold">88%</p>
+</div>
+</div>
+</div>
+<!-- Cost Estimate Card -->
+<div class="bg-secondary rounded-xl p-6 border border-[#30273a] flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[#aa9abc]">payments</span>
+<p class="text-[#aa9abc] text-sm font-medium uppercase tracking-wider">Custo Estimado (Mês)</p>
+</div>
+<h3 class="text-white text-4xl font-bold mt-2 tracking-tight">14.2M <span class="text-lg text-[#aa9abc] font-normal">AOA</span></h3>
+<p class="text-xs text-[#aa9abc] mt-1">Projeção baseada no consumo atual</p>
+</div>
+<div class="space-y-3 mt-6">
+<div class="flex justify-between items-center p-3 rounded bg-[#141018]">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-accent-blue"></span>
+<span class="text-sm text-white">Eletricidade</span>
+</div>
+<span class="text-sm font-mono text-white">12.5M AOA</span>
+</div>
+<div class="flex justify-between items-center p-3 rounded bg-[#141018]">
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-accent-teal"></span>
+<span class="text-sm text-white">Água</span>
+</div>
+<span class="text-sm font-mono text-white">1.7M AOA</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Main Trend Chart (Spans 2 cols) -->
+<div class="lg:col-span-2 bg-secondary rounded-xl border border-[#30273a] p-6 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-white text-lg font-bold">Tendência de Consumo</h3>
+<p class="text-[#aa9abc] text-sm">Comparativo Mensal (kWh e m³)</p>
+</div>
+<div class="flex items-center gap-4 text-sm">
+<div class="flex items-center gap-2">
+<span class="block w-3 h-3 rounded-full bg-accent-blue"></span>
+<span class="text-white">Este Mês</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="block w-3 h-3 rounded-full border-2 border-[#aa9abc] border-dashed"></span>
+<span class="text-[#aa9abc]">Mês Anterior</span>
+</div>
+</div>
+</div>
+<!-- SVG Chart Container -->
+<div class="flex-1 w-full relative min-h-[250px]">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 800 250">
+<defs>
+<lineargradient id="gradientLine" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#3b82f6" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line stroke="#30273a" stroke-width="1" x1="0" x2="800" y1="200" y2="200"></line>
+<line stroke="#30273a" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="800" y1="150" y2="150"></line>
+<line stroke="#30273a" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="800" y1="100" y2="100"></line>
+<line stroke="#30273a" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="800" y1="50" y2="50"></line>
+<!-- Previous Month (Dashed) -->
+<path d="M0 180 C 100 160, 200 190, 300 140 S 500 100, 600 120 S 750 80, 800 60" fill="none" stroke="#aa9abc" stroke-dasharray="6 4" stroke-opacity="0.5" stroke-width="2"></path>
+<!-- Current Month (Solid + Area) -->
+<path d="M0 160 C 100 140, 200 120, 300 80 S 500 60, 600 90 S 750 40, 800 30 V 250 H 0 Z" fill="url(#gradientLine)"></path>
+<path d="M0 160 C 100 140, 200 120, 300 80 S 500 60, 600 90 S 750 40, 800 30" fill="none" stroke="#3b82f6" stroke-linecap="round" stroke-width="3"></path>
+<!-- Data Points -->
+<circle cx="300" cy="80" fill="#180f23" r="4" stroke="#3b82f6" stroke-width="2"></circle>
+<circle cx="600" cy="90" fill="#180f23" r="4" stroke="#3b82f6" stroke-width="2"></circle>
+</svg>
+<!-- Chart X-Axis Labels -->
+<div class="flex justify-between text-xs text-[#aa9abc] mt-2">
+<span>Dia 1</span>
+<span>Dia 5</span>
+<span>Dia 10</span>
+<span>Dia 15</span>
+<span>Dia 20</span>
+<span>Dia 25</span>
+<span>Dia 30</span>
+</div>
+</div>
+</div>
+<!-- Efficiency By Sector -->
+<div class="lg:col-span-1 bg-secondary rounded-xl border border-[#30273a] p-6 flex flex-col">
+<h3 class="text-white text-lg font-bold mb-4">Eficiência Energética</h3>
+<p class="text-[#aa9abc] text-xs mb-6 uppercase tracking-wider">Consumo por Sector (kWh/m²)</p>
+<div class="flex flex-col gap-5 overflow-y-auto">
+<!-- Sector 1 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1">
+<span class="text-sm text-white font-medium group-hover:text-accent-blue transition-colors">Bloco Operatório</span>
+<span class="text-xs text-[#aa9abc]">Alto Consumo</span>
+</div>
+<div class="w-full bg-[#141018] rounded-full h-2">
+<div class="bg-accent-blue h-2 rounded-full relative" style="width: 85%">
+<div class="absolute -right-2 -top-1 w-2 h-2 rounded-full bg-white opacity-0 group-hover:opacity-100 animate-ping"></div>
+</div>
+</div>
+<p class="text-right text-xs font-mono mt-1 text-white">450 kWh</p>
+</div>
+<!-- Sector 2 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1">
+<span class="text-sm text-white font-medium group-hover:text-accent-teal transition-colors">Urgências</span>
+<span class="text-xs text-[#aa9abc]">Normal</span>
+</div>
+<div class="w-full bg-[#141018] rounded-full h-2">
+<div class="bg-accent-teal h-2 rounded-full" style="width: 65%"></div>
+</div>
+<p class="text-right text-xs font-mono mt-1 text-white">320 kWh</p>
+</div>
+<!-- Sector 3 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1">
+<span class="text-sm text-white font-medium group-hover:text-accent-cyan transition-colors">Internamento A</span>
+<span class="text-xs text-[#aa9abc]">Eficiente</span>
+</div>
+<div class="w-full bg-[#141018] rounded-full h-2">
+<div class="bg-accent-cyan h-2 rounded-full" style="width: 40%"></div>
+</div>
+<p class="text-right text-xs font-mono mt-1 text-white">180 kWh</p>
+</div>
+<!-- Sector 4 -->
+<div class="group">
+<div class="flex justify-between items-end mb-1">
+<span class="text-sm text-white font-medium group-hover:text-purple-400 transition-colors">Radiologia</span>
+<span class="text-xs text-[#aa9abc]">Intermitente</span>
+</div>
+<div class="w-full bg-[#141018] rounded-full h-2">
+<div class="bg-purple-500 h-2 rounded-full" style="width: 55%"></div>
+</div>
+<p class="text-right text-xs font-mono mt-1 text-white">210 kWh</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Critical Alerts Section -->
+<div class="bg-[#2a1b1b] border border-alert-red/30 rounded-xl overflow-hidden">
+<div class="bg-alert-red/20 px-6 py-3 flex justify-between items-center border-b border-alert-red/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-alert-red">warning</span>
+<h3 class="text-white font-bold text-base">Alertas Críticos do Sistema</h3>
+</div>
+<span class="bg-alert-red text-white text-xs font-bold px-2 py-0.5 rounded">2 ATIVOS</span>
+</div>
+<div class="p-0">
+<!-- Alert Item 1 -->
+<div class="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors">
+<div class="size-10 rounded-full bg-alert-red/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-alert-red">water_loss</span>
+</div>
+<div class="flex-1">
+<h4 class="text-white font-bold">Fuga de Água Detectada</h4>
+<p class="text-[#aa9abc] text-sm">Bloco B, Piso 2 - Variação anormal de pressão nos últimos 15 min.</p>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto mt-2 md:mt-0">
+<span class="text-xs text-white/60 font-mono bg-white/5 px-2 py-1 rounded">Há 10 min</span>
+<button class="px-3 py-1.5 bg-alert-red hover:bg-red-600 text-white text-xs font-bold rounded transition-colors w-full md:w-auto text-center">
+                                 Ver Localização
+                             </button>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 hover:bg-white/5 transition-colors">
+<div class="size-10 rounded-full bg-alert-amber/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-alert-amber">electric_bolt</span>
+</div>
+<div class="flex-1">
+<h4 class="text-white font-bold">Pico de Tensão Elétrica</h4>
+<p class="text-[#aa9abc] text-sm">Gerador Auxiliar 1 - Voltagem excedeu limite de segurança (245V).</p>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto mt-2 md:mt-0">
+<span class="text-xs text-white/60 font-mono bg-white/5 px-2 py-1 rounded">Há 45 min</span>
+<button class="px-3 py-1.5 bg-[#30273a] hover:bg-[#4a3e56] text-white text-xs font-bold rounded transition-colors w-full md:w-auto text-center border border-white/10">
+                                 Diagnóstico
+                             </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

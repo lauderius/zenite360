@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestão de Stock SGF | Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "card-dark": "#162231",
+                        "border-dark": "#27303a",
+                        "status-red": "#EF4444",
+                        "status-yellow": "#F59E0B",
+                        "status-green": "#10B981"
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #27303a; border-radius: 10px; }
+        .skeleton { background: linear-gradient(90deg, #1b2128 25%, #27303a 50%, #1b2128 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-primary border-b border-primary/20 shadow-lg">
+<div class="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-white/10 rounded flex items-center justify-center">
+<svg class="w-6 h-6 text-white" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h1 class="text-white text-lg font-bold tracking-tight">Zênite360 <span class="font-light opacity-80">SGF</span></h1>
+</div>
+<div class="hidden md:flex items-center gap-1">
+<label class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-slate-400 text-sm">search</span>
+<input class="bg-white/10 border-none rounded-lg pl-10 pr-4 py-1.5 text-sm text-white placeholder:text-slate-400 focus:ring-2 focus:ring-white/20 w-64" placeholder="Procurar fármaco ou material..." type="text"/>
+</label>
+</div>
+</div>
+<nav class="flex items-center gap-6">
+<div class="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300">
+<a class="hover:text-white transition-colors" href="#">Dashboard</a>
+<a class="text-white border-b-2 border-white pb-1 mt-1" href="#">Inventário</a>
+<a class="hover:text-white transition-colors" href="#">Pedidos</a>
+<a class="hover:text-white transition-colors" href="#">Relatórios</a>
+</div>
+<div class="flex items-center gap-3 border-l border-white/10 pl-6">
+<button class="w-9 h-9 flex items-center justify-center rounded-lg bg-white/10 hover:bg-white/20 transition-all text-white relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+<div class="w-9 h-9 rounded-full bg-cover bg-center border-2 border-white/20" data-alt="Avatar do utilizador" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5uQICAyO1zci9vvuEneDgRKu-mE28VvrvOwVSFbSKZvNhj9XmyF1Gcvhy4c5dZug1vvBOy2X1DLcb8FCu6Z97v5hOZaFv29MojEi6r1pK-cZ25G7ypMR8LeTkwW9mRpGSxnS7Ensac8R3d5BPgBO8X3vX3RBiRIZMDdzzM2niebU-GMy5DViXzlKqSWgWOwAwaB3IhpbzHCa3HvETz4udBVuyuK3ltosJ5TtBw5nvN70QCG93ZCy_PgBvnpV94_qEyFU12KS7GoEn')"></div>
+</div>
+</nav>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-6 py-6">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-6">
+<a class="text-slate-500 dark:text-slate-400 text-sm hover:underline" href="#">Projecto Zênite360</a>
+<span class="material-symbols-outlined text-xs text-slate-400">chevron_right</span>
+<span class="text-slate-900 dark:text-white text-sm font-semibold">Gestão de Stock (SGF)</span>
+</nav>
+<!-- KPI Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-white dark:bg-card-dark p-5 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Total de Itens</p>
+<span class="material-symbols-outlined text-primary dark:text-blue-400">inventory_2</span>
+</div>
+<h3 class="text-3xl font-bold dark:text-white">1.240</h3>
+<div class="mt-2 flex items-center gap-1 text-emerald-500 text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+2.4%</span>
+</div>
+</div>
+<div class="bg-white dark:bg-card-dark p-5 rounded-xl border-l-4 border-l-status-red border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Stock Crítico</p>
+<span class="material-symbols-outlined text-status-red">emergency</span>
+</div>
+<h3 class="text-3xl font-bold dark:text-white">12</h3>
+<div class="mt-2 text-slate-400 text-xs">Requer intervenção imediata</div>
+</div>
+<div class="bg-white dark:bg-card-dark p-5 rounded-xl border-l-4 border-l-status-yellow border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Stock Baixo</p>
+<span class="material-symbols-outlined text-status-yellow">warning</span>
+</div>
+<h3 class="text-3xl font-bold dark:text-white">45</h3>
+<div class="mt-2 text-slate-400 text-xs">Nível de segurança atingido</div>
+</div>
+<div class="bg-white dark:bg-card-dark p-5 rounded-xl border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start mb-3">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider">Pedidos Pendentes</p>
+<span class="material-symbols-outlined text-blue-500">pending_actions</span>
+</div>
+<h3 class="text-3xl font-bold dark:text-white">08</h3>
+<div class="mt-2 flex items-center gap-1 text-status-red text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>3 em atraso</span>
+</div>
+</div>
+</div>
+<!-- Filters Section -->
+<div class="bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark rounded-xl p-4 mb-6 shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+<div class="flex flex-wrap items-center gap-4">
+<div class="min-w-[200px]">
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 uppercase">Sector (SBU/SF)</label>
+<select class="w-full bg-slate-50 dark:bg-background-dark border border-slate-200 dark:border-border-dark rounded-lg text-sm p-2 focus:ring-primary focus:border-primary transition-all">
+<option>Todos os Sectores</option>
+<option>SBU - Emergência</option>
+<option>SF - Farmácia Central</option>
+<option>SBU - Pediatria</option>
+</select>
+</div>
+<div class="min-w-[200px]">
+<label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1.5 uppercase">Categoria</label>
+<select class="w-full bg-slate-50 dark:bg-background-dark border border-slate-200 dark:border-border-dark rounded-lg text-sm p-2 focus:ring-primary focus:border-primary transition-all">
+<option>Todas Categorias</option>
+<option>Medicamentos</option>
+<option>Consumíveis</option>
+<option>Reagentes</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-3 self-end lg:self-center">
+<button class="px-4 py-2 bg-slate-100 dark:bg-border-dark text-slate-700 dark:text-slate-200 rounded-lg text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex items-center gap-2 border border-slate-200 dark:border-border-dark">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                        Filtros Avançados
+                    </button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-primary/90 transition-all flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+                        Novo Item
+                    </button>
+</div>
+</div>
+</div>
+<!-- Inventory Table -->
+<div class="bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark rounded-xl shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-border-dark flex items-center justify-between">
+<h2 class="font-bold text-slate-800 dark:text-white">Inventário de Stock Detalhado</h2>
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-400 italic">Última atualização: Hoje, 14:32</span>
+<button class="text-primary dark:text-blue-400 hover:bg-primary/5 p-1 rounded transition-colors">
+<span class="material-symbols-outlined text-sm">refresh</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-background-dark/50">
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-border-dark">Nome do Item</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-border-dark">Categoria</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-border-dark">Qtd. Atual</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-border-dark">Unidade</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-border-dark text-center">Status</th>
+<th class="px-6 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-border-dark text-right">Acções</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-border-dark">
+<!-- Critical Stock Row -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent">
+<div class="flex flex-col">
+<span class="font-semibold text-sm text-slate-800 dark:text-slate-200">Paracetamol IV 10mg/ml</span>
+<span class="text-[10px] text-slate-500 font-mono">ID: ZEN-MED-042</span>
+</div>
+</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm">Medicamentos</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm font-bold text-status-red">12</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm text-slate-400">Frascos</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 uppercase">Crítico</span>
+</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-right">
+<button class="bg-primary hover:bg-primary/90 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1 ml-auto">
+<span class="material-symbols-outlined text-sm">shopping_cart_checkout</span>
+                                    Solicitar Reposição
+                                </button>
+</td>
+</tr>
+<!-- Low Stock Row -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent">
+<div class="flex flex-col">
+<span class="font-semibold text-sm text-slate-800 dark:text-slate-200">Seringas 5ml Descartáveis</span>
+<span class="text-[10px] text-slate-500 font-mono">ID: ZEN-CON-211</span>
+</div>
+</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm">Consumíveis</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm font-bold text-status-yellow">85</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm text-slate-400">Unidades</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 uppercase">Baixo</span>
+</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-right">
+<button class="bg-primary hover:bg-primary/90 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg shadow-sm transition-all flex items-center gap-1 ml-auto">
+<span class="material-symbols-outlined text-sm">shopping_cart_checkout</span>
+                                    Solicitar Reposição
+                                </button>
+</td>
+</tr>
+<!-- Normal Stock Row -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent">
+<div class="flex flex-col">
+<span class="font-semibold text-sm text-slate-800 dark:text-slate-200">Amoxicilina 500mg</span>
+<span class="text-[10px] text-slate-500 font-mono">ID: ZEN-MED-109</span>
+</div>
+</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm">Medicamentos</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm font-bold text-status-green">450</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm text-slate-400">Cápsulas</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 uppercase">Estável</span>
+</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Reagent Row -->
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent">
+<div class="flex flex-col">
+<span class="font-semibold text-sm text-slate-800 dark:text-slate-200">Reagente Teste HIV (A+B)</span>
+<span class="text-[10px] text-slate-500 font-mono">ID: ZEN-REA-005</span>
+</div>
+</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm">Reagentes</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm font-bold text-status-green">120</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-sm text-slate-400">Kits</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 uppercase">Estável</span>
+</td>
+<td class="px-6 py-3 border-b border-slate-100 dark:border-transparent text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Skeleton Loader Row (Example) -->
+<tr>
+<td class="px-6 py-4"><div class="h-4 w-32 skeleton rounded"></div><div class="h-2 w-16 skeleton rounded mt-2"></div></td>
+<td class="px-6 py-4"><div class="h-4 w-20 skeleton rounded"></div></td>
+<td class="px-6 py-4"><div class="h-4 w-12 skeleton rounded"></div></td>
+<td class="px-6 py-4"><div class="h-4 w-16 skeleton rounded"></div></td>
+<td class="px-6 py-4"><div class="h-6 w-20 skeleton rounded-full mx-auto"></div></td>
+<td class="px-6 py-4 text-right"><div class="h-8 w-24 skeleton rounded-lg ml-auto"></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-3 bg-slate-50 dark:bg-background-dark/50 border-t border-slate-200 dark:border-border-dark flex items-center justify-between text-xs font-medium text-slate-500">
+<span>A mostrar 1-5 de 1.240 itens</span>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 dark:border-border-dark disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white border border-primary">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 dark:border-border-dark hover:bg-slate-100 dark:hover:bg-border-dark transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 dark:border-border-dark hover:bg-slate-100 dark:hover:bg-border-dark transition-colors">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-slate-200 dark:border-border-dark hover:bg-slate-100 dark:hover:bg-border-dark transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Global Actions -->
+<div class="fixed bottom-8 right-8 flex flex-col gap-3">
+<button class="w-12 h-12 bg-white dark:bg-card-dark text-slate-700 dark:text-slate-200 rounded-full shadow-xl border border-slate-200 dark:border-border-dark flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">print</span>
+</button>
+<button class="w-12 h-12 bg-emerald-500 text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">description</span>
+</button>
+</div>
+</body></html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Relatório de Utilizadores Inactivos</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#1a222e",
+                        "surface-darker": "#131a24",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for high density table */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27303a; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151; 
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Side Navigation -->
+<aside class="flex w-72 flex-col border-r border-white/10 bg-primary dark:bg-[#002147]">
+<div class="flex h-16 items-center gap-3 px-6 border-b border-white/10">
+<div class="size-8 text-white">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-white text-xl font-bold tracking-tight">Zênite360</h2>
+</div>
+<div class="flex flex-col gap-1 p-4 overflow-y-auto">
+<div class="mb-6 px-2">
+<div class="flex items-center gap-3 mb-1">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-white/10" data-alt="Profile picture of the administrator" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD4jKVMHmb1plWDnAT6PI4nRvV2yGqezMBss8gOtuif4j0Uw60uEmc9hy_5F4_iAEbjPgBsPlA3BXF4luko4jaq97-X4NCl3NKSpUfQbcbsQX_ZTaHKjqP_jM-4Qx_BaMgKpZDGwCypSXSBC0LbhzOvtkvWytFI4lgvRl7f8Zw0DxgIShPGE4Xkoky0uU6rr-SW3wmvgAr0AUgtK_A3IaMso1BCePyep06wzlLjGxgE1CzTQEN_jJHIf1xyjSm0k3tWfa20BzBiIy3X");'></div>
+<div class="flex flex-col overflow-hidden">
+<h3 class="text-white text-sm font-medium truncate">Dr. Carlos Manuel</h3>
+<p class="text-blue-200 text-xs truncate">Admin de Segurança</p>
+</div>
+</div>
+<div class="mt-2 text-xs font-semibold text-blue-300 uppercase tracking-wider pl-1">Hospital Central</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-blue-100 hover:bg-white/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-blue-100 hover:bg-white/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Gestão de Utilizadores</span>
+</a>
+<div class="px-3 pt-4 pb-2">
+<p class="text-xs font-semibold text-blue-300 uppercase tracking-wider">Segurança</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-blue-100 hover:bg-white/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">shield</span>
+<span class="text-sm font-medium">Visão Geral</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-white/10 text-white shadow-sm ring-1 ring-white/5" href="#">
+<span class="material-symbols-outlined icon-filled">assignment_late</span>
+<span class="text-sm font-medium">Relatórios de Risco</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-blue-100 hover:bg-white/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">policy</span>
+<span class="text-sm font-medium">Auditoria</span>
+</a>
+<div class="px-3 pt-4 pb-2">
+<p class="text-xs font-semibold text-blue-300 uppercase tracking-wider">Sistema</p>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-blue-100 hover:bg-white/10 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Configurações</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-4 border-t border-white/10">
+<button class="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-blue-200 hover:text-white hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Terminar Sessão</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex flex-1 flex-col h-full overflow-hidden relative">
+<!-- Top Header -->
+<header class="h-16 flex items-center justify-between px-6 border-b border-[#27303a] bg-surface-darker shrink-0 z-20">
+<div class="flex items-center text-slate-400 text-sm">
+<span class="hover:text-white cursor-pointer transition-colors">Segurança</span>
+<span class="mx-2">/</span>
+<span class="hover:text-white cursor-pointer transition-colors">Relatórios</span>
+<span class="mx-2">/</span>
+<span class="text-white font-medium">Inactividade</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center size-9 rounded-full bg-surface-dark hover:bg-[#27303a] text-slate-300 transition-colors relative">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-surface-dark"></span>
+</button>
+<button class="flex items-center justify-center size-9 rounded-full bg-surface-dark hover:bg-[#27303a] text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-6 md:p-8 scroll-smooth">
+<div class="mx-auto max-w-7xl flex flex-col gap-6">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-3xl font-bold text-white tracking-tight">Relatório de Utilizadores Inactivos</h1>
+<p class="text-[#9aaabc] text-base">Monitorização de acesso e gestão de ciclo de vida das contas do hospital.</p>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-surface-dark hover:bg-[#27303a] text-white rounded-lg border border-[#27303a] transition-colors text-sm font-medium shadow-sm">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                                Exportar CSV
+                            </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-light text-white rounded-lg transition-colors text-sm font-medium shadow-sm ring-1 ring-white/10">
+<span class="material-symbols-outlined text-[18px]">print</span>
+                                Imprimir
+                            </button>
+</div>
+</div>
+<!-- KPIs -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-dark border border-[#27303a] rounded-xl p-5 shadow-sm relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">person_off</span>
+</div>
+<p class="text-[#9aaabc] text-sm font-medium mb-1">Total de Utilizadores Inactivos</p>
+<p class="text-white text-3xl font-bold tracking-tight">142</p>
+<div class="mt-4 flex items-center text-xs text-emerald-400 gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+<span>-2.4% desde o mês passado</span>
+</div>
+</div>
+<div class="bg-surface-dark border border-[#27303a] rounded-xl p-5 shadow-sm relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-red-500">
+<span class="material-symbols-outlined text-6xl">gpp_maybe</span>
+</div>
+<p class="text-[#9aaabc] text-sm font-medium mb-1">Contas com Risco de Segurança</p>
+<p class="text-white text-3xl font-bold tracking-tight">28</p>
+<p class="text-xs text-red-400/80 mt-1 font-medium">Inactivos há &gt;90 dias</p>
+<div class="mt-3 w-full bg-[#27303a] rounded-full h-1.5">
+<div class="bg-red-500 h-1.5 rounded-full" style="width: 20%"></div>
+</div>
+</div>
+<div class="bg-surface-dark border border-[#27303a] rounded-xl p-5 shadow-sm relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-blue-500">
+<span class="material-symbols-outlined text-6xl">domain</span>
+</div>
+<p class="text-[#9aaabc] text-sm font-medium mb-1">Sectores com Maior Inactividade</p>
+<div class="flex flex-col gap-2 mt-2">
+<div class="flex justify-between items-center text-sm">
+<span class="text-white font-medium">Radiologia</span>
+<span class="text-[#9aaabc]">15%</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-white font-medium">Internamento</span>
+<span class="text-[#9aaabc]">12%</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-white font-medium">Admin. Financeira</span>
+<span class="text-[#9aaabc]">8%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Filters and Search -->
+<div class="flex flex-col gap-4 bg-surface-dark border border-[#27303a] rounded-xl p-4 shadow-sm">
+<div class="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
+<!-- Search -->
+<div class="relative w-full lg:max-w-md">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#9aaabc]">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="block w-full rounded-lg border-0 bg-[#0f1823] py-2.5 pl-10 pr-3 text-white placeholder:text-gray-500 focus:ring-2 focus:ring-primary focus:bg-[#131a24] sm:text-sm sm:leading-6" placeholder="Pesquisar por nome, ID ou email..." type="text"/>
+</div>
+<!-- Filters & Action -->
+<div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+<select class="block w-full sm:w-auto rounded-lg border-0 bg-[#0f1823] py-2.5 pl-3 pr-10 text-white focus:ring-2 focus:ring-primary sm:text-sm sm:leading-6">
+<option>Todos os Sectores</option>
+<option>Radiologia</option>
+<option>Cardiologia</option>
+<option>Pediatria</option>
+<option>Administração</option>
+</select>
+<select class="block w-full sm:w-auto rounded-lg border-0 bg-[#0f1823] py-2.5 pl-3 pr-10 text-white focus:ring-2 focus:ring-primary sm:text-sm sm:leading-6">
+<option>Qualquer Inactividade</option>
+<option>&gt; 30 Dias</option>
+<option>&gt; 60 Dias</option>
+<option>&gt; 90 Dias (Crítico)</option>
+</select>
+<button class="flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-lg transition-colors text-sm font-medium w-full sm:w-auto whitespace-nowrap group">
+<span class="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">block</span>
+                                    Suspender Seleccionados
+                                </button>
+</div>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-hidden rounded-xl border border-[#27303a] bg-surface-dark shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm whitespace-nowrap">
+<thead class="bg-[#27303a] text-slate-300 font-medium uppercase tracking-wider text-xs">
+<tr>
+<th class="px-6 py-4 w-10" scope="col">
+<input class="rounded border-gray-600 bg-surface-darker text-primary focus:ring-offset-surface-darker focus:ring-primary" type="checkbox"/>
+</th>
+<th class="px-6 py-4" scope="col">Utilizador</th>
+<th class="px-6 py-4" scope="col">Sector</th>
+<th class="px-6 py-4" scope="col">Nível de Acesso</th>
+<th class="px-6 py-4" scope="col">Último Login</th>
+<th class="px-6 py-4" scope="col">Duração</th>
+<th class="px-6 py-4" scope="col">Estado</th>
+<th class="px-6 py-4 w-10" scope="col"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#27303a]">
+<!-- Row 1: High Risk -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-gray-600 bg-surface-darker text-primary focus:ring-offset-surface-darker focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-cover bg-center" data-alt="Avatar of Dr. Agostinho" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCJ-TpYoBsp8go6B_rKNOrB3_NKz2NCd3n3yMy9ogy_M1PNZfKl3I0sHoPgecUr7QwPW46cqfyNg6IDbYMTNuLoRjOPRUfgvvyhCrIGFz-QypprvoWpH9lLO94jZuHMv7pnArVKBHUDorzpYQprS1RCP9OnAtX7U7hOIvnFwtn7L4SyEoE25D27A427Hmp2WzQUjtd0ltTLnUAehq4chAFc-l86INncOCayZx6DMSzBN7aGD-1RjK4zhjukuxhB3A60WR8OXKyRONCC");'></div>
+<div class="flex flex-col">
+<span class="text-white font-medium">Dr. Agostinho Neto</span>
+<span class="text-[#9aaabc] text-xs">ID: MED-2023-089</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-300">Cirurgia Geral</td>
+<td class="px-6 py-4 text-slate-300">Médico Chefe</td>
+<td class="px-6 py-4 text-slate-300">12 Out 2023</td>
+<td class="px-6 py-4 text-white font-semibold">94 dias</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-red-500/10 px-2.5 py-0.5 text-xs font-medium text-red-500 border border-red-500/20">
+                                                Risco Alto
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#9aaabc] hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Medium Risk -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-gray-600 bg-surface-darker text-primary focus:ring-offset-surface-darker focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-slate-700 flex items-center justify-center text-white font-bold text-xs" data-alt="Initials avatar for Maria Dias">MD</div>
+<div class="flex flex-col">
+<span class="text-white font-medium">Maria Dias</span>
+<span class="text-[#9aaabc] text-xs">ID: ENF-2022-112</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-300">Radiologia</td>
+<td class="px-6 py-4 text-slate-300">Técnica Sénior</td>
+<td class="px-6 py-4 text-slate-300">28 Nov 2023</td>
+<td class="px-6 py-4 text-white font-semibold">47 dias</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-yellow-500/10 px-2.5 py-0.5 text-xs font-medium text-yellow-500 border border-yellow-500/20">
+                                                Atenção
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#9aaabc] hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Medium Risk -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-gray-600 bg-surface-darker text-primary focus:ring-offset-surface-darker focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-cover bg-center" data-alt="Avatar of João Costa" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAIn-qaFuj_c-VBDkl_xLrcyPZShcyzxdRXq3hJMrSmLhvQZFFm2qOn9mbN48pSIxAVZcMg1sRsMvpK-QrVPLhfDR1bT6iSykt2DlMbckr5iHJ6HgCzSg3V65w-RZ7c_dqF75gWIdpWlmwxfo6h9WuWrUtnrN3FRAJXIu4fLwGGrEUpnylLgaU2iOHy8q25nlul2JwAKOv5LQm2KyKNJnIBORpCo5uXHYD-Sta3Wo7cYG3oamyyrADVn5MSueISXChz7UpDR_BH-peV");'></div>
+<div class="flex flex-col">
+<span class="text-white font-medium">João Costa</span>
+<span class="text-[#9aaabc] text-xs">ID: ADM-2023-005</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-300">Recursos Humanos</td>
+<td class="px-6 py-4 text-slate-300">Assistente</td>
+<td class="px-6 py-4 text-slate-300">15 Nov 2023</td>
+<td class="px-6 py-4 text-white font-semibold">60 dias</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-yellow-500/10 px-2.5 py-0.5 text-xs font-medium text-yellow-500 border border-yellow-500/20">
+                                                Atenção
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#9aaabc] hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: High Risk -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-gray-600 bg-surface-darker text-primary focus:ring-offset-surface-darker focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-purple-700 flex items-center justify-center text-white font-bold text-xs" data-alt="Initials avatar for Ana Souza">AS</div>
+<div class="flex flex-col">
+<span class="text-white font-medium">Ana Souza</span>
+<span class="text-[#9aaabc] text-xs">ID: EXT-2023-441</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-300">Consultoria Externa</td>
+<td class="px-6 py-4 text-slate-300">Auditora</td>
+<td class="px-6 py-4 text-slate-300">02 Set 2023</td>
+<td class="px-6 py-4 text-white font-semibold">134 dias</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-red-500/10 px-2.5 py-0.5 text-xs font-medium text-red-500 border border-red-500/20">
+                                                Risco Alto
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#9aaabc] hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Low/Medium Risk -->
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-4">
+<input class="rounded border-gray-600 bg-surface-darker text-primary focus:ring-offset-surface-darker focus:ring-primary" type="checkbox"/>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-9 rounded-full bg-cover bg-center" data-alt="Avatar of Dr. Pedro" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDz7X-aBtw-TZKuhsYz-yfe0U2HIspxfdYKAyYcfYBnLqKPmqJ4K-p0icEecgD18i4aV9_asZo2WqV-2ZRgZ84BDZIZbG5UAohnLH8hM2fjNncRijlACjEPeirIaGfWjWxfKrVh4utZZw-kpxTxbDtfVKopULSMQ6fntfGm6AzE1IJqwyHarNhQ-MEZJTDz2E17QUzMabwvQgCR1kXbciZi9TFENZ4GwqChUjFODiqc_a77SZ0kdVz9f1yMMmkLoLwFez7h8XsOH9Co");'></div>
+<div class="flex flex-col">
+<span class="text-white font-medium">Dr. Pedro Lemos</span>
+<span class="text-[#9aaabc] text-xs">ID: MED-2021-102</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-300">Oncologia</td>
+<td class="px-6 py-4 text-slate-300">Médico Especialista</td>
+<td class="px-6 py-4 text-slate-300">10 Dez 2023</td>
+<td class="px-6 py-4 text-white font-semibold">35 dias</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-full bg-yellow-500/10 px-2.5 py-0.5 text-xs font-medium text-yellow-500 border border-yellow-500/20">
+                                                Atenção
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#9aaabc] hover:text-white opacity-0 group-hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between border-t border-[#27303a] bg-[#1a222e] px-4 py-3 sm:px-6">
+<div class="flex flex-1 justify-between sm:hidden">
+<a class="relative inline-flex items-center rounded-md border border-[#27303a] bg-[#0f1823] px-4 py-2 text-sm font-medium text-gray-300 hover:bg-[#27303a]" href="#">Anterior</a>
+<a class="relative ml-3 inline-flex items-center rounded-md border border-[#27303a] bg-[#0f1823] px-4 py-2 text-sm font-medium text-gray-300 hover:bg-[#27303a]" href="#">Próximo</a>
+</div>
+<div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-[#9aaabc]">
+                                        A mostrar <span class="font-medium text-white">1</span> até <span class="font-medium text-white">5</span> de <span class="font-medium text-white">142</span> resultados
+                                    </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-sm">
+<a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-[#27303a] hover:bg-[#27303a] focus:z-20 focus:outline-offset-0" href="#">
+<span class="sr-only">Anterior</span>
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</a>
+<a aria-current="page" class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" href="#">1</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400 ring-1 ring-inset ring-[#27303a] hover:bg-[#27303a] focus:z-20 focus:outline-offset-0" href="#">2</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400 ring-1 ring-inset ring-[#27303a] hover:bg-[#27303a] focus:z-20 focus:outline-offset-0" href="#">3</a>
+<span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400 ring-1 ring-inset ring-[#27303a] focus:outline-offset-0">...</span>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-400 ring-1 ring-inset ring-[#27303a] hover:bg-[#27303a] focus:z-20 focus:outline-offset-0" href="#">8</a>
+<a class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-[#27303a] hover:bg-[#27303a] focus:z-20 focus:outline-offset-0" href="#">
+<span class="sr-only">Próximo</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

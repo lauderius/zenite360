@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 | Gestão de Óbitos e Morgue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0053b2",
+                        "primary-dark": "#003d82",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#1b2430",
+                        "border-dark": "#2d3745",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-border-dark px-6 py-3 bg-white dark:bg-surface-dark sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">local_hospital</span>
+</div>
+<div class="flex flex-col">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Zênite360</h2>
+<span class="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">Gestão Hospitalar - Angola</span>
+</div>
+</div>
+<div class="flex flex-1 justify-end items-center gap-6">
+<nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+<a class="hover:text-primary transition-colors" href="#">Pacientes</a>
+<a class="hover:text-primary transition-colors" href="#">Internamento</a>
+<a class="text-primary font-bold" href="#">Morgue &amp; Óbitos</a>
+<a class="hover:text-primary transition-colors" href="#">Relatórios</a>
+</nav>
+<div class="h-6 w-px bg-slate-200 dark:bg-border-dark"></div>
+<div class="flex gap-2">
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-border-dark transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-border-dark transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex size-10 cursor-pointer items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-border-dark transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="Profile picture of the current user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBcN6FsXtPDBzNkQpzh1hoD_SWW9muyfK3sF7X1kxHy2E_VPJ3j2ghskoNLv4gMRrysEscU2MdSVL1pYa1zCbpja34sByIAdhYaT5jIXq2IHVI61E5tTN_TXT92fDz-XOfOw2LIpBbtwaS_wKOHprCXPSgdx7TMcLkOTSnLwTE0g4Oi3bfcT_sWMZIGy8ALG7OrvY6gTMNEexbrgC0WNZsru7oI_J9yDer2IhLp6ECgFcE1YiDQ84N0Md1C2vWO4vXhkC5OYYCE24k-");'></div>
+</div>
+</header>
+<main class="flex-1 p-6 md:p-8 max-w-[1600px] mx-auto w-full">
+<!-- Page Heading -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 text-primary text-sm font-semibold uppercase tracking-wider">
+<span class="material-symbols-outlined text-lg">apartment</span>
+                    Direcção Administrativa
+                </div>
+<h1 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Registo de Óbitos e Gestão de Morgue</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Controlo de entradas, saídas e emissão de certificados.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark text-slate-700 dark:text-white text-sm font-medium hover:bg-slate-50 dark:hover:bg-border-dark transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[20px]">history</span>
+                    Histórico de Registos
+                </button>
+<button class="flex items-center justify-center gap-2 h-10 px-4 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-medium shadow-md transition-colors">
+<span class="material-symbols-outlined text-[20px]">print</span>
+                    Relatório Diário
+                </button>
+</div>
+</div>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Capacidade Total</p>
+<span class="material-symbols-outlined text-slate-400">inventory_2</span>
+</div>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">50 <span class="text-sm font-normal text-slate-500">Unidades</span></p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Ocupação Atual</p>
+<span class="material-symbols-outlined text-orange-500">warning</span>
+</div>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">32 <span class="text-sm font-normal text-orange-500">(64%)</span></p>
+<div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full mt-2">
+<div class="bg-orange-500 h-1.5 rounded-full" style="width: 64%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Óbitos Hoje</p>
+<span class="material-symbols-outlined text-red-500">ecg_heart</span>
+</div>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">4</p>
+<p class="text-xs text-slate-500 mt-1">+1 desde a última hora</p>
+</div>
+<div class="flex flex-col gap-1 rounded-xl p-5 bg-white dark:bg-surface-dark border border-slate-200 dark:border-border-dark shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Saídas Pendentes</p>
+<span class="material-symbols-outlined text-blue-500">logout</span>
+</div>
+<p class="text-2xl font-bold text-slate-900 dark:text-white">2</p>
+<p class="text-xs text-slate-500 mt-1">Agendadas para hoje</p>
+</div>
+</div>
+<!-- Main Content Split -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+<!-- Left Column: Registration Form -->
+<div class="xl:col-span-5 flex flex-col gap-6">
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-border-dark flex items-center justify-between bg-slate-50/50 dark:bg-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">edit_document</span>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Registo de Óbito</h3>
+</div>
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-bold px-2 py-1 rounded border border-blue-200 dark:border-blue-800">Novo Registo</span>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<!-- Patient Search -->
+<div class="relative">
+<label class="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 block">Pesquisar Paciente</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-background-dark border border-slate-300 dark:border-border-dark rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400" placeholder="Nome ou ID Interno do Paciente..." type="text"/>
+</div>
+</div>
+<div class="h-px w-full bg-slate-200 dark:border-border-dark"></div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-400">Nome Completo</label>
+<input class="w-full px-4 py-2.5 bg-slate-50 dark:bg-background-dark border border-slate-300 dark:border-border-dark rounded-lg focus:border-primary outline-none text-slate-900 dark:text-white" placeholder="Nome do falecido" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-400">Nº B.I. Angolano</label>
+<input class="w-full px-4 py-2.5 bg-slate-50 dark:bg-background-dark border border-slate-300 dark:border-border-dark rounded-lg focus:border-primary outline-none text-slate-900 dark:text-white" placeholder="000000000AA000" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-400">Data e Hora do Óbito</label>
+<input class="w-full px-4 py-2.5 bg-slate-50 dark:bg-background-dark border border-slate-300 dark:border-border-dark rounded-lg focus:border-primary outline-none text-slate-900 dark:text-white dark:[color-scheme:dark]" type="datetime-local"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-400">Médico Declarante</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">medical_services</span>
+<input class="w-full px-4 py-2.5 bg-slate-50 dark:bg-background-dark border border-slate-300 dark:border-border-dark rounded-lg focus:border-primary outline-none text-slate-900 dark:text-white" placeholder="Dr. Nome do Médico" type="text"/>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-400">Causa da Morte (ICD-10)</label>
+<input class="w-full px-4 py-2.5 bg-slate-50 dark:bg-background-dark border border-slate-300 dark:border-border-dark rounded-lg focus:border-primary outline-none text-slate-900 dark:text-white mb-2" placeholder="Causa Imediata" type="text"/>
+<input class="w-full px-4 py-2.5 bg-slate-50 dark:bg-background-dark border border-slate-300 dark:border-border-dark rounded-lg focus:border-primary outline-none text-slate-900 dark:text-white" placeholder="Causa Básica / Antecedente" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-medium text-slate-600 dark:text-slate-400">Observações Adicionais</label>
+<textarea class="w-full px-4 py-2.5 bg-slate-50 dark:bg-background-dark border border-slate-300 dark:border-border-dark rounded-lg focus:border-primary outline-none text-slate-900 dark:text-white resize-none h-20" placeholder="Detalhes relevantes para o relatório..."></textarea>
+</div>
+<div class="flex flex-col gap-3 pt-4">
+<button class="w-full h-12 flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-bold transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">save</span>
+                                Registar Óbito e Emitir Certificado
+                            </button>
+<button class="w-full h-10 flex items-center justify-center gap-2 bg-transparent border border-slate-300 dark:border-border-dark hover:bg-slate-50 dark:hover:bg-border-dark text-slate-700 dark:text-slate-300 rounded-lg font-medium transition-colors">
+<span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
+                                Pré-visualizar Certidão PDF
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Morgue Map -->
+<div class="xl:col-span-7 flex flex-col gap-6">
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark shadow-sm h-full flex flex-col">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-border-dark flex flex-wrap items-center justify-between gap-4 bg-slate-50/50 dark:bg-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">ac_unit</span>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Mapa de Ocupação da Morgue</h3>
+</div>
+<div class="flex gap-4 text-xs font-medium">
+<div class="flex items-center gap-1.5">
+<div class="size-3 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+<span class="text-slate-600 dark:text-slate-400">Livre</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="size-3 rounded-full bg-blue-600"></div>
+<span class="text-slate-600 dark:text-slate-400">Ocupado</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="size-3 rounded-full bg-amber-500"></div>
+<span class="text-slate-600 dark:text-slate-400">Manutenção</span>
+</div>
+</div>
+</div>
+<div class="p-6 flex-1 overflow-y-auto">
+<!-- Grid of Morgue Units -->
+<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 gap-3">
+<!-- Occupied Unit -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">A-01</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+<div class="absolute inset-0 bg-background-dark/95 border border-border-dark rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex flex-col justify-center pointer-events-none shadow-xl">
+<p class="text-[10px] text-slate-400 uppercase font-bold">Ocupante</p>
+<p class="text-xs text-white font-medium truncate">Manuel A. Silva</p>
+<p class="text-[10px] text-slate-400 mt-1">Entrada: 12/10 14:30</p>
+</div>
+</button>
+<!-- Occupied Unit -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">A-02</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+<div class="absolute inset-0 bg-background-dark/95 border border-border-dark rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex flex-col justify-center pointer-events-none shadow-xl">
+<p class="text-[10px] text-slate-400 uppercase font-bold">Ocupante</p>
+<p class="text-xs text-white font-medium truncate">Josefa M. Dala</p>
+<p class="text-[10px] text-slate-400 mt-1">Entrada: 12/10 10:15</p>
+</div>
+</button>
+<!-- Empty Unit -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer h-24 opacity-60 hover:opacity-100">
+<span class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">A-03</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">check_box_outline_blank</span>
+</button>
+<!-- Occupied Unit -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">A-04</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+<div class="absolute inset-0 bg-background-dark/95 border border-border-dark rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex flex-col justify-center pointer-events-none shadow-xl">
+<p class="text-[10px] text-slate-400 uppercase font-bold">Ocupante</p>
+<p class="text-xs text-white font-medium truncate">António P. Costa</p>
+<p class="text-[10px] text-slate-400 mt-1">Entrada: 11/10 22:00</p>
+</div>
+</button>
+<!-- Maintenance Unit -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-amber-500"></span>
+<span class="text-xs font-bold text-amber-500 mb-1">A-05</span>
+<span class="material-symbols-outlined text-amber-500 text-3xl">build</span>
+<div class="absolute inset-0 bg-background-dark/95 border border-border-dark rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex flex-col justify-center pointer-events-none shadow-xl">
+<p class="text-[10px] text-slate-400 uppercase font-bold">Status</p>
+<p class="text-xs text-white font-medium truncate">Em Manutenção</p>
+<p class="text-[10px] text-slate-400 mt-1">Prev: 15/10</p>
+</div>
+</button>
+<!-- More Empty Units -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer h-24 opacity-60 hover:opacity-100">
+<span class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">B-01</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">check_box_outline_blank</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer h-24 opacity-60 hover:opacity-100">
+<span class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">B-02</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">check_box_outline_blank</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer h-24 opacity-60 hover:opacity-100">
+<span class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">B-03</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">check_box_outline_blank</span>
+</button>
+<!-- More Occupied Units with varying styles for realism -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">B-04</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+<div class="absolute inset-0 bg-background-dark/95 border border-border-dark rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex flex-col justify-center pointer-events-none shadow-xl">
+<p class="text-[10px] text-slate-400 uppercase font-bold">Ocupante</p>
+<p class="text-xs text-white font-medium truncate">Desconhecido 402</p>
+<p class="text-[10px] text-slate-400 mt-1">Entrada: 12/10 09:00</p>
+</div>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">B-05</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+</button>
+<!-- C Row -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">C-01</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">C-02</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">C-03</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer h-24 opacity-60 hover:opacity-100">
+<span class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">C-04</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">check_box_outline_blank</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer h-24 opacity-60 hover:opacity-100">
+<span class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">C-05</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">check_box_outline_blank</span>
+</button>
+<!-- D Row -->
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all cursor-pointer h-24 opacity-60 hover:opacity-100">
+<span class="text-xs font-bold text-slate-400 dark:text-slate-500 mb-1">D-01</span>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">check_box_outline_blank</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">D-02</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">D-03</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">D-04</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+</button>
+<button class="group relative flex flex-col items-center justify-center p-3 rounded-lg border border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20 transition-all cursor-pointer h-24">
+<span class="absolute top-2 right-2 size-2 rounded-full bg-blue-500"></span>
+<span class="text-xs font-bold text-blue-400 mb-1">D-05</span>
+<span class="material-symbols-outlined text-blue-400 text-3xl">person</span>
+</button>
+</div>
+</div>
+<div class="px-6 py-4 border-t border-slate-200 dark:border-border-dark flex justify-between items-center bg-slate-50 dark:bg-background-dark/50">
+<div class="text-sm text-slate-500 dark:text-slate-400">
+                           Selecionado: <span class="font-bold text-slate-900 dark:text-white">A-01 (Ocupado)</span>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-red-500/30 hover:bg-red-500/10 text-red-600 dark:text-red-400 text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-lg">logout</span>
+                                Registar Saída de Corpo
+                            </button>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-sm font-medium transition-colors">
+<span class="material-symbols-outlined text-lg">info</span>
+                                Detalhes
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Entries Table (Optional but good for context) -->
+<div class="mt-8">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Entradas Recentes</h3>
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-border-dark shadow-sm overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 dark:bg-white/5 border-b border-slate-200 dark:border-border-dark">
+<tr>
+<th class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Nome do Falecido</th>
+<th class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Gaveta</th>
+<th class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Data de Entrada</th>
+<th class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Responsável Familiar</th>
+<th class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Agência Funerária</th>
+<th class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-border-dark text-slate-600 dark:text-slate-300">
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Manuel António Silva</td>
+<td class="px-6 py-4 font-mono text-primary">A-01</td>
+<td class="px-6 py-4">12/10/2023 - 14:30</td>
+<td class="px-6 py-4">Maria Silva (+244 923 456 789)</td>
+<td class="px-6 py-4">Funerária Paz Eterna</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">Em Morgue</span></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Josefa Maria Dala</td>
+<td class="px-6 py-4 font-mono text-primary">A-02</td>
+<td class="px-6 py-4">12/10/2023 - 10:15</td>
+<td class="px-6 py-4">Pedro Dala (+244 912 345 678)</td>
+<td class="px-6 py-4">Serviços Fúnebres Luz</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">Em Morgue</span></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Desconhecido 402</td>
+<td class="px-6 py-4 font-mono text-primary">B-04</td>
+<td class="px-6 py-4">12/10/2023 - 09:00</td>
+<td class="px-6 py-4 text-slate-400 italic">Aguarda Identificação</td>
+<td class="px-6 py-4 text-slate-400">-</td>
+<td class="px-6 py-4"><span class="inline-flex items-center px-2 py-1 rounded text-xs font-bold bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300">Pendente</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-auto border-t border-slate-200 dark:border-border-dark bg-white dark:bg-surface-dark py-6 px-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+<p>© 2023 Zênite360. Todos os direitos reservados. Ministério da Saúde de Angola.</p>
+<div class="flex gap-4">
+<a class="hover:text-primary" href="#">Suporte Técnico</a>
+<a class="hover:text-primary" href="#">Política de Privacidade</a>
+</div>
+</div>
+</footer>
+</body></html>

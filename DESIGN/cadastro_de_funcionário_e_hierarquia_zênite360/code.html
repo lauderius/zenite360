@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cadastro de Funcionário - Zênite360</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#1e3a8a", 
+                        "primary-accent": "#3b82f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#1b2128",
+                        "border-dark": "#394656",
+                        "text-secondary": "#9aaabc"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f1823; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #394656; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-72 hidden lg:flex flex-col bg-[#101418] border-r border-border-dark h-full shrink-0">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Branding -->
+<div class="flex gap-3 items-center px-2">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 shadow-lg border border-primary-light" data-alt="Abstract medical cross logo with blue gradients" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAB_NCbzl4o_ThA85oQ4GTUzChoAFVlYkz3wp878p-u7HH8EGFaLakkWeuQHh2JWNkxhkzDS4UYqoCumyF9x2ZiQAias9NBrIYXb1AygJEyOHb7tiy1FQOVPR54rfOTq16-O0u2vrxmc7wW7kafQ-3dZmdiLGmrOydQlLx3KkVCAiZst5mHHJ-uL7uDFcz-wSYd4tp_tj_wMlZYkTSQZ6yb-h1inXRfI00oeh38kInxZq-ksA-2lzgeKZl2bLrApRNSKvXOMeRCl7Qk");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight">Zênite360</h1>
+<p class="text-text-secondary text-xs font-normal">Hosp. Central de Luanda</p>
+</div>
+</div>
+<!-- Nav Items -->
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] transition-colors group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">dashboard</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] transition-colors group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">groups</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium">Pacientes</p>
+</a>
+<!-- Active Item -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/30 border border-primary/40 relative overflow-hidden" href="#">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-accent"></div>
+<span class="material-symbols-outlined text-white" style="font-size: 24px; font-variation-settings: 'FILL' 1;">shield_person</span>
+<p class="text-white text-sm font-bold">Gestão de Identidade</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] transition-colors group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">medication</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium">Farmácia</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] transition-colors group" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">attach_money</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium">Finanças</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#27303a] transition-colors group mt-4" href="#">
+<span class="material-symbols-outlined text-text-secondary group-hover:text-white" style="font-size: 24px;">settings</span>
+<p class="text-text-secondary group-hover:text-white text-sm font-medium">Configurações</p>
+</a>
+</nav>
+</div>
+<!-- User Profile Snippet -->
+<div class="flex items-center gap-3 px-3 py-3 border-t border-border-dark mt-auto">
+<div class="bg-gray-700 rounded-full size-8 flex items-center justify-center text-xs font-bold text-white">AD</div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-medium">Admin Sistema</p>
+<p class="text-text-secondary text-xs">TI - Infraestrutura</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-y-auto relative scroll-smooth">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 bg-background-dark/95 backdrop-blur-sm border-b border-border-dark px-6 py-4 lg:px-10">
+<div class="max-w-6xl mx-auto w-full">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap items-center gap-2 mb-4 text-sm">
+<a class="text-text-secondary hover:text-white transition-colors" href="#">IAM</a>
+<span class="text-text-secondary">/</span>
+<a class="text-text-secondary hover:text-white transition-colors" href="#">Usuários</a>
+<span class="text-text-secondary">/</span>
+<span class="text-primary-accent font-medium">Novo Cadastro</span>
+</div>
+<!-- Page Heading & Actions -->
+<div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-white text-3xl font-black tracking-tight">Cadastro de Funcionário</h1>
+<p class="text-text-secondary text-sm max-w-xl">Preencha os dados obrigatórios para criar um novo perfil de acesso no sistema hospitalar.</p>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<button class="h-10 px-4 rounded-lg border border-border-dark bg-surface-dark text-white text-sm font-medium hover:bg-[#27303a] transition-colors">
+                            Salvar Rascunho
+                        </button>
+<button class="h-10 px-6 rounded-lg bg-primary hover:bg-primary-light text-white text-sm font-bold shadow-lg shadow-primary/20 flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[20px]">check</span>
+                            Criar Usuário
+                        </button>
+</div>
+</div>
+</div>
+</header>
+<!-- Form Content -->
+<div class="px-6 py-8 lg:px-10 pb-20">
+<div class="max-w-6xl mx-auto w-full flex flex-col gap-8">
+<!-- SECTION A: Identificação Profissional -->
+<div class="flex flex-col gap-4 rounded-xl border border-border-dark bg-surface-dark/50 p-1">
+<div class="px-4 pt-4 pb-2 border-b border-border-dark/50 flex justify-between items-center">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-xs text-white font-bold">A</span>
+                            Identificação Profissional
+                        </h3>
+<span class="text-xs text-text-secondary uppercase tracking-wider font-medium">Dados Pessoais</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-5">
+<label class="flex flex-col gap-2">
+<span class="text-text-secondary text-sm font-medium">Nome Completo</span>
+<input class="w-full rounded-lg bg-background-dark border border-border-dark text-white placeholder-gray-600 focus:border-primary-accent focus:ring-1 focus:ring-primary-accent py-2.5 px-4 text-sm transition-all" placeholder="Ex: João Manuel António" type="text"/>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-text-secondary text-sm font-medium">N.º do Bilhete de Identidade (AO)</span>
+<div class="relative">
+<input class="w-full rounded-lg bg-background-dark border border-border-dark text-white placeholder-gray-600 focus:border-primary-accent focus:ring-1 focus:ring-primary-accent py-2.5 px-4 pl-10 text-sm transition-all font-mono" placeholder="000000000LA000" type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[20px]">badge</span>
+</div>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-text-secondary text-sm font-medium">N.º da Ordem / Cédula Profissional</span>
+<input class="w-full rounded-lg bg-background-dark border border-border-dark text-white placeholder-gray-600 focus:border-primary-accent focus:ring-1 focus:ring-primary-accent py-2.5 px-4 text-sm transition-all" placeholder="Ex: ORM-12345" type="text"/>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-text-secondary text-sm font-medium">Email Institucional</span>
+<div class="relative">
+<input class="w-full rounded-lg bg-background-dark border border-border-dark text-white placeholder-gray-600 focus:border-primary-accent focus:ring-1 focus:ring-primary-accent py-2.5 px-4 text-sm transition-all" placeholder="nome.sobrenome@hcl.ao" type="email"/>
+<span class="absolute right-3 top-3 text-xs text-text-secondary font-medium select-none pointer-events-none">@hcl.ao</span>
+</div>
+</label>
+</div>
+</div>
+<!-- SECTION B: Alocação e Hierarquia -->
+<div class="flex flex-col gap-4 rounded-xl border border-border-dark bg-surface-dark/50 p-1">
+<div class="px-4 pt-4 pb-2 border-b border-border-dark/50 flex justify-between items-center">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-xs text-white font-bold">B</span>
+                            Alocação e Hierarquia
+                        </h3>
+<span class="text-xs text-text-secondary uppercase tracking-wider font-medium">Permissões de Acesso</span>
+</div>
+<div class="p-5 flex flex-col gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<label class="flex flex-col gap-2">
+<span class="text-text-secondary text-sm font-medium">Unidade Hospitalar</span>
+<div class="relative">
+<select class="w-full appearance-none rounded-lg bg-background-dark border border-border-dark text-white focus:border-primary-accent focus:ring-1 focus:ring-primary-accent py-2.5 px-4 text-sm transition-all">
+<option>Hospital Central de Luanda (HCL)</option>
+<option>Anexo Pediátrico - HCL</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-text-secondary pointer-events-none text-[20px]">arrow_drop_down</span>
+</div>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-text-secondary text-sm font-medium">Setor / Departamento</span>
+<div class="relative">
+<select class="w-full appearance-none rounded-lg bg-background-dark border border-border-dark text-white focus:border-primary-accent focus:ring-1 focus:ring-primary-accent py-2.5 px-4 text-sm transition-all">
+<option disabled="" selected="" value="">Selecione...</option>
+<option value="dg">Direção Geral</option>
+<option value="farmacia">Farmácia Central</option>
+<option value="sbu">SBU (Serviço de Banco de Urgência)</option>
+<option value="rh">Recursos Humanos</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-text-secondary pointer-events-none text-[20px]">arrow_drop_down</span>
+</div>
+</label>
+<label class="flex flex-col gap-2">
+<span class="text-text-secondary text-sm font-medium">Cargo</span>
+<div class="relative">
+<select class="w-full appearance-none rounded-lg bg-background-dark border border-border-dark text-white focus:border-primary-accent focus:ring-1 focus:ring-primary-accent py-2.5 px-4 text-sm transition-all">
+<option disabled="" selected="" value="">Selecione...</option>
+<option>Chefe de Turno</option>
+<option>Enfermeiro Chefe</option>
+<option>Administrativo</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-text-secondary pointer-events-none text-[20px]">arrow_drop_down</span>
+</div>
+</label>
+</div>
+<!-- Access Level Visual Selector -->
+<div class="flex flex-col gap-3">
+<span class="text-text-secondary text-sm font-medium">Nível de Autoridade</span>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="access_level" type="radio" value="1"/>
+<div class="p-4 rounded-lg border border-border-dark bg-background-dark hover:bg-[#27303a] peer-checked:border-primary-accent peer-checked:bg-primary/10 transition-all">
+<div class="flex items-center gap-3 mb-2">
+<div class="bg-blue-900/50 text-blue-200 rounded p-1">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</div>
+<span class="text-white font-semibold text-sm">Nível 1 - Leitura</span>
+</div>
+<p class="text-xs text-text-secondary">Apenas visualização de relatórios e fichas de pacientes.</p>
+</div>
+<div class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 text-primary-accent transition-opacity">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+</label>
+<label class="relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="access_level" type="radio" value="2"/>
+<div class="p-4 rounded-lg border border-border-dark bg-background-dark hover:bg-[#27303a] peer-checked:border-primary-accent peer-checked:bg-primary/10 transition-all">
+<div class="flex items-center gap-3 mb-2">
+<div class="bg-indigo-900/50 text-indigo-200 rounded p-1">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</div>
+<span class="text-white font-semibold text-sm">Nível 2 - Operacional</span>
+</div>
+<p class="text-xs text-text-secondary">Edição de registros, dispensação de farmácia e admissão.</p>
+</div>
+<div class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 text-primary-accent transition-opacity">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+</label>
+<label class="relative cursor-pointer group">
+<input class="peer sr-only" name="access_level" type="radio" value="3"/>
+<div class="p-4 rounded-lg border border-border-dark bg-background-dark hover:bg-[#27303a] peer-checked:border-primary-accent peer-checked:bg-primary/10 transition-all">
+<div class="flex items-center gap-3 mb-2">
+<div class="bg-amber-900/30 text-amber-200 rounded p-1">
+<span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+</div>
+<span class="text-white font-semibold text-sm">Nível 3 - Gestão</span>
+</div>
+<p class="text-xs text-text-secondary">Aprovação de pedidos, estornos financeiros e relatórios gerenciais.</p>
+</div>
+<div class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 text-primary-accent transition-opacity">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Warning Alert -->
+<div class="flex gap-3 p-3 rounded-lg bg-amber-900/20 border border-amber-800/50 items-start">
+<span class="material-symbols-outlined text-amber-500 shrink-0 mt-0.5" style="font-size: 20px;">warning</span>
+<div class="flex flex-col gap-1">
+<p class="text-amber-200 text-sm font-semibold">Restrição de Setor Cruzado</p>
+<p class="text-amber-200/70 text-xs">Ao selecionar "Farmácia Central", o usuário não poderá ser alocado em turnos de emergência (SBU) simultaneamente conforme a norma interna #402.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION C: Segurança e Permissões -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Column 1: Network Credentials -->
+<div class="flex flex-col gap-4 rounded-xl border border-border-dark bg-surface-dark/50 p-1 h-full">
+<div class="px-4 pt-4 pb-2 border-b border-border-dark/50 flex justify-between items-center">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="flex items-center justify-center w-6 h-6 rounded-full bg-primary text-xs text-white font-bold">C</span>
+                                Credenciais de Rede
+                            </h3>
+</div>
+<div class="p-5 flex flex-col gap-5">
+<label class="flex flex-col gap-2">
+<span class="text-text-secondary text-sm font-medium">Senha Provisória</span>
+<div class="relative">
+<input class="w-full rounded-lg bg-background-dark border border-border-dark text-white placeholder-gray-600 focus:border-primary-accent focus:ring-1 focus:ring-primary-accent py-2.5 px-4 pr-10 text-sm transition-all" type="password" value="MudeMe123!"/>
+<button class="absolute right-3 top-2.5 text-text-secondary hover:text-white">
+<span class="material-symbols-outlined text-[20px]">visibility_off</span>
+</button>
+</div>
+<!-- Password Strength Meter -->
+<div class="flex gap-1 mt-1">
+<div class="h-1 rounded-full flex-1 bg-emerald-500"></div>
+<div class="h-1 rounded-full flex-1 bg-emerald-500"></div>
+<div class="h-1 rounded-full flex-1 bg-emerald-500"></div>
+<div class="h-1 rounded-full flex-1 bg-emerald-900"></div>
+</div>
+<span class="text-xs text-emerald-500 font-medium text-right">Forte</span>
+</label>
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark border border-border-dark">
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Forçar redefinição</span>
+<span class="text-text-secondary text-xs">Obrigar troca no primeiro login</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary-accent rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-light"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Column 2: Specific Permissions -->
+<div class="flex flex-col gap-4 rounded-xl border border-border-dark bg-surface-dark/50 p-1 h-full">
+<div class="px-4 pt-4 pb-2 border-b border-border-dark/50 flex justify-between items-center">
+<h3 class="text-white text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-accent text-[20px]">lock_person</span>
+                                Permissões Especiais
+                            </h3>
+</div>
+<div class="p-5 flex flex-col gap-3">
+<label class="flex items-start gap-3 p-2 rounded hover:bg-background-dark transition-colors cursor-pointer">
+<input class="mt-1 rounded border-gray-600 bg-background-dark text-primary-accent focus:ring-primary-accent focus:ring-offset-gray-900" type="checkbox"/>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Editar Estoque Farmacêutico</span>
+<span class="text-text-secondary text-xs">Permite ajustes manuais de inventário.</span>
+</div>
+</label>
+<label class="flex items-start gap-3 p-2 rounded hover:bg-background-dark transition-colors cursor-pointer">
+<input class="mt-1 rounded border-gray-600 bg-background-dark text-primary-accent focus:ring-primary-accent focus:ring-offset-gray-900" type="checkbox"/>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Visualizar Salários</span>
+<span class="text-text-secondary text-xs">Acesso restrito a dados financeiros sensíveis.</span>
+</div>
+</label>
+<label class="flex items-start gap-3 p-2 rounded hover:bg-background-dark transition-colors cursor-pointer">
+<input checked="" class="mt-1 rounded border-gray-600 bg-background-dark text-primary-accent focus:ring-primary-accent focus:ring-offset-gray-900" type="checkbox"/>
+<div class="flex flex-col">
+<span class="text-white text-sm font-medium">Auditoria de Logs</span>
+<span class="text-text-secondary text-xs">Visualizar histórico de ações de outros usuários.</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

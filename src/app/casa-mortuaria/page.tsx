@@ -57,9 +57,8 @@ function TemperaturaIndicador({ temperatura, min, max }: { temperatura: number; 
   const isAlerta = temperatura > max || temperatura < min;
 
   return (
-    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${
-      isAlerta ? 'bg-red-100 dark:bg-red-900/30' : 'bg-blue-100 dark:bg-blue-900/30'
-    }`}>
+    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${isAlerta ? 'bg-red-100 dark:bg-red-900/30' : 'bg-blue-100 dark:bg-blue-900/30'
+      }`}>
       <Icons.Thermometer className={`w-4 h-4 ${isAlerta ? 'text-red-600' : 'text-blue-600'}`} />
       <span className={`text-sm font-bold ${isAlerta ? 'text-red-600' : 'text-blue-600'}`}>
         {temperatura.toFixed(1)}°C
@@ -99,10 +98,9 @@ function CamaraFriaCard({ camara }: { camara: CamaraFria }) {
           </div>
           <div className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
             <div
-              className={`h-full rounded-full transition-all ${
-                ocupacaoPercent >= 90 ? 'bg-red-500' :
-                ocupacaoPercent >= 70 ? 'bg-amber-500' : 'bg-emerald-500'
-              }`}
+              className={`h-full rounded-full transition-all ${ocupacaoPercent >= 90 ? 'bg-red-500' :
+                  ocupacaoPercent >= 70 ? 'bg-amber-500' : 'bg-emerald-500'
+                }`}
               style={{ width: `${Math.min(ocupacaoPercent, 100)}%` }}
             />
           </div>
@@ -112,11 +110,10 @@ function CamaraFriaCard({ camara }: { camara: CamaraFria }) {
           {Array.from({ length: camara.capacidade }).map((_, i) => (
             <div
               key={i}
-              className={`h-8 rounded flex items-center justify-center text-xs font-medium ${
-                i < camara.ocupacaoAtual
+              className={`h-8 rounded flex items-center justify-center text-xs font-medium ${i < camara.ocupacaoAtual
                   ? 'bg-slate-600 text-white'
                   : 'bg-slate-100 dark:bg-slate-700 text-slate-400'
-              }`}
+                }`}
             >
               {String.fromCharCode(65 + Math.floor(i / 2))}{(i % 2) + 1}
             </div>
@@ -238,10 +235,10 @@ export default function CasaMortuariaPage() {
   useEffect(() => {
     async function fetchCasaMortuaria() {
       try {
-        const [dashResult, regs, cms] = await Promise.all([
+        const [dashResult, regsRes, cmsRes] = await Promise.all([
           api.get<DashboardData>('/casa-mortuaria/dashboard'),
-          api.get<RegistroObito[]>('/casa-mortuaria/registros'),
-          api.get<CamaraFria[]>('/casa-mortuaria/camaras'),
+          api.get<{ data: RegistroObito[] }>('/casa-mortuaria/registros'),
+          api.get<{ data: CamaraFria[] }>('/casa-mortuaria/camaras'),
         ]);
 
         // Mapear os dados da API para o formato esperado
@@ -257,8 +254,8 @@ export default function CasaMortuariaPage() {
         };
 
         setDashboard(dash);
-        setRegistros(regs || []);
-        setCamaras(cms || []);
+        setRegistros(regsRes.data || []);
+        setCamaras(cmsRes.data || []);
       } catch (error) {
         console.error('Erro ao carregar dados da casa mortuária:', error);
         // Dados mock em caso de erro
@@ -486,12 +483,10 @@ export default function CasaMortuariaPage() {
               <div className="flex items-center justify-center gap-8">
                 {dashboard.distribuicaoPorGenero.map((item: { genero: string; quantidade: number }) => (
                   <div key={item.genero} className="text-center">
-                    <div className={`w-24 h-24 rounded-full flex items-center justify-center ${
-                      item.genero === 'MASCULINO' ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-pink-100 dark:bg-pink-900/30'
-                    }`}>
-                      <span className={`text-3xl font-bold ${
-                        item.genero === 'MASCULINO' ? 'text-blue-600' : 'text-pink-600'
+                    <div className={`w-24 h-24 rounded-full flex items-center justify-center ${item.genero === 'MASCULINO' ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-pink-100 dark:bg-pink-900/30'
                       }`}>
+                      <span className={`text-3xl font-bold ${item.genero === 'MASCULINO' ? 'text-blue-600' : 'text-pink-600'
+                        }`}>
                         {item.quantidade}
                       </span>
                     </div>

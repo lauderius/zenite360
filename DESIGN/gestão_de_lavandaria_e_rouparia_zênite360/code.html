@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestão de Lavandaria e Rouparia Zênite360</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Noto+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f172a", /* Deep Slate */
+                        "surface-dark": "#1e293b", /* Lighter Slate for cards */
+                        "surface-darker": "#111827", /* Darker surface */
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for dense tables */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 overflow-hidden">
+<div class="flex h-screen w-full flex-row">
+<!-- Sidebar Navigation -->
+<aside class="flex w-72 flex-col border-r border-slate-700 bg-primary dark:bg-[#00152e] text-white shrink-0">
+<!-- Brand Header -->
+<div class="flex flex-col gap-4 p-6 border-b border-primary-light">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center rounded-lg bg-blue-500/20 p-2 text-blue-400">
+<span class="material-symbols-outlined text-3xl">local_laundry_service</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-lg font-bold leading-tight tracking-tight">Zênite360</h1>
+<p class="text-blue-200/70 text-xs font-normal">Hospital Geral de Luanda</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-1 flex-col gap-2 overflow-y-auto px-4 py-4">
+<a class="flex items-center gap-3 rounded-lg bg-blue-600 px-3 py-2.5 text-sm font-medium text-white shadow-sm transition-colors" href="#">
+<span class="material-symbols-outlined filled text-xl">dashboard</span>
+                    Dashboard Geral
+                </a>
+<div class="mt-4 mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-blue-300/60">Operacional</div>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-blue-100 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-white text-blue-200">inventory_2</span>
+                    Inventário de Têxteis
+                </a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-blue-100 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-white text-blue-200">swap_horiz</span>
+                    Entrada/Saída
+                </a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-blue-100 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-white text-blue-200">content_paste</span>
+                    Pedidos de Lavagem
+                </a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-blue-100 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-white text-blue-200">construction</span>
+                    Manutenção &amp; Costura
+                </a>
+<div class="mt-4 mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-blue-300/60">Análises</div>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-blue-100 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-white text-blue-200">bar_chart</span>
+                    Relatórios KPI
+                </a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-blue-100 hover:bg-white/5 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-white text-blue-200">settings</span>
+                    Configurações
+                </a>
+</nav>
+<!-- User Footer -->
+<div class="border-t border-primary-light p-4">
+<div class="flex items-center gap-3 rounded-lg bg-primary-light/50 p-2">
+<div class="h-10 w-10 overflow-hidden rounded-full bg-slate-600 relative">
+<img alt="Foto de perfil do utilizador" class="object-cover w-full h-full" data-alt="Portrait of a medical professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsbjpD_IoPW5-W_wOLICbBzd-f8ZjsO1cIu3BHWbu8odZtD1sS3SMhd0N8o81EBl2g_tjUduf14yTr9h-D4P8LZhABnG_MCA43HlmcWV5tQzojTa3RTAhMRhJTeFkb09UdQ_RJN99pB-O4qj2N05S88XImy8MZ5UXc0KCwu1T8QKDX8WxCS0JuEV-wh1YpUrruEJ7HWWZ_hK6mBZHciX8ur2PQgxhoovn5v8N1_t9hr5FN0YiolpbgOkMIYlL_mxVAJFYYNe55WlS-"/>
+</div>
+<div class="flex flex-col overflow-hidden">
+<p class="truncate text-sm font-medium text-white">Dr. António Silva</p>
+<p class="truncate text-xs text-blue-200">Chefe de Logística</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex flex-1 flex-col overflow-hidden relative">
+<!-- Top Header -->
+<header class="flex h-16 items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-surface-dark px-6 py-3 shadow-sm z-10">
+<div>
+<h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Gestão de Lavandaria e Rouparia</h2>
+<p class="text-xs text-slate-500 dark:text-slate-400">Visão geral operacional e controle de stock em tempo real</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="absolute left-2.5 top-2.5 text-slate-400">
+<span class="material-symbols-outlined text-lg">search</span>
+</span>
+<input class="h-9 w-64 rounded-lg border-slate-300 bg-slate-50 pl-9 text-sm text-slate-900 focus:border-blue-600 focus:ring-blue-600 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder-slate-400" placeholder="Pesquisar item, lote ou setor..." type="text"/>
+</div>
+<button class="flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-white shadow hover:bg-blue-900 transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+                        Exportar Relatório
+                    </button>
+<button class="relative rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute right-1.5 top-1.5 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white dark:ring-surface-dark"></span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex flex-1 overflow-y-auto bg-slate-50 dark:bg-background-dark p-6">
+<div class="flex w-full flex-col gap-6 max-w-[1600px] mx-auto">
+<!-- KPI Cards Row -->
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+<!-- KPI 1 -->
+<div class="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-surface-dark">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Roupa em Circulação</p>
+<span class="material-symbols-outlined text-blue-500">local_shipping</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-2xl font-bold text-slate-900 dark:text-white">12,450 Un.</p>
+<span class="mb-1 flex items-center text-xs font-medium text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                    +2.5%
+                                </span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-surface-dark">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Stock em Lavandaria</p>
+<span class="material-symbols-outlined text-blue-500">water_drop</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-2xl font-bold text-slate-900 dark:text-white">3,200 Kg</p>
+<span class="mb-1 flex items-center text-xs font-medium text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                    +5.0%
+                                </span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-5 shadow-sm ring-1 ring-orange-500/20 dark:border-slate-700 dark:bg-surface-dark">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Pedidos de Reposição</p>
+<span class="material-symbols-outlined text-orange-500">pending_actions</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-2xl font-bold text-slate-900 dark:text-white">15 Pendentes</p>
+<span class="mb-1 flex items-center text-xs font-medium text-red-500">
+<span class="material-symbols-outlined text-sm">priority_high</span>
+                                    Crítico
+                                </span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="flex flex-col gap-1 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-surface-dark">
+<div class="flex items-center justify-between">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Manutenção / Costura</p>
+<span class="material-symbols-outlined text-blue-500">content_cut</span>
+</div>
+<div class="flex items-end gap-2">
+<p class="text-2xl font-bold text-slate-900 dark:text-white">42 Itens</p>
+<span class="mb-1 flex items-center text-xs font-medium text-emerald-600 dark:text-emerald-400">
+<span class="material-symbols-outlined text-sm">trending_flat</span>
+                                    Estável
+                                </span>
+</div>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-6 h-full">
+<!-- Main Table Section -->
+<div class="flex-1 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Inventário por Sector</h3>
+<div class="flex gap-2">
+<button class="flex items-center gap-1 rounded-md bg-white border border-slate-200 dark:border-slate-700 dark:bg-surface-dark px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filtrar
+                                    </button>
+<button class="flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-light">
+<span class="material-symbols-outlined text-sm">add</span> Entrada de Lote
+                                    </button>
+</div>
+</div>
+<div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-surface-dark overflow-hidden flex-1 min-h-[500px]">
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm">
+<thead class="bg-slate-50 text-slate-500 dark:bg-slate-800/50 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+<tr>
+<th class="px-6 py-4 font-semibold w-24">ID</th>
+<th class="px-6 py-4 font-semibold min-w-[200px]">Item</th>
+<th class="px-6 py-4 font-semibold">Localização Atual</th>
+<th class="px-6 py-4 font-semibold text-center">Qtd.</th>
+<th class="px-6 py-4 font-semibold">Estado</th>
+<th class="px-6 py-4 font-semibold">Última Movimentação</th>
+<th class="px-6 py-4 font-semibold text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
+<td class="px-6 py-4 text-slate-500 font-mono text-xs">L001</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Lençol Hospitalar Branco</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-md bg-purple-100 px-2.5 py-1 text-xs font-medium text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+                                                        Maternidade
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-center font-mono text-slate-700 dark:text-slate-300">150</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                                        Limpo
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs">Hoje, 08:30</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-slate-500 font-mono text-xs">B023</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Bata Cirúrgica</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-md bg-blue-100 px-2.5 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                                                        Bloco Operatório
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-center font-mono text-slate-700 dark:text-slate-300">45</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+<span class="animate-pulse h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                                                        Em Lavagem
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs">Ontem, 16:00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-slate-500 font-mono text-xs">T012</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Toalha de Banho</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-md bg-red-100 px-2.5 py-1 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-300">
+                                                        SBU - Urgências
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-center font-mono text-slate-700 dark:text-slate-300">80</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-slate-200 px-2 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+<span class="h-1.5 w-1.5 rounded-full bg-slate-500"></span>
+                                                        Sujo
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs">Hoje, 07:15</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-slate-500 font-mono text-xs">L002</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Fronha de Almofada</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-md bg-pink-100 px-2.5 py-1 text-xs font-medium text-pink-700 dark:bg-pink-900/30 dark:text-pink-300">
+                                                        Pediatria
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-center font-mono text-slate-700 dark:text-slate-300">200</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                                                        Limpo
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs">Hoje, 09:00</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-slate-500 font-mono text-xs">C055</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Cobertor Térmico</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                                                        Enfermaria Geral
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-center font-mono text-slate-700 dark:text-slate-300">30</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+<span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                                                        Em Costura
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs">23/10/2023</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 text-slate-500 font-mono text-xs">U882</td>
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Uniforme Enfermeiro</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center rounded-md bg-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300">
+                                                        Vestiário Central
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-center font-mono text-slate-700 dark:text-slate-300">12</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+<span class="animate-pulse h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                                                        Em Lavagem
+                                                    </span>
+</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400 text-xs">Hoje, 06:15</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-4 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+<span>Mostrando 1-6 de 145 items</span>
+<div class="flex gap-2">
+<button class="rounded border border-slate-300 dark:border-slate-600 px-2 py-1 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50" disabled="">Anterior</button>
+<button class="rounded border border-slate-300 dark:border-slate-600 px-2 py-1 hover:bg-slate-100 dark:hover:bg-slate-700">Próximo</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar / Action Panel -->
+<div class="w-full lg:w-80 flex flex-col gap-6 shrink-0">
+<!-- Quick Actions -->
+<div class="flex flex-col gap-3">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Ações Rápidas</h4>
+<button class="flex w-full items-center justify-center gap-2 rounded-lg bg-primary p-3 text-sm font-bold text-white shadow-lg hover:bg-primary-light transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                                    Novo Pedido de Lavagem
+                                </button>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white p-3 text-center text-xs font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-surface-dark dark:text-slate-300 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-blue-500">qr_code_scanner</span>
+                                        Scan Lote
+                                    </button>
+<button class="flex flex-col items-center justify-center gap-1 rounded-lg border border-slate-200 bg-white p-3 text-center text-xs font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-surface-dark dark:text-slate-300 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-blue-500">assignment_return</span>
+                                        Devolução
+                                    </button>
+</div>
+</div>
+<!-- Low Stock Alerts -->
+<div class="flex flex-1 flex-col gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-surface-dark">
+<div class="flex items-center justify-between mb-2">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-orange-500">warning</span>
+                                        Alertas de Stock
+                                    </h4>
+<span class="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-700 dark:bg-red-900/30 dark:text-red-400">3 Críticos</span>
+</div>
+<div class="flex flex-col gap-3 overflow-y-auto max-h-[400px]">
+<!-- Alert Item 1 -->
+<div class="flex flex-col gap-1 rounded-lg border border-red-100 bg-red-50 p-3 dark:border-red-900/30 dark:bg-red-900/10">
+<div class="flex justify-between items-start">
+<p class="text-xs font-bold text-red-800 dark:text-red-300">Lençóis de Berço</p>
+<span class="text-[10px] font-mono text-red-600 dark:text-red-400">Pediatria</span>
+</div>
+<div class="flex justify-between items-end mt-1">
+<span class="text-xs text-red-700/80 dark:text-red-400/80">Stock Atual: 12</span>
+<button class="text-[10px] font-bold text-red-600 underline dark:text-red-400">Repor</button>
+</div>
+<div class="h-1.5 w-full rounded-full bg-red-200 dark:bg-red-900/40 mt-1">
+<div class="h-1.5 w-[15%] rounded-full bg-red-500"></div>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="flex flex-col gap-1 rounded-lg border border-orange-100 bg-orange-50 p-3 dark:border-orange-900/30 dark:bg-orange-900/10">
+<div class="flex justify-between items-start">
+<p class="text-xs font-bold text-orange-800 dark:text-orange-300">Toalhas de Rosto</p>
+<span class="text-[10px] font-mono text-orange-600 dark:text-orange-400">Geral</span>
+</div>
+<div class="flex justify-between items-end mt-1">
+<span class="text-xs text-orange-700/80 dark:text-orange-400/80">Stock Atual: 45</span>
+<button class="text-[10px] font-bold text-orange-600 underline dark:text-orange-400">Repor</button>
+</div>
+<div class="h-1.5 w-full rounded-full bg-orange-200 dark:bg-orange-900/40 mt-1">
+<div class="h-1.5 w-[35%] rounded-full bg-orange-500"></div>
+</div>
+</div>
+<!-- Alert Item 3 -->
+<div class="flex flex-col gap-1 rounded-lg border border-red-100 bg-red-50 p-3 dark:border-red-900/30 dark:bg-red-900/10">
+<div class="flex justify-between items-start">
+<p class="text-xs font-bold text-red-800 dark:text-red-300">Batas XL</p>
+<span class="text-[10px] font-mono text-red-600 dark:text-red-400">Cirurgia</span>
+</div>
+<div class="flex justify-between items-end mt-1">
+<span class="text-xs text-red-700/80 dark:text-red-400/80">Stock Atual: 5</span>
+<button class="text-[10px] font-bold text-red-600 underline dark:text-red-400">Repor</button>
+</div>
+<div class="h-1.5 w-full rounded-full bg-red-200 dark:bg-red-900/40 mt-1">
+<div class="h-1.5 w-[8%] rounded-full bg-red-500"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Maintenance Summary Small Card -->
+<div class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-surface-dark">
+<h4 class="text-sm font-bold text-slate-900 dark:text-white mb-3">Eficiência da Lavandaria</h4>
+<div class="flex items-center gap-4">
+<div class="relative h-16 w-16 flex-shrink-0">
+<svg class="h-full w-full -rotate-90 transform" viewbox="0 0 36 36">
+<!-- Background Circle -->
+<path class="text-slate-100 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+<!-- Progress Circle (85%) -->
+<path class="text-emerald-500" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="85, 100" stroke-width="4"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center flex-col">
+<span class="text-xs font-bold text-slate-900 dark:text-white">85%</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<p class="text-xs text-slate-500 dark:text-slate-400">Meta Diária: 1500kg</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Processado: 1275kg</p>
+<p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Dentro do esperado</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

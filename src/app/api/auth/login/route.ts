@@ -1,48 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
+import prisma from '@/lib/prisma';
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'zenite360-secret-key-change-in-production'
 );
 
-// Mock data para desenvolvimento
-// Gerar hash em runtime para a senha padrão de desenvolvimento (evita hashes falsos)
-const DEFAULT_ADMIN_PASSWORD = 'Admin@Z360!';
-const MOCK_USERS: Record<string, any> = {
-  admin: {
-    id: 1,
-    email: 'admin@zenite360.ao',
-    name: 'Administrador',
-    // Gerar hash automaticamente em ambiente de desenvolvimento
-    password: bcrypt.hashSync(DEFAULT_ADMIN_PASSWORD, 10),
-    funcionarioId: 1,
-    activo: true,
-    bloqueado: false,
-    nivelAcesso: 'SUPER_ADMIN',
-  },
-};
-
-const MOCK_FUNCIONARIOS = {
-  1: {
-    id: 1,
-    numeroMecanografico: 'ADM001',
-    nomeCompleto: 'Administrador do Sistema',
-    dataNascimento: new Date('1980-01-01'),
-    genero: 'MASCULINO' as const,
-    nacionalidade: 'Angolana',
-    tipoDocumento: 'BI' as const,
-    numeroDocumento: '123456789LA001',
-    telefone1: '+244 923 123 456',
-    emailInstitucional: 'admin@zenite360.ao',
-    departamentoId: 1,
-    cargo: 'Administrador',
-    nivelAcesso: 'SUPER_ADMIN' as const,
-    status: 'ACTIVO' as const,
-  },
-};
-
 export async function POST(request: NextRequest) {
+  // Reload trigger
   try {
     const body = await request.json();
     const { username, password } = body;
@@ -54,8 +20,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Buscar usuário mock
-    const usuario = MOCK_USERS[username as keyof typeof MOCK_USERS];
+    // Tentar buscar no banco de dados
+    const usuario = await prisma.utilizadores.findFirst({
+      where: {
+        OR: [
+          { email: username },
+          { username: username }
+        ]
+      }
+    });
 
     if (!usuario) {
       return NextResponse.json(
@@ -64,21 +37,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verificar password
     const passwordValid = await bcrypt.compare(password, usuario.password);
-    
+
     if (!passwordValid) {
       return NextResponse.json(
-        { error: 'Senha incorreta' },
+        { error: 'Credenciais inválidas' },
         { status: 401 }
       );
     }
 
+    const userId = usuario.id.toString();
+    const userEmail = usuario.email;
+    const userName = usuario.name;
+    const userNivelAcesso = 'USUARIO'; // Ajustar conforme lógica de níveis do banco
+
     // Gerar token JWT
     const token = await new SignJWT({
-      userId: usuario.id,
-      email: usuario.email,
-      nivelAcesso: usuario.nivelAcesso,
+      userId,
+      email: userEmail,
+      nivelAcesso: userNivelAcesso,
     })
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
@@ -88,21 +65,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       token,
       usuario: {
-        id: usuario.id,
-        name: usuario.name,
-        email: usuario.email,
-        funcionarioId: usuario.funcionarioId,
-        nivelAcesso: usuario.nivelAcesso,
+        id: userId,
+        name: userName,
+        email: userEmail,
+        nivelAcesso: userNivelAcesso,
       }
     });
 
   } catch (error: any) {
     console.error('ERRO NO SERVIDOR:', error);
-    
+
     return NextResponse.json(
-      { 
-        error: 'Erro interno no servidor', 
-        message: error.message 
+      {
+        error: 'Erro interno no servidor',
+        message: error.message
       },
       { status: 500 }
     );

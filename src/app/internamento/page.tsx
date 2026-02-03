@@ -132,8 +132,8 @@ export default function InternamentoPage() {
   useEffect(() => {
     async function fetchInternamentos() {
       try {
-        const data = await api.get<Internamento[]>('/internamento');
-        setInternamentos(data);
+        const res = await api.get<{ data: Internamento[] }>('/internamento');
+        setInternamentos(res.data || []);
       } catch (error) {
         // TODO: adicionar feedback de erro
         setInternamentos([]);
@@ -257,23 +257,21 @@ export default function InternamentoPage() {
                       {setor.leitos.map((leito) => (
                         <div
                           key={leito.codigo}
-                          className={`p-3 rounded-lg border-2 text-center cursor-pointer transition-all hover:shadow-md ${
-                            leito.ocupado
-                              ? leito.critico
-                                ? 'border-red-300 bg-red-50 dark:bg-red-900/20'
-                                : 'border-amber-300 bg-amber-50 dark:bg-amber-900/20'
-                              : 'border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100'
-                          }`}
+                          className={`p-3 rounded-lg border-2 text-center cursor-pointer transition-all hover:shadow-md ${leito.ocupado
+                            ? leito.critico
+                              ? 'border-red-300 bg-red-50 dark:bg-red-900/20'
+                              : 'border-amber-300 bg-amber-50 dark:bg-amber-900/20'
+                            : 'border-emerald-300 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100'
+                            }`}
                         >
                           <Icons.Bed
                             size={24}
-                            className={`mx-auto mb-1 ${
-                              leito.ocupado
-                                ? leito.critico
-                                  ? 'text-red-600'
-                                  : 'text-amber-600'
-                                : 'text-emerald-600'
-                            }`}
+                            className={`mx-auto mb-1 ${leito.ocupado
+                              ? leito.critico
+                                ? 'text-red-600'
+                                : 'text-amber-600'
+                              : 'text-emerald-600'
+                              }`}
                           />
                           <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                             {leito.codigo}
@@ -309,91 +307,6 @@ export default function InternamentoPage() {
           ) : (
             // Lista de Internamentos
             <ListaInternamentos internamentos={internamentos} />
-
-// --- ListaInternamentos ---
-function ListaInternamentos({ internamentos }: { internamentos: Internamento[] }) {
-  const [deletingId, setDeletingId] = useState<number | null>(null);
-  const [error, setError] = useState("");
-  const [items, setItems] = useState(internamentos);
-
-  React.useEffect(() => { setItems(internamentos); }, [internamentos]);
-
-  const handleDelete = async (id: number) => {
-    if (!window.confirm("Deseja realmente excluir este internamento?")) return;
-    setDeletingId(id);
-    setError("");
-    try {
-      await api.delete(`/internamento/${id}`);
-      setItems((prev) => prev.filter((i) => i.id !== id));
-    } catch (err: any) {
-      setError(err.message || "Erro ao excluir internamento");
-    } finally {
-      setDeletingId(null);
-    }
-  };
-
-  return (
-    <div className="space-y-4">
-      {error && <div className="text-red-600 text-sm">{error}</div>}
-      {items.map((int) => (
-        <Card key={int.id} className="hover:shadow-md transition-shadow">
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                  <Icons.Bed size={24} className="text-purple-600" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-slate-700 dark:text-slate-200">
-                      {int.paciente}
-                    </h3>
-                    <Badge variant={statusConfig[int.status].variant}>
-                      {statusConfig[int.status].label}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-sky-600 font-mono">{int.codigo}</p>
-                  <div className="flex items-center gap-4 mt-2 text-sm text-slate-500">
-                    <span className="flex items-center gap-1">
-                      <Icons.Bed size={14} />
-                      Leito: {int.leito}
-                    </span>
-                    <span>{int.setor}</span>
-                  </div>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-                    <span className="font-medium">Diagnóstico:</span> {int.diagnostico}
-                  </p>
-                  <p className="text-sm text-slate-500 mt-1">
-                    Médico: {int.medicoResponsavel}
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-slate-500">
-                  {new Date(int.dataAdmissao).toLocaleDateString('pt-AO')}
-                </p>
-                <p className="text-lg font-bold text-purple-600 mt-1">
-                  {int.diasInternado} dias
-                </p>
-                <div className="flex gap-2 mt-2">
-                  <Link href={`/internamento/${int.id}`}>
-                    <Button variant="outline" size="sm">
-                      <Icons.Eye size={14} />
-                      Ver
-                    </Button>
-                  </Link>
-                  <Button variant="destructive" size="sm" onClick={() => handleDelete(int.id)} disabled={deletingId === int.id}>
-                    {deletingId === int.id ? <Spinner size="sm" /> : "Excluir"}
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
-}
           )}
         </div>
       </PageContent>

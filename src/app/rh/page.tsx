@@ -70,14 +70,16 @@ export default function RHPage() {
   useEffect(() => {
     async function fetchRH() {
       try {
-        const [funcs, depts] = await Promise.all([
-          api.get<Funcionario[]>('/rh/funcionarios'),
-          api.get<Departamento[]>('/rh/departamentos'),
+        const [funcsRes, deptsRes] = await Promise.all([
+          api.get<{ data: Funcionario[] }>('/rh/funcionarios'),
+          api.get<{ data: Departamento[] }>('/rh/departamentos'),
         ]);
-        setFuncionarios(funcs);
-        setDepartamentos(depts);
+
+        // As APIs retornam um objeto com propriedade data
+        setFuncionarios(funcsRes.data || []);
+        setDepartamentos(deptsRes.data || []);
       } catch (error) {
-        // TODO: adicionar feedback de erro
+        console.error('Erro ao carregar dados do RH:', error);
         setFuncionarios([]);
         setDepartamentos([]);
       } finally {
@@ -93,10 +95,10 @@ export default function RHPage() {
       f.numeroMecanografico.toLowerCase().includes(searchTerm.toLowerCase()) ||
       f.cargo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       f.email.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchStatus = !filterStatus || f.status === filterStatus;
     const matchDepartamento = !filterDepartamento || f.departamento === filterDepartamento;
-    
+
     return matchSearch && matchStatus && matchDepartamento;
   });
 
@@ -340,9 +342,9 @@ export default function RHPage() {
                               className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                             >
                               <div className="flex items-center gap-4">
-                                <Avatar 
-                                  fallback={func.nomeCompleto.split(' ').map(n => n[0]).slice(0, 2).join('')} 
-                                  size="lg" 
+                                <Avatar
+                                  fallback={func.nomeCompleto.split(' ').map(n => n[0]).slice(0, 2).join('')}
+                                  size="lg"
                                 />
                                 <div>
                                   <div className="flex items-center gap-2 flex-wrap">

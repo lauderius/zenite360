@@ -66,3 +66,36 @@ Corrigir os erros nos departamentos após remoção dos dados mock, implementand
 3. RH e Casa Mortuária
 4. Secretaria e Serviços Gerais
 
+## Departamentos da  SideBar que dão erro ao entrar
+✅ 1. Internamento - CORRIGIDO
+✅ 2. Laboratorio - CORRIGIDO
+✅ 3. Patrimonio - CORRIGIDO
+✅ 4. Farmacia - CORRIGIDO (adicionado 'use client')
+✅ 5. Configurações - CORRIGIDO
+
+## Cabeçalho
+✅ * ao clicar na parte superior do nome do usuario, e abrir o mini menu quando clico em "Meu Perfil" e de igual modo quando clico em "Configurações" - CORRIGIDO (usando Link do Next.js e criada página de perfil)
+✅ * o modo escuro e modo claro não estão funcionando, vamos desabilitalo - JÁ ESTAVA DESABILITADO
+✅ * o campo de notificações também não está funcionando, vamos melhore para que cada departamento receba alertas de forma individual - MELHORADO (adicionado sistema de notificações com mock data, pronto para integração com backend)
+
+## Melhorias Implementadas
+- Adicionado 'use client' na página de Farmácia
+- Substituído anchor tags por Link components no menu de usuário
+- Criada página de perfil completa (/perfil)
+- Adicionado click-outside detection para fechar dropdowns
+- Melhorado o menu de usuário com melhor UX
+- Sistema de notificações preparado para receber alertas individuais por departamento
+
+## Departamentos da  SideBar que dão erro ao entrar e têm funcionalidades que não funcionam
+Todas as alterações que fazemos relacionada com as informaçõe devem fazer CRUD com o banco de dados via prisma, e jamais deve ter dados em mock.
+-  nível geral não está a dar para emitir ou exportar em pdf
+- Na Tiagem não dá para inciar uma nova.
+- E no de Recursos Humanos não dá para acessar a lista de visualização para cada um dos setores que estão presentes nele.
+- E na paǵina dos pacientes tem aquela box com opções para selecionar "Em triagem, e etc" melhora a cor dele não dá para ver bem as opções antes de selecionar.
+- E na página património na opção adicionar novo activo, não dá para adicionar
+- Na página de manuntenção não dá para adicionar nova ordem de manutenção
+- Na página do laboratorio não dá para solicitar novo exame, nem ver resultados
+- Na paǵina da farmacia também muda a cor da box com opções para ver os medicamentos por setor.
+- Na secretaria, não dá para ver protocolo, nem criar os documentos que aparecem na opção criar novo documento
+- Na casa mortuaria, não dá para criar novo registro, nem ver estatisticas
+- Nos serviços gerais e estatiscas, não dá para criar novo contrato, nem nova coleta;

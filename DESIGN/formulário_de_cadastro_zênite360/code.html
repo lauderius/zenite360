@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cadastro Zênite360</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#002147",
+              "primary-hover": "#001833",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1823",
+              "border-light": "#dae0e7",
+              "text-main": "#101418",
+              "text-secondary": "#5e748d",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbar for clean look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col">
+<!-- Top Navbar -->
+<header class="bg-white dark:bg-[#1a202c] border-b border-border-light dark:border-gray-700 sticky top-0 z-50">
+<div class="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="w-8 h-8 flex items-center justify-center bg-primary rounded text-white">
+<span class="material-symbols-outlined text-xl">local_hospital</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Zênite360</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center text-sm text-text-secondary dark:text-gray-400 gap-1">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+<span>12 Out, 2023</span>
+</div>
+<div class="h-6 w-px bg-border-light dark:bg-gray-700 hidden md:block"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold text-text-main dark:text-white leading-none">Ana Silva</p>
+<p class="text-xs text-text-secondary dark:text-gray-400 mt-1">Recepcionista</p>
+</div>
+<div class="h-10 w-10 rounded-full bg-cover bg-center border-2 border-primary/20 cursor-pointer hover:border-primary transition-colors" data-alt="Profile picture of receptionist" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBoZcWBxZJyPDPqXJAUbxJqndt5CVR0rw-JLgAqYXtS_3WjyoWwJ6os4pVrpf2bB43f7TDlFhjU6xBwKrzQTTWOTTz_Oflevvvr0nyn3VHG0G-RFkmjd_knI5zJuWo3XWkJtzcI66B80B1tpUPB7aC_VMuFIEylI8wYyXdfJjO3QiobLpSfFIhTxkgofQKsMYOsmC29vcMTK021zi7q5zvhrHeSAnRLYiu0NKb1GQ-6DGKOwbJWppbIvHpiMoya5YvpJ1LR4BAxi4By");'>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow flex justify-center py-8 px-4 sm:px-6">
+<div class="w-full max-w-5xl flex flex-col gap-6">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<a class="text-text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-blue-400 transition-colors flex items-center text-sm" href="#">
+<span class="material-symbols-outlined text-base mr-1">arrow_back</span>
+                            Voltar para Lista
+                        </a>
+</div>
+<h2 class="text-3xl font-bold text-text-main dark:text-white">Novo Paciente</h2>
+<p class="text-text-secondary dark:text-gray-400 mt-1 text-sm">Preencha os dados abaixo para cadastrar um novo paciente no sistema Zênite.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 bg-white dark:bg-gray-800 border border-border-light dark:border-gray-600 text-text-main dark:text-white rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">save</span>
+                        Salvar Rascunho
+                    </button>
+</div>
+</div>
+<!-- Main Form Card -->
+<div class="bg-white dark:bg-[#1a202c] rounded-xl shadow-sm border border-border-light dark:border-gray-700 overflow-hidden flex flex-col md:flex-row">
+<!-- Sidebar Stepper (Desktop) -->
+<div class="hidden md:flex flex-col w-64 bg-slate-50 dark:bg-gray-800/50 border-r border-border-light dark:border-gray-700 p-6 gap-6">
+<div class="flex flex-col gap-1">
+<p class="text-xs font-bold text-text-secondary dark:text-gray-400 uppercase tracking-wider">Progresso</p>
+<p class="text-primary dark:text-blue-400 font-bold text-lg">Passo 1 de 3</p>
+</div>
+<nav class="flex flex-col gap-6 relative">
+<!-- Vertical Line -->
+<div class="absolute left-3.5 top-3 bottom-3 w-0.5 bg-border-light dark:bg-gray-600 -z-10"></div>
+<!-- Step 1: Active -->
+<div class="flex items-start gap-4">
+<div class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white shadow-md ring-4 ring-white dark:ring-gray-800">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<div class="flex flex-col pt-1">
+<span class="text-sm font-bold text-primary dark:text-blue-400 leading-none">Dados Pessoais</span>
+<span class="text-xs text-text-secondary dark:text-gray-400 mt-1">Identificação base</span>
+</div>
+</div>
+<!-- Step 2: Inactive -->
+<div class="flex items-start gap-4 opacity-60">
+<div class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white dark:bg-gray-700 border-2 border-border-light dark:border-gray-500 text-text-secondary dark:text-gray-400 ring-4 ring-white dark:ring-gray-800">
+<span class="material-symbols-outlined text-sm">location_on</span>
+</div>
+<div class="flex flex-col pt-1">
+<span class="text-sm font-medium text-text-main dark:text-white leading-none">Localização</span>
+<span class="text-xs text-text-secondary dark:text-gray-400 mt-1">Endereço e Província</span>
+</div>
+</div>
+<!-- Step 3: Inactive -->
+<div class="flex items-start gap-4 opacity-60">
+<div class="relative z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white dark:bg-gray-700 border-2 border-border-light dark:border-gray-500 text-text-secondary dark:text-gray-400 ring-4 ring-white dark:ring-gray-800">
+<span class="material-symbols-outlined text-sm">medical_services</span>
+</div>
+<div class="flex flex-col pt-1">
+<span class="text-sm font-medium text-text-main dark:text-white leading-none">Dados Clínicos</span>
+<span class="text-xs text-text-secondary dark:text-gray-400 mt-1">Triagem inicial</span>
+</div>
+</div>
+</nav>
+<div class="mt-auto pt-6 border-t border-border-light dark:border-gray-700">
+<div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-primary dark:text-blue-400 text-sm mt-0.5">info</span>
+<p class="text-xs text-primary/80 dark:text-blue-300 leading-relaxed">
+                                Certifique-se de validar o número do B.I. antes de prosseguir.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Mobile Stepper (Horizontal) -->
+<div class="md:hidden p-4 border-b border-border-light dark:border-gray-700 bg-slate-50 dark:bg-gray-800/50">
+<div class="flex justify-between items-center mb-2">
+<span class="text-sm font-semibold text-primary dark:text-white">Passo 1: Dados Pessoais</span>
+<span class="text-xs text-text-secondary dark:text-gray-400">33%</span>
+</div>
+<div class="w-full bg-border-light dark:bg-gray-600 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 33%"></div>
+</div>
+</div>
+<!-- Form Content -->
+<div class="flex-1 flex flex-col">
+<div class="p-6 sm:p-8 flex-1">
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-6 pb-2 border-b border-border-light dark:border-gray-700 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">badge</span>
+                            Informações de Identificação
+                        </h3>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-6" onsubmit="event.preventDefault();">
+<!-- Nome Completo -->
+<div class="md:col-span-2">
+<label class="block text-sm font-medium text-text-main dark:text-white mb-2">Nome Completo</label>
+<div class="relative">
+<input class="w-full h-11 px-4 rounded-lg border border-border-light dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="Ex: João Manuel António" required="" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-text-secondary dark:text-gray-500">person</span>
+</div>
+</div>
+<!-- BI Number -->
+<div>
+<label class="block text-sm font-medium text-text-main dark:text-white mb-2">
+                                    Nº do Bilhete de Identidade
+                                    <span class="text-red-500 ml-0.5">*</span>
+</label>
+<div class="relative">
+<input class="w-full h-11 px-4 rounded-lg border border-border-light dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none uppercase font-mono tracking-wider" maxlength="14" placeholder="000000000LA000" required="" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-green-600 dark:text-green-400" title="Validado">check_circle</span>
+</div>
+<p class="text-xs text-text-secondary dark:text-gray-500 mt-1">Formato Angolano (14 caracteres)</p>
+</div>
+<!-- Data Nascimento -->
+<div>
+<label class="block text-sm font-medium text-text-main dark:text-white mb-2">Data de Nascimento</label>
+<input class="w-full h-11 px-4 rounded-lg border border-border-light dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" type="date"/>
+</div>
+<!-- Género -->
+<div>
+<label class="block text-sm font-medium text-text-main dark:text-white mb-2">Género</label>
+<div class="relative">
+<select class="w-full h-11 px-4 rounded-lg border border-border-light dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none appearance-none">
+<option disabled="" selected="" value="">Selecione...</option>
+<option value="M">Masculino</option>
+<option value="F">Feminino</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-text-secondary dark:text-gray-500 pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Telefone -->
+<div>
+<label class="block text-sm font-medium text-text-main dark:text-white mb-2">Telefone (Unitel/Africell)</label>
+<div class="relative">
+<span class="absolute left-4 top-2.5 text-text-secondary dark:text-gray-400 font-medium">+244</span>
+<input class="w-full h-11 pl-14 pr-4 rounded-lg border border-border-light dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="9XX XXX XXX" type="tel"/>
+</div>
+</div>
+<!-- Email (Optional) -->
+<div class="md:col-span-2">
+<label class="flex justify-between items-end text-sm font-medium text-text-main dark:text-white mb-2">
+<span>Email</span>
+<span class="text-xs font-normal text-text-secondary dark:text-gray-500">Opcional</span>
+</label>
+<div class="relative">
+<input class="w-full h-11 px-4 rounded-lg border border-border-light dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none" placeholder="paciente@exemplo.co.ao" type="email"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-text-secondary dark:text-gray-500">mail</span>
+</div>
+</div>
+</form>
+</div>
+<!-- Action Footer -->
+<div class="bg-slate-50 dark:bg-gray-800/50 p-6 sm:px-8 border-t border-border-light dark:border-gray-700 flex justify-between items-center">
+<button class="px-6 h-11 rounded-lg border border-border-light dark:border-gray-600 text-text-secondary dark:text-gray-300 font-medium hover:bg-white dark:hover:bg-gray-700 hover:text-text-main dark:hover:text-white transition-colors" disabled="">
+                            Voltar
+                        </button>
+<button class="px-8 h-11 rounded-lg bg-primary hover:bg-primary-hover text-white font-bold shadow-sm hover:shadow transition-all flex items-center gap-2 group">
+                            Próximo: Localização
+                            <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Simple Footer for Context -->
+<footer class="py-6 text-center text-xs text-text-secondary dark:text-gray-500">
+<p>© 2023 Sistema Zênite360. Todos os direitos reservados.</p>
+<p class="mt-1">Suporte Técnico: +244 923 000 000</p>
+</footer>
+</body></html>

@@ -9,6 +9,8 @@ import { Icons } from '@/components/ui/icons';
 import { PROVINCIAS_ANGOLA } from '@/types';
 import type { Genero, TipoDocumento, GrupoSanguineo, EstadoCivil } from '@/types';
 
+import { api } from '@/services/api';
+
 export default function NovoPacientePage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -17,24 +19,24 @@ export default function NovoPacientePage() {
 
   // Form state
   const [formData, setFormData] = useState({
-    nomeCompleto: '',
-    nomeSocial: '',
-    dataNascimento: '',
+    nome_completo: '', // Adjusted to match DB schema
+    nome_social: '',
+    data_nascimento: '',
     genero: '' as Genero | '',
-    estadoCivil: '' as EstadoCivil | '',
+    estado_civil: '' as EstadoCivil | '',
     nacionalidade: 'Angolana',
     profissao: '',
-    tipoDocumento: 'BI' as TipoDocumento,
-    numeroDocumento: '',
-    telefone1: '',
-    telefone2: '',
+    tipo_documento: 'BI' as TipoDocumento,
+    numero_documento: '',
+    telefone_principal: '',
+    telefone_secundario: '',
     email: '',
     provincia: '',
     municipio: '',
     endereco: '',
-    grupoSanguineo: 'DESCONHECIDO' as GrupoSanguineo,
+    grupo_sanguineo: 'DESCONHECIDO' as GrupoSanguineo,
     alergias: '',
-    doencasCronicas: '',
+    doencas_cronicas: '',
     possuiConvenio: false,
     convenioNome: '',
     convenioNumero: '',
@@ -54,17 +56,16 @@ export default function NovoPacientePage() {
 
     try {
       // Validações básicas
-      if (!formData.nomeCompleto || !formData.dataNascimento || !formData.genero) {
+      if (!formData.nome_completo || !formData.data_nascimento || !formData.genero) {
         throw new Error('Preencha todos os campos obrigatórios');
       }
 
-      // Simular envio para API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await api.post('/pacientes', formData);
+
       setSuccess(true);
       setTimeout(() => router.push('/pacientes'), 2000);
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'Erro ao cadastrar paciente');
     } finally {
       setIsLoading(false);
     }
@@ -113,23 +114,23 @@ export default function NovoPacientePage() {
                   <div className="md:col-span-2">
                     <Input
                       label="Nome Completo *"
-                      value={formData.nomeCompleto}
-                      onChange={(e) => handleChange('nomeCompleto', e.target.value)}
+                      value={formData.nome_completo}
+                      onChange={(e) => handleChange('nome_completo', e.target.value)}
                       placeholder="Nome completo do paciente"
                       required
                     />
                   </div>
                   <Input
                     label="Nome Social"
-                    value={formData.nomeSocial}
-                    onChange={(e) => handleChange('nomeSocial', e.target.value)}
+                    value={formData.nome_social || ''}
+                    onChange={(e) => handleChange('nome_social', e.target.value)}
                     placeholder="Nome social (se aplicável)"
                   />
                   <Input
                     label="Data de Nascimento *"
                     type="date"
-                    value={formData.dataNascimento}
-                    onChange={(e) => handleChange('dataNascimento', e.target.value)}
+                    value={formData.data_nascimento}
+                    onChange={(e) => handleChange('data_nascimento', e.target.value)}
                     required
                   />
                   <Select
@@ -145,8 +146,8 @@ export default function NovoPacientePage() {
                   />
                   <Select
                     label="Estado Civil"
-                    value={formData.estadoCivil}
-                    onChange={(e) => handleChange('estadoCivil', e.target.value)}
+                    value={formData.estado_civil}
+                    onChange={(e) => handleChange('estado_civil', e.target.value)}
                     placeholder="Selecione"
                     options={[
                       { value: 'SOLTEIRO', label: 'Solteiro(a)' },
@@ -182,8 +183,8 @@ export default function NovoPacientePage() {
               <CardContent className="space-y-4">
                 <Select
                   label="Tipo de Documento"
-                  value={formData.tipoDocumento}
-                  onChange={(e) => handleChange('tipoDocumento', e.target.value)}
+                  value={formData.tipo_documento}
+                  onChange={(e) => handleChange('tipo_documento', e.target.value)}
                   options={[
                     { value: 'BI', label: 'Bilhete de Identidade' },
                     { value: 'PASSAPORTE', label: 'Passaporte' },
@@ -194,8 +195,8 @@ export default function NovoPacientePage() {
                 />
                 <Input
                   label="Número do Documento"
-                  value={formData.numeroDocumento}
-                  onChange={(e) => handleChange('numeroDocumento', e.target.value)}
+                  value={formData.numero_documento}
+                  onChange={(e) => handleChange('numero_documento', e.target.value)}
                   placeholder="Ex: 000123456LA042"
                 />
               </CardContent>
@@ -212,14 +213,14 @@ export default function NovoPacientePage() {
               <CardContent className="space-y-4">
                 <Input
                   label="Telefone Principal *"
-                  value={formData.telefone1}
-                  onChange={(e) => handleChange('telefone1', e.target.value)}
+                  value={formData.telefone_principal}
+                  onChange={(e) => handleChange('telefone_principal', e.target.value)}
                   placeholder="+244 9XX XXX XXX"
                 />
                 <Input
                   label="Telefone Secundário"
-                  value={formData.telefone2}
-                  onChange={(e) => handleChange('telefone2', e.target.value)}
+                  value={formData.telefone_secundario}
+                  onChange={(e) => handleChange('telefone_secundario', e.target.value)}
                   placeholder="+244 9XX XXX XXX"
                 />
                 <Input
@@ -278,8 +279,8 @@ export default function NovoPacientePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Select
                     label="Grupo Sanguíneo"
-                    value={formData.grupoSanguineo}
-                    onChange={(e) => handleChange('grupoSanguineo', e.target.value)}
+                    value={formData.grupo_sanguineo}
+                    onChange={(e) => handleChange('grupo_sanguineo', e.target.value)}
                     options={[
                       { value: 'A_POSITIVO', label: 'A+' },
                       { value: 'A_NEGATIVO', label: 'A-' },
@@ -301,8 +302,8 @@ export default function NovoPacientePage() {
                 />
                 <Textarea
                   label="Doenças Crónicas"
-                  value={formData.doencasCronicas}
-                  onChange={(e) => handleChange('doencasCronicas', e.target.value)}
+                  value={formData.doencas_cronicas}
+                  onChange={(e) => handleChange('doencas_cronicas', e.target.value)}
                   placeholder="Liste as doenças crónicas do paciente..."
                 />
               </CardContent>

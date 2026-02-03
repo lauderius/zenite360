@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 - Maternidade</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002147",
+                        "primary-light": "#003366",
+                        "accent-pink": "#ec4899",
+                        "accent-blue": "#3b82f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1823",
+                        "surface-dark": "#1e293b",
+                        "surface-dark-lighter": "#334155",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for dark mode */
+        .dark ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #0f1823; 
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white overflow-hidden h-screen flex">
+<!-- Side Navigation -->
+<aside class="w-64 bg-primary flex flex-col border-r border-white/10 shrink-0 transition-all duration-300">
+<!-- Brand -->
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-lg bg-gradient-to-br from-accent-blue to-primary-light flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-2xl">local_hospital</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-none tracking-tight">Zênite360</h1>
+<span class="text-blue-200 text-xs font-medium opacity-80 mt-1">Unidade Maternidade</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white border-l-4 border-accent-pink shadow-sm group transition-all" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">bed</span>
+<span class="text-sm font-medium">Internamentos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">child_care</span>
+<span class="text-sm font-medium">Neonatologia</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">pill</span>
+<span class="text-sm font-medium">Farmácia</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">description</span>
+<span class="text-sm font-medium">Relatórios</span>
+</a>
+<div class="mt-4 px-4">
+<div class="h-px bg-white/10 w-full"></div>
+<p class="text-xs text-blue-300 mt-4 mb-2 uppercase tracking-wider font-semibold">Configurações</p>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-all group" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Equipa de Plantão</span>
+</a>
+</nav>
+<!-- User Profile -->
+<div class="p-4 bg-[#001a38]">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-accent-pink" data-alt="Profile picture of a female doctor smiling" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDZ3gTqNg3isotGAxeY3kO4GsrEOSz8iViRsaIXYQXX1p_bdixT6lhX4mmhN4sIegTgNyoJNUYwmLbP1nXPMejnJFC4KDAxQfrrIBtjGhT1zj4BaGVLPXNM9Zz7JCz7jHnGs1Ty4fwfXIPAp4NIlyltQ1W2glAYQLxIce8H3ax8gUDxbTyBAkl6GELsMIUXKSS23NrxkqytV5epULYxebFpmBakQhWn0gpvD80baJKReRk_9m0jjtr8rs9F-UBpw7NCvDiZZE8aE_Pq");'></div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-white text-sm font-medium truncate">Dra. Ana Costa</p>
+<p class="text-blue-300 text-xs truncate">Chefe de Turno</p>
+</div>
+<button class="ml-auto text-blue-300 hover:text-white">
+<span class="material-symbols-outlined text-xl">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- Top Header -->
+<header class="h-16 bg-white dark:bg-surface-dark border-b border-slate-200 dark:border-surface-dark-lighter flex items-center justify-between px-6 shrink-0 z-10">
+<div class="flex items-center gap-4">
+<h2 class="text-slate-800 dark:text-white text-lg font-bold">Gestão de Maternidade e Sala de Partos</h2>
+<span class="px-2 py-0.5 rounded text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800">Bloco A</span>
+</div>
+<div class="flex items-center gap-4">
+<!-- Search -->
+<div class="relative hidden md:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-xl">search</span>
+<input class="pl-10 pr-4 py-2 rounded-lg bg-slate-100 dark:bg-background-dark border-none focus:ring-2 focus:ring-accent-blue text-sm w-64 text-slate-700 dark:text-slate-200 placeholder-slate-400" placeholder="Procurar paciente..." type="text"/>
+</div>
+<!-- Actions -->
+<div class="flex items-center gap-2">
+<button class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 relative transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-surface-dark"></span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Scrollable Dashboard Content -->
+<div class="flex-1 overflow-y-auto overflow-x-hidden p-6">
+<div class="max-w-[1600px] mx-auto flex flex-col gap-6">
+<!-- KPI Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- KPI 1 -->
+<div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-slate-200 dark:border-surface-dark-lighter shadow-sm flex flex-col justify-between h-32 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-accent-pink">pregnant_woman</span>
+</div>
+<div class="flex flex-col gap-1 z-10">
+<p class="text-slate-500 dark:text-blue-200 text-sm font-medium">Em Trabalho de Parto</p>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-slate-800 dark:text-white">8</span>
+<span class="text-sm text-emerald-500 font-medium mb-1 flex items-center">
+<span class="material-symbols-outlined text-base">trending_up</span> +2
+                                </span>
+</div>
+</div>
+<div class="w-full bg-slate-100 dark:bg-white/10 h-1.5 rounded-full mt-auto">
+<div class="bg-accent-pink h-1.5 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-slate-200 dark:border-surface-dark-lighter shadow-sm flex flex-col justify-between h-32 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-accent-blue">meeting_room</span>
+</div>
+<div class="flex flex-col gap-1 z-10">
+<p class="text-slate-500 dark:text-blue-200 text-sm font-medium">Salas Livres</p>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-slate-800 dark:text-white">2</span>
+<span class="text-sm text-slate-400 font-medium mb-1">/ 10 Total</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 dark:bg-white/10 h-1.5 rounded-full mt-auto">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 20%"></div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-white dark:bg-surface-dark p-5 rounded-xl border border-slate-200 dark:border-surface-dark-lighter shadow-sm flex flex-col justify-between h-32 relative overflow-hidden group">
+<div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl text-purple-500">crib</span>
+</div>
+<div class="flex flex-col gap-1 z-10">
+<p class="text-slate-500 dark:text-blue-200 text-sm font-medium">Nascimentos (24h)</p>
+<div class="flex items-end gap-2">
+<span class="text-3xl font-bold text-slate-800 dark:text-white">5</span>
+<span class="text-sm text-slate-400 font-medium mb-1">Bebés</span>
+</div>
+</div>
+<div class="flex gap-1 mt-auto">
+<span class="size-2 rounded-full bg-accent-pink"></span>
+<span class="size-2 rounded-full bg-accent-pink"></span>
+<span class="size-2 rounded-full bg-accent-blue"></span>
+<span class="size-2 rounded-full bg-accent-blue"></span>
+<span class="size-2 rounded-full bg-accent-blue"></span>
+</div>
+</div>
+</div>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Left Column (Rooms & List) -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- Visual Room Monitor -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-surface-dark-lighter shadow-sm overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-surface-dark-lighter flex justify-between items-center bg-slate-50 dark:bg-white/5">
+<h3 class="text-slate-800 dark:text-white font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-accent-blue">monitor_heart</span>
+                                    Monitorização das Salas de Parto
+                                </h3>
+<button class="text-slate-500 hover:text-accent-blue text-sm font-medium flex items-center gap-1">
+                                    Ver todas
+                                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+<div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Room Card 1 (Active) -->
+<div class="bg-slate-50 dark:bg-background-dark rounded-lg p-4 border border-slate-200 dark:border-white/10 relative">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="bg-emerald-500/20 text-emerald-500 p-1.5 rounded-md">
+<span class="material-symbols-outlined text-lg">meeting_room</span>
+</div>
+<span class="text-sm font-bold text-slate-700 dark:text-white">Sala 01</span>
+</div>
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-accent-pink/20 text-accent-pink border border-accent-pink/30">Ocupado</span>
+</div>
+<div class="space-y-3">
+<div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Paciente</p>
+<p class="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">Maria João Silva</p>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-slate-500 dark:text-slate-400">Dilatação</span>
+<span class="font-bold text-accent-pink">8 cm</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
+<div class="bg-accent-pink h-full rounded-full animate-pulse" style="width: 80%"></div>
+</div>
+<div class="flex justify-between text-[10px] text-slate-400 mt-1">
+<span>0cm</span>
+<span>10cm</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Room Card 2 (Active) -->
+<div class="bg-slate-50 dark:bg-background-dark rounded-lg p-4 border border-slate-200 dark:border-white/10 relative">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="bg-emerald-500/20 text-emerald-500 p-1.5 rounded-md">
+<span class="material-symbols-outlined text-lg">meeting_room</span>
+</div>
+<span class="text-sm font-bold text-slate-700 dark:text-white">Sala 02</span>
+</div>
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-accent-pink/20 text-accent-pink border border-accent-pink/30">Ocupado</span>
+</div>
+<div class="space-y-3">
+<div>
+<p class="text-xs text-slate-500 dark:text-slate-400">Paciente</p>
+<p class="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">Ana Paula Mendes</p>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-slate-500 dark:text-slate-400">Dilatação</span>
+<span class="font-bold text-accent-blue">4 cm</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-white/10 h-2 rounded-full overflow-hidden">
+<div class="bg-accent-blue h-full rounded-full" style="width: 40%"></div>
+</div>
+<div class="flex justify-between text-[10px] text-slate-400 mt-1">
+<span>0cm</span>
+<span>10cm</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Room Card 3 (Cleaning) -->
+<div class="bg-slate-50 dark:bg-background-dark rounded-lg p-4 border border-slate-200 dark:border-white/10 relative opacity-75">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="bg-slate-500/20 text-slate-500 p-1.5 rounded-md">
+<span class="material-symbols-outlined text-lg">cleaning_services</span>
+</div>
+<span class="text-sm font-bold text-slate-700 dark:text-white">Sala 03</span>
+</div>
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-yellow-500/20 text-yellow-500 border border-yellow-500/30">Higienização</span>
+</div>
+<div class="flex flex-col items-center justify-center h-24 text-slate-400">
+<span class="text-xs">Disponível em 15 min</span>
+</div>
+</div>
+<!-- Room Card 4 (Available) -->
+<div class="bg-slate-50 dark:bg-background-dark rounded-lg p-4 border border-slate-200 dark:border-white/10 relative border-dashed !border-emerald-500/30">
+<div class="flex justify-between items-start mb-3">
+<div class="flex items-center gap-2">
+<div class="bg-emerald-500/20 text-emerald-500 p-1.5 rounded-md">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+<span class="text-sm font-bold text-slate-700 dark:text-white">Sala 04</span>
+</div>
+<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide bg-emerald-500/20 text-emerald-500 border border-emerald-500/30">Livre</span>
+</div>
+<div class="flex flex-col items-center justify-center h-24 text-slate-400">
+<button class="flex items-center gap-2 text-sm text-emerald-500 hover:text-emerald-400 font-medium px-4 py-2 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors">
+<span class="material-symbols-outlined text-lg">add</span>
+                                            Alocar Paciente
+                                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Patient List Table -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-surface-dark-lighter shadow-sm flex flex-col flex-1">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-surface-dark-lighter flex justify-between items-center">
+<h3 class="text-slate-800 dark:text-white font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500">list_alt</span>
+                                    Lista de Parturientes
+                                </h3>
+<div class="flex gap-2">
+<button class="p-2 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="bg-primary hover:bg-primary-light text-white text-sm font-medium px-3 py-1.5 rounded-lg flex items-center gap-2 transition shadow-md shadow-blue-900/20">
+<span class="material-symbols-outlined text-sm">add</span>
+                                        Nova Admissão
+                                    </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-surface-dark-lighter/30 text-xs text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+<th class="px-6 py-4 font-semibold">Paciente</th>
+<th class="px-6 py-4 font-semibold">IG (Semanas)</th>
+<th class="px-6 py-4 font-semibold">Dilatação</th>
+<th class="px-6 py-4 font-semibold">FCF (bpm)</th>
+<th class="px-6 py-4 font-semibold">Prioridade</th>
+<th class="px-6 py-4 font-semibold text-right">Ações</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-white/5 text-sm text-slate-700 dark:text-slate-300">
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group cursor-pointer">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold">MJ</div>
+<div>
+<p class="font-medium text-slate-900 dark:text-white">Maria João Silva</p>
+<p class="text-xs text-slate-400">PID: 48291</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">38+2</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="font-bold text-accent-pink">8 cm</span>
+<span class="material-symbols-outlined text-base text-accent-pink animate-pulse">keyboard_double_arrow_up</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-xs font-bold">140</span>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-red-500 text-white text-[10px] font-bold border border-red-600 shadow-sm shadow-red-500/20">URGENTE</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-white p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group cursor-pointer">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">AP</div>
+<div>
+<p class="font-medium text-slate-900 dark:text-white">Ana Paula Mendes</p>
+<p class="text-xs text-slate-400">PID: 48305</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">40+0</td>
+<td class="px-6 py-4">
+<span class="font-medium text-slate-500 dark:text-slate-300">4 cm</span>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 text-xs font-bold">135</span>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-yellow-500 text-black text-[10px] font-bold border border-yellow-600 shadow-sm shadow-yellow-500/20">AMARELO</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-white p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group cursor-pointer">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold">CL</div>
+<div>
+<p class="font-medium text-slate-900 dark:text-white">Clara Luis</p>
+<p class="text-xs text-slate-400">PID: 48312</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">37+5</td>
+<td class="px-6 py-4">
+<span class="font-medium text-slate-500 dark:text-slate-300">2 cm</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-red-400 font-bold">
+<span class="px-2 py-1 rounded bg-red-500/10 border border-red-500/20 text-xs">170</span>
+<span class="material-symbols-outlined text-sm animate-pulse">warning</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full bg-orange-500 text-white text-[10px] font-bold border border-orange-600 shadow-sm shadow-orange-500/20">LARANJA</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-white p-1">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Right Column (Sidebar) -->
+<div class="flex flex-col gap-6">
+<!-- Quick Actions -->
+<div class="bg-gradient-to-br from-primary to-primary-light rounded-xl p-5 shadow-lg text-white">
+<h3 class="text-base font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">bolt</span> Ações Rápidas
+                            </h3>
+<div class="space-y-3">
+<button class="w-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm rounded-lg p-3 flex items-center gap-3 transition-all text-left group">
+<div class="bg-accent-pink p-2 rounded-md group-hover:scale-110 transition-transform shadow-lg shadow-pink-500/30">
+<span class="material-symbols-outlined text-white text-lg">baby_changing_station</span>
+</div>
+<span class="text-sm font-medium">Registar Nascimento</span>
+</button>
+<button class="w-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm rounded-lg p-3 flex items-center gap-3 transition-all text-left group">
+<div class="bg-accent-blue p-2 rounded-md group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/30">
+<span class="material-symbols-outlined text-white text-lg">transfer_within_a_station</span>
+</div>
+<span class="text-sm font-medium">Transferir Neonatologia</span>
+</button>
+<button class="w-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-sm rounded-lg p-3 flex items-center gap-3 transition-all text-left group">
+<div class="bg-emerald-500 p-2 rounded-md group-hover:scale-110 transition-transform shadow-lg shadow-emerald-500/30">
+<span class="material-symbols-outlined text-white text-lg">verified</span>
+</div>
+<span class="text-sm font-medium">Certificado Nascido Vivo</span>
+</button>
+</div>
+</div>
+<!-- Today's Births -->
+<div class="bg-white dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-surface-dark-lighter shadow-sm flex flex-col flex-1 h-full min-h-[400px]">
+<div class="px-5 py-4 border-b border-slate-200 dark:border-surface-dark-lighter flex justify-between items-center">
+<h3 class="text-slate-800 dark:text-white font-bold text-sm">Nascimentos de Hoje</h3>
+<span class="text-xs bg-blue-500/10 text-accent-blue px-2 py-0.5 rounded border border-blue-500/20 font-medium">5 Total</span>
+</div>
+<div class="p-0 overflow-y-auto flex-1">
+<!-- Birth Item 1 -->
+<div class="relative pl-8 pr-4 py-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition">
+<div class="absolute left-4 top-4 bottom-0 w-px bg-slate-200 dark:bg-white/10"></div>
+<div class="absolute left-2.5 top-5 size-3 rounded-full bg-accent-blue border-2 border-white dark:border-surface-dark"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-slate-500 dark:text-slate-400">14:30</span>
+<span class="text-[10px] bg-emerald-500/10 text-emerald-500 px-1.5 py-0.5 rounded border border-emerald-500/20 font-semibold">APGAR 9/10</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-accent-blue text-lg">male</span>
+<p class="text-sm font-medium text-slate-800 dark:text-white">Menino (Filho de Maria Silva)</p>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span> 3.200kg</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">straighten</span> 49cm</span>
+</p>
+</div>
+<!-- Birth Item 2 -->
+<div class="relative pl-8 pr-4 py-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition">
+<div class="absolute left-4 top-0 bottom-0 w-px bg-slate-200 dark:bg-white/10"></div>
+<div class="absolute left-2.5 top-5 size-3 rounded-full bg-accent-pink border-2 border-white dark:border-surface-dark"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-slate-500 dark:text-slate-400">11:15</span>
+<span class="text-[10px] bg-emerald-500/10 text-emerald-500 px-1.5 py-0.5 rounded border border-emerald-500/20 font-semibold">APGAR 8/9</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-accent-pink text-lg">female</span>
+<p class="text-sm font-medium text-slate-800 dark:text-white">Menina (Filha de Joana D.)</p>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span> 2.950kg</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">straighten</span> 47cm</span>
+</p>
+</div>
+<!-- Birth Item 3 -->
+<div class="relative pl-8 pr-4 py-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition">
+<div class="absolute left-4 top-0 bottom-0 w-px bg-slate-200 dark:bg-white/10"></div>
+<div class="absolute left-2.5 top-5 size-3 rounded-full bg-accent-pink border-2 border-white dark:border-surface-dark"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-slate-500 dark:text-slate-400">09:42</span>
+<span class="text-[10px] bg-yellow-500/10 text-yellow-500 px-1.5 py-0.5 rounded border border-yellow-500/20 font-semibold">APGAR 7/8</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-accent-pink text-lg">female</span>
+<p class="text-sm font-medium text-slate-800 dark:text-white">Menina (Filha de Teresa M.)</p>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span> 2.800kg</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">straighten</span> 46cm</span>
+</p>
+</div>
+<!-- Birth Item 4 -->
+<div class="relative pl-8 pr-4 py-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition">
+<div class="absolute left-4 top-0 bottom-0 w-px bg-slate-200 dark:bg-white/10"></div>
+<div class="absolute left-2.5 top-5 size-3 rounded-full bg-accent-blue border-2 border-white dark:border-surface-dark"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="text-xs font-bold text-slate-500 dark:text-slate-400">07:15</span>
+<span class="text-[10px] bg-emerald-500/10 text-emerald-500 px-1.5 py-0.5 rounded border border-emerald-500/20 font-semibold">APGAR 10/10</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-accent-blue text-lg">male</span>
+<p class="text-sm font-medium text-slate-800 dark:text-white">Menino (Filho de Edna P.)</p>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">scale</span> 3.550kg</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">straighten</span> 51cm</span>
+</p>
+</div>
+<div class="p-4 text-center">
+<button class="text-xs text-slate-500 hover:text-white underline decoration-slate-600">Ver histórico completo</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

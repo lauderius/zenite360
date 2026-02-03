@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-AO"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zênite360 | Gestão de Banco de Sangue</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#002647",
+                        "accent-red": "#e63946",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#0f1a23",
+                        "card-dark": "#162531",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-1.5 rounded-lg text-white">
+<span class="material-symbols-outlined block">bloodtype</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">Zênite360 | Banco de Sangue</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-primary dark:text-white text-sm font-semibold border-b-2 border-primary pb-1" href="#">Painel Central</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary dark:hover:text-white transition-colors" href="#">Dadores</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary dark:hover:text-white transition-colors" href="#">Stock</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary dark:hover:text-white transition-colors" href="#">Transfusões</a>
+<a class="text-slate-500 dark:text-slate-400 text-sm font-medium hover:text-primary dark:hover:text-white transition-colors" href="#">Relatórios</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="w-64 pl-10 pr-4 py-2 text-sm rounded-lg border-none bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary" placeholder="Procurar Dador ou B.I."/>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="flex items-center gap-3 border-l border-slate-200 dark:border-slate-800 pl-4 ml-2">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold text-slate-900 dark:text-white">Dr. António Silva</p>
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">Hematologista Chefe</p>
+</div>
+<div class="size-10 rounded-full bg-cover bg-center border-2 border-primary" data-alt="User profile picture of a male doctor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJOsnOEneyje8DN1f-ynXPqg2OtnD3-3eGFI3DjL36CrjPBXxkELmWWG1qjyWhN61GwMriN-ULCDha2vVIFMpYTZ9wwasBG-5-icDpYpx0m4jKDkD2SLxjAy9XrexZy0vudlZNyBjJbQgk0kZ4FPOk6_2f9QAbNQLKR4zWebGRKntKd8VVbdzTQBiWmSAQkIKNhm60mPtmu5jUVREwpvVV3CiqtrIHFJNLYB-JTeewu5i1-c0J_ZCZxpYKRfMtWomzEuJqEio2gYUz");'></div>
+</div>
+</div>
+</header>
+<div class="flex flex-1">
+<!-- Sidebar Navigation -->
+<aside class="w-64 hidden lg:flex flex-col bg-white dark:bg-background-dark border-r border-slate-200 dark:border-slate-800 p-6 gap-8">
+<div class="flex flex-col gap-2">
+<p class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.1em]">Gestão de Inventário</p>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white shadow-md shadow-primary/20">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-semibold">Visão Geral</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">add_circle</span>
+<p class="text-sm font-medium">Registo de Doação</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">medical_services</span>
+<p class="text-sm font-medium">Solicitação</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">inventory_2</span>
+<p class="text-sm font-medium">Inventário Global</p>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<p class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.1em]">Qualidade e Risco</p>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">report_problem</span>
+<p class="text-sm font-medium">Quarentena</p>
+<span class="ml-auto bg-accent-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded">4</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-lg cursor-pointer">
+<span class="material-symbols-outlined">history</span>
+<p class="text-sm font-medium">Histórico</p>
+</div>
+</div>
+<div class="mt-auto bg-primary/10 dark:bg-slate-800/50 p-4 rounded-xl border border-primary/20">
+<p class="text-xs font-bold text-primary dark:text-white mb-1">Estado de Emergência</p>
+<p class="text-[10px] text-slate-600 dark:text-slate-400 leading-relaxed mb-3">O stock de O- está abaixo do nível crítico. Recomenda-se acionar dadores preferenciais.</p>
+<button class="w-full bg-accent-red hover:bg-accent-red/90 text-white text-xs font-bold py-2 rounded-lg transition-colors">Alertar Dadores</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col p-6 overflow-y-auto">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h1 class="text-2xl md:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Controlo de Hemoderivados</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Monitorização em tempo real do inventário e validade das unidades de sangue.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-bold text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">add_box</span>
+                        Nova Doação
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 text-slate-700 dark:text-white border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Exportar
+                    </button>
+</div>
+</div>
+<!-- KPI Grid - Blood Type Stock -->
+<div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+<!-- A+ -->
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col gap-1 shadow-sm relative overflow-hidden group">
+<div class="absolute -right-2 -top-2 text-slate-100 dark:text-slate-800/20 opacity-40 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-6xl">bloodtype</span>
+</div>
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest">A+</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">45 <span class="text-xs font-normal text-slate-500">Unid.</span></p>
+<p class="text-[10px] font-bold text-emerald-500 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">trending_up</span> Estável</p>
+</div>
+<!-- A- -->
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col gap-1 shadow-sm relative overflow-hidden">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest">A-</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">12 <span class="text-xs font-normal text-slate-500">Unid.</span></p>
+<p class="text-[10px] font-bold text-emerald-500 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">trending_up</span> +2%</p>
+</div>
+<!-- B+ -->
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col gap-1 shadow-sm relative overflow-hidden">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest">B+</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">28 <span class="text-xs font-normal text-slate-500">Unid.</span></p>
+<p class="text-[10px] font-bold text-amber-500 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">trending_down</span> -3%</p>
+</div>
+<!-- B- -->
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col gap-1 shadow-sm relative overflow-hidden border-l-4 border-l-accent-red">
+<p class="text-xs font-bold text-accent-red uppercase tracking-widest">B-</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">05 <span class="text-xs font-normal text-slate-500">Unid.</span></p>
+<p class="text-[10px] font-bold text-accent-red flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">warning</span> Crítico</p>
+</div>
+<!-- AB+ -->
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col gap-1 shadow-sm relative overflow-hidden">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest">AB+</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">10 <span class="text-xs font-normal text-slate-500">Unid.</span></p>
+<p class="text-[10px] font-bold text-slate-500 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">horizontal_rule</span> Neutro</p>
+</div>
+<!-- AB- -->
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col gap-1 shadow-sm relative overflow-hidden border-l-4 border-l-accent-red">
+<p class="text-xs font-bold text-accent-red uppercase tracking-widest">AB-</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">03 <span class="text-xs font-normal text-slate-500">Unid.</span></p>
+<p class="text-[10px] font-bold text-accent-red flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">warning</span> Crítico</p>
+</div>
+<!-- O+ -->
+<div class="bg-white dark:bg-card-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col gap-1 shadow-sm relative overflow-hidden">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest">O+</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">52 <span class="text-xs font-normal text-slate-500">Unid.</span></p>
+<p class="text-[10px] font-bold text-emerald-500 flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">trending_up</span> +8%</p>
+</div>
+<!-- O- -->
+<div class="bg-slate-900 dark:bg-primary p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col gap-1 shadow-xl relative overflow-hidden ring-2 ring-accent-red">
+<p class="text-xs font-bold text-white uppercase tracking-widest opacity-80">O- (Universal)</p>
+<p class="text-2xl font-black text-white">08 <span class="text-xs font-normal text-white/60">Unid.</span></p>
+<p class="text-[10px] font-bold text-white flex items-center gap-0.5 bg-accent-red/20 rounded px-1 w-fit"><span class="material-symbols-outlined text-[12px]">emergency_home</span> Urgente</p>
+</div>
+</div>
+<!-- Main Table Section -->
+<div class="bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex-1 flex flex-col min-h-[500px]">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex flex-wrap justify-between items-center gap-4">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">list_alt</span>
+                        Reservas de Sangue Ativas
+                    </h2>
+<div class="flex gap-2">
+<select class="bg-slate-50 dark:bg-slate-800 border-none text-xs font-semibold rounded-lg focus:ring-primary py-2 px-3">
+<option>Todos os Grupos</option>
+<option>Grupo O-</option>
+<option>Grupo A+</option>
+</select>
+<select class="bg-slate-50 dark:bg-slate-800 border-none text-xs font-semibold rounded-lg focus:ring-primary py-2 px-3">
+<option>Estado: Todos</option>
+<option>Disponível</option>
+<option>Quarentena</option>
+<option>Reservado</option>
+</select>
+</div>
+</div>
+<div class="overflow-x-auto flex-1">
+<table class="w-full text-left border-collapse">
+<thead class="bg-slate-50/50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-[11px] uppercase tracking-wider font-bold">
+<tr>
+<th class="px-6 py-4">ID Dador / B.I.</th>
+<th class="px-6 py-4">Grupo Sanguíneo</th>
+<th class="px-6 py-4 text-center">Volume (ml)</th>
+<th class="px-6 py-4">Data Colheita</th>
+<th class="px-6 py-4">Validade</th>
+<th class="px-6 py-4">Estado</th>
+<th class="px-6 py-4">Acções</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">00543212LA041</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-primary dark:text-white font-bold text-xs">O-</span>
+</td>
+<td class="px-6 py-4 text-center">450ml</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400">12 Mai 2024</td>
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="text-accent-red font-bold">12 Jun 2024</span>
+<span class="text-[10px] text-accent-red/70 font-medium">Expira em 3 dias</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-bold text-xs uppercase">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+                                        Disponível
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors bg-amber-500/5">
+<td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">00234110UE032</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-primary dark:text-white font-bold text-xs">A+</span>
+</td>
+<td class="px-6 py-4 text-center">500ml</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400">10 Mai 2024</td>
+<td class="px-6 py-4 text-slate-900 dark:text-white">10 Jun 2024</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-bold text-xs uppercase">
+<span class="size-2 rounded-full bg-amber-500"></span>
+                                        Quarentena
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+<td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">00911223BA022</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-primary dark:text-white font-bold text-xs">AB-</span>
+</td>
+<td class="px-6 py-4 text-center">450ml</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400">01 Mai 2024</td>
+<td class="px-6 py-4 text-slate-900 dark:text-white">01 Jun 2024</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 font-bold text-xs uppercase">
+<span class="size-2 rounded-full bg-blue-500"></span>
+                                        Reservado
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors opacity-60 grayscale bg-red-500/5">
+<td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">00112233HU054</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700 text-primary dark:text-white font-bold text-xs">B-</span>
+</td>
+<td class="px-6 py-4 text-center">400ml</td>
+<td class="px-6 py-4 text-slate-500 dark:text-slate-400">15 Abr 2024</td>
+<td class="px-6 py-4">
+<span class="text-accent-red font-bold">15 Mai 2024</span>
+</td>
+<td class="px-6 py-4">
+<span class="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase">
+<span class="size-2 rounded-full bg-slate-500"></span>
+                                        Expirado
+                                    </span>
+</td>
+<td class="px-6 py-4">
+<button class="text-slate-400 hover:text-primary transition-colors"><span class="material-symbols-outlined">delete</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
+<p>Mostrando 1-10 de 154 unidades registadas</p>
+<div class="flex gap-1">
+<button class="size-8 flex items-center justify-center rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="size-8 flex items-center justify-center rounded bg-primary text-white font-bold">1</button>
+<button class="size-8 flex items-center justify-center rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200">2</button>
+<button class="size-8 flex items-center justify-center rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200">3</button>
+<button class="size-8 flex items-center justify-center rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Side Panel - Quick Actions & Forms -->
+<aside class="w-80 hidden xl:flex flex-col bg-white dark:bg-background-dark border-l border-slate-200 dark:border-slate-800 p-6 overflow-y-auto gap-6">
+<!-- Quick Donation Form Section -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h3 class="font-bold text-slate-900 dark:text-white text-sm">Solicitação Rápida</h3>
+<span class="material-symbols-outlined text-primary text-sm">emergency_share</span>
+</div>
+<div class="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+<form class="flex flex-col gap-3">
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Paciente / Processo</label>
+<input class="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-xs py-2" placeholder="Nome ou Nº Processo" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">G. Sanguíneo</label>
+<select class="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-xs py-2">
+<option>A+</option>
+<option>O-</option>
+<option>B+</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Prioridade</label>
+<select class="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-xs py-2 text-accent-red font-bold">
+<option>Urgente</option>
+<option>Rotina</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Justificação Clínica</label>
+<textarea class="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg text-xs py-2 h-16 resize-none" placeholder="Motivo da transfusão..."></textarea>
+</div>
+<button class="w-full bg-primary py-2 text-white text-xs font-bold rounded-lg mt-1 hover:bg-primary/90" type="submit">Submeter Pedido</button>
+</form>
+</div>
+</div>
+<!-- Donation Trends -->
+<div class="flex flex-col gap-4">
+<h3 class="font-bold text-slate-900 dark:text-white text-sm">Atividade Recente</h3>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<div class="size-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 shrink-0">
+<span class="material-symbols-outlined text-sm">add_task</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">Nova doação validada</p>
+<p class="text-[10px] text-slate-500">Unidade O- adicionada há 15 min.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="size-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 shrink-0">
+<span class="material-symbols-outlined text-sm">outbound</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">Transfusão Concluída</p>
+<p class="text-[10px] text-slate-500">2 Unidades A+ transferidas para Bloco Op.</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<div class="size-8 rounded-lg bg-accent-red/10 flex items-center justify-center text-accent-red shrink-0">
+<span class="material-symbols-outlined text-sm">notification_important</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-900 dark:text-white">Alerta de Validade</p>
+<p class="text-[10px] text-slate-500">5 unidades de B- expiram amanhã.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Global Stats Preview -->
+<div class="mt-auto pt-6 border-t border-slate-100 dark:border-slate-800">
+<div class="bg-primary p-4 rounded-xl text-white relative overflow-hidden">
+<div class="absolute right-0 top-0 size-16 bg-white/10 rounded-full -mr-8 -mt-8"></div>
+<p class="text-[10px] font-bold text-white/70 uppercase tracking-widest mb-1">Capacidade Total</p>
+<div class="flex items-end justify-between">
+<p class="text-2xl font-black">78%</p>
+<span class="text-[10px] bg-white/20 px-1.5 py-0.5 rounded">Armazenamento</span>
+</div>
+<div class="w-full h-1 bg-white/20 rounded-full mt-3">
+<div class="w-[78%] h-full bg-white rounded-full"></div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</body></html>

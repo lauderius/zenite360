@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard Visão 360 - Zênite360</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#002147",
+              "background-light": "#f5f7f8",
+              "background-dark": "#0f1823",
+              "triage-red": "#EF4444",
+              "triage-orange": "#F97316",
+              "triage-yellow": "#EAB308",
+              "triage-green": "#22C55E",
+              "triage-blue": "#3B82F6",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 font-display antialiased overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- Sidebar -->
+<aside class="flex w-72 flex-col bg-primary border-r border-primary/10 transition-all duration-300 ease-in-out shrink-0 z-20 h-full">
+<!-- Sidebar Header -->
+<div class="flex items-center gap-3 px-6 py-6 border-b border-white/10">
+<div class="flex items-center justify-center size-10 rounded-lg bg-white/10 text-white backdrop-blur-sm">
+<span class="material-symbols-outlined text-2xl">local_hospital</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-tight tracking-tight">Zênite360</h1>
+<p class="text-blue-200 text-xs font-medium tracking-wider uppercase">Hospital ERP</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex flex-col flex-1 gap-1 px-4 py-6 overflow-y-auto">
+<p class="px-4 text-xs font-semibold text-blue-300/60 uppercase tracking-wider mb-2">Principal</p>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px] group-hover:scale-110 transition-transform">dashboard</span>
+<span class="text-sm font-medium">Visão 360</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">group_add</span>
+<span class="text-sm font-medium">Admissões</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">vital_signs</span>
+<span class="text-sm font-medium">Triagem</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">medication</span>
+<span class="text-sm font-medium">Farmácia</span>
+</a>
+<p class="px-4 text-xs font-semibold text-blue-300/60 uppercase tracking-wider mb-2 mt-6">Gestão</p>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">assignment</span>
+<span class="text-sm font-medium">Relatórios</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">inventory_2</span>
+<span class="text-sm font-medium">Stock &amp; Logística</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-blue-100 hover:bg-white/5 hover:text-white transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-sm font-medium">Configurações</span>
+</a>
+</nav>
+<!-- Sidebar Footer -->
+<div class="p-4 border-t border-white/10">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-red-200 hover:bg-red-500/20 hover:text-red-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">logout</span>
+<span class="text-sm font-medium">Sair</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex flex-col flex-1 h-full overflow-hidden relative">
+<!-- Top Header -->
+<header class="h-20 bg-white dark:bg-[#151f2b] border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 shrink-0 z-10">
+<!-- Search -->
+<div class="flex items-center w-full max-w-xl">
+<div class="relative w-full group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-2.5 border-none rounded-xl leading-5 bg-background-light dark:bg-background-dark text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:text-sm transition-all" placeholder="Pesquisar pacientes, medicamentos ou médicos..." type="text"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<span class="text-xs text-slate-400 border border-slate-300 rounded px-1.5 py-0.5">⌘K</span>
+</div>
+</div>
+</div>
+<!-- Right Actions -->
+<div class="flex items-center gap-4">
+<!-- Date Widget -->
+<div class="hidden xl:flex flex-col items-end mr-4">
+<span class="text-sm font-bold text-slate-800 dark:text-white">Luanda, AO</span>
+<span class="text-xs text-slate-500">24 Out, 09:42</span>
+</div>
+<button class="relative p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-triage-red rounded-full ring-2 ring-white dark:ring-[#151f2b]"></span>
+</button>
+<button class="relative p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">mail</span>
+</button>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+<button class="flex items-center gap-3 pl-2 pr-1 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<div class="text-right hidden md:block">
+<p class="text-sm font-bold text-slate-800 dark:text-white">Dr. António Silva</p>
+<p class="text-xs text-slate-500">Director Clínico</p>
+</div>
+<div class="size-10 rounded-full bg-cover bg-center ring-2 ring-white dark:ring-slate-700 shadow-sm" data-alt="Portrait of Dr. António Silva" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDyNSJ3KfFgCI8sMqgWBB5ORnz33e_XxulWtVrN0DyKs6yP5JAkGIeCSelxPC7747OAV_ZcxpKv3lhVY69aaUIQtZUnKpuhFuf_NV0ZCzur6-GCvoAsf9ZFa3MO-kmwjvtYiuHH7HPv7J3_ce1QbMkqaLdNg7HjB8QtoPbAP5gIRNdXRUzsb80AKF1DUviOeFiiB9JoRg_in2ZqIvIZeWz1bXqCX9ZnBMspK3x68O0-Ov4RAEgkTqVz_86iEes0VtKoJG0c_QBNZfqB');"></div>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-8 pb-20">
+<div class="max-w-7xl mx-auto flex flex-col gap-8">
+<!-- KPI Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+<!-- KPI 1 -->
+<div class="bg-white dark:bg-[#151f2b] p-6 rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-primary dark:text-blue-300">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<span class="flex items-center text-xs font-semibold text-triage-green bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-[14px] mr-0.5">trending_up</span>
+                                    +12%
+                                </span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Consultas Hoje</p>
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">142</h3>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-white dark:bg-[#151f2b] p-6 rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-xl text-triage-orange">
+<span class="material-symbols-outlined">personal_injury</span>
+</div>
+<span class="flex items-center text-xs font-semibold text-triage-red bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full animate-pulse">
+                                    3 Críticos
+                                </span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Em Triagem</p>
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">18</h3>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-white dark:bg-[#151f2b] p-6 rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl text-indigo-600 dark:text-indigo-300">
+<span class="material-symbols-outlined">bed</span>
+</div>
+<span class="flex items-center text-xs font-semibold text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full">
+                                    85% Ocup.
+                                </span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Admissões Ativas</p>
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">45</h3>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-white dark:bg-[#151f2b] p-6 rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 relative overflow-hidden group">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-red-50 dark:bg-red-900/20 rounded-xl text-triage-red">
+<span class="material-symbols-outlined">inventory_2</span>
+</div>
+<span class="flex items-center text-xs font-semibold text-triage-red bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded-full">
+                                    Ação Necessária
+                                </span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium mb-1">Alertas de Stock</p>
+<h3 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">5</h3>
+</div>
+</div>
+</section>
+<!-- Charts Section -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Triage Chart -->
+<div class="bg-white dark:bg-[#151f2b] p-6 rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 lg:col-span-2 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Volume de Triagem (Manchester)</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Pacientes classificados hoje por nível de urgência</p>
+</div>
+<button class="text-sm font-semibold text-primary dark:text-blue-400 hover:underline">Ver Detalhes</button>
+</div>
+<div class="flex-1 min-h-[250px] flex items-end justify-around gap-4 px-2 pt-8 pb-2 border-b border-slate-100 dark:border-slate-700">
+<!-- Red -->
+<div class="flex flex-col items-center gap-2 group w-full">
+<div class="text-xs font-bold text-slate-600 dark:text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity mb-1">12</div>
+<div class="w-full max-w-[60px] bg-triage-red/20 border-t-4 border-triage-red rounded-t-sm h-[20%] relative group-hover:bg-triage-red/30 transition-all"></div>
+<span class="text-xs font-semibold text-slate-500 mt-2">Emergência</span>
+</div>
+<!-- Orange -->
+<div class="flex flex-col items-center gap-2 group w-full">
+<div class="text-xs font-bold text-slate-600 dark:text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity mb-1">28</div>
+<div class="w-full max-w-[60px] bg-triage-orange/20 border-t-4 border-triage-orange rounded-t-sm h-[45%] relative group-hover:bg-triage-orange/30 transition-all"></div>
+<span class="text-xs font-semibold text-slate-500 mt-2">M. Urgente</span>
+</div>
+<!-- Yellow -->
+<div class="flex flex-col items-center gap-2 group w-full">
+<div class="text-xs font-bold text-slate-600 dark:text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity mb-1">45</div>
+<div class="w-full max-w-[60px] bg-triage-yellow/20 border-t-4 border-triage-yellow rounded-t-sm h-[70%] relative group-hover:bg-triage-yellow/30 transition-all"></div>
+<span class="text-xs font-semibold text-slate-500 mt-2">Urgente</span>
+</div>
+<!-- Green -->
+<div class="flex flex-col items-center gap-2 group w-full">
+<div class="text-xs font-bold text-slate-600 dark:text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity mb-1">30</div>
+<div class="w-full max-w-[60px] bg-triage-green/20 border-t-4 border-triage-green rounded-t-sm h-[50%] relative group-hover:bg-triage-green/30 transition-all"></div>
+<span class="text-xs font-semibold text-slate-500 mt-2">Pouco Urg.</span>
+</div>
+<!-- Blue -->
+<div class="flex flex-col items-center gap-2 group w-full">
+<div class="text-xs font-bold text-slate-600 dark:text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity mb-1">5</div>
+<div class="w-full max-w-[60px] bg-triage-blue/20 border-t-4 border-triage-blue rounded-t-sm h-[10%] relative group-hover:bg-triage-blue/30 transition-all"></div>
+<span class="text-xs font-semibold text-slate-500 mt-2">Não Urg.</span>
+</div>
+</div>
+</div>
+<!-- Provinces Chart -->
+<div class="bg-white dark:bg-[#151f2b] p-6 rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white">Fluxo por Província</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Origem dos pacientes (Mês)</p>
+</div>
+<button class="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-slate-400">more_horiz</span>
+</button>
+</div>
+<div class="flex-1 flex flex-col justify-center gap-5">
+<!-- Luanda -->
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium text-slate-700 dark:text-slate-200">Luanda</span>
+<span class="font-bold text-slate-900 dark:text-white">65%</span>
+</div>
+<div class="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<!-- Huíla -->
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium text-slate-700 dark:text-slate-200">Huíla</span>
+<span class="font-bold text-slate-900 dark:text-white">18%</span>
+</div>
+<div class="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary/70 rounded-full" style="width: 18%"></div>
+</div>
+</div>
+<!-- Benguela -->
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium text-slate-700 dark:text-slate-200">Benguela</span>
+<span class="font-bold text-slate-900 dark:text-white">12%</span>
+</div>
+<div class="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary/50 rounded-full" style="width: 12%"></div>
+</div>
+</div>
+<!-- Cabinda -->
+<div class="space-y-2">
+<div class="flex justify-between text-sm">
+<span class="font-medium text-slate-700 dark:text-slate-200">Cabinda</span>
+<span class="font-bold text-slate-900 dark:text-white">5%</span>
+</div>
+<div class="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary/30 rounded-full" style="width: 5%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Section: Recent Activity & Critical List -->
+<section class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<!-- Recent Activity -->
+<div class="bg-white dark:bg-[#151f2b] rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 flex flex-col overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-[#151f2b]">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-blue-400">history</span>
+                                    Atividade Recente
+                                </h3>
+<button class="text-xs font-semibold uppercase tracking-wide text-primary dark:text-blue-400 hover:text-primary/80">Ver tudo</button>
+</div>
+<div class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Item 1 -->
+<div class="flex items-start gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="size-10 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Triagem Concluída - Paciente #4920</p>
+<span class="text-xs text-slate-400 whitespace-nowrap ml-2">Há 2 min</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Classificação: <span class="text-triage-orange font-medium">Laranja (Muito Urgente)</span></p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-start gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="size-10 rounded-full bg-red-50 dark:bg-red-900/20 text-triage-red flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Alerta de Stock Crítico</p>
+<span class="text-xs text-slate-400 whitespace-nowrap ml-2">Há 15 min</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Item: Amoxicilina 500mg - <span class="font-medium text-slate-700 dark:text-slate-300">Restam 12 un.</span></p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex items-start gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<div class="size-10 rounded-full bg-green-50 dark:bg-green-900/20 text-triage-green flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">login</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Nova Admissão - Pediatria</p>
+<span class="text-xs text-slate-400 whitespace-nowrap ml-2">Há 32 min</span>
+</div>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Dr. António Silva autorizou a admissão.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Critical Patients Table (Mini) -->
+<div class="bg-white dark:bg-[#151f2b] rounded-2xl shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 flex flex-col overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-[#151f2b]">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-triage-red">emergency</span>
+                                    Pacientes Críticos
+                                </h3>
+<span class="bg-red-100 dark:bg-red-900/30 text-triage-red text-xs font-bold px-2 py-1 rounded">3 Pacientes</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-sm text-slate-500 dark:text-slate-400">
+<thead class="bg-slate-50 dark:bg-slate-800/50 text-xs uppercase text-slate-400 font-semibold">
+<tr>
+<th class="px-6 py-3">Paciente</th>
+<th class="px-6 py-3">Tempo Espera</th>
+<th class="px-6 py-3 text-right">Ação</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">
+                                                João Manuel <span class="text-slate-400 font-normal">#4918</span>
+<div class="mt-1 flex items-center gap-1">
+<span class="size-2 rounded-full bg-triage-red"></span>
+<span class="text-xs text-triage-red font-semibold">Emergência</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-red-50 text-triage-red font-bold text-xs">12 min</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-medium hover:underline text-xs">Ver Prontuário</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">
+                                                Maria Costa <span class="text-slate-400 font-normal">#4892</span>
+<div class="mt-1 flex items-center gap-1">
+<span class="size-2 rounded-full bg-triage-orange"></span>
+<span class="text-xs text-triage-orange font-semibold">M. Urgente</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-orange-50 text-triage-orange font-bold text-xs">45 min</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-medium hover:underline text-xs">Ver Prontuário</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+<td class="px-6 py-4 font-medium text-slate-900 dark:text-white">
+                                                Pedro Afonso <span class="text-slate-400 font-normal">#4901</span>
+<div class="mt-1 flex items-center gap-1">
+<span class="size-2 rounded-full bg-triage-orange"></span>
+<span class="text-xs text-triage-orange font-semibold">M. Urgente</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded bg-orange-50 text-triage-orange font-bold text-xs">38 min</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary font-medium hover:underline text-xs">Ver Prontuário</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+</body></html>

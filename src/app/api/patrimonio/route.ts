@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
 
 // GET: Listar ativos
 export async function GET() {
   try {
-    const ativos = await prisma.ativos.findMany();
+    // Mock response
+    // const ativos = await prisma.ativos.findMany();
+    const ativos: any[] = [];
     return NextResponse.json(ativos);
   } catch (error) {
     return NextResponse.json({ error: 'Erro ao buscar ativos.' }, { status: 500 });
@@ -15,7 +16,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const ativo = await prisma.ativos.create({ data });
+    // Mock response
+    // const ativo = await prisma.ativos.create({ data });
+    const ativo = { id: 1, ...data, _mock: true };
     return NextResponse.json(ativo, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Erro ao criar ativo.' }, { status: 500 });
