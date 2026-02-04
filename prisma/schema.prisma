@@ -808,3 +808,49 @@ model registros_servicos_gerais {
   status            String    @default("Ativo") @db.VarChar(50)
   created_at        DateTime  @default(now()) @db.Timestamp(0)
 }
+
+model configuracoes {
+  id                   Int      @id @default(autoincrement())
+  
+  // Hospital
+  hospital_nome        String?  @db.VarChar(255)
+  hospital_sigla       String?  @db.VarChar(50)
+  hospital_nif         String?  @db.VarChar(20)
+  hospital_telefone    String?  @db.VarChar(50)
+  hospital_email       String?  @db.VarChar(255)
+  hospital_website     String?  @db.VarChar(255)
+  hospital_endereco    String?  @db.Text
+  hospital_logo        String?  @db.VarChar(255)
+
+  // Sistema
+  sistema_fuso_horario String?  @default("Africa/Luanda") @db.VarChar(50)
+  sistema_formato_data String?  @default("dd/MM/yyyy") @db.VarChar(20)
+  sistema_moeda        String?  @default("AOA") @db.VarChar(10)
+  sistema_idioma       String?  @default("pt-AO") @db.VarChar(10)
+  sistema_timeout_sessao String? @default("30") @db.VarChar(10)
+  sistema_backup_auto  Boolean  @default(true)
+  sistema_notificacoes_email Boolean @default(true)
+  sistema_auth_2fa     Boolean  @default(false)
+
+  // AGT (Administração Geral Tributária)
+  agt_endpoint         String?  @db.VarChar(255)
+  agt_app_id           String?  @db.VarChar(255)
+  agt_app_key          String?  @db.VarChar(255)
+  agt_token            String?  @db.Text
+  agt_ambiente         String?  @default("homologacao") @db.VarChar(20)
+
+  // Asseguradoras (Configuração de Integração)
+  seguradoras_status   String?  @default("disconnected") @db.VarChar(20)
+  seguradoras_endpoint String?  @db.VarChar(255)
+  seguradoras_api_key  String?  @db.VarChar(255)
+
+  // SMTP
+  smtp_host           String?  @db.VarChar(255)
+  smtp_port           Int?
+  smtp_user           String?  @db.VarChar(255)
+  smtp_pass           String?  @db.VarChar(255)
+  smtp_encryption     String?  @db.VarChar(10)
+
+  created_at           DateTime @default(now()) @db.Timestamp(0)
+  updated_at           DateTime @default(now()) @updatedAt @db.Timestamp(0)
+}
