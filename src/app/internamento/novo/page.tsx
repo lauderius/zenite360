@@ -58,12 +58,19 @@ export default function NovoInternamentoPage() {
               <Input name="medicoResponsavel" label="Médico Responsável" value={form.medicoResponsavel} onChange={handleChange} required />
               <Input name="dataAdmissao" label="Data de Admissão" type="date" value={form.dataAdmissao} onChange={handleChange} required />
               <Input name="diagnostico" label="Diagnóstico" value={form.diagnostico} onChange={handleChange} required />
-              <Select name="status" label="Status" value={form.status} onChange={handleChange} required>
-                <option value="EM_TRATAMENTO">Em Tratamento</option>
-                <option value="ALTA_MEDICA">Alta Médica</option>
-                <option value="TRANSFERIDO">Transferido</option>
-                <option value="OBITO">Óbito</option>
-              </Select>
+              <Select
+                name="status"
+                label="Status"
+                value={form.status}
+                onChange={handleChange}
+                required
+                options={[
+                  { value: "EM_TRATAMENTO", label: "Em Tratamento" },
+                  { value: "ALTA_MEDICA", label: "Alta Médica" },
+                  { value: "TRANSFERIDO", label: "Transferido" },
+                  { value: "OBITO", label: "Óbito" }
+                ]}
+              />
               <Input name="diasInternado" label="Dias Internado" type="number" value={form.diasInternado} onChange={handleChange} required />
               {error && <div className="text-red-600 text-sm">{error}</div>}
               {success && <div className="text-green-600 text-sm">Internamento cadastrado com sucesso!</div>}

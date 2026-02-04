@@ -9,6 +9,19 @@ export async function GET() {
     const countPacientes = await prisma.pacientes.count({ where: { deleted_at: null } });
     const countConsultas = await prisma.consultas.count({ where: { deleted_at: null } });
 
+    // Calcular facturação real baseada em agendamentos pagos
+    const faturasPagas = await prisma.agendamentos.aggregate({
+      where: {
+        pago: true,
+        deleted_at: null
+      },
+      _sum: {
+        valor_consulta: true
+      }
+    });
+
+    const facturacaoReal = Number(faturasPagas._sum.valor_consulta || 0);
+
     // Buscar transacções recentes de movimentos de stock com valor (exemplo de vendas)
     const transacoesRecentes = await prisma.movimentos_stock.findMany({
       take: 10,
@@ -21,7 +34,7 @@ export async function GET() {
     const stats = {
       totalPacientes: countPacientes,
       totalConsultas: countConsultas,
-      facturacaoMensal: 45280000, // Hardcoded para o dashboard premium (visto que o schema não tem facturas)
+      facturacaoMensal: facturacaoReal,
       movimentos: transacoesRecentes
     };
 

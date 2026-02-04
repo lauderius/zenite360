@@ -10,9 +10,17 @@ export async function GET(
         const paciente = await prisma.pacientes.findUnique({
             where: { id: BigInt(id) },
             include: {
-                agendamentos: { take: 5, orderBy: { created_at: 'desc' } },
-                consultas: { take: 5, orderBy: { created_at: 'desc' } },
-                exames_solicitados: { take: 5, orderBy: { created_at: 'desc' } }
+                agendamentos: {
+                    take: 10,
+                    orderBy: { created_at: 'desc' },
+                    include: { utilizadores_agendamentos_medico_idToutilizadores: { select: { name: true } } }
+                },
+                consultas: {
+                    take: 10,
+                    orderBy: { created_at: 'desc' },
+                    include: { utilizadores_consultas_medico_idToutilizadores: { select: { name: true } } }
+                },
+                exames_solicitados: { take: 10, orderBy: { created_at: 'desc' } }
             }
         });
 

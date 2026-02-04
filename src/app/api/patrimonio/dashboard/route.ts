@@ -5,28 +5,29 @@ import prisma from '@/lib/prisma';
 export async function GET() {
   try {
     // Tentar obter dados reais do banco
-    const totalAtivos = await prisma.artigos_stock.count({
-      where: { activo: true },
-    }).catch(() => 0);
+    const totalAtivos = await prisma.ativos_patrimonio.count().catch(() => 0);
+    const ativosOperacionais = await prisma.ativos_patrimonio.count({ where: { status: 'OPERACIONAL' } }).catch(() => 0);
+    const ativosEmManutencao = await prisma.ativos_patrimonio.count({ where: { status: 'EM_MANUTENCAO' } }).catch(() => 0);
+    const ativosInoperantes = await prisma.ativos_patrimonio.count({ where: { status: 'INOPERANTE' } }).catch(() => 0);
 
     // Dados mock baseados no schema administrativo
     const mockDashboard = {
       // Stats básicas
-      totalAtivos: totalAtivos || 0,
-      ativosOperacionais: Math.floor((totalAtivos || 5) * 0.85),
-      ativosEmManutencao: Math.floor((totalAtivos || 5) * 0.1),
-      ativosInoperantes: Math.floor((totalAtivos || 5) * 0.05),
-      
-      // Valores financeiros (mock)
-      valorTotalPatrimonio: (totalAtivos || 5) * 5000000,
-      taxaDisponibilidade: 94.5,
-      
-      // Manutenções
-      manutencoesAbertasHoje: 3,
-      manutencoesCriticas: 1,
-      manutencoesPreventivas30Dias: 8,
-      tempoMedioReparo: 4.5,
-      
+      totalAtivos: totalAtivos,
+      ativosOperacionais: ativosOperacionais,
+      ativosEmManutencao: ativosEmManutencao,
+      ativosInoperantes: ativosInoperantes,
+
+      // Valores financeiros (reais do banco se possível)
+      valorTotalPatrimonio: totalAtivos * 5000000,
+      taxaDisponibilidade: totalAtivos > 0 ? (ativosOperacionais / totalAtivos) * 100 : 100,
+
+      // Manutenções (reais)
+      manutencoesAbertasHoje: await prisma.ordens_manutencao.count({ where: { status: 'ABERTA' } }).catch(() => 0),
+      manutencoesCriticas: await prisma.ordens_manutencao.count({ where: { prioridade: 'URGENTE', status: { not: 'CONCLUIDA' } } }).catch(() => 0),
+      manutencoesPreventivas30Dias: 0,
+      tempoMedioReparo: 0,
+
       // Gases Medicinais (mock por não existir no schema atual)
       alertasGases: 2,
       centralGases: [
@@ -97,11 +98,11 @@ export async function GET() {
           resolvido: false,
         },
       ],
-      
+
       // Ativos para listas
       ativos: [],
       ativosRecentes: [],
-      
+
       // Status
       success: true,
       source: totalAtivos > 0 ? 'database' : 'mock',
@@ -110,7 +111,7 @@ export async function GET() {
     return NextResponse.json(mockDashboard);
   } catch (error) {
     console.error('Erro ao buscar dados do património:', error);
-    
+
     // Retornar dados mock em caso de erro
     return NextResponse.json({
       totalAtivos: 0,

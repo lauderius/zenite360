@@ -47,19 +47,70 @@ export async function GET() {
       where: { deleted_at: null }
     });
 
-    // Mocking some data that is not yet fully in schema or needs more complex logic
-    // In a real scenario, these would come from specific tables or logic
-    const emTriagem = 18; // Placeholder
-    const admissoesAtivas = 45; // Placeholder
+    // Dados reais de Triagens
+    const emTriagem = await prisma.triagem.count({
+      where: { status: { not: 'Atendido' } }
+    }).catch(() => 0);
 
-    // Formatar agendamentos recentes para a UI
-    const atividades = agendamentosRecentes.map(ag => ({
-      id: ag.id.toString(),
-      tipo: 'AGENDAMENTO',
-      titulo: `Novo Agendamento: ${ag.pacientes?.nome_completo || 'Paciente'}`,
-      tempo: 'Recente',
-      descricao: `Consulta de ${ag.especialidade}`,
-      status: ag.status
+    const triagensRecentes = await prisma.triagem.findMany({
+      take: 5,
+      orderBy: { created_at: 'desc' }
+    }).catch(() => []);
+
+    // Agregados para Manchester
+    const agrupamentoPrioridade = await prisma.triagem.groupBy({
+      by: ['prioridade'],
+      _count: { id: true }
+    }).catch(() => []);
+
+    const chartData = [
+      { label: 'Emergência', value: agrupamentoPrioridade.find(p => ['Vermelho', 'Emergência', 'EMERGENCIA'].includes(p.prioridade.toUpperCase()))?._count.id || 0 },
+      { label: 'M. Urgente', value: agrupamentoPrioridade.find(p => ['Laranja', 'Muito Urgente', 'M_URGENTE'].includes(p.prioridade.toUpperCase()))?._count.id || 0 },
+      { label: 'Urgente', value: agrupamentoPrioridade.find(p => ['Amarelo', 'Urgente', 'URGENTE'].includes(p.prioridade.toUpperCase()))?._count.id || 0 },
+      { label: 'Pouco Urg.', value: agrupamentoPrioridade.find(p => ['Verde', 'Pouco Urgente', 'POUCO_URGENTE'].includes(p.prioridade.toUpperCase()))?._count.id || 0 },
+      { label: 'Não Urg.', value: agrupamentoPrioridade.find(p => ['Azul', 'Não Urgente', 'NAO_URGENTE'].includes(p.prioridade.toUpperCase()))?._count.id || 0 },
+    ];
+
+    // Mock Admissões (Enquanto não há tabela de Internamento no Prisma)
+    const admissoesAtivas = await prisma.pacientes.count({
+      where: { created_at: { gte: today } }
+    }).catch(() => 0);
+
+    // Formatar atividades mixando agendamentos e triagens
+    const atividades = [
+      ...agendamentosRecentes.map(ag => ({
+        id: `ag-${ag.id}`,
+        titulo: `Consulta: ${ag.pacientes?.nome_completo}`,
+        tempo: 'Recentemente',
+        descricao: `${ag.especialidade} - ${ag.status}`,
+      })),
+      ...triagensRecentes.map(tr => ({
+        id: `tr-${tr.id}`,
+        titulo: `Triagem: ${tr.paciente_nome || 'Anónimo'}`,
+        tempo: 'Agora',
+        descricao: `Prioridade: ${tr.prioridade}`,
+      }))
+    ].slice(0, 8);
+
+    // Pacientes Críticos Reais
+    const pacientesCriticos = await prisma.triagem.findMany({
+      where: { prioridade: { in: ['Vermelho', 'Emergência', 'Laranja', 'Muito Urgente'] }, status: { not: 'Atendido' } },
+      take: 4,
+      orderBy: { created_at: 'desc' }
+    }).catch(() => []);
+
+    // Fluxo Regional Real
+    const porProvincia = await prisma.pacientes.groupBy({
+      by: ['provincia'],
+      _count: { id: true },
+      orderBy: { _count: { id: 'desc' } },
+      take: 5
+    }).catch(() => []);
+
+    const totalPacientesProv = porProvincia.reduce((acc, curr) => acc + curr._count.id, 0);
+    const fluxoRegional = porProvincia.map(p => ({
+      label: p.provincia,
+      value: totalPacientesProv > 0 ? Math.round((p._count.id / totalPacientesProv) * 100) : 0
     }));
 
     return NextResponse.json({
@@ -71,13 +122,14 @@ export async function GET() {
         totalPacientes
       },
       atividades,
-      chartData: [
-        { label: 'Emergência', value: 12 },
-        { label: 'M. Urgente', value: 28 },
-        { label: 'Urgente', value: 45 },
-        { label: 'Pouco Urg.', value: 30 },
-        { label: 'Não Urg.', value: 5 },
-      ]
+      pacientesCriticos: pacientesCriticos.map(p => ({
+        id: p.id.toString(),
+        nome: p.paciente_nome || 'N/A',
+        prioridade: p.prioridade,
+        tempoEspera: 'Em espera', // Poderia calcular baseado no created_at
+      })),
+      fluxoRegional,
+      chartData
     });
   } catch (error) {
     console.error('[API_DASHBOARD_GET]', error);

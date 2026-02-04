@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Avatar, cn } from '@/components/ui';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNotifications } from '@/contexts/NotificationContext';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -25,8 +26,8 @@ interface HeaderProps {
 
 export function Header({ onMenuClick }: HeaderProps) {
   const { funcionario, usuario, logout } = useAuth();
+  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const [currentTime, setCurrentTime] = useState<string>('');
-  // const [isDark, setIsDark] = useState(false); // Theme disabled per user request
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -40,7 +41,6 @@ export function Header({ onMenuClick }: HeaderProps) {
     return () => clearInterval(interval);
   }, []);
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -49,40 +49,11 @@ export function Header({ onMenuClick }: HeaderProps) {
         setShowNotifications(false);
       }
     };
-
     if (showUserMenu || showNotifications) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showUserMenu, showNotifications]);
-
-  // Theme logic disabled
-  /*
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('zenite360_theme');
-    if (savedTheme === 'dark') {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    const newTheme = !isDark ? 'dark' : 'light';
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('zenite360_theme', newTheme);
-  };
-  */
-
-  // Mock notifications for now - individually targeted as requested
-  const notifications = [
-    { id: 1, title: 'Novo Protocolo', desc: 'Protocolo de triagem atualizado', time: '10 min', unread: true },
-    { id: 2, title: 'Manutenção', desc: 'Sistema ficará instável às 03:00', time: '1h', unread: false },
-    { id: 3, title: 'Reunião Geral', desc: 'Reunião de equipa às 15h', time: '3h', unread: false },
-  ];
 
   return (
     <header className="sticky top-0 z-30 h-20 glass-panel border-x-0 border-t-0 border-b border-white/5 dark:border-white/5 px-6 lg:px-10">
@@ -144,7 +115,11 @@ export function Header({ onMenuClick }: HeaderProps) {
                 className="p-2.5 text-slate-500 hover:text-brand-500 hover:bg-brand-500/5 rounded-xl transition-all relative"
               >
                 <Bell size={20} />
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-brand-500 rounded-full border-2 border-white dark:border-slate-950" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-2.5 right-2.5 w-4 h-4 bg-brand-500 rounded-full border-2 border-white dark:border-slate-950 text-[8px] flex items-center justify-center text-white font-bold">
+                    {unreadCount}
+                  </span>
+                )}
               </button>
 
               {showNotifications && (
@@ -153,18 +128,22 @@ export function Header({ onMenuClick }: HeaderProps) {
                     <h3 className="font-bold text-slate-900 dark:text-white">Notificações</h3>
                   </div>
                   <div className="max-h-80 overflow-y-auto">
-                    {notifications.map(notif => (
-                      <div key={notif.id} className={`p-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer ${notif.unread ? 'bg-brand-500/5' : ''}`}>
-                        <div className="flex justify-between items-start mb-1">
-                          <h4 className={`text-sm font-semibold ${notif.unread ? 'text-brand-500' : 'text-slate-700 dark:text-slate-300'}`}>{notif.title}</h4>
-                          <span className="text-[10px] text-slate-400">{notif.time}</span>
+                    {notifications.length === 0 ? (
+                      <div className="p-8 text-center text-slate-500 text-xs">Sem notificações</div>
+                    ) : (
+                      notifications.map(notif => (
+                        <div key={notif.id} onClick={() => markAsRead(notif.id)} className={`p-4 border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer ${notif.unread ? 'bg-brand-500/5' : ''}`}>
+                          <div className="flex justify-between items-start mb-1">
+                            <h4 className={`text-sm font-semibold ${notif.unread ? 'text-brand-500' : 'text-slate-700 dark:text-slate-300'}`}>{notif.title}</h4>
+                            <span className="text-[10px] text-slate-400">{notif.time}</span>
+                          </div>
+                          <p className="text-xs text-slate-500">{notif.description}</p>
                         </div>
-                        <p className="text-xs text-slate-500">{notif.desc}</p>
-                      </div>
-                    ))}
+                      ))
+                    )}
                   </div>
                   <div className="p-3 text-center border-t border-white/5">
-                    <button className="text-xs font-bold text-brand-500 hover:text-brand-400">Marcar todas como lidas</button>
+                    <button onClick={markAllAsRead} className="text-xs font-bold text-brand-500 hover:text-brand-400">Marcar todas como lidas</button>
                   </div>
                 </div>
               )}

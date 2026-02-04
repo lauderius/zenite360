@@ -267,11 +267,13 @@ export default function FarmaciaPage() {
           <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
             <div className="flex flex-col gap-1.5 flex-1 min-w-[200px]">
               <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest ml-1">Sector (SBU/SF)</label>
-              <select className="input-premium h-14 px-6 text-sm appearance-none bg-slate-900 border-white/5">
-                <option>Todos os Sectores</option>
-                <option>SF - Farmácia Central</option>
-                <option>SBU - Emergência</option>
-                <option>SBU - Pediatria</option>
+              <select className="input-premium h-14 px-6 text-sm bg-slate-800 border-slate-600 text-slate-100 focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500/30">
+                <optgroup label="Seleccionar Sector" className="bg-slate-900">
+                  <option value="">Todos os Sectores</option>
+                  <option value="Farmacia_Central">SF - Farmácia Central</option>
+                  <option value="Emergência">SBU - Emergência</option>
+                  <option value="Pediatria">SBU - Pediatria</option>
+                </optgroup>
               </select>
             </div>
             <Button variant="outline" className="h-14 w-14 rounded-2xl border-white/5 hover:bg-white/5 mt-auto">

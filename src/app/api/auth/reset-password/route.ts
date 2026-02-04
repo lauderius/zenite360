@@ -14,9 +14,11 @@ export async function POST(request: NextRequest) {
             );
         }
 
+        const trimmedBI = bi.trim();
+
         // Verificar se existe um utilizador com este BI
-        const user = await prisma.utilizadores.findUnique({
-            where: { numero_bi: bi }
+        const user = await prisma.utilizadores.findFirst({
+            where: { numero_bi: trimmedBI }
         });
 
         if (!user) {

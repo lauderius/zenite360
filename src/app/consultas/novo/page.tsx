@@ -54,13 +54,20 @@ export default function NovaConsultaPage() {
               <Input name="medico" label="Médico" value={form.medico} onChange={handleChange} required />
               <Input name="departamento" label="Departamento" value={form.departamento} onChange={handleChange} required />
               <Input name="dataHoraInicio" label="Data e Hora" type="datetime-local" value={form.dataHoraInicio} onChange={handleChange} required />
-              <Select name="tipoAtendimento" label="Tipo de Atendimento" value={form.tipoAtendimento} onChange={handleChange} required>
-                <option value="Consulta Externa">Consulta Externa</option>
-                <option value="Retorno">Retorno</option>
-                <option value="Exame">Exame</option>
-                <option value="Cirurgia">Cirurgia</option>
-                <option value="Domiciliário">Domiciliário</option>
-              </Select>
+              <Select
+                name="tipoAtendimento"
+                label="Tipo de Atendimento"
+                value={form.tipoAtendimento}
+                onChange={handleChange}
+                required
+                options={[
+                  { value: "Consulta Externa", label: "Consulta Externa" },
+                  { value: "Retorno", label: "Retorno" },
+                  { value: "Exame", label: "Exame" },
+                  { value: "Cirurgia", label: "Cirurgia" },
+                  { value: "Domiciliário", label: "Domiciliário" }
+                ]}
+              />
               <Input name="queixaPrincipal" label="Queixa Principal" value={form.queixaPrincipal} onChange={handleChange} />
               {error && <div className="text-red-600 text-sm">{error}</div>}
               {success && <div className="text-green-600 text-sm">Consulta cadastrada com sucesso!</div>}

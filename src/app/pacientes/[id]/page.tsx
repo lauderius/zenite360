@@ -96,7 +96,7 @@ export default function PacienteDetalhesPage({ params }: { params: { id: string 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <InfoItem icon={<IdCard className="w-4 h-4 text-brand-500" />} label="B.I." value={paciente.bi_numero} />
                                 <InfoItem icon={<Calendar className="w-4 h-4 text-brand-500" />} label="Idade" value={`${calculateAge(paciente.data_nascimento)} anos (${paciente.genero})`} />
-                                <InfoItem icon={<Droplet className="w-4 h-4 text-red-500" />} label="Registo" value={new Date(paciente.created_at).toLocaleDateString()} />
+                                <InfoItem icon={<Droplet className="w-4 h-4 text-red-500" />} label="Sangue" value={paciente.grupo_sanguineo || 'N/R'} />
                                 <InfoItem icon={<MapPin className="w-4 h-4 text-brand-500" />} label="Localização" value={`${paciente.municipio || 'N/A'}, ${paciente.provincia}`} />
                                 <InfoItem icon={<Phone className="w-4 h-4 text-brand-500" />} label="Contacto" value={paciente.telefone_principal} />
                             </div>
@@ -149,8 +149,8 @@ export default function PacienteDetalhesPage({ params }: { params: { id: string 
                                     <ShieldAlert className="w-4 h-4" /> Alergias e Avisos
                                 </h4>
                                 <div className="space-y-3">
-                                    <div className="text-xs font-bold text-red-200/60 leading-relaxed bg-red-500/10 p-3 rounded-xl border border-red-500/20">
-                                        Nenhuma alergia severa registada até ao momento.
+                                    <div className={`text-xs font-bold leading-relaxed p-3 rounded-xl border ${paciente.alergias ? 'text-red-200 bg-red-500/20 border-red-500/30' : 'text-slate-500 bg-white/5 border-white/10'}`}>
+                                        {paciente.alergias || 'Nenhuma alergia registada até ao momento.'}
                                     </div>
                                 </div>
                             </Card>
@@ -173,13 +173,13 @@ export default function PacienteDetalhesPage({ params }: { params: { id: string 
                                     <TimelineEvent
                                         key={c.id}
                                         type="consultation"
-                                        title={`Consulta de ${c.especialidade}`}
-                                        sector={c.departamento}
-                                        date={`${new Date(c.data_hora_inicio).toLocaleDateString()} — ${new Date(c.data_hora_inicio).toLocaleTimeString().substring(0, 5)}`}
-                                        doctor={`Dr. Médico (ID: ${c.medico_id})`}
+                                        title={`Consulta: ${c.numero_consulta}`}
+                                        sector={c.tipo_consulta?.replace('_', ' ') || 'Consulta Geral'}
+                                        date={`${new Date(c.created_at).toLocaleDateString()} — ${new Date(c.created_at).toLocaleTimeString().substring(0, 5)}`}
+                                        doctor={c.utilizadores_consultas_medico_idToutilizadores?.name || `Médico ID: ${c.medico_id}`}
                                         urgency={c.status}
-                                        urgencyColor="text-brand-400"
-                                        note={c.observacoes || "Sem observações detalhadas registradas para esta consulta."}
+                                        urgencyColor={c.status === 'Concluido' ? 'text-emerald-400' : 'text-brand-400'}
+                                        note={c.conduta_medica || c.observacoes_gerais || "Sem observações detalhadas registradas para esta consulta."}
                                     />
                                 ))}
 

@@ -1,20 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-interface ArtigoStock {
-  id: bigint;
-  codigo_artigo: string;
-  nome_artigo: string;
-  descricao: string | null;
-  categoria: string;
-  localizacao_stock: string;
-  quantidade_stock: any;
-  preco_venda: any;
-  preco_compra: any;
-  created_at: Date | null;
-  activo: boolean;
-}
-
 // GET: Listar ativos do património
 export async function GET(request: NextRequest) {
   try {
@@ -24,57 +10,33 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || '';
     const categoria = searchParams.get('categoria') || '';
 
-    // Tentar obter do banco
-    let artigos: ArtigoStock[] = [];
-    let total = 0;
+    const where: any = {};
 
-    try {
-      const where: any = {
-        deleted_at: null,
-      };
-
-      if (search) {
-        where.OR = [
-          { nome_artigo: { contains: search } },
-          { codigo_artigo: { contains: search } },
-        ];
-      }
-
-      if (categoria) {
-        where.categoria = categoria;
-      }
-
-      [artigos, total] = await Promise.all([
-        prisma.artigos_stock.findMany({
-          where,
-          skip: (page - 1) * limit,
-          take: limit,
-          orderBy: { created_at: 'desc' },
-        }),
-        prisma.artigos_stock.count({ where }),
-      ]);
-    } catch (dbError) {
-      // Se o banco não tiver dados estruturados, retornar array vazio
-      artigos = [];
-      total = 0;
+    if (search) {
+      where.OR = [
+        { nome: { contains: search } },
+        { codigo: { contains: search } },
+      ];
     }
 
-    // Mapear para formato da aplicação
+    if (categoria) {
+      where.categoria = categoria;
+    }
+
+    const [artigos, total] = await Promise.all([
+      prisma.ativos_patrimonio.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { created_at: 'desc' },
+      }),
+      prisma.ativos_patrimonio.count({ where }),
+    ]);
+
     const ativos = artigos.map((artigo) => ({
+      ...artigo,
       id: Number(artigo.id),
-      codigo: artigo.codigo_artigo,
-      numeroPatrimonio: `PAT-${String(artigo.id).padStart(6, '0')}`,
-      nome: artigo.nome_artigo,
-      descricao: artigo.descricao || '',
-      categoria: mapCategoria(artigo.categoria),
-      marca: '',
-      modelo: '',
-      localizacao: artigo.localizacao_stock,
-      status: 'OPERACIONAL',
-      quantidade_stock: Number(artigo.quantidade_stock) || 0,
-      preco: Number(artigo.preco_venda) || 0,
-      dataAquisicao: artigo.created_at,
-      activo: artigo.activo,
+      dataAquisicao: artigo.created_at, // Map for frontend compatibility
     }));
 
     return NextResponse.json({
@@ -103,28 +65,24 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Criar no banco
-    const artigo = await prisma.artigos_stock.create({
+    const ativo = await prisma.ativos_patrimonio.create({
       data: {
-        codigo_artigo: body.codigo || `ART-${Date.now()}`,
-        nome_artigo: body.nome,
-        descricao: body.descricao || null,
+        codigo: body.codigo || `PAT-${Date.now()}`,
+        nome: body.nome,
         categoria: body.categoria || 'Outro',
-        localizacao_stock: body.localizacao || 'Almoxarifado',
-        quantidade_stock: body.quantidade_stock || 0,
-        preco_venda: body.preco || 0,
-        preco_compra: body.precoCompra || 0,
-        activo: true,
-        registado_por: BigInt(1), // TODO: obter do auth
+        marca: body.marca || '',
+        modelo: body.modelo || '',
+        numero_serie: body.numero_serie || '',
+        localizacao: body.localizacao || '',
+        status: body.status || 'OPERACIONAL',
       },
     });
 
     return NextResponse.json({
       success: true,
       data: {
-        id: Number(artigo.id),
-        codigo: artigo.codigo_artigo,
-        nome: artigo.nome_artigo,
+        ...ativo,
+        id: Number(ativo.id),
       },
     });
   } catch (error) {
@@ -136,14 +94,4 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function mapCategoria(categoria: string): string {
-  const mapeamento: Record<string, string> = {
-    Medicamento: 'OUTROS',
-    Material_Medico: 'ELECTROMEDICINA',
-    Equipamento: 'ELECTROMEDICINA',
-    Consumivel: 'OUTROS',
-    Outro: 'OUTROS',
-  };
-  return mapeamento[categoria] || 'OUTROS';
-}
 

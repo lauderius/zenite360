@@ -330,19 +330,17 @@ export default function SecretariaPage() {
                       {documentos.length > 0 ? documentos.map((doc) => (
                         <div
                           key={doc.id}
-                          className={`p-4 rounded-lg border ${
-                            doc.prioridade === 'URGENTE'
+                          className={`p-4 rounded-lg border ${doc.prioridade === 'URGENTE'
                               ? 'border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-800'
                               : 'border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700'
-                          }`}
+                            }`}
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex items-start gap-4">
-                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                                doc.tipoMovimentacao === 'ENTRADA' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
-                                doc.tipoMovimentacao === 'SAIDA' ? 'bg-blue-100 dark:bg-blue-900/30' :
-                                'bg-purple-100 dark:bg-purple-900/30'
-                              }`}>
+                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${doc.tipoMovimentacao === 'ENTRADA' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
+                                  doc.tipoMovimentacao === 'SAIDA' ? 'bg-blue-100 dark:bg-blue-900/30' :
+                                    'bg-purple-100 dark:bg-purple-900/30'
+                                }`}>
                                 {doc.tipoMovimentacao === 'ENTRADA' ? (
                                   <Icons.ArrowLeft className={`w-5 h-5 text-emerald-600`} />
                                 ) : doc.tipoMovimentacao === 'SAIDA' ? (
@@ -373,8 +371,8 @@ export default function SecretariaPage() {
                                   {doc.tipoMovimentacao === 'ENTRADA'
                                     ? `De: ${doc.remetenteExterno} → Para: ${doc.destinatarioInterno}`
                                     : doc.tipoMovimentacao === 'SAIDA'
-                                    ? `De: ${doc.remetenteInterno} → Para: ${doc.destinatarioExterno}`
-                                    : `${doc.remetenteInterno || ''} → ${doc.destinatarioInterno || ''}`
+                                      ? `De: ${doc.remetenteInterno} → Para: ${doc.destinatarioExterno}`
+                                      : `${doc.remetenteInterno || ''} → ${doc.destinatarioInterno || ''}`
                                   }
                                 </p>
                               </div>
@@ -483,11 +481,10 @@ export default function SecretariaPage() {
                       {requisicoes.length > 0 ? requisicoes.map((req) => (
                         <div key={req.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
                           <div className="flex items-center gap-4">
-                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                              req.status === 'PENDENTE' ? 'bg-amber-100 dark:bg-amber-900/30' :
-                              req.status === 'APROVADA' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
-                              'bg-slate-100 dark:bg-slate-700'
-                            }`}>
+                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${req.status === 'PENDENTE' ? 'bg-amber-100 dark:bg-amber-900/30' :
+                                req.status === 'APROVADA' ? 'bg-emerald-100 dark:bg-emerald-900/30' :
+                                  'bg-slate-100 dark:bg-slate-700'
+                              }`}>
                               <Icons.FileText className="w-5 h-5 text-slate-600" />
                             </div>
                             <div>
@@ -501,7 +498,7 @@ export default function SecretariaPage() {
                           <div className="flex items-center gap-3">
                             <Badge variant={
                               req.status === 'PENDENTE' ? 'warning' :
-                              req.status === 'APROVADA' ? 'success' : 'default'
+                                req.status === 'APROVADA' ? 'success' : 'default'
                             }>
                               {req.status}
                             </Badge>
@@ -537,7 +534,7 @@ export default function SecretariaPage() {
             <p className="text-slate-500">Selecione o tipo de documento:</p>
             <div className="grid grid-cols-3 gap-3">
               {Object.entries(tipoDocumentoConfig).slice(0, 9).map(([key, value]) => (
-                <Link key={key} href={`/secretaria/documentos/novo?tipo=${key}`}>
+                <Link key={key} href={`/secretaria/novo?tipo=${key}`}>
                   <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-colors text-center">
                     <Icons.FileText className="w-8 h-8 mx-auto text-sky-600 mb-2" />
                     <p className="text-sm font-medium text-slate-700 dark:text-slate-200">{value.label}</p>

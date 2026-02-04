@@ -165,7 +165,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           {...props}
         >
           {placeholder && <option value="">{placeholder}</option>}
-          {options.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+          {(options || []).map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
         {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
       </div>
@@ -179,8 +179,8 @@ Select.displayName = 'Select';
 // ============================================================================
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' 
-    | 'emergencia' | 'muitoUrgente' | 'urgente' | 'poucoUrgente' | 'naoUrgente';
+  variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info'
+  | 'emergencia' | 'muitoUrgente' | 'urgente' | 'poucoUrgente' | 'naoUrgente';
 }
 
 const badgeVariants: Record<string, string> = {
@@ -325,7 +325,7 @@ export interface TableProps<T> {
 
 export function Table<T extends { id: number | string }>({ data, columns, onRowClick, isLoading, emptyMessage = 'Nenhum registro encontrado' }: TableProps<T>) {
   if (isLoading) return <div className="flex justify-center py-8"><Spinner size="lg" /></div>;
-  
+
   return (
     <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700">
       <table className="w-full text-sm">
@@ -343,8 +343,8 @@ export function Table<T extends { id: number | string }>({ data, columns, onRowC
             <tr><td colSpan={columns.length} className="px-4 py-8 text-center text-slate-500">{emptyMessage}</td></tr>
           ) : (
             data.map((item) => (
-              <tr 
-                key={item.id} 
+              <tr
+                key={item.id}
                 onClick={() => onRowClick?.(item)}
                 className={cn('border-b border-slate-100 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50', onRowClick && 'cursor-pointer')}
               >
@@ -438,7 +438,7 @@ export interface TabsProps {
 export const Tabs = ({ tabs, defaultTab }: TabsProps) => {
   const [activeTab, setActiveTab] = React.useState(defaultTab || tabs[0]?.id);
   const activeContent = tabs.find((t) => t.id === activeTab)?.content;
-  
+
   return (
     <div>
       <div className="flex border-b border-slate-200 dark:border-slate-700">

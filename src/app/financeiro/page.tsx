@@ -22,12 +22,13 @@ import {
   BadgeAlert
 } from 'lucide-react';
 import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts';
-import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from '@/components/ui';
+import { Card, CardHeader, CardTitle, CardContent, Badge, Button, Modal, Input, Select } from '@/components/ui';
 import { api } from '@/services/api';
 
 export default function FinanceiroPage() {
   const [stats, setStats] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [showNewTx, setShowNewTx] = useState(false);
 
   const fetchStats = async () => {
     setIsLoading(true);
@@ -52,11 +53,11 @@ export default function FinanceiroPage() {
         description="Controlo de facturação, tesouraria e análise de custos operacionais."
         actions={
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" className="rounded-xl border-white/5 hover:bg-white/5">
+            <Button variant="outline" size="sm" className="rounded-xl border-white/5 hover:bg-white/5" onClick={() => window.open('/api/pdf/financeiro/balancete', '_blank')}>
               <BarChart3 className="w-4 h-4 mr-2" />
               Balancete Mensal
             </Button>
-            <Button className="gradient-brand border-none rounded-xl font-bold px-6 shadow-lg shadow-brand-500/20 group">
+            <Button className="gradient-brand border-none rounded-xl font-bold px-6 shadow-lg shadow-brand-500/20 group" onClick={() => setShowNewTx(true)}>
               <PlusCircle className="w-4 h-4 mr-2" />
               Novo Lançamento
             </Button>
@@ -227,6 +228,37 @@ export default function FinanceiroPage() {
           </div>
         </Card>
       </PageContent>
+
+      <Modal isOpen={showNewTx} onClose={() => setShowNewTx(false)} title="Novo Lançamento Financeiro">
+        <form className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <Select
+              label="Tipo de Lançamento"
+              options={[
+                { value: 'ENTRADA', label: 'Receita (Entrada)' },
+                { value: 'SAIDA', label: 'Despesa (Saída)' }
+              ]}
+              required
+            />
+            <Input label="Valor (AOA)" type="number" placeholder="0,00" required />
+          </div>
+          <Input label="Descrição / Referência" placeholder="Ex: Pagamento de Consulta #123" required />
+          <Select
+            label="Categoria"
+            options={[
+              { value: 'SERVICOS', label: 'Serviços Médicos' },
+              { value: 'PRODUTOS', label: 'Venda de Produtos' },
+              { value: 'FORNECEDORES', label: 'Pagamento a Fornecedores' },
+              { value: 'SALARIOS', label: 'Salários e RH' },
+              { value: 'OUTROS', label: 'Outros' }
+            ]}
+          />
+          <div className="flex justify-end gap-3 pt-4">
+            <Button variant="outline" type="button" onClick={() => setShowNewTx(false)}>Cancelar</Button>
+            <Button type="submit">Salvar Lançamento</Button>
+          </div>
+        </form>
+      </Modal>
     </MainLayout>
   );
 }

@@ -68,10 +68,6 @@ export default function DashboardPage() {
               <History className="w-4 h-4 mr-2" />
               Actualizar
             </Button>
-            <Button size="sm" className="gradient-brand border-none rounded-xl font-bold shadow-lg shadow-brand-500/20">
-              <ArrowUpRight className="w-4 h-4 mr-2" />
-              Exportar BI
-            </Button>
           </div>
         }
       />
@@ -82,22 +78,18 @@ export default function DashboardPage() {
           <KPICard
             title="Consultas Hoje"
             value={data.stats.consultasHoje.toString()}
-            trend="+12%"
             icon={<Calendar className="w-6 h-6 text-brand-400" />}
             color="brand"
           />
           <KPICard
             title="Em Triagem"
             value={data.stats.emTriagem.toString()}
-            badge="3 Críticos"
             icon={<Activity className="w-6 h-6 text-orange-500" />}
             color="orange"
-            pulse
           />
           <KPICard
             title="Admissões Ativas"
             value={data.stats.admissoesAtivas.toString()}
-            trend="85% Ocup."
             icon={<Bed className="w-6 h-6 text-indigo-400" />}
             color="indigo"
           />
@@ -149,10 +141,13 @@ export default function DashboardPage() {
               <Button variant="ghost" size="icon" className="text-slate-500"><MoreHorizontal className="w-5 h-5" /></Button>
             </CardHeader>
             <CardContent className="space-y-6 pt-4">
-              <ProgressBar label="Luanda" value={65} color="bg-brand-500" />
-              <ProgressBar label="Huíla" value={18} color="bg-brand-500/70" />
-              <ProgressBar label="Benguela" value={12} color="bg-brand-500/50" />
-              <ProgressBar label="Cabinda" value={5} color="bg-brand-500/30" />
+              {data.fluxoRegional?.length > 0 ? (
+                data.fluxoRegional.map((item: any) => (
+                  <ProgressBar key={item.label} label={item.label} value={item.value} color="bg-brand-500" />
+                ))
+              ) : (
+                <div className="py-10 text-center text-slate-500 text-xs uppercase font-black">Nenhum dado regional</div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -194,7 +189,7 @@ export default function DashboardPage() {
                 <AlertCircle className="w-5 h-5 text-red-500" />
                 Pacientes Críticos
               </CardTitle>
-              <Badge className="bg-red-500/20 text-red-500 border-none font-black px-3">3 PACIENTES</Badge>
+              <Badge className="bg-red-500/20 text-red-500 border-none font-black px-3">{data.pacientesCriticos?.length || 0} PACIENTES</Badge>
             </CardHeader>
             <CardContent className="p-0">
               <table className="w-full">
@@ -206,9 +201,21 @@ export default function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5 font-medium">
-                  <CriticalPatientRow name="João Manuel" id="#4918" urgency="Emergência" color="bg-red-500" waitTime="12 min" />
-                  <CriticalPatientRow name="Maria Costa" id="#4892" urgency="M. Urgente" color="bg-orange-500" waitTime="45 min" />
-                  <CriticalPatientRow name="Pedro Afonso" id="#4901" urgency="M. Urgente" color="bg-orange-500" waitTime="38 min" />
+                  {data.pacientesCriticos?.map((p: any) => (
+                    <CriticalPatientRow
+                      key={p.id}
+                      name={p.nome}
+                      id={`#${p.id}`}
+                      urgency={p.prioridade}
+                      color={['Vermelho', 'Emergência'].includes(p.prioridade) ? 'bg-red-500' : 'bg-orange-500'}
+                      waitTime={p.tempoEspera}
+                    />
+                  ))}
+                  {(!data.pacientesCriticos || data.pacientesCriticos.length === 0) && (
+                    <tr>
+                      <td colSpan={3} className="px-6 py-10 text-center text-slate-500 text-xs uppercase font-black">Nenhum paciente crítico no momento</td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </CardContent>

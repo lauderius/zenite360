@@ -1,23 +1,33 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MainLayout, PageHeader, PageContent } from "@/components/layouts/MainLayout";
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Spinner, Select } from "@/components/ui";
 import { api } from "@/services/api";
 
 export default function NovoDocumentoPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const tipoParam = searchParams.get("tipo");
+
   const [form, setForm] = useState({
-    tipo: "OFICIO",
+    tipo: tipoParam || "OFICIO",
     assunto: "",
     destinatario: "",
     prioridade: "NORMAL",
     status: "RASCUNHO",
   });
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  React.useEffect(() => {
+    if (tipoParam) {
+      setForm(prev => ({ ...prev, tipo: tipoParam }));
+    }
+  }, [tipoParam]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -49,39 +59,60 @@ export default function NovoDocumentoPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <Select name="tipo" label="Tipo" value={form.tipo} onChange={handleChange} required>
-                <option value="OFICIO">Ofício</option>
-                <option value="MEMORANDO">Memorando</option>
-                <option value="CIRCULAR">Circular</option>
-                <option value="PORTARIA">Portaria</option>
-                <option value="RESOLUCAO">Resolução</option>
-                <option value="DESPACHO">Despacho</option>
-                <option value="PARECER">Parecer</option>
-                <option value="COMUNICADO">Comunicado</option>
-                <option value="ATA">Ata</option>
-                <option value="CONTRATO">Contrato</option>
-                <option value="CONVENIO">Convénio</option>
-                <option value="RELATORIO">Relatório</option>
-                <option value="OUTROS">Outros</option>
-              </Select>
+              <Select
+                name="tipo"
+                label="Tipo"
+                value={form.tipo}
+                onChange={handleChange}
+                required
+                options={[
+                  { value: "OFICIO", label: "Ofício" },
+                  { value: "MEMORANDO", label: "Memorando" },
+                  { value: "CIRCULAR", label: "Circular" },
+                  { value: "PORTARIA", label: "Portaria" },
+                  { value: "RESOLUCAO", label: "Resolução" },
+                  { value: "DESPACHO", label: "Despacho" },
+                  { value: "PARECER", label: "Parecer" },
+                  { value: "COMUNICADO", label: "Comunicado" },
+                  { value: "ATA", label: "Ata" },
+                  { value: "CONTRATO", label: "Contrato" },
+                  { value: "CONVENIO", label: "Convénio" },
+                  { value: "RELATORIO", label: "Relatório" },
+                  { value: "OUTROS", label: "Outros" },
+                ]}
+              />
               <Input name="assunto" label="Assunto" value={form.assunto} onChange={handleChange} required />
               <Input name="destinatario" label="Destinatário" value={form.destinatario} onChange={handleChange} required />
-              <Select name="prioridade" label="Prioridade" value={form.prioridade} onChange={handleChange} required>
-                <option value="URGENTE">Urgente</option>
-                <option value="ALTA">Alta</option>
-                <option value="NORMAL">Normal</option>
-                <option value="BAIXA">Baixa</option>
-              </Select>
-              <Select name="status" label="Status" value={form.status} onChange={handleChange} required>
-                <option value="RASCUNHO">Rascunho</option>
-                <option value="EM_ELABORACAO">Em Elaboração</option>
-                <option value="AGUARDANDO_ASSINATURA">Aguardando Assinatura</option>
-                <option value="ASSINADO">Assinado</option>
-                <option value="ENVIADO">Enviado</option>
-                <option value="RECEBIDO">Recebido</option>
-                <option value="ARQUIVADO">Arquivado</option>
-                <option value="CANCELADO">Cancelado</option>
-              </Select>
+              <Select
+                name="prioridade"
+                label="Prioridade"
+                value={form.prioridade}
+                onChange={handleChange}
+                required
+                options={[
+                  { value: "URGENTE", label: "Urgente" },
+                  { value: "ALTA", label: "Alta" },
+                  { value: "NORMAL", label: "Normal" },
+                  { value: "BAIXA", label: "Baixa" },
+                ]}
+              />
+              <Select
+                name="status"
+                label="Status"
+                value={form.status}
+                onChange={handleChange}
+                required
+                options={[
+                  { value: "RASCUNHO", label: "Rascunho" },
+                  { value: "EM_ELABORACAO", label: "Em Elaboração" },
+                  { value: "AGUARDANDO_ASSINATURA", label: "Aguardando Assinatura" },
+                  { value: "ASSINADO", label: "Assinado" },
+                  { value: "ENVIADO", label: "Enviado" },
+                  { value: "RECEBIDO", label: "Recebido" },
+                  { value: "ARQUIVADO", label: "Arquivado" },
+                  { value: "CANCELADO", label: "Cancelado" },
+                ]}
+              />
               {error && <div className="text-red-600 text-sm">{error}</div>}
               {success && <div className="text-green-600 text-sm">Documento cadastrado com sucesso!</div>}
               <Button type="submit" disabled={isLoading}>

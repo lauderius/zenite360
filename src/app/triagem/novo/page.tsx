@@ -53,18 +53,32 @@ export default function NovaTriagemPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <Input name="paciente" label="Paciente" value={form.paciente} onChange={handleChange} required />
               <Input name="idade" label="Idade" type="number" value={form.idade} onChange={handleChange} required />
-              <Select name="genero" label="Gênero" value={form.genero} onChange={handleChange} required>
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-              </Select>
+              <Select
+                name="genero"
+                label="Gênero"
+                value={form.genero}
+                onChange={handleChange}
+                required
+                options={[
+                  { value: "M", label: "Masculino" },
+                  { value: "F", label: "Feminino" }
+                ]}
+              />
               <Input name="horaChegada" label="Hora de Chegada" type="time" value={form.horaChegada} onChange={handleChange} required />
-              <Select name="prioridade" label="Prioridade" value={form.prioridade} onChange={handleChange} required>
-                <option value="EMERGENCIA">Emergência</option>
-                <option value="MUITO_URGENTE">Muito Urgente</option>
-                <option value="URGENTE">Urgente</option>
-                <option value="POUCO_URGENTE">Pouco Urgente</option>
-                <option value="NAO_URGENTE">Não Urgente</option>
-              </Select>
+              <Select
+                name="prioridade"
+                label="Prioridade"
+                value={form.prioridade}
+                onChange={handleChange}
+                required
+                options={[
+                  { value: "EMERGENCIA", label: "Emergência" },
+                  { value: "MUITO_URGENTE", label: "Muito Urgente" },
+                  { value: "URGENTE", label: "Urgente" },
+                  { value: "POUCO_URGENTE", label: "Pouco Urgente" },
+                  { value: "NAO_URGENTE", label: "Não Urgente" }
+                ]}
+              />
               <Input name="queixaPrincipal" label="Queixa Principal" value={form.queixaPrincipal} onChange={handleChange} />
               {error && <div className="text-red-600 text-sm">{error}</div>}
               {success && <div className="text-green-600 text-sm">Triagem cadastrada com sucesso!</div>}

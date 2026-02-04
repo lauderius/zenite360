@@ -231,7 +231,7 @@ export default function PatrimonioPage() {
                 Manutenções
               </Button>
             </Link>
-            <Link href="/patrimonio/ativos/novo">
+            <Link href="/patrimonio/novo">
               <Button>
                 <Icons.Plus size={16} />
                 Novo Ativo
@@ -521,17 +521,17 @@ export default function PatrimonioPage() {
               <div
                 key={alerta.id}
                 className={`p-4 rounded-lg border ${alerta.severidade === 'CRITICO'
-                    ? 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800'
-                    : alerta.severidade === 'AVISO'
-                      ? 'bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800'
-                      : 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800'
+                  ? 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800'
+                  : alerta.severidade === 'AVISO'
+                    ? 'bg-amber-50 border-amber-200 dark:bg-amber-900/20 dark:border-amber-800'
+                    : 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800'
                   }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-3">
                     <Icons.AlertTriangle
                       className={`w-5 h-5 mt-0.5 ${alerta.severidade === 'CRITICO' ? 'text-red-600' :
-                          alerta.severidade === 'AVISO' ? 'text-amber-600' : 'text-blue-600'
+                        alerta.severidade === 'AVISO' ? 'text-amber-600' : 'text-blue-600'
                         }`}
                     />
                     <div>

@@ -1,57 +1,47 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-// GET: Listar registros de óbito
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const status = searchParams.get('status') || '';
-    const search = searchParams.get('search') || '';
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const registros = await prisma.registros_morgue.findMany({
+      orderBy: { created_at: 'desc' },
+    });
 
-    const client: any = prisma as any;
-    const model = client.obitos || client.registros_obito || null;
+    const data = registros.map(r => ({
+      ...r,
+      id: Number(r.id),
+      nomeCompleto: r.nome_falecido,
+      codigo: `OBIT-${String(r.id).padStart(6, '0')}`,
+      dataAdmissao: r.created_at,
+      dataHoraObito: r.data_obito,
+      causaObito: r.causa_obito || 'INDETERMINADA',
+      camaraFria: 'Câmara A', // Mock for now
+      posicao: r.gaveta_numero || '1',
+    }));
 
-    if (model) {
-      const where: any = {};
-      if (status) where.status = status;
-      if (search) where.OR = [{ nomeCompleto: { contains: search } }, { codigo: { contains: search } }];
-      const total = await model.count({ where }).catch(() => 0);
-      const items = await model.findMany({
-        where,
-        skip: (page - 1) * limit,
-        take: limit,
-        orderBy: { id: 'desc' },
-      }).catch(() => []);
-
-      return NextResponse.json({ data: items, pagination: { page, limit, total, totalPages: Math.ceil((total||0)/limit) }, success: true });
-    }
-
-    return NextResponse.json({ data: [], pagination: { page, limit, total: 0, totalPages: 0 }, success: true });
+    return NextResponse.json({ data, success: true });
   } catch (error) {
-    console.error('Erro ao buscar registros:', error);
-    return NextResponse.json({ data: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }, success: false, error: 'Erro ao buscar registros' });
+    console.error('Erro ao buscar óbitos:', error);
+    return NextResponse.json({ data: [], success: false }, { status: 500 });
   }
 }
 
-// POST: Criar novo registro de óbito
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const client: any = prisma as any;
-    const model = client.obitos || client.registros_obito || null;
+    const registro = await prisma.registros_morgue.create({
+      data: {
+        nome_falecido: body.nomeCompleto,
+        data_obito: new Date(body.dataHoraObito),
+        causa_obito: body.causaObito,
+        gaveta_numero: body.gaveta,
+        status: 'ADMITIDO',
+      },
+    });
 
-    if (model && typeof model.create === 'function') {
-      const created = await model.create({ data: { ...body, status: body.status || 'ADMITIDO', dataAdmissao: body.dataAdmissao ? new Date(body.dataAdmissao) : new Date() } }).catch(() => null);
-      if (created) return NextResponse.json({ success: true, data: created });
-    }
-
-    const novoRegistro = { id: Date.now(), codigo: `OB-${new Date().getFullYear()}-${Date.now()}`, ...body, status: 'ADMITIDO', dataAdmissao: new Date() };
-    return NextResponse.json({ success: true, data: novoRegistro });
+    return NextResponse.json({ data: { ...registro, id: Number(registro.id) }, success: true }, { status: 201 });
   } catch (error) {
-    console.error('Erro ao criar registro:', error);
-    return NextResponse.json({ success: false, error: 'Erro ao criar registro' }, { status: 500 });
+    console.error('Erro ao criar registro de óbito:', error);
+    return NextResponse.json({ success: false }, { status: 500 });
   }
 }
-

@@ -1,36 +1,50 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-// GET: Listar triagens (se existir model 'triagem' no Prisma, usa-o; caso contrário retorna vazio)
+// GET: Listar triagens
 export async function GET() {
   try {
-    const client: any = prisma as any;
-    if (client.triagem && typeof client.triagem.findMany === 'function') {
-      const triagens = await client.triagem.findMany();
-      return NextResponse.json({ data: triagens, success: true });
-    }
+    const triagens = await prisma.triagem.findMany({
+      orderBy: { created_at: 'desc' },
+    });
+    
+    // Mapear BigInt para Number para JSON
+    const data = triagens.map(t => ({
+      ...t,
+      id: Number(t.id),
+      paciente_id: t.paciente_id ? Number(t.paciente_id) : null,
+    }));
 
-    // Fallback: retornar lista vazia se tabela não existir no client Prisma
-    return NextResponse.json({ data: [], success: true });
+    return NextResponse.json({ data, success: true });
   } catch (error) {
     console.error('Erro ao buscar triagens:', error);
     return NextResponse.json({ data: [], success: false, error: 'Erro ao buscar triagens.' }, { status: 500 });
   }
 }
 
-// POST: Criar triagem (fallback para 501 se não implementado)
+// POST: Criar triagem
 export async function POST(req: NextRequest) {
   try {
-    const client: any = prisma as any;
-    if (client.triagem && typeof client.triagem.create === 'function') {
-      const data = await req.json();
-      const triagem = await client.triagem.create({ data });
-      return NextResponse.json({ data: triagem, success: true }, { status: 201 });
-    }
+    const body = await req.json();
+    
+    const triagem = await prisma.triagem.create({
+      data: {
+        paciente_nome: body.paciente,
+        idade: parseInt(body.idade),
+        genero: body.genero,
+        prioridade: body.prioridade,
+        status: body.status || "Aguardando",
+        queixa_principal: body.queixaPrincipal,
+      },
+    });
 
-    return NextResponse.json({ success: false, error: 'Endpoint de triagem não suportado no banco.' }, { status: 501 });
+    return NextResponse.json({ 
+      data: { ...triagem, id: Number(triagem.id) }, 
+      success: true 
+    }, { status: 201 });
   } catch (error) {
     console.error('Erro ao criar triagem:', error);
-    return NextResponse.json({ error: 'Erro ao criar triagem.' }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Erro ao criar triagem.' }, { status: 500 });
   }
 }
+

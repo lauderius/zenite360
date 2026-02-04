@@ -138,7 +138,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 </div>
                 <div className="flex flex-col gap-1">
                   <p className="text-[10px] text-slate-500 font-medium">Último Backup</p>
-                  <p className="text-xs text-slate-300 font-mono">2024.10.27 - 03:00</p>
+                  <p className="text-xs text-slate-300 font-mono">2026.02.04 - 09:42</p>
                 </div>
               </div>
             </div>

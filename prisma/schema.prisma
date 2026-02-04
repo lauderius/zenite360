@@ -723,3 +723,88 @@ enum agendamentos_especialidade {
   Dermatologia
   Ortopedia
 }
+
+model triagem {
+  id                   BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  paciente_id          BigInt?   @db.UnsignedBigInt
+  paciente_nome        String?   @db.VarChar(255)
+  idade                Int?
+  genero               String?   @db.VarChar(20)
+  prioridade           String    @db.VarChar(50)
+  status               String    @default("Aguardando") @db.VarChar(50)
+  queixa_principal     String?   @db.Text
+  pressao_arterial     String?   @db.VarChar(20)
+  frequencia_cardiaca  Int?
+  frequencia_respiratoria Int?
+  temperatura          Decimal?  @db.Decimal(5, 2)
+  saturacao_oxigenio   Int?
+  peso                 Decimal?  @db.Decimal(5, 2)
+  created_at           DateTime  @default(now()) @db.Timestamp(0)
+  updated_at           DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model departamentos {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  nome              String    @db.VarChar(255)
+  sigla             String    @db.VarChar(20)
+  tipo              String    @db.VarChar(50)
+  descricao         String?   @db.Text
+  localizacao       String?   @db.VarChar(255)
+  activo            Boolean   @default(true)
+  created_at        DateTime  @default(now()) @db.Timestamp(0)
+  updated_at        DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model ativos_patrimonio {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  codigo            String    @unique @db.VarChar(50)
+  nome              String    @db.VarChar(255)
+  categoria         String    @db.VarChar(100)
+  marca             String?   @db.VarChar(100)
+  modelo            String?   @db.VarChar(100)
+  numero_serie      String?   @db.VarChar(100)
+  localizacao       String?   @db.VarChar(255)
+  status            String    @default("Operacional") @db.VarChar(50)
+  created_at        DateTime  @default(now()) @db.Timestamp(0)
+  updated_at        DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model ordens_manutencao {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  ativo_id          BigInt    @db.UnsignedBigInt
+  tipo              String    @db.VarChar(50)
+  descricao         String    @db.Text
+  prioridade        String    @db.VarChar(50)
+  status            String    @default("Pendente") @db.VarChar(50)
+  created_at        DateTime  @default(now()) @db.Timestamp(0)
+  updated_at        DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model documentos_secretaria {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  tipo              String    @db.VarChar(100)
+  titulo            String    @db.VarChar(255)
+  conteudo          String?   @db.Text
+  paciente_id       BigInt?   @db.UnsignedBigInt
+  status            String    @default("Emitido") @db.VarChar(50)
+  created_at        DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model registros_morgue {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  nome_falecido     String    @db.VarChar(255)
+  data_obito        DateTime  @db.Timestamp(0)
+  causa_obito       String?   @db.Text
+  gaveta_numero     String?   @db.VarChar(20)
+  status            String    @default("Presente") @db.VarChar(50)
+  created_at        DateTime  @default(now()) @db.Timestamp(0)
+}
+
+model registros_servicos_gerais {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  tipo              String    @db.VarChar(100)
+  descricao         String    @db.Text
+  data_evento       DateTime  @db.Date
+  status            String    @default("Ativo") @db.VarChar(50)
+  created_at        DateTime  @default(now()) @db.Timestamp(0)
+}

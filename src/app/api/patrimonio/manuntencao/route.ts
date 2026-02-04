@@ -9,76 +9,35 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    // Mock de dados para manutenção
-    const manutencoesMock = [
-      {
-        id: 1,
-        codigo: 'OS-2024-00001',
-        ativoId: 1,
-        ativoNome: 'Monitor de Paciente - UTI 1',
-        tipo: 'CORRETIVA' as const,
-        prioridade: 'CRITICA' as const,
-        status: 'ABERTA' as const,
-        descricaoProblema: 'Display não Liga',
-        dataAbertura: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-        solicitante: 'Enfermeiro Chefe - UTI',
-        custoEstimado: 50000,
-      },
-      {
-        id: 2,
-        codigo: 'OS-2024-00002',
-        ativoId: 2,
-        ativoNome: 'Bomba de Infusão - Ala B',
-        tipo: 'PREVENTIVA' as const,
-        prioridade: 'MEDIA' as const,
-        status: 'EM_EXECUCAO' as const,
-        descricaoProblema: 'Manutenção preventiva programada',
-        dataAbertura: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-        solicitante: 'Técnico de Manutenção',
-        custoEstimado: 25000,
-      },
-      {
-        id: 3,
-        codigo: 'OS-2024-00003',
-        ativoId: 3,
-        ativoNome: 'ECG - Consultório 3',
-        tipo: 'CORRETIVA' as const,
-        prioridade: 'ALTA' as const,
-        status: 'AGUARDANDO_PECAS' as const,
-        descricaoProblema: 'Cable de ECG com defeito',
-        dataAbertura: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-        solicitante: 'Médico - Consultório 3',
-        custoEstimado: 35000,
-      },
-      {
-        id: 4,
-        codigo: 'OS-2024-00004',
-        ativoId: 4,
-        ativoNome: 'Aspirador Cirúrgico - Centro Cirúrgico',
-        tipo: 'CORRETIVA' as const,
-        prioridade: 'BAIXA' as const,
-        status: 'CONCLUIDA' as const,
-        descricaoProblema: 'Vazamento no tubo de vácuo',
-        dataAbertura: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        dataConclusao: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-        solicitante: 'Enfermeiro - Centro Cirúrgico',
-        custoTotal: 15000,
-      },
-    ];
-
-    // Filtrar por status se especificado
-    let manutencoesFiltradas = manutencoesMock;
+    const where: any = {};
     if (status) {
-      manutencoesFiltradas = manutencoesMock.filter(m => m.status === status);
+      where.status = status;
     }
 
+    const [manutencoes, total] = await Promise.all([
+      prisma.ordens_manutencao.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { created_at: 'desc' },
+      }),
+      prisma.ordens_manutencao.count({ where }),
+    ]);
+
+    const data = manutencoes.map(m => ({
+      ...m,
+      id: Number(m.id),
+      ativoId: Number(m.ativo_id),
+      dataAbertura: m.created_at,
+    }));
+
     return NextResponse.json({
-      data: manutencoesFiltradas,
+      data,
       pagination: {
         page,
         limit,
-        total: manutencoesFiltradas.length,
-        totalPages: Math.ceil(manutencoesFiltradas.length / limit),
+        total,
+        totalPages: Math.ceil(total / limit),
       },
       success: true,
     });
@@ -98,18 +57,23 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Em implementação real, salvaria no banco
-    const novaManutencao = {
-      id: Date.now(),
-      codigo: `OS-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(4, '0')}`,
-      ...body,
-      status: 'ABERTA',
-      dataAbertura: new Date(),
-    };
+    const novaManutencao = await prisma.ordens_manutencao.create({
+      data: {
+        ativo_id: BigInt(body.ativoId),
+        tipo: body.tipo,
+        descricao: body.descricao || body.descricaoProblema || '',
+        prioridade: body.prioridade,
+        status: 'Pendente',
+      },
+    });
 
     return NextResponse.json({
       success: true,
-      data: novaManutencao,
+      data: {
+        ...novaManutencao,
+        id: Number(novaManutencao.id),
+        ativoId: Number(novaManutencao.ativo_id),
+      },
     });
   } catch (error) {
     console.error('Erro ao criar manutenção:', error);
@@ -119,4 +83,5 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
 

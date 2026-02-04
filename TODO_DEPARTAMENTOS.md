@@ -87,7 +87,9 @@ Corrigir os erros nos departamentos após remoção dos dados mock, implementand
 - Sistema de notificações preparado para receber alertas individuais por departamento
 
 ## Departamentos da  SideBar que dão erro ao entrar e têm funcionalidades que não funcionam
+
 Todas as alterações que fazemos relacionada com as informaçõe devem fazer CRUD com o banco de dados via prisma, e jamais deve ter dados em mock.
+
 -  nível geral não está a dar para emitir ou exportar em pdf
 - Na Tiagem não dá para inciar uma nova.
 - E no de Recursos Humanos não dá para acessar a lista de visualização para cada um dos setores que estão presentes nele.

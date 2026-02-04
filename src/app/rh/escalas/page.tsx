@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
-import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Select } from '@/components/ui';
+import { Card, CardHeader, CardTitle, CardContent, Button, Badge, Spinner, Select, Modal } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
+import { api } from '@/services/api';
 
 interface Escala {
   id: number;
@@ -34,10 +35,51 @@ export default function EscalasPage() {
   const [escalas, setEscalas] = useState<Escala[]>([]);
   const [semanaAtual, setSemanaAtual] = useState(new Date());
   const [departamentoFilter, setDepartamentoFilter] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [funcionarios, setFuncionarios] = useState<any[]>([]);
+  const [form, setForm] = useState({
+    funcionarioId: '',
+    turno: 'MANHA' as any,
+    dias: [] as number[],
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await api.post('/rh/escalas', form);
+      setShowModal(false);
+      // Reload or update list
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDayToggle = (dayIdx: number) => {
+    setForm(prev => ({
+      ...prev,
+      dias: prev.dias.includes(dayIdx)
+        ? prev.dias.filter(d => d !== dayIdx)
+        : [...prev.dias, dayIdx]
+    }));
+  };
 
   useEffect(() => {
-    // TODO: Integrar com API real de escalas
-    setIsLoading(false);
+    async function loadData() {
+      try {
+        const [escRes, funRes] = await Promise.all([
+          api.get<{ data: Escala[] }>('/rh/escalas'),
+          api.get<{ data: any[] }>('/rh/funcionarios')
+        ]);
+        setEscalas(escRes.data || []);
+        setFuncionarios(funRes.data || []);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadData();
   }, []);
 
   // Gerar dias da semana atual
@@ -92,13 +134,53 @@ export default function EscalasPage() {
                 Voltar
               </Button>
             </Link>
-            <Button>
+            <Button onClick={() => setShowModal(true)}>
               <Icons.Plus size={16} />
               Nova Escala
             </Button>
           </div>
         }
       />
+
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Nova Escala de Trabalho">
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <Select
+            label="Funcionário"
+            value={form.funcionarioId}
+            onChange={(e) => setForm({ ...form, funcionarioId: e.target.value })}
+            options={funcionarios.map(f => ({ value: String(f.id), label: f.nome_completo }))}
+            placeholder="Selecione o funcionário"
+            required
+          />
+          <Select
+            label="Turno"
+            value={form.turno}
+            onChange={(e) => setForm({ ...form, turno: e.target.value as any })}
+            options={Object.entries(turnoConfig).map(([key, val]) => ({ value: key, label: val.label }))}
+            required
+          />
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Dias da Semana</label>
+            <div className="flex flex-wrap gap-2">
+              {diasSemanaCompleto.map((dia, idx) => (
+                <label key={idx} className="flex items-center gap-2 p-2 border rounded-lg hover:bg-slate-50 cursor-pointer text-sm">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={form.dias.includes(idx)}
+                    onChange={() => handleDayToggle(idx)}
+                  />
+                  {dia}
+                </label>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-end gap-3 pt-4">
+            <Button variant="outline" type="button" onClick={() => setShowModal(false)}>Cancelar</Button>
+            <Button type="submit">Salvar Escala</Button>
+          </div>
+        </form>
+      </Modal>
 
       <PageContent>
         {/* Navegação da Semana */}
@@ -151,18 +233,16 @@ export default function EscalasPage() {
                     {diasDaSemana.map((dia, index) => (
                       <th
                         key={index}
-                        className={`px-2 py-3 text-center font-semibold text-slate-600 dark:text-slate-400 ${
-                          dia.toDateString() === new Date().toDateString()
-                            ? 'bg-sky-50 dark:bg-sky-900/20'
-                            : ''
-                        }`}
+                        className={`px-2 py-3 text-center font-semibold text-slate-600 dark:text-slate-400 ${dia.toDateString() === new Date().toDateString()
+                          ? 'bg-sky-50 dark:bg-sky-900/20'
+                          : ''
+                          }`}
                       >
                         <p className="text-xs">{diasSemana[index]}</p>
-                        <p className={`text-lg ${
-                          dia.toDateString() === new Date().toDateString()
-                            ? 'text-sky-600 dark:text-sky-400'
-                            : ''
-                        }`}>
+                        <p className={`text-lg ${dia.toDateString() === new Date().toDateString()
+                          ? 'text-sky-600 dark:text-sky-400'
+                          : ''
+                          }`}>
                           {dia.getDate()}
                         </p>
                       </th>
@@ -190,11 +270,10 @@ export default function EscalasPage() {
                         return (
                           <td
                             key={index}
-                            className={`px-2 py-3 text-center ${
-                              dia.toDateString() === new Date().toDateString()
-                                ? 'bg-sky-50 dark:bg-sky-900/20'
-                                : ''
-                            }`}
+                            className={`px-2 py-3 text-center ${dia.toDateString() === new Date().toDateString()
+                              ? 'bg-sky-50 dark:bg-sky-900/20'
+                              : ''
+                              }`}
                           >
                             {trabalha ? (
                               <div className={`inline-block px-2 py-1 rounded text-xs font-medium ${turnoConfig[escala.turno].cor}`}>

@@ -23,6 +23,12 @@ import { api } from '@/services/api';
 export default function PacientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [pacientes, setPacientes] = useState<any[]>([]);
+  const [stats, setStats] = useState({
+    emergencia: 0,
+    muitoUrgente: 0,
+    urgente: 0,
+    monitorizacao: 0
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -41,7 +47,9 @@ export default function PacientesPage() {
     contacto_emergencia_nome: '',
     contacto_emergencia_telefone: '',
     provincia: 'Luanda',
-    municipio: ''
+    municipio: '',
+    grupo_sanguineo: '',
+    alergias: ''
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -49,8 +57,11 @@ export default function PacientesPage() {
   const fetchPacientes = async (query = "") => {
     setIsLoading(true);
     try {
-      const res = await api.get<{ data: any[] }>(`/pacientes${query ? `?q=${query}` : ""}`);
+      const res = await api.get<{ data: any[], stats?: any }>(`/pacientes${query ? `?q=${query}` : ""}`);
       setPacientes(res.data || []);
+      if (res.stats) {
+        setStats(res.stats);
+      }
     } catch (error) {
       console.error("Erro ao buscar pacientes:", error);
       setPacientes([]);
@@ -101,7 +112,9 @@ export default function PacientesPage() {
       contacto_emergencia_nome: paciente.contacto_emergencia_nome || '',
       contacto_emergencia_telefone: paciente.contacto_emergencia_telefone || '',
       provincia: paciente.provincia || 'Luanda',
-      municipio: paciente.municipio || ''
+      municipio: paciente.municipio || '',
+      grupo_sanguineo: paciente.grupo_sanguineo || '',
+      alergias: paciente.alergias || ''
     });
     setIsModalOpen(true);
   };
@@ -194,6 +207,28 @@ export default function PacientesPage() {
                 value={formData.municipio}
                 onChange={(e) => setFormData({ ...formData, municipio: e.target.value })}
               />
+              <Select
+                label="Grupo Sanguíneo"
+                options={[
+                  { value: '', label: 'Não Informado' },
+                  { value: 'A+', label: 'A+' },
+                  { value: 'A-', label: 'A-' },
+                  { value: 'B+', label: 'B+' },
+                  { value: 'B-', label: 'B-' },
+                  { value: 'AB+', label: 'AB+' },
+                  { value: 'AB-', label: 'AB-' },
+                  { value: 'O+', label: 'O+' },
+                  { value: 'O-', label: 'O-' },
+                ]}
+                value={formData.grupo_sanguineo}
+                onChange={(e) => setFormData({ ...formData, grupo_sanguineo: e.target.value })}
+              />
+              <Input
+                label="Alergias"
+                placeholder="Ex: Penicilina, Dipirona..."
+                value={formData.alergias}
+                onChange={(e) => setFormData({ ...formData, alergias: e.target.value })}
+              />
             </div>
 
             <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl space-y-4">
@@ -233,12 +268,14 @@ export default function PacientesPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
-            <select className="input-premium h-14 px-6 min-w-[200px] text-sm appearance-none bg-slate-900 border-white/5">
-              <option>Todos os Estados</option>
-              <option>Em Triagem</option>
-              <option>Aguardando</option>
-              <option>Em Atendimento</option>
-              <option>Alta</option>
+            <select className="h-14 px-6 min-w-[200px] text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all font-bold">
+              <optgroup label="Filtrar por Status" className="bg-white dark:bg-slate-900">
+                <option value="">Todos os Estados</option>
+                <option value="Em Triagem">Em Triagem</option>
+                <option value="Aguardando">Aguardando</option>
+                <option value="Em Atendimento">Em Atendimento</option>
+                <option value="Alta">Alta</option>
+              </optgroup>
             </select>
             <Button variant="outline" className="h-14 w-14 rounded-2xl border-white/5 hover:bg-white/5">
               <Filter className="w-5 h-5 text-slate-500" />
@@ -249,10 +286,10 @@ export default function PacientesPage() {
         {/* Quick Filter Chips */}
         <div className="flex gap-3 overflow-x-auto pb-4 mb-6 scrollbar-hide">
           <FilterChip label="Todos" count={pacientes.length} active />
-          <FilterChip label="Emergência" count={3} color="bg-red-500" />
-          <FilterChip label="V. Urgente" count={8} color="bg-orange-500" />
-          <FilterChip label="Urgente" count={12} color="bg-amber-500" />
-          <FilterChip label="Monitorização" count={45} color="bg-brand-500" />
+          <FilterChip label="Emergência" count={stats.emergencia} color="bg-red-500" />
+          <FilterChip label="V. Urgente" count={stats.muitoUrgente} color="bg-orange-500" />
+          <FilterChip label="Urgente" count={stats.urgente} color="bg-amber-500" />
+          <FilterChip label="Monitorização" count={stats.monitorizacao} color="bg-brand-500" />
         </div>
 
         {/* Patients Table */}

@@ -49,7 +49,8 @@ export async function POST(request: NextRequest) {
     const userId = usuario.id.toString();
     const userEmail = usuario.email;
     const userName = usuario.name;
-    const userNivelAcesso = 'USUARIO'; // Ajustar conforme lógica de níveis do banco
+    // Map to a valid NivelAcesso from the enum
+    const userNivelAcesso = 'ADMINISTRATIVO'; 
 
     // Gerar token JWT
     const token = await new SignJWT({
@@ -62,13 +63,24 @@ export async function POST(request: NextRequest) {
       .setExpirationTime('8h')
       .sign(JWT_SECRET);
 
+    // Mocking a refreshToken for the context
+    const refreshToken = 'dummy-refresh-token';
+
     return NextResponse.json({
       token,
+      refreshToken,
       usuario: {
-        id: userId,
+        id: Number(usuario.id),
         name: userName,
         email: userEmail,
+        username: usuario.username,
+      },
+      funcionario: {
+        id: Number(usuario.id),
+        nomeCompleto: userName,
+        email: userEmail,
         nivelAcesso: userNivelAcesso,
+        status: 'ACTIVO',
       }
     });
 
