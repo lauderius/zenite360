@@ -34,7 +34,7 @@ export default function NovoPacientePage() {
     provincia: '',
     municipio: '',
     endereco: '',
-    grupo_sanguineo: 'DESCONHECIDO' as GrupoSanguineo,
+    grupo_sanguineo: '' as GrupoSanguineo | '',
     alergias: '',
     doencas_cronicas: '',
     possuiConvenio: false,
@@ -60,7 +60,16 @@ export default function NovoPacientePage() {
         throw new Error('Preencha todos os campos obrigatórios');
       }
 
-      await api.post('/pacientes', formData);
+      // Mapear dados do formulário para o formato da API
+      const payload = {
+        ...formData,
+        bi_numero: formData.numero_documento,
+        contacto_emergencia_nome: formData.contatoEmergenciaNome,
+        contacto_emergencia_telefone: formData.contatoEmergenciaTelefone,
+        // numero_processo: gerado automaticamente no backend
+      };
+
+      await api.post('/pacientes', payload);
 
       setSuccess(true);
       setTimeout(() => router.push('/pacientes'), 2000);
@@ -139,9 +148,9 @@ export default function NovoPacientePage() {
                     onChange={(e) => handleChange('genero', e.target.value)}
                     placeholder="Selecione"
                     options={[
-                      { value: 'MASCULINO', label: 'Masculino' },
-                      { value: 'FEMININO', label: 'Feminino' },
-                      { value: 'OUTRO', label: 'Outro' },
+                      { value: 'Masculino', label: 'Masculino' },
+                      { value: 'Feminino', label: 'Feminino' },
+                      { value: 'Outro', label: 'Outro' },
                     ]}
                   />
                   <Select
@@ -150,11 +159,11 @@ export default function NovoPacientePage() {
                     onChange={(e) => handleChange('estado_civil', e.target.value)}
                     placeholder="Selecione"
                     options={[
-                      { value: 'SOLTEIRO', label: 'Solteiro(a)' },
-                      { value: 'CASADO', label: 'Casado(a)' },
-                      { value: 'DIVORCIADO', label: 'Divorciado(a)' },
-                      { value: 'VIUVO', label: 'Viúvo(a)' },
-                      { value: 'UNIAO_FACTO', label: 'União de Facto' },
+                      { value: 'Solteiro', label: 'Solteiro(a)' },
+                      { value: 'Casado', label: 'Casado(a)' },
+                      { value: 'Divorciado', label: 'Divorciado(a)' },
+                      { value: 'Viuvo', label: 'Viúvo(a)' },
+                      { value: 'Uniao_Livre', label: 'União de Facto' },
                     ]}
                   />
                   <Input
@@ -247,10 +256,17 @@ export default function NovoPacientePage() {
                   value={formData.provincia}
                   onChange={(e) => handleChange('provincia', e.target.value)}
                   placeholder="Selecione a província"
-                  options={Object.entries(PROVINCIAS_ANGOLA).map(([key, value]) => ({
-                    value: key,
-                    label: value.nome,
-                  }))}
+                  options={Object.entries(PROVINCIAS_ANGOLA).map(([key, value]) => {
+                    // Converter para formato do Prisma (Title_Case)
+                    const prismaValue = key.split('_')
+                      .map(part => part.charAt(0) + part.slice(1).toLowerCase())
+                      .join('_');
+
+                    return {
+                      value: prismaValue,
+                      label: value.nome,
+                    };
+                  })}
                 />
                 <Input
                   label="Município"
@@ -282,15 +298,15 @@ export default function NovoPacientePage() {
                     value={formData.grupo_sanguineo}
                     onChange={(e) => handleChange('grupo_sanguineo', e.target.value)}
                     options={[
-                      { value: 'A_POSITIVO', label: 'A+' },
-                      { value: 'A_NEGATIVO', label: 'A-' },
-                      { value: 'B_POSITIVO', label: 'B+' },
-                      { value: 'B_NEGATIVO', label: 'B-' },
-                      { value: 'AB_POSITIVO', label: 'AB+' },
-                      { value: 'AB_NEGATIVO', label: 'AB-' },
-                      { value: 'O_POSITIVO', label: 'O+' },
-                      { value: 'O_NEGATIVO', label: 'O-' },
-                      { value: 'DESCONHECIDO', label: 'Desconhecido' },
+                      { value: 'A_Pos', label: 'A+' },
+                      { value: 'A_Neg', label: 'A-' },
+                      { value: 'B_Pos', label: 'B+' },
+                      { value: 'B_Neg', label: 'B-' },
+                      { value: 'AB_Pos', label: 'AB+' },
+                      { value: 'AB_Neg', label: 'AB-' },
+                      { value: 'O_Pos', label: 'O+' },
+                      { value: 'O_Neg', label: 'O-' },
+                      { value: '', label: 'Desconhecido' },
                     ]}
                   />
                 </div>

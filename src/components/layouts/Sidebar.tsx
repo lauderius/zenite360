@@ -47,7 +47,7 @@ const menuItems: MenuItem[] = [
   { id: 'laboratorio', label: 'Laboratório', icon: TestTube, href: '/laboratorio' },
   { id: 'rh', label: 'Recursos Humanos', icon: Briefcase, href: '/rh' },
   { id: 'patrimonio', label: 'Património', icon: Building, href: '/patrimonio' },
-  { id: 'manuntencao', label: 'Manutenção', icon: Wrench, href: '/manuntencao' },
+  { id: 'manutencao', label: 'Manutenção', icon: Wrench, href: '/manutencao' },
   { id: 'financeiro', label: 'Financeiro', icon: DollarSign, href: '/financeiro' },
   { id: 'secretaria', label: 'Secretaria', icon: FileText, href: '/secretaria' },
   { id: 'casa-mortuaria', label: 'Casa Mortuária', icon: History, href: '/casa-mortuaria' },

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLayout';
 import { Card, CardHeader, CardTitle, CardContent, Button, Input, Badge, Alert } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
@@ -12,7 +12,35 @@ export default function PerfilPage() {
     const [isSaving, setIsSaving] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
-    // Estados do formulário
+    const [especialidade, setEspecialidade] = useState(funcionario?.especialidade || '');
+
+    const [atividades, setAtividades] = useState<any[]>([]);
+    const [isLoadingAtividades, setIsLoadingAtividades] = useState(true);
+
+    const fetchAtividades = useCallback(async () => {
+        try {
+            setIsLoadingAtividades(true);
+            const token = localStorage.getItem('zenite360_token');
+            const response = await fetch('/api/perfil/atividades', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setAtividades(data);
+            }
+        } catch (error) {
+            console.error('Erro ao buscar atividades:', error);
+        } finally {
+            setIsLoadingAtividades(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchAtividades();
+    }, [fetchAtividades]);
+
     const [profileData, setProfileData] = useState({
         nomeCompleto: funcionario?.nomeCompleto || usuario?.name || '',
         email: funcionario?.email || usuario?.email || '',
@@ -24,12 +52,33 @@ export default function PerfilPage() {
 
     const handleSave = async () => {
         setIsSaving(true);
-        // Simular salvamento
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setIsSaving(false);
-        setIsEditing(false);
-        setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 3000);
+        try {
+            const token = localStorage.getItem('zenite360_token');
+            const response = await fetch('/api/perfil', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(profileData)
+            });
+
+            if (response.ok) {
+                setIsEditing(false);
+                setShowSuccess(true);
+                setTimeout(() => setShowSuccess(false), 3000);
+                // Atualizar a lista de atividades após salvar
+                fetchAtividades();
+            } else {
+                const errorData = await response.json();
+                alert(errorData.error || 'Erro ao salvar perfil');
+            }
+        } catch (error) {
+            console.error('Erro ao salvar perfil:', error);
+            alert('Erro de conexão ao salvar perfil');
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     return (
@@ -200,24 +249,40 @@ export default function PerfilPage() {
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-3">
-                                    {[
-                                        { acao: 'Login no sistema', data: 'Hoje às 08:30', icon: 'LogIn' },
-                                        { acao: 'Atualização de perfil', data: 'Ontem às 14:20', icon: 'Edit' },
-                                        { acao: 'Consulta registrada', data: '2 dias atrás', icon: 'FileText' },
-                                    ].map((item, index) => {
-                                        const IconComponent = Icons[item.icon as keyof typeof Icons];
-                                        return (
-                                            <div key={index} className="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
-                                                <div className="p-2 bg-brand-500/10 rounded-lg">
-                                                    <IconComponent size={16} className="text-brand-500" />
+                                    {isLoadingAtividades ? (
+                                        <div className="flex flex-col gap-3">
+                                            {[1, 2, 3].map((i) => (
+                                                <div key={i} className="h-16 bg-slate-100 dark:bg-slate-800 animate-pulse rounded-lg" />
+                                            ))}
+                                        </div>
+                                    ) : atividades.length > 0 ? (
+                                        atividades.map((at, index) => {
+                                            const IconComponent = Icons[at.icon as keyof typeof Icons] || Icons.Activity;
+                                            return (
+                                                <div key={index} className="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                                                    <div className="p-2 bg-brand-500/10 rounded-lg">
+                                                        <IconComponent size={16} className="text-brand-500" />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <p className="text-sm font-medium text-slate-700 dark:text-slate-200">{at.acao}</p>
+                                                        <p className="text-xs text-slate-500">
+                                                            {new Date(at.created_at).toLocaleString('pt-BR', {
+                                                                day: '2-digit',
+                                                                month: '2-digit',
+                                                                year: 'numeric',
+                                                                hour: '2-digit',
+                                                                minute: '2-digit'
+                                                            })}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div className="flex-1">
-                                                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">{item.acao}</p>
-                                                    <p className="text-xs text-slate-500">{item.data}</p>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                            );
+                                        })
+                                    ) : (
+                                        <div className="text-center py-6 text-slate-500 text-sm">
+                                            Nenhuma atividade registada.
+                                        </div>
+                                    )}
                                 </div>
                             </CardContent>
                         </Card>

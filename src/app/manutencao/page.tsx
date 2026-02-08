@@ -65,8 +65,68 @@ export default function ManutencaoPage() {
   const [equipamentos, setEquipamentos] = useState<Equipamento[]>([]);
 
   useEffect(() => {
-    // TODO: Integrar com API real de ordens e equipamentos
-    setIsLoading(false);
+    async function fetchData() {
+      try {
+        setIsLoading(true);
+        const [ordensRes, equipRes] = await Promise.all([
+          fetch('/api/patrimonio/manutencao'),
+          fetch('/api/patrimonio/ativos')
+        ]);
+
+        const ordensResult = await ordensRes.json();
+        const equipResult = await equipRes.json();
+
+        if (ordensResult.success) {
+          const osStatusMap: Record<string, string> = {
+            'Pendente': 'ABERTA',
+            'Em Análise': 'EM_ANALISE',
+            'Aprovada': 'APROVADA',
+            'Em Execução': 'EM_EXECUCAO',
+            'Aguardando Peça': 'AGUARDANDO_PECA',
+            'Concluída': 'CONCLUIDA',
+            'Cancelada': 'CANCELADA'
+          };
+
+          // Map database fields to frontend structure
+          setOrdens(ordensResult.data.map((os: any) => ({
+            id: os.id,
+            codigo: `OS-${os.id.toString().padStart(4, '0')}`,
+            titulo: os.tipo,
+            equipamento: os.equipamento,
+            departamento: os.departamento || 'Geral',
+            tipo: os.tipo,
+            prioridade: os.prioridade as any,
+            status: osStatusMap[os.status] || os.status?.toUpperCase() || 'ABERTA',
+            dataAbertura: new Date(os.created_at),
+            descricao: os.descricao
+          })));
+        }
+
+        if (equipResult.success) {
+          const statusMap: Record<string, string> = {
+            'Operacional': 'OPERACIONAL',
+            'Em Manutenção': 'EM_MANUTENCAO',
+            'Inoperante': 'INOPERANTE',
+            'Desativado': 'DESATIVADO'
+          };
+
+          setEquipamentos(equipResult.data.map((eq: any) => ({
+            id: eq.id,
+            codigo: eq.codigo,
+            nome: eq.nome,
+            categoria: eq.categoria,
+            departamento: eq.localizacao || 'N/A',
+            status: statusMap[eq.status] || eq.status?.toUpperCase() || 'OPERACIONAL',
+            ultimaManutencao: eq.updated_at ? new Date(eq.updated_at) : undefined,
+          })));
+        }
+      } catch (error) {
+        console.error("Erro ao carregar dados de manutenção:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchData();
   }, []);
 
   // Estatísticas
@@ -173,11 +233,10 @@ export default function ManutencaoPage() {
                       {ordens.map((os) => (
                         <div
                           key={os.id}
-                          className={`p-4 rounded-lg border ${
-                            os.prioridade === 'CRITICA'
-                              ? 'border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-800'
-                              : 'border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700'
-                          }`}
+                          className={`p-4 rounded-lg border ${os.prioridade === 'CRITICA'
+                            ? 'border-red-200 bg-red-50 dark:bg-red-900/10 dark:border-red-800'
+                            : 'border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700'
+                            }`}
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
@@ -185,11 +244,11 @@ export default function ManutencaoPage() {
                                 <h3 className="font-semibold text-slate-700 dark:text-slate-200">
                                   {os.titulo}
                                 </h3>
-                                <span className={`px-2 py-0.5 rounded text-xs font-bold ${prioridadeConfig[os.prioridade].cor}`}>
-                                  {prioridadeConfig[os.prioridade].label}
+                                <span className={`px-2 py-0.5 rounded text-xs font-bold ${prioridadeConfig[os.prioridade as keyof typeof prioridadeConfig]?.cor || 'bg-slate-500'}`}>
+                                  {prioridadeConfig[os.prioridade as keyof typeof prioridadeConfig]?.label || os.prioridade}
                                 </span>
-                                <Badge variant={statusConfig[os.status].variant}>
-                                  {statusConfig[os.status].label}
+                                <Badge variant={(statusConfig[os.status as keyof typeof statusConfig] || statusConfig.ABERTA).variant}>
+                                  {(statusConfig[os.status as keyof typeof statusConfig] || statusConfig.ABERTA).label}
                                 </Badge>
                               </div>
                               <p className="text-sm text-sky-600 font-mono mt-1">{os.codigo}</p>
@@ -258,8 +317,8 @@ export default function ManutencaoPage() {
                                 {eq.proximaManutencao?.toLocaleDateString('pt-AO') || '-'}
                               </td>
                               <td className="px-4 py-3 text-center">
-                                <Badge variant={equipamentoStatusConfig[eq.status].variant}>
-                                  {equipamentoStatusConfig[eq.status].label}
+                                <Badge variant={(equipamentoStatusConfig[eq.status as keyof typeof equipamentoStatusConfig] || equipamentoStatusConfig.OPERACIONAL).variant}>
+                                  {(equipamentoStatusConfig[eq.status as keyof typeof equipamentoStatusConfig] || equipamentoStatusConfig.OPERACIONAL).label}
                                 </Badge>
                               </td>
                             </tr>

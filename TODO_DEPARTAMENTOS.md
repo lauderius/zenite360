@@ -101,3 +101,12 @@ Todas as alterações que fazemos relacionada com as informaçõe devem fazer CR
 - Na secretaria, não dá para ver protocolo, nem criar os documentos que aparecem na opção criar novo documento
 - Na casa mortuaria, não dá para criar novo registro, nem ver estatisticas
 - Nos serviços gerais e estatiscas, não dá para criar novo contrato, nem nova coleta;
+
+## Pacientes, Enfermagem, Agendamentos
+- O numero de processo deve ser automatico em funão do id automatico do banco de dados;
+- O campo de enferamgem quando seleciono o paciente que já está cadastrado não peeermite salavar as outras informações que dá para inserir por paciente, mesmo quando coloco tudo e clico em gravar;
+- Na triagem, não dá para ver as opções de prioridade, nem ver as opções de status e deve ter uma opção de pesquisar os pacientes e automaticamente completa o campo de triagem, e o campo de enfermagem permite colocar informções tipo a temperatura e etc, e em triagem deve receber essas informações do campo de enfermagem etc;
+- E não dá para cadastrar novvos funcionarios por setores também não dá apaar adicionar novos setores;
+- E no campo da secretaria não dá para emitir os novos documentos, eles não ficam salvos, preciso que resolvas isso;
+- pesar de teres configurado as rotas e fazer crud com o banco de dados o banco de dados ainda não recebe as informações e etc;
+- Nos agendamentos não dá para criar novo agendamentos;

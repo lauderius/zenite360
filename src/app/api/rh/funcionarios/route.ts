@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       where.status = status;
     }
     if (departamento) {
-      where.departamentoId = parseInt(departamento);
+      where.departamentoId = BigInt(departamento);
     }
 
     const total = await prisma.funcionarios.count({ where });
@@ -34,10 +34,18 @@ export async function GET(request: NextRequest) {
       skip: (page - 1) * limit,
       take: limit,
       orderBy: { id: 'asc' },
+      include: {
+        departamento: true,
+      },
     });
 
+    // Convert BigInt to string for JSON serialization
+    const serialized = JSON.parse(JSON.stringify(funcionariosPaginados, (key, value) =>
+      typeof value === 'bigint' ? value.toString() : value
+    ));
+
     return NextResponse.json({
-      data: funcionariosPaginados,
+      data: serialized,
       pagination: {
         page,
         limit,
@@ -62,32 +70,31 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Criar usuário no banco de dados
-    // Criar registro de usuario e funcionario
-    const passwordHash = body.passwordHash || null;
-    const usuario = await prisma.usuarios.create({
+    const novoFuncionario = await prisma.funcionarios.create({
       data: {
-        username: body.username || (body.email ? body.email.split('@')[0] : `user${Date.now()}`),
-        email: body.email || null,
-        password_hash: passwordHash,
+        nomeCompleto: body.nomeCompleto || body.nome,
+        numeroMecanografico: body.numeroMecanografico || `FUNC-${Date.now()}`,
+        cargo: body.cargo || 'Funcionário',
+        nivelAcesso: body.nivelAcesso || 'VISUALIZADOR',
+        departamentoId: body.departamentoId ? BigInt(body.departamentoId) : null,
+        dataNascimento: body.dataNascimento ? new Date(body.dataNascimento) : null,
+        dataAdmissao: body.dataAdmissao ? new Date(body.dataAdmissao) : null,
+        emailInstitucional: body.emailInstitucional || body.email || null,
+        telefone: body.telefone || null,
+        status: body.status || 'ACTIVO',
+        especialidade: body.especialidade || null,
       },
     });
 
-    const novoFuncionario = await prisma.funcionarios.create({
-      data: {
-        nomeCompleto: body.nomeCompleto,
-        cargo: body.cargo || 'Funcionário',
-        nivelAcesso: body.nivelAcesso || 'VISUALIZADOR',
-        departamentoId: body.departamentoId ? Number(body.departamentoId) : null,
-        dataNascimento: body.dataNascimento ? new Date(body.dataNascimento) : null,
-        emailInstitucional: body.email || null,
-      },
-    });
+    // Convert BigInt to string for JSON serialization
+    const serialized = JSON.parse(JSON.stringify(novoFuncionario, (key, value) =>
+      typeof value === 'bigint' ? value.toString() : value
+    ));
 
     return NextResponse.json({
       success: true,
-      data: { ...novoFuncionario, usuarioId: usuario.id },
-    });
+      data: serialized,
+    }, { status: 201 });
   } catch (error) {
     console.error('Erro ao criar funcionário:', error);
     return NextResponse.json(

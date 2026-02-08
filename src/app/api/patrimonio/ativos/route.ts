@@ -36,6 +36,7 @@ export async function GET(request: NextRequest) {
     const ativos = artigos.map((artigo) => ({
       ...artigo,
       id: Number(artigo.id),
+      departamento: artigo.localizacao || 'Geral', // Map for frontend compatibility
       dataAquisicao: artigo.created_at, // Map for frontend compatibility
     }));
 

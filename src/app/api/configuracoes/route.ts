@@ -44,10 +44,14 @@ export async function GET(_req: NextRequest) {
             } as any;
         }
 
-        return NextResponse.json({ success: true, data: configuracoes });
+        const serialized = JSON.parse(JSON.stringify(configuracoes, (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value
+        ));
+
+        return NextResponse.json({ success: true, data: serialized });
     } catch (error) {
         console.error('Erro ao buscar configurações:', error);
-        return NextResponse.json({ error: 'Erro ao buscar configurações.' }, { status: 500 });
+        return NextResponse.json({ success: false, error: 'Algumas configurações estão reservadas para o administrador do Sistema' }, { status: 500 });
     }
 }
 

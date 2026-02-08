@@ -46,6 +46,8 @@ export default function RegistoEnfermagemPage() {
         spo2: '',
         glicemia: ''
     });
+    const [notas, setNotas] = useState('');
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         async function fetchPacientes() {
@@ -73,6 +75,66 @@ export default function RegistoEnfermagemPage() {
             spo2: '',
             glicemia: ''
         });
+        setNotas('');
+    };
+
+    const handleSave = async () => {
+        if (!selectedPaciente) return;
+
+        setIsSaving(true);
+        try {
+            const birthDate = new Date(selectedPaciente.data_nascimento);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            // Combine notes with glicemia if present
+            let finalNotes = notas;
+            if (vitals.glicemia) {
+                finalNotes += `\n\nGlicémia: ${vitals.glicemia}`;
+            }
+
+            const payload = {
+                paciente_id: selectedPaciente.id,
+                paciente_nome: selectedPaciente.nome_completo,
+                idade: age.toString(),
+                genero: selectedPaciente.genero === 'M' ? 'Masculino' : selectedPaciente.genero === 'F' ? 'Feminino' : 'Outro',
+                prioridade: 'Normal', // Default, could be enhanced with a selector
+                status: 'Aguardando',
+                queixa_principal: finalNotes,
+                pressao_arterial: vitals.ta,
+                frequencia_cardiaca: vitals.fc,
+                frequencia_respiratoria: vitals.fr,
+                temperatura: vitals.temp,
+                saturacao_oxigenio: vitals.spo2
+            };
+
+            await api.post('/triagem', payload);
+
+            // Optional: Success feedback
+            alert('Registo salvo com sucesso!');
+
+            // Reset form
+            setVitals({
+                ta: '',
+                fc: '',
+                fr: '',
+                temp: '',
+                spo2: '',
+                glicemia: ''
+            });
+            setNotas('');
+            setSelectedPaciente(null);
+
+        } catch (error) {
+            console.error('Erro ao salvar registo:', error);
+            alert('Erro ao salvar o registo. Tente novamente.');
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,10 +260,18 @@ export default function RegistoEnfermagemPage() {
                                             <textarea
                                                 className="w-full flex-1 min-h-[150px] p-4 rounded-xl border bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none text-sm"
                                                 placeholder="Descreva a evolução do paciente..."
+                                                value={notas}
+                                                onChange={(e) => setNotas(e.target.value)}
                                             />
                                             <div className="flex justify-end gap-2">
-                                                <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white">
-                                                    <Save className="w-4 h-4 mr-2" /> Gravar Registo
+                                                <Button
+                                                    size="sm"
+                                                    className="bg-sky-500 hover:bg-sky-600 text-white"
+                                                    onClick={handleSave}
+                                                    disabled={isSaving}
+                                                >
+                                                    {isSaving ? <Spinner className="w-4 h-4 mr-2" /> : <Save className="w-4 h-4 mr-2" />}
+                                                    Gravar Registo
                                                 </Button>
                                             </div>
                                         </CardContent>

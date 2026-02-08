@@ -10,6 +10,15 @@
     "db:seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@capacitor/android": "^8.0.2",
+    "@capacitor/camera": "^8.0.0",
+    "@capacitor/cli": "^8.0.2",
+    "@capacitor/core": "^8.0.2",
+    "@capacitor/device": "^8.0.0",
+    "@capacitor/filesystem": "^8.1.0",
+    "@capacitor/ios": "^8.0.2",
+    "@capacitor/network": "^8.0.0",
+    "@capacitor/push-notifications": "^8.0.0",
     "@types/pdfkit": "^0.17.4",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
@@ -21,6 +30,7 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@prisma/client": "^5.22.0",
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^2.4.6",

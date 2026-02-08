@@ -160,16 +160,40 @@ export default function PatrimonioPage() {
   useEffect(() => {
     async function fetchPatrimonio() {
       try {
-        const [dash, ats, centrais, alts] = await Promise.all([
+        const [dash, atsRaw, centrais, alts] = await Promise.all([
           api.get<DashboardPatrimonio>('/patrimonio/dashboard'),
-          api.get<{ data: Ativo[] }>('/patrimonio/ativos').then(res => res.data),
+          api.get<{ data: any[] }>('/patrimonio/ativos').then(res => res.data),
           api.get<{ data: CentralGases[] }>('/patrimonio/gases').then(res => res.data),
           api.get<{ data: AlertaGas[] }>('/patrimonio/gases/alertas').then(res => res.data),
         ]);
+
+        const catMap: Record<string, string> = {
+          'Monitorização': 'ELECTROMEDICINA',
+          'Suporte à Vida': 'ELECTROMEDICINA',
+          'Diagnóstico': 'IMAGEM_DIAGNOSTICO',
+          'Administração': 'OUTROS',
+          'Informática': 'INFORMATICA',
+          'Mobiliário': 'MOBILIARIO_HOSPITALAR'
+        };
+
+        const statMap: Record<string, string> = {
+          'Operacional': 'OPERACIONAL',
+          'Em Manutenção': 'EM_MANUTENCAO',
+          'Inoperante': 'INOPERANTE',
+          'Desativado': 'DESATIVADO'
+        };
+
+        const normalizedAts = atsRaw.map(a => ({
+          ...a,
+          categoria: catMap[a.categoria] || a.categoria?.toUpperCase() || 'OUTROS',
+          status: statMap[a.status] || a.status?.toUpperCase() || 'OPERACIONAL',
+          numeroPatrimonio: a.codigo // Fallback for missing field
+        }));
+
         setDashboard(dash);
-        setAtivos(ats);
+        setAtivos(normalizedAts);
         setCentraisGases(centrais);
-        setAlertas(alts);
+        setAlertas([]); // Force empty to ensure no mock alerts persist
       } catch (error) {
         console.error('Erro ao buscar dados do património:', error);
         setDashboard(null);
@@ -225,7 +249,7 @@ export default function PatrimonioPage() {
               <Icons.Bell size={16} />
               Alertas ({alertas.filter(a => !a.reconhecido).length})
             </Button>
-            <Link href="/patrimonio/manutencao">
+            <Link href="/manutencao">
               <Button variant="outline">
                 <Icons.Wrench size={16} />
                 Manutenções
@@ -409,9 +433,9 @@ export default function PatrimonioPage() {
                                 </td>
                                 <td className="px-4 py-3">
                                   <div className="flex items-center gap-2">
-                                    <span className={`w-2 h-2 rounded-full ${categoriaConfig[ativo.categoria].cor}`}></span>
+                                    <span className={`w-2 h-2 rounded-full ${(categoriaConfig[ativo.categoria as keyof typeof categoriaConfig] || categoriaConfig.OUTROS).cor}`}></span>
                                     <span className="text-sm text-slate-600 dark:text-slate-400">
-                                      {categoriaConfig[ativo.categoria].label}
+                                      {(categoriaConfig[ativo.categoria as keyof typeof categoriaConfig] || categoriaConfig.OUTROS).label}
                                     </span>
                                   </div>
                                 </td>
@@ -419,8 +443,8 @@ export default function PatrimonioPage() {
                                   {ativo.localizacao}
                                 </td>
                                 <td className="px-4 py-3 text-center">
-                                  <Badge variant={statusConfig[ativo.status].variant}>
-                                    {statusConfig[ativo.status].label}
+                                  <Badge variant={(statusConfig[ativo.status as keyof typeof statusConfig] || statusConfig.OPERACIONAL).variant}>
+                                    {(statusConfig[ativo.status as keyof typeof statusConfig] || statusConfig.OPERACIONAL).label}
                                   </Badge>
                                 </td>
                                 <td className="px-4 py-3 text-center text-slate-600 dark:text-slate-400">
@@ -428,11 +452,6 @@ export default function PatrimonioPage() {
                                 </td>
                                 <td className="px-4 py-3 text-center">
                                   <div className="flex justify-center gap-1">
-                                    <Link href={`/patrimonio/ativos/${ativo.id}`}>
-                                      <Button variant="ghost" size="icon">
-                                        <Icons.Eye size={16} />
-                                      </Button>
-                                    </Link>
                                     <Button variant="ghost" size="icon" title="Abrir O.S.">
                                       <Icons.Wrench size={16} />
                                     </Button>
@@ -483,7 +502,7 @@ export default function PatrimonioPage() {
                       <div className="text-center py-8 text-slate-500">
                         <Icons.Wrench size={48} className="mx-auto mb-4 text-slate-300" />
                         <p>Lista de manutenções pendentes</p>
-                        <Link href="/patrimonio/manutencao">
+                        <Link href="/manutencao">
                           <Button className="mt-4">Ver Todas as Manutenções</Button>
                         </Link>
                       </div>

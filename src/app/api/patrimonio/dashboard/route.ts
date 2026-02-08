@@ -29,7 +29,7 @@ export async function GET() {
       tempoMedioReparo: 0,
 
       // Gases Medicinais (mock por não existir no schema atual)
-      alertasGases: 2,
+      alertasGases: 0,
       centralGases: [
         {
           id: 1,
@@ -74,30 +74,7 @@ export async function GET() {
           activo: true,
         },
       ],
-      alertasGasesList: [
-        {
-          id: 1,
-          centralId: 1,
-          tipoAlerta: 'NIVEL_BAIXO',
-          severidade: 'AVISO',
-          mensagem: 'Nível de oxigênio abaixo de 75%',
-          dataHora: new Date(),
-          reconhecido: false,
-          resolvido: false,
-        },
-        {
-          id: 2,
-          centralId: 2,
-          tipoAlerta: 'PRESSAO_BAIXA',
-          severidade: 'CRITICO',
-          mensagem: 'Pressão de ar comprimido em 6.2 bar - monitorar',
-          dataHora: new Date(),
-          reconhecido: true,
-          reconhecidoPor: 'Técnico de Plantão',
-          dataReconhecimento: new Date(),
-          resolvido: false,
-        },
-      ],
+      alertasGasesList: [],
 
       // Ativos para listas
       ativos: [],

@@ -1,6 +1,21 @@
 import { NextResponse } from 'next/server';
 import { prisma, handlePrismaError } from '@/lib/prisma';
 
+const BLOOD_TYPE_MAP: Record<string, any> = {
+  'A+': 'A_Pos', 'A-': 'A_Neg',
+  'B+': 'B_Pos', 'B-': 'B_Neg',
+  'AB+': 'AB_Pos', 'AB-': 'AB_Neg',
+  'O+': 'O_Pos', 'O-': 'O_Neg',
+  'A_POSITIVO': 'A_Pos', 'A_NEGATIVO': 'A_Neg',
+  'B_POSITIVO': 'B_Pos', 'B_NEGATIVO': 'B_Neg',
+  'AB_POSITIVO': 'AB_Pos', 'AB_NEGATIVO': 'AB_Neg',
+  'O_POSITIVO': 'O_Pos', 'O_NEGATIVO': 'O_Neg',
+  'A_Pos': 'A_Pos', 'A_Neg': 'A_Neg',
+  'B_Pos': 'B_Pos', 'B_Neg': 'B_Neg',
+  'AB_Pos': 'AB_Pos', 'AB_Neg': 'AB_Neg',
+  'O_Pos': 'O_Pos', 'O_Neg': 'O_Neg'
+};
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -59,7 +74,7 @@ export async function POST(request: Request) {
     const {
       nome_completo,
       bi_numero,
-      numero_processo,
+      // numero_processo, // Gerado automaticamente
       data_nascimento,
       genero,
       telefone_principal,
@@ -69,34 +84,66 @@ export async function POST(request: Request) {
       municipio,
       grupo_sanguineo,
       alergias,
-      registado_por // Isto deve vir do auth futuramente
+      registado_por
     } = body;
 
+    // Gerar um placeholder único temporário para o processo
+    // Gerar um placeholder único temporário para o processo (Base36 para caber em VarChar(20))
+    const tempProcesso = `T-${Date.now().toString(36).toUpperCase()}-${Math.floor(Math.random() * 999)}`;
+
+    // Criar o paciente
     const novoPaciente = await prisma.pacientes.create({
       data: {
         nome_completo,
         bi_numero,
-        numero_processo,
+        numero_processo: tempProcesso,
         data_nascimento: new Date(data_nascimento),
         genero,
         telefone_principal,
+        telefone_alternativo: body.telefone_secundario || null,
+        email: body.email || null,
         contacto_emergencia_nome,
         contacto_emergencia_telefone,
+        contacto_emergencia_relacao: body.contatoEmergenciaParentesco || null,
         provincia,
         municipio,
-        grupo_sanguineo: grupo_sanguineo || null,
-        alergias,
-        registado_por: BigInt(registado_por || 1) // Default para admin se não houver
+        bairro: null,
+        endereco_completo: body.endereco || null,
+        grupo_sanguineo: (grupo_sanguineo && BLOOD_TYPE_MAP[grupo_sanguineo]) ? BLOOD_TYPE_MAP[grupo_sanguineo] : null,
+        alergias: alergias || null,
+        doencas_cronicas: body.doencas_cronicas || null,
+        registado_por: BigInt(registado_por || 1),
+        created_at: new Date(),
+        updated_at: new Date()
       }
     });
 
-    const serialized = JSON.parse(JSON.stringify(novoPaciente, (key, value) =>
+    // Gerar o número de processo final baseado no ID (Ex: 2024.0001)
+    const year = new Date().getFullYear();
+    const id = Number(novoPaciente.id);
+    const finalProcesso = `${year}.${id.toString().padStart(6, '0')}`;
+
+    const pacienteAtualizado = await prisma.pacientes.update({
+      where: { id: novoPaciente.id },
+      data: { numero_processo: finalProcesso }
+    });
+
+    const serialized = JSON.parse(JSON.stringify(pacienteAtualizado, (key, value) =>
       typeof value === 'bigint' ? value.toString() : value
     ));
 
     return NextResponse.json({ data: serialized, success: true }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('[API_PACIENTES_POST]', error);
-    return NextResponse.json({ success: false, error: 'Erro ao criar paciente' }, { status: 500 });
+
+    // Tratamento de erros específicos do Prisma
+    if (error.code === 'P2002') {
+      const field = error.meta?.target;
+      if (field?.includes('bi_numero')) {
+        return NextResponse.json({ success: false, error: 'Já existe um paciente com este número de documento.' }, { status: 409 });
+      }
+    }
+
+    return NextResponse.json({ success: false, error: 'Erro ao criar paciente: ' + (error.message || 'Erro interno') }, { status: 500 });
   }
 }

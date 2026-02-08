@@ -20,6 +20,9 @@ export async function GET(request: NextRequest) {
         skip: (page - 1) * limit,
         take: limit,
         orderBy: { created_at: 'desc' },
+        include: {
+          ativos_patrimonio: true
+        }
       }),
       prisma.ordens_manutencao.count({ where }),
     ]);
@@ -28,6 +31,8 @@ export async function GET(request: NextRequest) {
       ...m,
       id: Number(m.id),
       ativoId: Number(m.ativo_id),
+      equipamento: (m as any).ativos_patrimonio?.nome || 'Equipamento não encontrado',
+      departamento: (m as any).ativos_patrimonio?.localizacao || 'Geral',
       dataAbertura: m.created_at,
     }));
 

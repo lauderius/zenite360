@@ -13,7 +13,8 @@ import {
   Circle,
   Clock,
   ExternalLink,
-  ClipboardList
+  ClipboardList,
+  AlertCircle
 } from 'lucide-react';
 import { MainLayout, PageHeader, PageContent, GridLayout } from '@/components/layouts';
 import { Card, CardHeader, CardTitle, CardContent, Badge, Button, Input, Select, Avatar, Modal, Spinner } from '@/components/ui';
@@ -32,6 +33,7 @@ export default function PacientesPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -40,7 +42,6 @@ export default function PacientesPage() {
   const initialFormData = {
     nome_completo: '',
     bi_numero: '',
-    numero_processo: '',
     data_nascimento: '',
     genero: 'Masculino',
     telefone_principal: '',
@@ -81,6 +82,7 @@ export default function PacientesPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
     try {
       if (isEditing) {
         await api.put(`/pacientes/${editingId}`, formData);
@@ -92,8 +94,9 @@ export default function PacientesPage() {
       setEditingId(null);
       setFormData(initialFormData);
       fetchPacientes(searchTerm);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao processar paciente:', error);
+      setError(error.message || 'Erro ao salvar paciente. Verifique os dados.');
     } finally {
       setIsSubmitting(false);
     }
@@ -105,7 +108,6 @@ export default function PacientesPage() {
     setFormData({
       nome_completo: paciente.nome_completo,
       bi_numero: paciente.bi_numero,
-      numero_processo: paciente.numero_processo,
       data_nascimento: paciente.data_nascimento ? paciente.data_nascimento.substring(0, 10) : '',
       genero: paciente.genero || 'Masculino',
       telefone_principal: paciente.telefone_principal || '',
@@ -159,6 +161,12 @@ export default function PacientesPage() {
           size="lg"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 rounded-xl text-red-600 dark:text-red-400 text-sm font-bold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                {error}
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
                 label="Nome Completo"
@@ -172,12 +180,7 @@ export default function PacientesPage() {
                 value={formData.bi_numero}
                 onChange={(e) => setFormData({ ...formData, bi_numero: e.target.value })}
               />
-              <Input
-                label="Nº Processo"
-                required
-                value={formData.numero_processo}
-                onChange={(e) => setFormData({ ...formData, numero_processo: e.target.value })}
-              />
+
               <Input
                 label="Data Nascimento"
                 type="date"
@@ -268,14 +271,12 @@ export default function PacientesPage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
-            <select className="h-14 px-6 min-w-[200px] text-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 outline-none transition-all font-bold">
-              <optgroup label="Filtrar por Status" className="bg-white dark:bg-slate-900">
-                <option value="">Todos os Estados</option>
-                <option value="Em Triagem">Em Triagem</option>
-                <option value="Aguardando">Aguardando</option>
-                <option value="Em Atendimento">Em Atendimento</option>
-                <option value="Alta">Alta</option>
-              </optgroup>
+            <select className="h-14 px-6 min-w-[200px] text-sm bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all font-bold shadow-sm">
+              <option value="" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Todos os Estados</option>
+              <option value="Em Triagem" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Em Triagem</option>
+              <option value="Aguardando" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Aguardando</option>
+              <option value="Em Atendimento" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Em Atendimento</option>
+              <option value="Alta" className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">Alta</option>
             </select>
             <Button variant="outline" className="h-14 w-14 rounded-2xl border-white/5 hover:bg-white/5">
               <Filter className="w-5 h-5 text-slate-500" />
@@ -302,7 +303,7 @@ export default function PacientesPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="bg-white/[0.02] text-[10px] font-black text-slate-500 uppercase tracking-widest border-b border-white/5">
+                  <tr className="bg-slate-100/50 dark:bg-white/[0.02] text-[10px] font-black text-slate-500 uppercase tracking-widest border-b border-slate-200 dark:border-white/5">
                     <th className="px-8 py-5">Paciente</th>
                     <th className="px-6 py-5">Identificação (B.I.)</th>
                     <th className="px-6 py-5 text-center">Data Registro</th>
@@ -339,7 +340,7 @@ export default function PacientesPage() {
           {!isLoading && pacientes.length > 0 && (
             <div className="bg-white/5 px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
               <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
-                Página 1 — <span className="text-slate-200">{pacientes.length} Pacientes</span>
+                Página 1 — <span className="text-slate-900 dark:text-slate-200">{pacientes.length} Pacientes</span>
               </span>
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="icon" disabled className="rounded-xl border-white/5">
@@ -375,16 +376,16 @@ function PatientRow({ name, id, bi, process, createdAt, initials, onDelete, onEd
   const formattedDate = new Date(createdAt).toLocaleDateString('pt-AO');
 
   return (
-    <tr className="group hover:bg-white/[0.02] transition-colors">
+    <tr className="group hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors border-b border-slate-100 dark:border-white/5 last:border-0">
       <td className="px-8 py-5">
         <div className="flex items-center gap-4">
-          <div className="w-11 h-11 rounded-2xl bg-slate-900 border border-white/10 flex items-center justify-center font-black text-brand-500 shadow-sm relative overflow-hidden group-hover:scale-105 transition-transform">
+          <div className="w-11 h-11 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center font-black text-brand-500 shadow-sm relative overflow-hidden group-hover:scale-105 transition-transform">
             {initials}
             <div className="absolute inset-0 bg-brand-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
           <div>
-            <p className="text-sm font-bold text-white uppercase tracking-tight">{name}</p>
-            <p className="text-[10px] font-black text-slate-500 uppercase flex items-center gap-1.5 mt-1">
+            <p className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-tight">{name}</p>
+            <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase flex items-center gap-1.5 mt-1">
               <Clock className="w-3 h-3 text-brand-500" />
               Processo: {process}
             </p>
@@ -392,10 +393,10 @@ function PatientRow({ name, id, bi, process, createdAt, initials, onDelete, onEd
         </div>
       </td>
       <td className="px-6 py-5">
-        <p className="text-sm font-black text-slate-400 font-mono tracking-tighter">{bi}</p>
+        <p className="text-sm font-black text-slate-600 dark:text-slate-400 font-mono tracking-tighter">{bi}</p>
       </td>
       <td className="px-6 py-5 text-center">
-        <Badge variant="secondary" className="border-white/10 text-slate-300 font-bold uppercase text-[9px] tracking-widest px-3 py-1.5 rounded-xl">
+        <Badge variant="secondary" className="bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 font-bold uppercase text-[9px] tracking-widest px-3 py-1.5 rounded-xl">
           {formattedDate}
         </Badge>
       </td>

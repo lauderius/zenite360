@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
 import prisma from '@/lib/prisma';
+import { logAtividade } from '@/lib/activity-logger';
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'zenite360-secret-key-change-in-production'
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
     const userEmail = usuario.email;
     const userName = usuario.name;
     // Map to a valid NivelAcesso from the enum
-    const userNivelAcesso = 'ADMINISTRATIVO'; 
+    const userNivelAcesso = 'ADMINISTRATIVO';
 
     // Gerar token JWT
     const token = await new SignJWT({
@@ -65,6 +66,16 @@ export async function POST(request: NextRequest) {
 
     // Mocking a refreshToken for the context
     const refreshToken = 'dummy-refresh-token';
+
+    // Logar atividade de login
+    await logAtividade(
+      usuario.id,
+      'Login no sistema',
+      'LogIn',
+      '/login',
+      `O utilizador ${usuario.name} entrou no sistema`,
+      request.headers.get('x-forwarded-for') || '127.0.0.1'
+    );
 
     return NextResponse.json({
       token,

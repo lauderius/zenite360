@@ -6,8 +6,9 @@ generator client {
 datasource db {
   // Usar MySQL em produção/desenvolvimento conforme pedido pelo utilizador.
   // Define DATABASE_URL no arquivo .env com a string de conexão MySQL.
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 
@@ -540,6 +541,56 @@ model utilizadores {
   movimentos_stock                                                            movimentos_stock[]
   pacientes                                                                   pacientes[]
   prescricoes_prescricoes_medico_idToutilizadores                             prescricoes[]        @relation("prescricoes_medico_idToutilizadores")
+  atividades_recentes                                                         atividades_recentes[]
+}
+
+model atividades_recentes {
+  id              BigInt       @id @default(autoincrement()) @db.UnsignedBigInt
+  utilizador_id   BigInt       @db.UnsignedBigInt
+  acao            String       @db.VarChar(255)
+  descricao       String?      @db.Text
+  icon            String?      @db.VarChar(50)
+  rota            String?      @db.VarChar(255)
+  ip_address      String?      @db.VarChar(45)
+  created_at      DateTime     @default(now()) @db.Timestamp(0)
+  utilizadores    utilizadores @relation(fields: [utilizador_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "atividades_recentes_utilizador_id_foreign")
+
+  @@index([utilizador_id], map: "atividades_recentes_utilizador_id_index")
+}
+
+model funcionarios {
+  id                    BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  nomeCompleto          String    @db.VarChar(255)
+  numeroMecanografico   String?   @unique @db.VarChar(50)
+  cargo                 String    @db.VarChar(100)
+  departamentoId        BigInt?   @db.UnsignedBigInt
+  nivelAcesso           String    @default("VISUALIZADOR") @db.VarChar(50)
+  emailInstitucional    String?   @db.VarChar(255)
+  telefone              String?   @db.VarChar(20)
+  dataNascimento        DateTime? @db.Date
+  dataAdmissao          DateTime? @db.Date
+  status                String    @default("ACTIVO") @db.VarChar(50)
+  especialidade         String?   @db.VarChar(100)
+  created_at            DateTime  @default(now()) @db.Timestamp(0)
+  updated_at            DateTime  @default(now()) @updatedAt @db.Timestamp(0)
+  
+  departamento          departamentos? @relation(fields: [departamentoId], references: [id], onDelete: SetNull, onUpdate: NoAction, map: "funcionarios_departamento_id_foreign")
+
+  @@index([departamentoId], map: "funcionarios_departamento_id_index")
+  @@index([status], map: "funcionarios_status_index")
+}
+
+model departamentos {
+  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
+  nome              String    @db.VarChar(255)
+  sigla             String    @db.VarChar(20)
+  tipo              String    @db.VarChar(50)
+  descricao         String?   @db.Text
+  localizacao       String?   @db.VarChar(255)
+  activo            Boolean   @default(true)
+  created_at        DateTime  @default(now()) @db.Timestamp(0)
+  updated_at        DateTime  @default(now()) @db.Timestamp(0)
+  funcionarios      funcionarios[]
 }
 
 enum agendamentos_prioridade {
@@ -743,17 +794,6 @@ model triagem {
   updated_at           DateTime  @default(now()) @db.Timestamp(0)
 }
 
-model departamentos {
-  id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
-  nome              String    @db.VarChar(255)
-  sigla             String    @db.VarChar(20)
-  tipo              String    @db.VarChar(50)
-  descricao         String?   @db.Text
-  localizacao       String?   @db.VarChar(255)
-  activo            Boolean   @default(true)
-  created_at        DateTime  @default(now()) @db.Timestamp(0)
-  updated_at        DateTime  @default(now()) @db.Timestamp(0)
-}
 
 model ativos_patrimonio {
   id                BigInt    @id @default(autoincrement()) @db.UnsignedBigInt
@@ -767,6 +807,7 @@ model ativos_patrimonio {
   status            String    @default("Operacional") @db.VarChar(50)
   created_at        DateTime  @default(now()) @db.Timestamp(0)
   updated_at        DateTime  @default(now()) @db.Timestamp(0)
+  ordens_manutencao ordens_manutencao[]
 }
 
 model ordens_manutencao {
@@ -778,6 +819,10 @@ model ordens_manutencao {
   status            String    @default("Pendente") @db.VarChar(50)
   created_at        DateTime  @default(now()) @db.Timestamp(0)
   updated_at        DateTime  @default(now()) @db.Timestamp(0)
+
+  ativos_patrimonio ativos_patrimonio @relation(fields: [ativo_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "ordens_manutencao_ativo_id_foreign")
+
+  @@index([ativo_id], map: "ordens_manutencao_ativo_id_index")
 }
 
 model documentos_secretaria {

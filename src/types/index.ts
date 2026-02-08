@@ -14,8 +14,8 @@ export type Genero = 'MASCULINO' | 'FEMININO' | 'OUTRO';
 export type EstadoCivil = 'SOLTEIRO' | 'CASADO' | 'DIVORCIADO' | 'VIUVO' | 'UNIAO_FACTO';
 
 export type GrupoSanguineo =
-  | 'A_POSITIVO' | 'A_NEGATIVO' | 'B_POSITIVO' | 'B_NEGATIVO'
-  | 'AB_POSITIVO' | 'AB_NEGATIVO' | 'O_POSITIVO' | 'O_NEGATIVO' | 'DESCONHECIDO';
+  | 'A_Pos' | 'A_Neg' | 'B_Pos' | 'B_Neg'
+  | 'AB_Pos' | 'AB_Neg' | 'O_Pos' | 'O_Neg' | 'DESCONHECIDO';
 
 // ENUMS ORGANIZACIONAIS
 export type CodigoDepartamento =
@@ -481,9 +481,9 @@ export const LABELS_GENERO: Record<Genero, string> = {
 };
 
 export const LABELS_GRUPO_SANGUINEO: Record<GrupoSanguineo, string> = {
-  A_POSITIVO: 'A+', A_NEGATIVO: 'A-',
-  B_POSITIVO: 'B+', B_NEGATIVO: 'B-',
-  AB_POSITIVO: 'AB+', AB_NEGATIVO: 'AB-',
-  O_POSITIVO: 'O+', O_NEGATIVO: 'O-',
+  A_Pos: 'A+', A_Neg: 'A-',
+  B_Pos: 'B+', B_Neg: 'B-',
+  AB_Pos: 'AB+', AB_Neg: 'AB-',
+  O_Pos: 'O+', O_Neg: 'O-',
   DESCONHECIDO: 'Desconhecido',
 };

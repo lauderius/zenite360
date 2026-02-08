@@ -41,7 +41,7 @@ export default function NovaOSPage() {
         e.preventDefault();
         setIsLoading(true);
         try {
-            await api.post("/patrimonio/manuntencao", form);
+            await api.post("/patrimonio/manutencao", form);
             router.push("/manutencao");
         } catch (err) {
             console.error(err);

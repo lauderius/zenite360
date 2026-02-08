@@ -80,6 +80,21 @@ export async function POST(request: Request) {
       typeof value === 'bigint' ? value.toString() : value
     ));
 
+    // Logar atividade
+    try {
+      const { logAtividade } = await import('@/lib/activity-logger');
+      await logAtividade(
+        registado_por || 1,
+        'Novo agendamento criado',
+        'Calendar',
+        '/agendamentos',
+        `Agendamento para ${paciente || 'paciente'} criado`,
+        request.headers.get('x-forwarded-for') || '127.0.0.1'
+      );
+    } catch (err) {
+      console.error('Falha ao logar atividade de agendamento', err);
+    }
+
     return NextResponse.json({ data: serialized, success: true }, { status: 201 });
   } catch (error) {
     console.error('[API_AGENDAMENTOS_POST]', error);

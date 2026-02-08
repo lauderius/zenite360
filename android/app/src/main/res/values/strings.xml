@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">zenite360</string>
+    <string name="title_activity_main">zenite360</string>
+    <string name="package_name">zenite360.software</string>
+    <string name="custom_url_scheme">zenite360.software</string>
+</resources>

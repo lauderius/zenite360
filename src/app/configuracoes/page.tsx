@@ -5,6 +5,7 @@ import { MainLayout, PageHeader, PageContent } from '@/components/layouts/MainLa
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, Button, Input, Select, Badge, Alert } from '@/components/ui';
 import { Icons } from '@/components/ui/icons';
 import { useAuth } from '@/contexts/AuthContext';
+import { api } from '@/services/api';
 
 export default function ConfiguracoesPage() {
   const { funcionario } = useAuth();
@@ -54,15 +55,20 @@ export default function ConfiguracoesPage() {
   const fetchConfig = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/configuracoes');
-      const result = await response.json();
+      const result = await api.get<{ success: boolean; data: any }>('/configuracoes');
       if (result.success) {
-        setFormData(result.data);
+        // Initialize with defaults to avoid null issues in inputs
+        const safeData = { ...result.data };
+        Object.keys(safeData).forEach(key => {
+          if (safeData[key] === null) safeData[key] = '';
+        });
+        setFormData(prev => ({ ...prev, ...safeData }));
       } else {
-        setError('Erro ao carregar configurações');
+        console.warn('Configurações não carregadas:', result);
+        // setError('Erro ao carregar configurações');
       }
-    } catch (err) {
-      setError('Erro de conexão ao carregar configurações');
+    } catch (err: any) {
+      setError(err.message || 'Erro de conexão ao carregar configurações');
     } finally {
       setIsLoading(false);
     }
@@ -72,21 +78,16 @@ export default function ConfiguracoesPage() {
     setIsSaving(true);
     setError(null);
     try {
-      const response = await fetch('/api/configuracoes', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const result = await response.json();
+      const result = await api.put<{ success: boolean; data: any }>('/configuracoes', formData);
       if (result.success) {
         setFormData(result.data);
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 3000);
       } else {
-        setError(result.error || 'Erro ao salvar configurações');
+        setError('Erro ao salvar configurações');
       }
-    } catch (err) {
-      setError('Erro de conexão ao salvar configurações');
+    } catch (err: any) {
+      setError(err.message || 'Erro de conexão ao salvar configurações');
     } finally {
       setIsSaving(false);
     }
@@ -148,8 +149,8 @@ export default function ConfiguracoesPage() {
                       key={item.id}
                       onClick={() => setActiveSection(item.id)}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeSection === item.id
-                          ? 'bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400'
-                          : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800'
+                        ? 'bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400'
+                        : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800'
                         }`}
                     >
                       <IconComponent size={18} />

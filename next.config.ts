@@ -1,13 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',      // Gera a pasta 'out' necessária para o Capacitor
+  images: {
+    unoptimized: true,   // Obrigatório para apps mobile/estáticos
+  },
   typescript: {
-    // Ignore TypeScript errors in backup folders
     ignoreBuildErrors: false,
   },
-  // Empty turbopack config to silence the warning
-  turbopack: {},
+  // Se estiver a usar o Next.js 15, o turbopack é configurado aqui se necessário
 };
 
 export default nextConfig;
